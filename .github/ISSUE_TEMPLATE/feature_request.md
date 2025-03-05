@@ -3,7 +3,7 @@ name: 새 기능 추가
 about: 추가할 기능을 작성해주세요.
 title: "[Feature]"
 labels: ["enhancement"] 
-assignees: "*본인 이름 입력*"
+assignees: "*본인 닉네임 입력*"
 ---
 
 ## 기능 설명
