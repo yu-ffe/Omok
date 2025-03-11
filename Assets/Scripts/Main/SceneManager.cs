@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using workspace.YU__FFE.Scripts.Common;
 
-public class SceneManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public class SceneManager : Singleton<SceneManager> {
+        private SceneManager() { }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void LoadScene(string sceneName) {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        }
+
+        public void LoadSceneAsync(string sceneName) {
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+        }
+
+        public void ReloadCurrentScene() {
+            string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(currentScene);
+        }
     }
-}
