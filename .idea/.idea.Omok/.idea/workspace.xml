@@ -5,10 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Main/Game.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Main/Main.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Main/Test.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Main/UI.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Data.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Data/UIItem.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Data/UIItem.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/UIController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/UIController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/UIManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/UIManager.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Singleton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Singleton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,15 +28,19 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Minji-GWON"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Minji-GWON&quot;
   }
-}]]></component>
-  
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Main/Commons/Singleton.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/CellState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/RankingManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/RecordManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/ScrollViewSet.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -44,7 +58,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "featur/MJ",
+    "git-widget-placeholder": "feature/ui-loader",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
