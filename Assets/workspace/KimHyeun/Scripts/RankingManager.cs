@@ -15,7 +15,7 @@ public class RankingManager : MonoBehaviour
     List<int> winList;
     List<int> loseList;
 
-    [Header("테스트")]
+    [Header("인스펙터 할당 필수")]
     public Sprite[] profileSpritesFromInspector; // 인스펙터에서 연결하는 배열
 
     private void Start()
@@ -27,16 +27,17 @@ public class RankingManager : MonoBehaviour
         loseList = new List<int>();
 
 
-        // 테스트
+        /// 테스트
         // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
         // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
         // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
         // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
 
-        // 테스트
-        SessionManager.ProfileSprites = profileSpritesFromInspector;
-        SessionManager.LoadAllSessions();
-        GetUserData();
+        /// 테스트 코드
+        SessionManager.ProfileSprites = profileSpritesFromInspector; // 인스펙터에 할당된 스프라이트 SessionManager에 할당
+        SessionManager.LoadAllSessions(); // 유저 데이터 불러오기
+        GetUserData(); // 호출 
+        /// 
     }
 
     public void GetUserData() // 랭킹 팝업 오픈 시 호출
@@ -97,7 +98,8 @@ public class RankingManager : MonoBehaviour
     
 
 
-    // TODO 급수(level) 기반 랭킹(낮을 수록 상위), 동일 급수 시 승률 우선
+
+
 
 
 

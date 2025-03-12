@@ -14,7 +14,7 @@ public class CellState : MonoBehaviour
     public TMP_Text subText3;
     public CellType cellType;
 
-    public GameObject deleteButtonObj;
+    public GameObject buttonObj;
 
     public enum CellType
     {

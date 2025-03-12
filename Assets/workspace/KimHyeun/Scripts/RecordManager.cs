@@ -39,7 +39,11 @@ public class RecordManager : MonoBehaviour
 
     // TODO 기보 플레이 호출 기능 (기보 시스템 구축 대기)
 
-
+    // TODO 기보 제거 기능
+    public void RemoveRecord(int index)
+    {
+        Debug.Log($"{index}인덱스 기보 제거(RecordManager)");
+    }
 
 
 

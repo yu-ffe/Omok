@@ -10,29 +10,39 @@ public class ShopManager : MonoBehaviour
     [Header("필수 할당")]
     [SerializeField] Sprite[] itemSprites;
     [SerializeField] string[] itemNames;
+    [SerializeField] int[] nums;
     [SerializeField] int[] prices;
 
 
     private void Start()
     {
+        /// 테스트
         GetItemData();
     }
 
 
     public void GetItemData() // 아이템 팝업 오픈 시 호출
     {
-        // 아이템 데이터 불러오기 필요
-
-        //SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
-
-
-
         scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
 
     // TODO 셀 클릭 시 코인 획득 기능 추가
 
+    public void BuyCoin(int index)
+    {
+
+        SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);
+        //SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
+
+        Debug.Log($"{SessionManager.GetAllUserIds()[0]}유저 현재 코인: {userSession.Coins}");
+
+        userSession.Coins = userSession.Coins + nums[index];
+
+        Debug.Log($"{SessionManager.GetAllUserIds()[0]}유저 코인 증가 후: {userSession.Coins}");
+
+        SessionManager.UpdateSession(SessionManager.GetAllUserIds()[0], userSession.Coins, userSession.Grade, userSession.RankPoint);
+    }
 
 
 
@@ -71,6 +81,19 @@ public class ShopManager : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    public int GetNum(int index)
+    {
+        if (nums.Length > index)
+        {
+            return nums[index];
+        }
+
+        else
+        {
+            return 0;
         }
     }
 

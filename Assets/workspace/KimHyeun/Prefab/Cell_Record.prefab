@@ -133,7 +133,7 @@ MonoBehaviour:
   subText2: {fileID: 8814254845580941160}
   subText3: {fileID: 3114446304093063213}
   cellType: 2
-  deleteButtonObj: {fileID: 2025891258178063643}
+  buttonObj: {fileID: 2025891258178063643}
 --- !u!1 &2025891258178063643
 GameObject:
   m_ObjectHideFlags: 0

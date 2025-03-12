@@ -258,7 +258,6 @@ public class ScrollViewSet : MonoBehaviour
 
         if (state.cellType == CellState.CellType.Ranking)
         {
-            Debug.Log($"랭킹 {index}번 셀 데이터 로드");
             state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
             state.nameText.text = RankingManager.Instance.GetName(index);
             state.subText1.text = RankingManager.Instance.GetGrade(index).ToString();
@@ -272,38 +271,22 @@ public class ScrollViewSet : MonoBehaviour
             state.nameText.text = RecordManager.Instance.GetRecordName(index);
             state.subText1.text = RecordManager.Instance.GetName(index);
             state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
-            // TODO 기보 제거
-            state.deleteButtonObj.AddComponent<Button>().onClick.AddListener(()=> { Debug.Log("각 버튼 클릭 시 기보 제거(RecordManager)"); });
+           
+            state.buttonObj.AddComponent<Button>().onClick.AddListener(()=> { RecordManager.Instance.RemoveRecord(index); });
         }
 
         else if (state.cellType == CellState.CellType.Shop)
         {
-            Debug.Log($"상점 {index}번 셀 데이터 로드");
             state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
             state.nameText.text = ShopManager.Instance.GetName(index);
-            state.subText1.text = ShopManager.Instance.GetPrice(index).ToString();
+            state.subText1.text = ShopManager.Instance.GetNum(index).ToString();
+            state.subText2.text = ShopManager.Instance.GetPrice(index).ToString();
+
+            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { ShopManager.Instance.BuyCoin(index); });
         }
-        // UI 업데이트
-
-
-        // 이벤트 리스너 업데이트
-        // state.selectButton.onClick.RemoveAllListeners();
-
-        // int currentStageIndex = stageLevel;  // 클로저 문제 해결을 위해 현재 인덱스 저장
-        // state.selectButton.onClick.AddListener(() => OnStageSelected(currentStageIndex)); // 클로저 문제 해결 필요
-
-        // 클리어 상태 설정
-        // int stageStars = KeyController.GetStageStars(cellNum);
-        // int stageScore = KeyController.GetStageScore(cellNum);
-        // SetupStageState(state, stageStars, stageScore, cellNum, normalClear, perfectClear);
-
     }
 
 
-    private void OnStageSelected(int level)
-    {
-        Debug.Log($"스테이지 {level} 선택");
-    }
     
 
 }
