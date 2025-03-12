@@ -29,8 +29,8 @@ namespace WB
 
         public override void OnEnable()
         {
-            WB.UI_Manager.Get.RemoveCallback("coin", RefreshCoin);
-            WB.UI_Manager.Get.RemoveCallback("winlose", RefreshWinLoseStat);
+            WB.UI_Manager.Get.RemoveCallback("coin");
+            WB.UI_Manager.Get.RemoveCallback("winlose");
         }
 
         public void RefreshCoin()

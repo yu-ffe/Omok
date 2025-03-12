@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,75 +7,65 @@ using UnityEngine.UI;
 
 namespace WB
 {
-    public class UI_Popup : MonoBehaviour, IPopopUI
+    public class UI_Popup : MonoBehaviour
     {
         public GameObject objPopup;     //root
+        public RectTransform rectWindow;//창 크기
         public TextMeshProUGUI textMsg; //child 0
         public Button btnOk;            //child 1
         public Button btnCancel;        //chidl 2
         public TextMeshProUGUI textOk;  //child 1 - child 0
         public TextMeshProUGUI textCancel; //chidl 2 - child 0
 
-
-        private void OnValidate()
+        /// <summary> 팝업창을 띄웁니다. </summary>
+        /// <param name="msg">내용</param>
+        /// <param name="okText">확인버튼 텍스트</param>
+        /// <param name="cancelText">취소버튼 텍스트</param>
+        /// <param name="width">창크기 가로</param>
+        /// <param name="height">창크기 세로</param>
+        /// <param name="okAction">확인 버튼 누를시 실행될 함수</param>
+        /// <param name="cancelAction">취소 버튼 누를시 실행될 함수</param>
+        public void Show(
+            string msg,  // 메세지
+            string okText = null, string cancelText = null, // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
+            float width = 600, float height = 600, //창 크기
+            UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
         {
-            if (textMsg == null)
-                textMsg = objPopup.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            if (btnOk == null)
-                btnOk = objPopup.transform.GetChild(1).GetComponent<Button>();
-            if (btnCancel == null)
-                btnCancel = objPopup.transform.GetChild(2).GetComponent<Button>();
-            if (textOk == null)
-                textOk = btnOk.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            if (textCancel == null)
-                textCancel = btnCancel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
+            ShowStartEvent();
+
+            objPopup.SetActive(true);
+
+            //버튼 이벤트 초기화
+            btnOk.onClick.RemoveAllListeners();
+            btnCancel.onClick.RemoveAllListeners();
+            btnOk.onClick.AddListener(HidePopup);
+            btnCancel.onClick.AddListener(HidePopup);
+            //창 크기, 메시지 설정
+            rectWindow.sizeDelta = new Vector2(width, height);
+            textMsg.text = msg;
+            //버트 이벤트 연결
+            if (okAction != null)
+                btnOk.onClick.AddListener(okAction);
+            if (cancelAction != null)
+                btnCancel.onClick.AddListener(cancelAction);
+            //버튼 메세지 변경 
+            textOk.text = string.IsNullOrEmpty(okText) ? "확인" : okText;
+            textCancel.text = string.IsNullOrEmpty(cancelText) ? "취소" : cancelText;
+
+            // 연결된 이벤트가 둘 다 없으면 확인 버튼만 활성화
+            btnCancel.gameObject.SetActive(okAction != null || cancelAction != null);
         }
 
-        private void Start()
+        public virtual void ShowStartEvent()
         {
-            StartCoroutine(AddPopupToManager());
-        }
-
-        IEnumerator AddPopupToManager()
-        {
-            while (WB.UI_Manager.Get == null)
-                yield return null;
-
-            //메인 Popup 등록
-            WB.UI_Manager.Get.popup = this;
-        }
-
-        public void Show(string msg, string okText = null, string cancelText = null, UnityAction okAction = null, UnityAction cancelAction = null)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Hide()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Refresh()
-        {
-            //?? tpfhrhcxla
 
         }
 
-        public void OnNotify()
+        void HidePopup()
         {
-            throw new System.NotImplementedException();
+            objPopup.SetActive(false);
         }
-
-        public void OnNotify(string msg)
-        {
-            Refresh();
-        }
-
-        //옵션. 공통 애니매이션
-        DG.Tweening.Sequence sequenceShow;
-        DG.Tweening.Sequence sequenceHide;
-
-        public string NotifyKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
     }
 }
 

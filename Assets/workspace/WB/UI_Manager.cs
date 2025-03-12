@@ -26,12 +26,10 @@ namespace WB
         void Awake()
         {
             instance = this;
-        }
-
-        void Start()
-        {
+            callBack = new();
             callBack = new();
         }
+
 
         public void AddPanel(string key, UI_Panel panel)
         {
@@ -58,12 +56,12 @@ namespace WB
             callBack[key] += action;
         }
 
-        public void RemoveCallback(string key, UnityAction action)
+        public void RemoveCallback(string key)
         {
             if (!callBack.ContainsKey(key))
                 return;
 
-            callBack[key] -= action;
+            callBack[key] = null;
         }
 
 
