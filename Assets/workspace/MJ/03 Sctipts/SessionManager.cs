@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace MJ
 {
@@ -10,30 +11,28 @@ namespace MJ
         private static Dictionary<string, UserSession> userSessions = new Dictionary<string, UserSession>();
 
         public static string currentUserId; // 현재 로그인 유저 ID
-        public static Sprite[] ProfileSprites; // 프로필 이미지 스프라이트 목록(외부에서 게임이 시작될때, 초기화 필요)
-
-        [System.Serializable]
-        public class UserSession
+        // 버튼 안 이미지 저장용 (게임 시작 시 SignUpManager가 초기화)
+        public static Sprite[] ProfileSprites;
+        // 스프라이트 배열도 따로 선언 필요 (게임 시작 시 SignUpManager가 초기화)
+        public static Image[] ProfileButtonImages;
+        
+        // 버튼 안 이미지 Sprite 반환 함수
+        public static Sprite GetProfileButtonSprite(int index)
         {
-            public string Nickname;
-            public int ProfileNum;
-            public int Coins;
-            public int Grade;
-            public int RankPoint;
-            public int WinCount;  // 승리 횟수
-            public int LoseCount; // 패배 횟수
-
-            // 생성자
-            public UserSession(string nickname, int profileNum, int coins, int grade, 
-                int rankPoint, int winCount, int loseCount)
+            if (ProfileButtonImages == null || ProfileButtonImages.Length == 0)
             {
-                Nickname = nickname;
-                ProfileNum = profileNum;
-                Coins = coins;
-                Grade = grade;
-                RankPoint = rankPoint;
-                WinCount = winCount;
-                LoseCount = loseCount;
+                Debug.LogWarning("[SessionManager] 프로필 버튼 이미지가 초기화되지 않았습니다.");
+                return null;
+            }
+
+            if (index >= 0 && index < ProfileButtonImages.Length)
+            {
+                return ProfileButtonImages[index].sprite;
+            }
+            else
+            {
+                Debug.LogWarning($"[SessionManager] 잘못된 프로필 인덱스 요청: {index}");
+                return null;
             }
         }
 
