@@ -41,8 +41,7 @@ public class LoginPanel : UI_Panel
 
     void Start()
     {
-        panelKey = "Login";
-        UI_Manager.Instance.AddPanel(panelKey, this);
+        UI_Manager.Instance.AddPanel(panelType, this);
     }
 
     public override void Show()

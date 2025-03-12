@@ -13,13 +13,11 @@ namespace WB
 
         void Start()
         {
-            panelKey = "Example";
-            UI_Manager.Instance.AddPanel(panelKey, this);
+            UI_Manager.Instance.AddPanel(panelType, this);
         }
         public override void Show()
         {
             gameObject.SetActive(true);
-            UI_Manager.Instance.AddPanel(panelKey, this);
         }
         public override void Hide()
         {

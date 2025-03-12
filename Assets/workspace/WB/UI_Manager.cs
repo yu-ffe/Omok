@@ -7,29 +7,37 @@ namespace WB
     public class UI_Manager : Singleton<UI_Manager>
     {
         // 공통 Popup창
+        public enum PanelType
+        {
+            None,
+            Login,
+            Main,
 
+        }
         public UI_Popup popup;
         Dictionary<string, UnityAction> callBack;
-        Dictionary<string, UI_Panel> panels;
-        [SerializeField] string nowShowingPanelKey;
+        Dictionary<PanelType, UI_Panel> panels;
+        [SerializeField] PanelType nowShowingPanelType;
 
         public UI_Manager()
         {
             callBack = new();
-            callBack = new();
+            panels = new();
         }
 
-
         /// <summary> 활성화 된 패널들이 UI 매니저에 등록됨 </summary>
-        public void AddPanel(string key, UI_Panel panel)
+        public void AddPanel(PanelType key, UI_Panel panel)
         {
+            if (key == PanelType.None)
+                return;
+            panels ??= new();
             if (!panels.ContainsKey(key))
                 panels.Add(key, null);
 
             panels[key] = panel;
         }
 
-        public void RemovePanel(string key)
+        public void RemovePanel(PanelType key)
         {
             if (!panels.ContainsKey(key))
                 return;
@@ -40,6 +48,7 @@ namespace WB
         /// <summary> 패널UI의 정보들을 새로고침하는 함수 등록 </summary>
         public void AddCallback(string key, UnityAction action)
         {
+            callBack ??= new();
             if (!callBack.ContainsKey(key))
                 callBack.Add(key, null);
 
@@ -56,21 +65,21 @@ namespace WB
 
 
 
-        public void Show(string panelKey)
+        public void Show(PanelType panelKey)
         {
             if (!panels.ContainsKey(panelKey))
             {
                 Debug.Log("잘못된 키입니다.");
                 return;
             }
+            Hide(nowShowingPanelType);
+
             panels[panelKey].Show();
 
-            Hide(nowShowingPanelKey);
-
-            nowShowingPanelKey = panelKey;
+            nowShowingPanelType = panelKey;
         }
 
-        public void Hide(string panelKey)
+        public void Hide(PanelType panelKey)
         {
             if (!panels.ContainsKey(panelKey))
             {

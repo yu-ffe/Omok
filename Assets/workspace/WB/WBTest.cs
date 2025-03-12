@@ -5,18 +5,18 @@ using WB;
 
 public class WBTest : MonoBehaviour
 {
-    public string key;
+    public UI_Manager.PanelType pnl;
 
     [ContextMenu("ShowPanel")]
     void ShowPanel()
     {
-        UI_Manager.Instance.Show(key);
+        UI_Manager.Instance.Show(pnl);
     }
 
     [ContextMenu("HidePanel")]
     void HidePanel()
     {
-        UI_Manager.Instance.Hide(key);
+        UI_Manager.Instance.Hide(pnl);
     }
 
 

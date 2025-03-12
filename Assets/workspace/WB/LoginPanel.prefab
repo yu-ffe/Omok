@@ -2127,6 +2127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d00e02daff81a4f2aaf056cccafb4a94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelType: 1
   objSignup: {fileID: 6709342169407525412}
   txtTitle: {fileID: 5543444078174726410}
   txtMessage: {fileID: 6335926695436281659}

@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e70f8ab31d964987a215a90119333d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 
+  pnl: 0
   basicPopup: {fileID: 1504901421}
   popupMsg: 1231222
 --- !u!224 &1504901418 stripped
