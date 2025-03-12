@@ -2,7 +2,37 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+
 namespace KimHyeun {
+
+    [System.Serializable]
+    public class UserSession
+    {
+        public string Nickname;
+        public int ProfileNum;
+        public int Coins;
+        public int Grade;
+        public int RankPoint;
+        public int WinCount;  // 승리 횟수
+        public int LoseCount; // 패배 횟수
+
+        // 생성자
+        public UserSession(string nickname, int profileNum, int coins, int grade,
+            int rankPoint, int winCount, int loseCount)
+        {
+            Nickname = nickname;
+            ProfileNum = profileNum;
+            Coins = coins;
+            Grade = grade;
+            RankPoint = rankPoint;
+            WinCount = winCount;
+            LoseCount = loseCount;
+        }
+    }
+
+
+
     public static class SessionManager
     {
         // 현재 게임 세션 내 모든 유저 정보 (메모리 저장)
@@ -11,30 +41,7 @@ namespace KimHyeun {
         public static string currentUserId; // 현재 로그인 유저 ID
         public static Sprite[] ProfileSprites; // 프로필 이미지 스프라이트 목록(외부에서 게임이 시작될때, 초기화 필요)
 
-        [System.Serializable]
-        public class UserSession
-        {
-            public string Nickname;
-            public int ProfileNum;
-            public int Coins;
-            public int Grade;
-            public int RankPoint;
-            public int WinCount;  // 승리 횟수
-            public int LoseCount; // 패배 횟수
-
-            // 생성자
-            public UserSession(string nickname, int profileNum, int coins, int grade,
-                int rankPoint, int winCount, int loseCount)
-            {
-                Nickname = nickname;
-                ProfileNum = profileNum;
-                Coins = coins;
-                Grade = grade;
-                RankPoint = rankPoint;
-                WinCount = winCount;
-                LoseCount = loseCount;
-            }
-        }
+       
 
         // ========== 세션 추가 및 저장 ==========
         public static void AddSession(string userId, string nickname, int profileNum,
