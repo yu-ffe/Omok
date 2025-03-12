@@ -20,8 +20,22 @@ namespace MJ
 
         [Header("알림 텍스트")] public TMP_Text alertText;
 
+        [Header("프로필 스프라이트")] 
+        public Sprite[] profileSprites; // 프로필 이미지들 연결 (게임 시작 시 초기화용)
+        
         private int _profileNumber = -1; // 선택된 프로필 번호 (-1: 선택 안함)
 
+        void Start()
+        {
+            // 모든 저장된 유저 세션 불러오기
+            SessionManager.LoadAllSessions();
+            Debug.Log("모든 유저 세션 로드 완료");
+
+            // 프로필 스프라이트 초기화
+            SessionManager.ProfileSprites = profileSprites;
+            Debug.Log("프로필 스프라이트 초기화 완료");
+        }
+        
         // ========== 회원가입 버튼 클릭 시 호출 ==========
         public void OnClickSignUp()
         {

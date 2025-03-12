@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/SceneManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/SceneManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1/Crack1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1/Crack1.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2/Crack1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2/Crack1.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" afterDir="false" />
     </list>
-    <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,9 +53,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "42-feature-users__AddKeyValue",
-    "git-widget-placeholder": "feature/doubleton-uimanager",
-    "git-widget-placeholder": "add/image-resource",
+    "git-widget-placeholder": "origin/feature-SignUpManager-Initialization",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
