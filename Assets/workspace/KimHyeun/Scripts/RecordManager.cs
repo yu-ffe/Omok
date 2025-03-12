@@ -2,84 +2,175 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RecordManager : MonoBehaviour
-{
-    public Sprite resultSprite;
-    public string recordName;
-    public string nickName;
-    public int date;
-
-
-
-    void GetRecordData() // ±‚∫∏ ∆Àæ˜ ø¿«¬ Ω√ »£√‚
+namespace KimHyeun {
+    public class RecordManager : MonoBehaviour
     {
-        // ±‚∫∏ µ•¿Ã≈Õ ∫“∑Øø¿±‚ « ø‰  (playerpref ±‚∑œ ∫“∑Øø¿±‚)
-    }
+        [Header("Í∏∞Î≥¥ Ïä§ÌÅ¨Î°§ Î∑∞ ÌïÑÏàò Ìï†Îãπ")]
+        [SerializeField] ScrollViewSet scrollViewSet;
+
+        List<Sprite> resultSpriteList;
+        List<string> recordNameList;
+        List<string> nickNameList;
+        List<int> dateList;
+
+        private void Start()
+        {
+            resultSpriteList = new List<Sprite>();
+            recordNameList = new List<string>();
+            nickNameList = new List<string>();
+            dateList = new List<int>();
+
+            GetRecordData();
+        }
+
+        public void GetRecordData() // Í∏∞Î≥¥ ÌåùÏóÖ Ïò§Ìîà Ïãú Ìò∏Ï∂ú
+        {
+            ResetData(); // Ï¥àÍ∏∞Ìôî
 
 
-    // TODO ±‚∫∏ «√∑π¿Ã »£√‚ ±‚¥…
 
-
-
-    public Sprite GetSprite()
-    {
-        return resultSprite;
-    }
-
-    public string GetRecordName()
-    {
-        return recordName;
-    }
-
-    public string GetName()
-    {
-        return nickName;
-    }
-
-    public int GetDate()
-    {
-        return date;
-    }
-
+            // Í∏∞Î≥¥ Îç∞Ïù¥ÌÑ∞ Î∂àÎü¨Ïò§Í∏∞ ÌïÑÏöî  (playerpref Í∏∞Î°ù Î∂àÎü¨Ïò§Í∏∞)
 
 
 
 
+            // scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+        }
+
+
+        // TODO Í∏∞Î≥¥ ÌîåÎ†àÏù¥ Ìò∏Ï∂ú Í∏∞Îä• (Í∏∞Î≥¥ ÏãúÏä§ÌÖú Íµ¨Ï∂ï ÎåÄÍ∏∞)
+
+        // TODO Í∏∞Î≥¥ Ï†úÍ±∞ Í∏∞Îä•
+        public void RemoveRecord(int index)
+        {
+            Debug.Log($"{index}Ïù∏Îç±Ïä§ Í∏∞Î≥¥ Ï†úÍ±∞(RecordManager)");
+        }
 
 
 
 
 
-    private static RecordManager _instance;
 
-    public static RecordManager Instance
-    {
-        get
+
+
+
+
+
+
+
+
+
+
+
+
+        void ResetData()
+        {
+            resultSpriteList.Clear();
+            recordNameList.Clear();
+            nickNameList.Clear();
+            dateList.Clear();
+        }
+
+        public int GetMaxCellNum()
+        {
+            return resultSpriteList.Count;
+        }
+
+
+        public Sprite GetSprite(int index)
+        {
+            if (resultSpriteList.Count > index)
+            {
+                return resultSpriteList[index];
+            }
+
+            else
+            {
+                return null;
+            }
+        }
+
+        public string GetRecordName(int index)
+        {
+            if (recordNameList.Count > index)
+            {
+                return recordNameList[index];
+            }
+
+            else
+            {
+                return null;
+            }
+        }
+
+        public string GetName(int index)
+        {
+            if (nickNameList.Count > index)
+            {
+                return nickNameList[index];
+            }
+
+            else
+            {
+                return null;
+            }
+        }
+
+        // TODO ÎÇ†Ïßú ÌòïÏãù Î≥ÄÌôò ÌïÑÏöî
+        public int GetDate(int index)
+        {
+            if (dateList.Count > index)
+            {
+                return dateList[index];
+            }
+
+            else
+            {
+                return 0;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        private static RecordManager _instance;
+
+        public static RecordManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<RecordManager>();
+                    if (_instance == null)
+                    {
+                        GameObject obj = new GameObject();
+                        obj.name = typeof(RecordManager).Name;
+                        _instance = obj.AddComponent<RecordManager>();
+                    }
+                }
+                return _instance;
+            }
+        }
+
+        private void Awake()
         {
             if (_instance == null)
             {
-                _instance = FindObjectOfType<RecordManager>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject();
-                    obj.name = typeof(RecordManager).Name;
-                    _instance = obj.AddComponent<RecordManager>();
-                }
+                _instance = this as RecordManager;
+                DontDestroyOnLoad(gameObject);
             }
-            return _instance;
-        }
-    }
-
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this as RecordManager;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
+

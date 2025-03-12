@@ -11,7 +11,8 @@ namespace MJ
 
         [Header("알림 텍스트 (TMP)")]
         public TMP_Text alertText;
-
+        
+        
         // ========== 로그인 버튼 클릭 시 호출 ==========
         public void OnClickLogin()
         {

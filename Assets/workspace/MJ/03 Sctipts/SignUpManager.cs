@@ -19,9 +19,27 @@ namespace MJ
         public Image[] profileImages; // 프로필 이미지 (아이콘용) 연결 (버튼에 있는 이미지 컴포넌트)
 
         [Header("알림 텍스트")] public TMP_Text alertText;
-
+        
+        [Header("프로필 스프라이트")] 
+        public Sprite[] profileSprites;
+        
         private int _profileNumber = -1; // 선택된 프로필 번호 (-1: 선택 안함)
 
+        void Start()
+        {
+            // 모든 저장된 유저 세션 불러오기
+            SessionManager.LoadAllSessions();
+            Debug.Log("모든 유저 세션 로드 완료");
+
+            // 프로필 스프라이트 초기화
+            SessionManager.ProfileSprites = profileSprites;
+            Debug.Log("프로필 스프라이트 초기화 완료");
+            
+            // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
+            SessionManager.ProfileButtonImages = profileImages;
+            Debug.Log("프로필 버튼 이미지 초기화 완료");
+        }
+        
         // ========== 회원가입 버튼 클릭 시 호출 ==========
         public void OnClickSignUp()
         {

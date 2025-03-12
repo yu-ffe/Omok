@@ -3,289 +3,293 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScrollViewSet : MonoBehaviour
-{
-    // º» ½ºÅ©¸³Æ®´Â On µÇÀÖ´Â ¸Å´ÏÀú¿¡ ºÎÂøÇÒ °Í
-    [Header("ÇÊ¼ö ÇÒ´ç")]
-    [SerializeField] GameObject cellPrefab; // content ¼¿ ÇÁ¸®ÆÕ
-    RectTransform cellRect;
-    float cellWidth;  // °¢ ¼¿ÀÇ ³Êºñ
-    float cellHeight; // °¢ ¼¿ÀÇ ³ôÀÌ
-
-    [SerializeField] GameObject content; // content (ºÎ¸ğ ¿ÀºêÁ§Æ®)
-    [SerializeField] RectTransform contentRectTransform;
-
-    [SerializeField] ScrollRect scrollRect;
-
-    List<GameObject> pool = new List<GameObject>(); // ¿ÀºêÁ§Æ® Ç®¸µ ¸®½ºÆ®
-
-    [Header("ÇÊ¼ö ÀÔ·Â")]
-    [SerializeField, Tooltip("¼¿ °£ÀÇ °£°İ")] float spacing;     // ¼¿ °£ÀÇ °£°İ
-    [SerializeField, Tooltip("ÀüÃ¼ ¼¿ ¼ö")] int totalCells;
-    [SerializeField, Tooltip("»ı¼ºÇÒ ¼¿ ¼ö(¹öÆÛ Æ÷ÇÔ)(±ÇÀå:º¸ÀÌ´Â ¼¿ + (°¡·Î ¼¿ °³¼ö * 3))")] int createCellCount;
-    [SerializeField, Tooltip("°¡·Î ¼¿ °³¼ö")] int cellRowCount;
-
-
-    private float contentWidth; // ÄÜÅÙÃ÷ ³Êºñ
-    private float contentHeight; // ÄÜÅÙÃ÷ ³ôÀÌ
-    int lastStartIndex;
-
-
-    [Header("Ãß°¡ ÇÊ¿ä Á¤º¸")]
-    bool needMore;
-    // [SerializeField] Sprite normalClear, perfectClear; // Å¬¸®¾î »óÅÂ ¾ÆÀÌÄÜ
-
-    private void Start()
+namespace KimHyeun {
+    public class ScrollViewSet : MonoBehaviour
     {
-        scrollRect.onValueChanged.AddListener(OnScroll);
+        // ë³¸ ìŠ¤í¬ë¦½íŠ¸ëŠ” On ë˜ìˆëŠ” ë§¤ë‹ˆì €ì— ë¶€ì°©í•  ê²ƒ
+        [Header("í•„ìˆ˜ í• ë‹¹")]
+        [SerializeField] GameObject cellPrefab; // content ì…€ í”„ë¦¬íŒ¹
+        RectTransform cellRect;
+        float cellWidth;  // ê° ì…€ì˜ ë„ˆë¹„
+        float cellHeight; // ê° ì…€ì˜ ë†’ì´
 
-        CellInfoSet();
-    }
+        [SerializeField] GameObject content; // content (ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸)
+        [SerializeField] RectTransform contentRectTransform;
 
-    void CellInfoSet()
-    {
-        cellRect = cellPrefab.GetComponent<RectTransform>();
+        [SerializeField] ScrollRect scrollRect;
 
-        // ¼¿ Á¤º¸
-        cellWidth = cellRect.sizeDelta.x;
-        cellHeight = cellRect.sizeDelta.y;
+        List<GameObject> pool = new List<GameObject>(); // ì˜¤ë¸Œì íŠ¸ í’€ë§ ë¦¬ìŠ¤íŠ¸
 
-        // ¼¿ ÁÂ»ó´Ü Á¤·Ä
-        cellRect.anchorMin = new Vector2(0, 1);
-        cellRect.anchorMax = new Vector2(0, 1);
-        cellRect.pivot = new Vector2(0, 1);
+        [Header("í•„ìˆ˜ ì…ë ¥")]
+        [SerializeField, Tooltip("ì…€ ê°„ì˜ ê°„ê²©")] float spacing;     // ì…€ ê°„ì˜ ê°„ê²©
+        [SerializeField, Tooltip("ì „ì²´ ì…€ ìˆ˜")] int totalCells;
+        [SerializeField, Tooltip("ìƒì„±í•  ì…€ ìˆ˜(ë²„í¼ í¬í•¨)(ê¶Œì¥:ë³´ì´ëŠ” ì…€ + (ê°€ë¡œ ì…€ ê°œìˆ˜ * 3))")] int createCellCount;
+        [SerializeField, Tooltip("ê°€ë¡œ ì…€ ê°œìˆ˜")] int cellRowCount;
 
-        // ÄÚµå ÁöÁ¤(ÀÎ½ºÆåÅÍ ÇÒ´ç °¡´É)
-        if (totalCells <= 0)
+
+        private float contentWidth; // ì½˜í…ì¸  ë„ˆë¹„
+        private float contentHeight; // ì½˜í…ì¸  ë†’ì´
+        int lastStartIndex;
+
+
+        [Header("ì¶”ê°€ í•„ìš” ì •ë³´")]
+        bool needMore;
+
+        private void Start()
         {
-            Debug.LogError("TotalCells value is 0, Auto Set 1");
-            totalCells = 1;
+            scrollRect.onValueChanged.AddListener(OnScroll);
         }
 
-        if (cellRowCount <= 0)
+        public void StageSelectPopSet(int maxCellNum) // ìµœì´ˆ ì™¸ë¶€ í˜¸ì¶œ
         {
-            Debug.LogWarning("CellRowCount value is 0, Auto Set 1");
-            cellRowCount = 1;
-        }
+            scrollRect.verticalNormalizedPosition = 1f;
 
-        if (createCellCount <= 0)
-        {
-            Debug.LogWarning("CreateCellCount value is 0, Auto Set 1");
-            createCellCount = 1;
-        }
+            totalCells = maxCellNum;
 
-        ContentSizeSet(); // ½ºÅ©·Ñ »çÀÌÁî ÀçÀû¿ë
-    }
-
-    void ContentSizeSet()
-    {
-        contentWidth = (cellWidth + spacing) * cellRowCount - spacing; // °¡·Î Å©±â °è»ê (¸¶Áö¸· ¿­ spacing Á¦°Å)
-
-        int totalRows = Mathf.CeilToInt((float)totalCells / cellRowCount);
-        contentHeight = (cellHeight + spacing) * totalRows - spacing; // ¸¶Áö¸· ÁÙ ¾Æ·¡ÂÊ¿¡ ºÒÇÊ¿äÇÑ spacing Á¦°Å
-
-        // content »ó´Ü Á¤·Ä
-        contentRectTransform.anchorMin = new Vector2(0.5f, 1);
-        contentRectTransform.anchorMax = new Vector2(0.5f, 1);
-        contentRectTransform.pivot = new Vector2(0.5f, 1);
-
-        contentRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
-        contentRectTransform.anchoredPosition = new Vector2(0, 0);
-
-
-        InitPool();
-    }
-
-    void InitPool()
-    {
-        for (int i = 0; i < createCellCount; i++) // À§ 1ÁÙ ¾Æ·¡ 2ÁÙ ¹öÆÛ
-        {
-            GameObject stageObj = Instantiate(cellPrefab, content.transform);
-            stageObj.SetActive(false); // ÃÊ±â¿¡´Â ºñÈ°¼ºÈ­
-            pool.Add(stageObj);
-        }
-
-        CellPositionSet(0);
-    }
-
-    void CellPositionSet(int startRow)
-    {
-        // ¼¿µé À§Ä¡ ¼³Á¤
-
-        for (int i = 0; i < pool.Count; i++)
-        {
-            int row = (i + startRow * cellRowCount) / cellRowCount; // ½ÃÀÛ ÇàÀ» ±âÁØÀ¸·Î Çà °è»ê
-            int col = (i + startRow * cellRowCount) % cellRowCount; // ¿­ °è»ê
-
-            float xPos = col * (cellWidth + spacing);   // °¡·Î À§Ä¡
-            float yPos = -row * (cellHeight + spacing); // ¼¼·Î À§Ä¡ (À§ ¡æ ¾Æ·¡)
-
-            RectTransform rect = pool[i].GetComponent<RectTransform>();
-            rect.anchoredPosition = new Vector2(xPos, yPos);
-            pool[i].SetActive(true); // ÃÊ±â È­¸é¿¡ º¸ÀÌµµ·Ï È°¼ºÈ­
-        }
-    }
-
-
-    public void StageSelectPopSet() // ÃÖÃÊ ¿ÜºÎ È£Ãâ
-    {
-        scrollRect.verticalNormalizedPosition = 1f;
-        UpdateStages(GetStartIndex());
-    }
-
-
-    private void OnScroll(Vector2 scrollPos)
-    {
-        var startIndex = GetStartIndex();
-
-        if (startIndex > lastStartIndex) // ¾Æ·¡·Î »ı¼º
-        {
-            for (int i = 0; i < cellRowCount; i++)
+            if (createCellCount > totalCells) // ìƒì„± ì…€ ê°œìˆ˜ ë³´ì •
             {
-                // Ç® ½ÃÀÛ 1ÇàÀ» ¸Ç ³¡À¸·Î ÀÌµ¿
-                GameObject stageObj = pool[0];
-                pool.RemoveAt(0);
+                createCellCount = totalCells;
+            }
+
+            if (totalCells > 0)
+            {
+                CellInfoSet();
+
+                UpdateStages(GetStartIndex());
+            }
+        }
+
+
+
+        void CellInfoSet()
+        {
+            cellRect = cellPrefab.GetComponent<RectTransform>();
+
+            // ì…€ ì •ë³´
+            cellWidth = cellRect.sizeDelta.x;
+            cellHeight = cellRect.sizeDelta.y;
+
+            // ì…€ ì¢Œìƒë‹¨ ì •ë ¬
+            cellRect.anchorMin = new Vector2(0, 1);
+            cellRect.anchorMax = new Vector2(0, 1);
+            cellRect.pivot = new Vector2(0, 1);
+
+            // ì½”ë“œ ì§€ì •(ì¸ìŠ¤í™í„° í• ë‹¹ ê°€ëŠ¥)
+            if (totalCells <= 0)
+            {
+                Debug.LogError("TotalCells value is 0, Auto Set 1");
+                totalCells = 1;
+            }
+
+            if (cellRowCount <= 0)
+            {
+                Debug.LogWarning("CellRowCount value is 0, Auto Set 1");
+                cellRowCount = 1;
+            }
+
+            if (createCellCount <= 0)
+            {
+                Debug.LogWarning("CreateCellCount value is 0, Auto Set 1");
+                createCellCount = 1;
+            }
+
+            ContentSizeSet(); // ìŠ¤í¬ë¡¤ ì‚¬ì´ì¦ˆ ì¬ì ìš©
+        }
+
+        void ContentSizeSet()
+        {
+            contentWidth = (cellWidth + spacing) * cellRowCount - spacing; // ê°€ë¡œ í¬ê¸° ê³„ì‚° (ë§ˆì§€ë§‰ ì—´ spacing ì œê±°)
+
+            int totalRows = Mathf.CeilToInt((float)totalCells / cellRowCount);
+            contentHeight = (cellHeight + spacing) * totalRows - spacing; // ë§ˆì§€ë§‰ ì¤„ ì•„ë˜ìª½ì— ë¶ˆí•„ìš”í•œ spacing ì œê±°
+
+            // content ìƒë‹¨ ì •ë ¬
+            contentRectTransform.anchorMin = new Vector2(0.5f, 1);
+            contentRectTransform.anchorMax = new Vector2(0.5f, 1);
+            contentRectTransform.pivot = new Vector2(0.5f, 1);
+
+            contentRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
+            contentRectTransform.anchoredPosition = new Vector2(0, 0);
+
+
+            InitPool();
+        }
+
+        void InitPool()
+        {
+            for (int i = 0; i < createCellCount; i++) // ìœ„ 1ì¤„ ì•„ë˜ 2ì¤„ ë²„í¼
+            {
+                GameObject stageObj = Instantiate(cellPrefab, content.transform);
+                stageObj.SetActive(false); // ì´ˆê¸°ì—ëŠ” ë¹„í™œì„±í™”
                 pool.Add(stageObj);
             }
 
-            CellPositionSet(startIndex / cellRowCount);
-
-            UpdateStages(startIndex); // ¼¿ À§Ä¡¿¡ µû¸¥ Ãß°¡ Á¶Á¤
+            CellPositionSet(0);
         }
 
-        else if (startIndex < lastStartIndex) // À§·Î »ı¼º
+        void CellPositionSet(int startRow)
         {
-            // Ç® ³¡ 1ÇàÀ» ¸Ç À§·Î ÀÌµ¿
-            for (int i = 0; i < cellRowCount; i++)
+            // ì…€ë“¤ ìœ„ì¹˜ ì„¤ì •
+
+            for (int i = 0; i < pool.Count; i++)
             {
-                GameObject stageObj = pool[pool.Count - 1];
-                pool.RemoveAt(pool.Count - 1);
-                pool.Insert(0, stageObj);
+                int row = (i + startRow * cellRowCount) / cellRowCount; // ì‹œì‘ í–‰ì„ ê¸°ì¤€ìœ¼ë¡œ í–‰ ê³„ì‚°
+                int col = (i + startRow * cellRowCount) % cellRowCount; // ì—´ ê³„ì‚°
+
+                float xPos = col * (cellWidth + spacing);   // ê°€ë¡œ ìœ„ì¹˜
+                float yPos = -row * (cellHeight + spacing); // ì„¸ë¡œ ìœ„ì¹˜ (ìœ„ â†’ ì•„ë˜)
+
+                RectTransform rect = pool[i].GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(xPos, yPos);
+                pool[i].SetActive(true); // ì´ˆê¸° í™”ë©´ì— ë³´ì´ë„ë¡ í™œì„±í™”
+            }
+        }
+
+
+
+
+
+        private void OnScroll(Vector2 scrollPos)
+        {
+            var startIndex = GetStartIndex();
+
+            if (startIndex > lastStartIndex) // ì•„ë˜ë¡œ ìƒì„±
+            {
+                for (int i = 0; i < cellRowCount; i++)
+                {
+                    // í’€ ì‹œì‘ 1í–‰ì„ ë§¨ ëìœ¼ë¡œ ì´ë™
+                    GameObject stageObj = pool[0];
+                    pool.RemoveAt(0);
+                    pool.Add(stageObj);
+                }
+
+
+                CellPositionSet(startIndex / cellRowCount);
+
+                UpdateStages(startIndex); // ì…€ ìœ„ì¹˜ì— ë”°ë¥¸ ì¶”ê°€ ì¡°ì •
             }
 
-            CellPositionSet(startIndex / cellRowCount);
-
-            UpdateStages(startIndex); // ¼¿ À§Ä¡¿¡ µû¸¥ Ãß°¡ Á¶Á¤
-        }
-
-        lastStartIndex = startIndex;
-    }
-
-
-    int GetStartIndex() // º¸ÀÏ ¼¿ ½ÃÀÛ ÀÎµ¦½º ¾ò±â
-    {
-        // º¸ÀÌ´Â ¿µ¿ªÀÇ Rect
-        Rect visibleRect = new Rect(
-            scrollRect.content.anchoredPosition.x,
-            scrollRect.content.anchoredPosition.y,
-            contentRectTransform.rect.width,
-            contentRectTransform.rect.height
-        );
-
-
-
-        // ¼¿ ³ôÀÌ¿Í °£°İÀ» ¹İ¿µÇÏ¿© º¸ÀÌ´Â ¿µ¿ª¿¡¼­ ¸î ¹øÂ° ¼¿ºÎÅÍ ½ÃÀÛÇÏ´ÂÁö °è»ê
-        float totalCellHeight = cellHeight + spacing; // ¼¿ ³ôÀÌ + °£°İ
-        var startIndex = Mathf.FloorToInt(visibleRect.y / totalCellHeight); // ÀüÃ¼ ¼¿ ³ôÀÌ ±âÁØÀ¸·Î ½ÃÀÛ ÀÎµ¦½º °è»ê
-
-
-
-        // ¼¿ÀÇ ½ÃÀÛ ÀÎµ¦½º¸¦ stagesPerRow¿¡ ¸Â°Ô Á¶Á¤
-        startIndex = startIndex * cellRowCount;
-
-        // ¸Ç À§°¡ ¾Æ´Ï¸é À§ÂÊ ¹öÆÛ 1ÁÙÀ» ¹İ¿µ (½ÃÀÛ ÀÎµ¦½º Á¶Á¤)
-        startIndex = Mathf.Max(0, startIndex - cellRowCount);
-
-        // ¸Ç ¾Æ·¡°¡ ¾Æ´Ï¸é ¾Æ·¡ÂÊ ¹öÆÛ 1ÁÙÀ» ¹İ¿µ
-        int totalRows = Mathf.CeilToInt((float)totalCells / cellRowCount);
-        int maxStartIndex = Mathf.Max(0, (totalRows - (createCellCount / cellRowCount)) * cellRowCount);
-        startIndex = Mathf.Min(startIndex, maxStartIndex);
-
-
-        return startIndex;
-    }
-
-
-    private void UpdateStages(int startIndex)
-    {
-        for (int i = 0; i < pool.Count; i++)
-        {
-            int stageLevel = startIndex + i;
-
-            if (stageLevel >= totalCells)
+            else if (startIndex < lastStartIndex) // ìœ„ë¡œ ìƒì„±
             {
-                pool[i].SetActive(false);
-                continue;
+                // í’€ ë 1í–‰ì„ ë§¨ ìœ„ë¡œ ì´ë™
+                for (int i = 0; i < cellRowCount; i++)
+                {
+                    GameObject stageObj = pool[pool.Count - 1];
+                    pool.RemoveAt(pool.Count - 1);
+                    pool.Insert(0, stageObj);
+                }
+
+
+                CellPositionSet(startIndex / cellRowCount);
+
+                UpdateStages(startIndex); // ì…€ ìœ„ì¹˜ì— ë”°ë¥¸ ì¶”ê°€ ì¡°ì •
             }
 
-            GameObject stageObj = pool[i];
 
-            stageObj.SetActive(true); // ÇöÀç ½ºÅ×ÀÌÁö´Â È°¼ºÈ­
-
-            CellInfoUpdate(stageObj, stageLevel); // ¼¿Á¤º¸ ¾÷µ¥ÀÌÆ®       
+            lastStartIndex = startIndex;
         }
-    }
 
 
-
-
-
-
-
-
-    
-
-    void CellInfoUpdate(GameObject cell, int cellNum)
-    {
-        CellState state = cell.GetComponent<CellState>();
-
-        if (state.cellType == CellState.CellType.Ranking)
+        int GetStartIndex() // ë³´ì¼ ì…€ ì‹œì‘ ì¸ë±ìŠ¤ ì–»ê¸°
         {
-            state.cell_Image.sprite = RankingManager.Instance.GetSprite();
-            state.nameText.text = RankingManager.Instance.GetName();
-            state.subText1.text = RankingManager.Instance.GetLevel().ToString();
-            state.subText2.text = RankingManager.Instance.GetWin().ToString();
-            state.subText3.text = RankingManager.Instance.GetLose().ToString();
+            // ë³´ì´ëŠ” ì˜ì—­ì˜ Rect
+            Rect visibleRect = new Rect(
+                scrollRect.content.anchoredPosition.x,
+                scrollRect.content.anchoredPosition.y,
+                contentRectTransform.rect.width,
+                contentRectTransform.rect.height
+            );
+
+
+
+            // ì…€ ë†’ì´ì™€ ê°„ê²©ì„ ë°˜ì˜í•˜ì—¬ ë³´ì´ëŠ” ì˜ì—­ì—ì„œ ëª‡ ë²ˆì§¸ ì…€ë¶€í„° ì‹œì‘í•˜ëŠ”ì§€ ê³„ì‚°
+            float totalCellHeight = cellHeight + spacing; // ì…€ ë†’ì´ + ê°„ê²©
+            var startIndex = Mathf.FloorToInt(visibleRect.y / totalCellHeight); // ì „ì²´ ì…€ ë†’ì´ ê¸°ì¤€ìœ¼ë¡œ ì‹œì‘ ì¸ë±ìŠ¤ ê³„ì‚°
+
+
+
+            // ì…€ì˜ ì‹œì‘ ì¸ë±ìŠ¤ë¥¼ stagesPerRowì— ë§ê²Œ ì¡°ì •
+            startIndex = startIndex * cellRowCount;
+
+            // ë§¨ ìœ„ê°€ ì•„ë‹ˆë©´ ìœ„ìª½ ë²„í¼ 1ì¤„ì„ ë°˜ì˜ (ì‹œì‘ ì¸ë±ìŠ¤ ì¡°ì •)
+            startIndex = Mathf.Max(0, startIndex - cellRowCount);
+
+            // ë§¨ ì•„ë˜ê°€ ì•„ë‹ˆë©´ ì•„ë˜ìª½ ë²„í¼ 1ì¤„ì„ ë°˜ì˜
+            int totalRows = Mathf.CeilToInt((float)totalCells / cellRowCount);
+            int maxStartIndex = Mathf.Max(0, (totalRows - (createCellCount / cellRowCount)) * cellRowCount);
+            startIndex = Mathf.Min(startIndex, maxStartIndex);
+
+
+            return startIndex;
         }
 
-        else if (state.cellType == CellState.CellType.Record)
+
+        private void UpdateStages(int startIndex)
         {
-            state.cell_Image.sprite = RecordManager.Instance.GetSprite();
-            state.nameText.text = RecordManager.Instance.GetRecordName();
-            state.subText1.text = RecordManager.Instance.GetName();
-            state.subText2.text = RecordManager.Instance.GetDate().ToString();
-            // TODO ±âº¸ Á¦°Å
-            state.deleteButtonObj.AddComponent<Button>().onClick.AddListener(()=> { Debug.Log("°¢ ¹öÆ° Å¬¸¯ ½Ã ±âº¸ Á¦°Å(RecordManager)"); });
+            for (int i = 0; i < pool.Count; i++)
+            {
+                int stageLevel = startIndex + i;
+
+                if (stageLevel >= totalCells)
+                {
+                    pool[i].SetActive(false);
+                    continue;
+                }
+
+                GameObject stageObj = pool[i];
+
+                stageObj.SetActive(true); // í˜„ì¬ ìŠ¤í…Œì´ì§€ëŠ” í™œì„±í™”
+
+                CellInfoUpdate(stageObj, i); // ì…€ì •ë³´ ì—…ë°ì´íŠ¸       
+            }
         }
 
-        else if (state.cellType == CellState.CellType.Shop)
+
+
+
+
+
+
+
+
+
+        void CellInfoUpdate(GameObject cell, int index)
         {
-            state.cell_Image.sprite = ShopManager.Instance.GetSprite();
-            state.nameText.text = ShopManager.Instance.GetName();
-            state.subText1.text = ShopManager.Instance.GetPrice().ToString();
+            CellState state = cell.GetComponent<CellState>();
+
+            if (state.cellType == CellState.CellType.Ranking)
+            {
+                state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
+                state.nameText.text = RankingManager.Instance.GetName(index);
+                state.subText1.text = RankingManager.Instance.GetGrade(index).ToString() + " Grade";
+                state.subText2.text = RankingManager.Instance.GetWin(index).ToString() + " Win";
+                state.subText3.text = RankingManager.Instance.GetLose(index).ToString() + " Lose";
+                state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
+            }
+
+            else if (state.cellType == CellState.CellType.Record)
+            {
+                state.cell_Image.sprite = RecordManager.Instance.GetSprite(index);
+                state.nameText.text = RecordManager.Instance.GetRecordName(index);
+                state.subText1.text = RecordManager.Instance.GetName(index);
+                state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
+
+                state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });
+            }
+
+            else if (state.cellType == CellState.CellType.Shop)
+            {
+                state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
+                state.nameText.text = ShopManager.Instance.GetName(index);
+                state.subText1.text = ShopManager.Instance.GetNum(index).ToString();
+                state.subText2.text = ShopManager.Instance.GetPrice(index).ToString() + " Won";
+
+                state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { ShopManager.Instance.BuyCoin(index); });
+            }
         }
-        // UI ¾÷µ¥ÀÌÆ®
-      
 
 
-        // ÀÌº¥Æ® ¸®½º³Ê ¾÷µ¥ÀÌÆ®
-        // state.selectButton.onClick.RemoveAllListeners();
 
-        // int currentStageIndex = stageLevel;  // Å¬·ÎÀú ¹®Á¦ ÇØ°áÀ» À§ÇØ ÇöÀç ÀÎµ¦½º ÀúÀå
-        // state.selectButton.onClick.AddListener(() => OnStageSelected(currentStageIndex)); // Å¬·ÎÀú ¹®Á¦ ÇØ°á ÇÊ¿ä
-
-        // Å¬¸®¾î »óÅÂ ¼³Á¤
-        // int stageStars = KeyController.GetStageStars(cellNum);
-        // int stageScore = KeyController.GetStageScore(cellNum);
-        // SetupStageState(state, stageStars, stageScore, cellNum, normalClear, perfectClear);
 
     }
-
-
-    private void OnStageSelected(int level)
-    {
-        Debug.Log($"½ºÅ×ÀÌÁö {level} ¼±ÅÃ");
-    }
-    
-
 }
