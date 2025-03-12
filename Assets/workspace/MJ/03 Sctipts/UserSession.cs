@@ -1,5 +1,4 @@
-namespace MJ
-{
+namespace MJ {
     [System.Serializable]
     public class UserSession
     {
@@ -13,7 +12,7 @@ namespace MJ
 
         // 생성자
         public UserSession(string nickname, int profileNum, int coins, int grade, 
-            int rankPoint, int winCount, int loseCount)
+                           int rankPoint, int winCount, int loseCount)
         {
             Nickname = nickname;
             ProfileNum = profileNum;
