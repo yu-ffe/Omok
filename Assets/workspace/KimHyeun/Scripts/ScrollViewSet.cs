@@ -33,7 +33,6 @@ public class ScrollViewSet : MonoBehaviour
 
     [Header("추가 필요 정보")]
     bool needMore;
-    // [SerializeField] Sprite normalClear, perfectClear; // 클리어 상태 아이콘
 
     private void Start()
     {

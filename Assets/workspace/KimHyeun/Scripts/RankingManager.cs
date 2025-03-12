@@ -33,6 +33,7 @@ public class RankingManager : MonoBehaviour
         // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
         // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
 
+        // 테스트
         SessionManager.ProfileSprites = profileSpritesFromInspector;
         SessionManager.LoadAllSessions();
         GetUserData();
@@ -47,18 +48,41 @@ public class RankingManager : MonoBehaviour
         // 유저 데이터 불러오기 - 회원가입, 프로필 연동 (닉네임, 프로필 이미지, 급수, 승, 패)
         List<string> userIdList = SessionManager.GetAllUserIds();
 
+        SortingAndSave(userIdList); // 모든 아이디를 전달
+
+        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+    }
+
+    void SortingAndSave(List<string> userIdList) // 급수 기반 정렬 하여 보여줄 데이터 목록 구성
+    {
+        // 사용자 정보를 저장할 리스트 (Grade를 기준으로 정렬할 것)
+        List<(Sprite Profile, string Nickname, int Grade, int Win, int Lose)> userDataList = new();
+
         for (int i = 0; i < userIdList.Count; i++)
         {
             SessionManager.UserSession userSession = SessionManager.GetSession(userIdList[i]);
-           
-            profileSpriteList.Add(SessionManager.GetUserProfileSprite(userSession.ProfileNum));
-            nickNameList.Add(userSession.Nickname);
-            GradeList.Add(userSession.Grade);
-            winList.Add(userSession.WinCount);
-            loseList.Add(userSession.LoseCount);
+
+            userDataList.Add((
+                SessionManager.GetUserProfileSprite(userSession.ProfileNum),
+                userSession.Nickname,
+                userSession.Grade,
+                userSession.WinCount,
+                userSession.LoseCount
+            ));
         }
 
-        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+        // Grade를 기준으로 오름차순 정렬 (낮을수록 앞쪽)
+        userDataList.Sort((a, b) => a.Grade.CompareTo(b.Grade));
+
+        // 정렬된 데이터를 리스트에 추가
+        foreach (var userData in userDataList)
+        {
+            profileSpriteList.Add(userData.Profile);
+            nickNameList.Add(userData.Nickname);
+            GradeList.Add(userData.Grade);
+            winList.Add(userData.Win);
+            loseList.Add(userData.Lose);
+        }
     }
 
 
