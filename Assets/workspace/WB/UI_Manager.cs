@@ -23,8 +23,6 @@ namespace WB
         Dictionary<string, UI_Panel> panels;
 
 
-
-
         void Awake()
         {
             instance = this;
@@ -34,6 +32,23 @@ namespace WB
         {
             callBack = new();
         }
+
+        public void AddPanel(string key, UI_Panel panel)
+        {
+            if (!panels.ContainsKey(key))
+                panels.Add(key, null);
+
+            panels[key] = panel;
+        }
+
+        public void RemovePanel(string key)
+        {
+            if (!panels.ContainsKey(key))
+                return;
+
+            panels.Remove(key);
+        }
+
 
         public void AddCallback(string key, UnityAction action)
         {

@@ -494,6 +494,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelKey: Examaple
-  txtCoin: {fileID: 0}
-  txtWin: {fileID: 0}
-  txtLose: {fileID: 0}
+  txtCoin: {fileID: 8611327969627689814}
+  txtWin: {fileID: 8961992207825169192}
+  txtLose: {fileID: 1169489362473215818}

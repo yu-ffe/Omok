@@ -1,9 +1,6 @@
 using TMPro;
 
 
-
-
-
 namespace WB
 {
     public class ExamplePanel : WB.UI_Panel
@@ -17,6 +14,7 @@ namespace WB
         public override void Show()
         {
             gameObject.SetActive(true);
+            UI_Manager.Get.AddPanel(panelKey, this);
         }
         public override void Hide()
         {
