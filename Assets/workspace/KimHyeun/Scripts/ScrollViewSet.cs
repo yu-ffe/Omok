@@ -222,7 +222,7 @@ public class ScrollViewSet : MonoBehaviour
 
             stageObj.SetActive(true); // 현재 스테이지는 활성화
 
-            CellInfoUpdate(stageObj, stageLevel); // 셀정보 업데이트       
+            CellInfoUpdate(stageObj, i); // 셀정보 업데이트       
         }
     }
 
@@ -235,34 +235,34 @@ public class ScrollViewSet : MonoBehaviour
 
     
 
-    void CellInfoUpdate(GameObject cell, int cellNum)
+    void CellInfoUpdate(GameObject cell, int index)
     {
         CellState state = cell.GetComponent<CellState>();
 
         if (state.cellType == CellState.CellType.Ranking)
         {
-            state.cell_Image.sprite = RankingManager.Instance.GetSprite();
-            state.nameText.text = RankingManager.Instance.GetName();
-            state.subText1.text = RankingManager.Instance.GetGrade().ToString();
-            state.subText2.text = RankingManager.Instance.GetWin().ToString();
-            state.subText3.text = RankingManager.Instance.GetLose().ToString();
+            state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
+            state.nameText.text = RankingManager.Instance.GetName(index);
+            state.subText1.text = RankingManager.Instance.GetGrade(index).ToString();
+            state.subText2.text = RankingManager.Instance.GetWin(index).ToString();
+            state.subText3.text = RankingManager.Instance.GetLose(index).ToString();
         }
 
         else if (state.cellType == CellState.CellType.Record)
         {
-            state.cell_Image.sprite = RecordManager.Instance.GetSprite();
-            state.nameText.text = RecordManager.Instance.GetRecordName();
-            state.subText1.text = RecordManager.Instance.GetName();
-            state.subText2.text = RecordManager.Instance.GetDate().ToString();
+            state.cell_Image.sprite = RecordManager.Instance.GetSprite(index);
+            state.nameText.text = RecordManager.Instance.GetRecordName(index);
+            state.subText1.text = RecordManager.Instance.GetName(index);
+            state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
             // TODO 기보 제거
             state.deleteButtonObj.AddComponent<Button>().onClick.AddListener(()=> { Debug.Log("각 버튼 클릭 시 기보 제거(RecordManager)"); });
         }
 
         else if (state.cellType == CellState.CellType.Shop)
         {
-            state.cell_Image.sprite = ShopManager.Instance.GetSprite();
-            state.nameText.text = ShopManager.Instance.GetName();
-            state.subText1.text = ShopManager.Instance.GetPrice().ToString();
+            state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
+            state.nameText.text = ShopManager.Instance.GetName(index);
+            state.subText1.text = ShopManager.Instance.GetPrice(index).ToString();
         }
         // UI 업데이트
       

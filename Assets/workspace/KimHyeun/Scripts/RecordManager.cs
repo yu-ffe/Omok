@@ -6,15 +6,25 @@ public class RecordManager : MonoBehaviour
 {
     [SerializeField] ScrollViewSet scrollViewSet;
 
-    public Sprite resultSprite;
-    public string recordName;
-    public string nickName;
-    public int date;
+    List<Sprite> resultSpriteList;
+    List<string> recordNameList;
+    List<string> nickNameList;
+    List<int> dateList;
 
-
+    private void Start()
+    {
+        resultSpriteList = new List<Sprite>();
+        recordNameList = new List<string>();
+        nickNameList = new List<string>();
+        dateList = new List<int>();
+    }
 
     public void GetRecordData() // 기보 팝업 오픈 시 호출
     {
+        ResetData(); // 초기화
+
+
+
         // 기보 데이터 불러오기 필요  (playerpref 기록 불러오기)
 
 
@@ -28,24 +38,67 @@ public class RecordManager : MonoBehaviour
 
 
 
-    public Sprite GetSprite()
+
+
+    void ResetData()
     {
-        return resultSprite;
+        resultSpriteList.Clear();
+        recordNameList.Clear();
+        nickNameList.Clear();
+        dateList.Clear();
     }
 
-    public string GetRecordName()
+
+    public Sprite GetSprite(int index)
     {
-        return recordName;
+        if (resultSpriteList.Count > index)
+        {
+            return resultSpriteList[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public string GetName()
+    public string GetRecordName(int index)
     {
-        return nickName;
+        if (recordNameList.Count > index)
+        {
+            return recordNameList[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public int GetDate()
+    public string GetName(int index)
     {
-        return date;
+        if (nickNameList.Count > index)
+        {
+            return nickNameList[index];
+        }
+
+        else
+        {
+            return null;
+        }
+    }
+
+    public int GetDate(int index)
+    {
+        if (dateList.Count > index)
+        {
+            return dateList[index];
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
 

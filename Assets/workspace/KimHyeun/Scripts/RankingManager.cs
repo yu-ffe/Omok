@@ -8,35 +8,40 @@ public class RankingManager : MonoBehaviour
 {
     [SerializeField] ScrollViewSet scrollViewSet;
 
-    public Sprite profileSprite;
-    public string nickName;
-    public int Grade;
-    public int win;
-    public int lose;
+    List<Sprite> profileSpriteList;
+    List<string> nickNameList;
+    List<int> GradeList;
+    List<int> winList;
+    List<int> loseList;
 
-    
+    private void Start()
+    {
+        profileSpriteList = new List<Sprite>();
+        nickNameList = new List<string>();
+        GradeList = new List<int>();
+        winList = new List<int>();
+        loseList = new List<int>();
+    }
+
     public void GetUserData() // 랭킹 팝업 오픈 시 호출
     {
-        // 유저 데이터 불러오기 필요  (playerpref 기록 불러오기) - 회원가입, 프로필 연동 (닉네임) (급수,승,패)
+        ResetData(); // 초기화
 
-        
+
         // 모든 유저 id 찾기, 해당 유저들의 정보(딕셔너리 형식) 접근
-
-
+        // 유저 데이터 불러오기 - 회원가입, 프로필 연동 (닉네임, 프로필 이미지, 급수, 승, 패)
         List<string> userIdList = SessionManager.GetAllUserIds();
 
         for (int i = 0; i < userIdList.Count; i++)
         {
             SessionManager.UserSession userSession = SessionManager.GetSession(userIdList[i]);
 
-            nickName = userSession.Nickname;
-            Grade = userSession.Grade;
-           // win = userSession.
-            // lose = userSession.
+            profileSpriteList.Add(SessionManager.GetUserProfileSprite(userSession.ProfileNum));
+            nickNameList.Add(userSession.Nickname);
+            GradeList.Add(userSession.Grade);
+            winList.Add(userSession.WinCount);
+            loseList.Add(userSession.LoseCount);
         }
-
-
-        
 
 
 
@@ -44,6 +49,14 @@ public class RankingManager : MonoBehaviour
     }
 
 
+    void ResetData()
+    {
+        profileSpriteList.Clear();
+        nickNameList.Clear();
+        GradeList.Clear();
+        winList.Clear();
+        loseList.Clear();
+    }
     
 
 
@@ -53,29 +66,69 @@ public class RankingManager : MonoBehaviour
 
 
 
-    public Sprite GetSprite()
+    public Sprite GetSprite(int index)
     {
-        return profileSprite;
+        if (profileSpriteList.Count > index)
+        {
+            return profileSpriteList[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public string GetName()
+    public string GetName(int index)
     {
-        return nickName;
+        if (nickNameList.Count > index)
+        {
+            return nickNameList[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public int GetGrade()
+    public int GetGrade(int index)
     {
-        return Grade;
+        if (GradeList.Count > index)
+        {
+            return GradeList[index];
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
-    public int GetWin()
+    public int GetWin(int index)
     {
-        return win;
+        if (winList.Count > index)
+        {
+            return winList[index];
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
-    public int GetLose()
+    public int GetLose(int index)
     {
-        return lose;
+        if (loseList.Count > index)
+        {
+            return loseList[index];
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
 

@@ -6,17 +6,19 @@ public class ShopManager : MonoBehaviour
 {
     [SerializeField] ScrollViewSet scrollViewSet;
 
-    public Sprite itemSprite;
-    public string itemName;
-    public int price;
+    [SerializeField] Sprite[] itemSprites;
+    [SerializeField] string[] itemNames;
+    [SerializeField] int[] prices;
 
 
-
+    
+    
 
     public void GetItemData() // 아이템 팝업 오픈 시 호출
     {
         // 아이템 데이터 불러오기 필요
 
+        //SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
 
 
 
@@ -36,19 +38,43 @@ public class ShopManager : MonoBehaviour
 
 
 
-    public Sprite GetSprite()
+    public Sprite GetSprite(int index)
     {
-        return itemSprite;
+        if (itemSprites.Length > index)
+        {
+            return itemSprites[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public string GetName()
+    public string GetName(int index)
     {
-        return itemName;
+        if (itemNames.Length > index)
+        {
+            return itemNames[index];
+        }
+
+        else
+        {
+            return null;
+        }
     }
 
-    public int GetPrice()
+    public int GetPrice(int index)
     {
-        return price;
+        if (prices.Length > index)
+        {
+            return prices[index];
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
 
