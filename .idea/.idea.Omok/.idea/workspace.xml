@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/UserSession.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/UserSession.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SessionManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +57,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "origin/feature-SignUpManager-Initialization",
+    "git-widget-placeholder": "origin/feature/usersession-Separation",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
