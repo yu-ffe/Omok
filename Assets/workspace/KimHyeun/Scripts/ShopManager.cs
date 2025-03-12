@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    [SerializeField] ScrollViewSet scrollViewSet;
+
     public Sprite itemSprite;
     public string itemName;
     public int price;
@@ -11,9 +13,14 @@ public class ShopManager : MonoBehaviour
 
 
 
-    void GetItemData() // 아이템 팝업 오픈 시 호출
+    public void GetItemData() // 아이템 팝업 오픈 시 호출
     {
         // 아이템 데이터 불러오기 필요
+
+
+
+
+        scrollViewSet.StageSelectPopSet();
     }
 
 

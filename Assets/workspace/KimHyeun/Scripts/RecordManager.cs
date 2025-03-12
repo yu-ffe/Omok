@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RecordManager : MonoBehaviour
 {
+    [SerializeField] ScrollViewSet scrollViewSet;
+
     public Sprite resultSprite;
     public string recordName;
     public string nickName;
@@ -11,9 +13,14 @@ public class RecordManager : MonoBehaviour
 
 
 
-    void GetRecordData() // 기보 팝업 오픈 시 호출
+    public void GetRecordData() // 기보 팝업 오픈 시 호출
     {
         // 기보 데이터 불러오기 필요  (playerpref 기록 불러오기)
+
+
+
+
+        scrollViewSet.StageSelectPopSet();
     }
 
 

@@ -243,7 +243,7 @@ public class ScrollViewSet : MonoBehaviour
         {
             state.cell_Image.sprite = RankingManager.Instance.GetSprite();
             state.nameText.text = RankingManager.Instance.GetName();
-            state.subText1.text = RankingManager.Instance.GetLevel().ToString();
+            state.subText1.text = RankingManager.Instance.GetGrade().ToString();
             state.subText2.text = RankingManager.Instance.GetWin().ToString();
             state.subText3.text = RankingManager.Instance.GetLose().ToString();
         }
