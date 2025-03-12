@@ -5,12 +5,17 @@ namespace WB
 {
     public class ExamplePanel : WB.UI_Panel
     {
-        public string panelKey = "Exmaple"; // 패널 호출 할 수 있는 키값?
+        // public string panelKey = "Exmaple"; // 패널 호출 할 수 있는 키값?
         public TextMeshProUGUI txtCoin;
         public TextMeshProUGUI txtWin;
         public TextMeshProUGUI txtLose;
 
 
+        void Start()
+        {
+            panelKey = "Example";
+            UI_Manager.Instance.AddPanel(panelKey, this);
+        }
         public override void Show()
         {
             gameObject.SetActive(true);

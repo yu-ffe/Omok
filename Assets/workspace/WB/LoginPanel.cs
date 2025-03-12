@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WB;
 
-public class LoginPanel : MonoBehaviour
+public class LoginPanel : UI_Panel
 {
     public enum LoginResult : byte
     {
@@ -36,10 +36,35 @@ public class LoginPanel : MonoBehaviour
     public TextMeshProUGUI txtButtonUpper;
     public TextMeshProUGUI txtButtonLower;
 
-    public void Show()
+
+
+
+    void Start()
+    {
+        panelKey = "Login";
+        UI_Manager.Instance.AddPanel(panelKey, this);
+    }
+
+    public override void Show()
     {
         //Login
         Show_LoginPhase();
+
+        gameObject.SetActive(true);
+    }
+
+
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public override void OnEnable()
+    {
+    }
+
+    public override void OnDisable()
+    {
     }
 
     [ContextMenu("Show_LoginPhase")]
@@ -137,7 +162,5 @@ public class LoginPanel : MonoBehaviour
         //회원가입 시도
         return LoginResult.Success_SignUp;
     }
-
-
 
 }
