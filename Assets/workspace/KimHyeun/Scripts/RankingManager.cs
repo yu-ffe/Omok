@@ -34,7 +34,7 @@ namespace KimHyeun {
 
             /// 테스트 코드
             SessionManager.ProfileSprites = profileSpritesFromInspector; // 인스펙터에 할당된 스프라이트 SessionManager에 할당
-            SessionManager.LoadAllSessions(); // 유저 데이터 불러오기
+            SessionManager.LoadAllSessions(); // 유저 데이터 불러오기(SignInManager 에 있는지 확인, 있으면 지워도 됨)
             GetUserData(); // 호출 
             /// 
         }
