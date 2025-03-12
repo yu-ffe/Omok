@@ -1,66 +1,78 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class UI_Manager : MonoBehaviour
+namespace WB
 {
-    static UI_Manager instance;
-    public static UI_Manager Get
+    public class UI_Manager : MonoBehaviour
     {
-        get
+        static UI_Manager instance;
+        public static UI_Manager Get
         {
-            if (instance == null)
-                instance = new GameObject("UI_Manager").AddComponent<UI_Manager>();
-            return instance;
-        }
-    }
-
-    // 공통 Popup창
-    public UI_Popup popup;
-    Dictionary<string, List<IObserverUI>> observers;
-
-
-    void Awake()
-    {
-        instance = this;
-    }
-
-    void Start()
-    {
-        observers = new();
-    }
-
-    public void AddObserver(string bindingKey, IObserverUI observer)
-    {
-        if (!observers.ContainsKey(bindingKey))
-            observers[bindingKey] = new List<IObserverUI>();
-
-        observers[bindingKey].Add(observer);
-    }
-
-    public void OnNotifyUI(string bindingKey)
-    {
-        if (!observers.ContainsKey(bindingKey))
-        {
-            return;
+            get
+            {
+                if (instance == null)
+                    instance = new GameObject("UI_Manager").AddComponent<UI_Manager>();
+                return instance;
+            }
         }
 
-        for (int i = 0; i < observers[bindingKey].Count; i++)
-        {
-            observers[bindingKey][i].OnNotify();
-        }
-    }
+        // 공통 Popup창
+        public UI_Popup popup;
+        Dictionary<string, UnityAction> callBack;
+        Dictionary<string, UI_Panel> panels;
 
-    public void OnNotifyUI(string bindingKey, string msg)
-    {
-        if (!observers.ContainsKey(bindingKey))
+
+
+
+        void Awake()
         {
-            return;
+            instance = this;
         }
 
-        for (int i = 0; i < observers[bindingKey].Count; i++)
+        void Start()
         {
-            observers[bindingKey][i].OnNotify();
+            callBack = new();
         }
+
+        public void AddCallback(string key, UnityAction action)
+        {
+            if (!callBack.ContainsKey(key))
+                callBack.Add(key, null);
+
+            callBack[key] += action;
+        }
+
+        public void RemoveCallback(string key, UnityAction action)
+        {
+            if (!callBack.ContainsKey(key))
+                return;
+
+            callBack[key] -= action;
+        }
+
+
+        public void Show(string panelKey)
+        {
+            if (!panels.ContainsKey(panelKey))
+            {
+                //새로생성?
+                return;
+            }
+            panels[panelKey].Show();
+        }
+
+        public void Hide(string panelKey)
+        {
+            if (!panels.ContainsKey(panelKey))
+            {
+                //새로생성?
+                return;
+            }
+            panels[panelKey].Hide();
+        }
+
     }
 }
+
 
