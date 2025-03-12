@@ -47,6 +47,21 @@ public class RecordManager : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     void ResetData()
     {
         resultSpriteList.Clear();
@@ -100,6 +115,7 @@ public class RecordManager : MonoBehaviour
         }
     }
 
+    // TODO 날짜 형식 변환 필요
     public int GetDate(int index)
     {
         if (dateList.Count > index)

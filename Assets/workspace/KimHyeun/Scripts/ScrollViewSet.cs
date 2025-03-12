@@ -260,9 +260,10 @@ public class ScrollViewSet : MonoBehaviour
         {
             state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
             state.nameText.text = RankingManager.Instance.GetName(index);
-            state.subText1.text = RankingManager.Instance.GetGrade(index).ToString();
-            state.subText2.text = RankingManager.Instance.GetWin(index).ToString();
-            state.subText3.text = RankingManager.Instance.GetLose(index).ToString();
+            state.subText1.text = RankingManager.Instance.GetGrade(index).ToString() + " Grade";
+            state.subText2.text = RankingManager.Instance.GetWin(index).ToString() + " Win";
+            state.subText3.text = RankingManager.Instance.GetLose(index).ToString() + " Lose";
+            state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
         }
 
         else if (state.cellType == CellState.CellType.Record)
@@ -280,7 +281,7 @@ public class ScrollViewSet : MonoBehaviour
             state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
             state.nameText.text = ShopManager.Instance.GetName(index);
             state.subText1.text = ShopManager.Instance.GetNum(index).ToString();
-            state.subText2.text = ShopManager.Instance.GetPrice(index).ToString();
+            state.subText2.text = ShopManager.Instance.GetPrice(index).ToString() + " Won";
 
             state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { ShopManager.Instance.BuyCoin(index); });
         }

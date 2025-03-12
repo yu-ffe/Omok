@@ -12,6 +12,7 @@ public class CellState : MonoBehaviour
     public TMP_Text subText1;
     public TMP_Text subText2;
     public TMP_Text subText3;
+    public TMP_Text subText4;
     public CellType cellType;
 
     public GameObject buttonObj;

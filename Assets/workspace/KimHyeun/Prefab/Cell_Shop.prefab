@@ -207,7 +207,8 @@ MonoBehaviour:
   nameText: {fileID: 7535580686218221054}
   subText1: {fileID: 8814254845580941160}
   subText2: {fileID: 5593246194424531343}
-  subText3: {fileID: 3114446304093063213}
+  subText3: {fileID: 0}
+  subText4: {fileID: 0}
   cellType: 1
   buttonObj: {fileID: 1239400084252518776}
 --- !u!1 &3494805402563390435

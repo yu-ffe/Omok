@@ -27,21 +27,21 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    // TODO 셀 클릭 시 코인 획득 기능 추가
-
-    public void BuyCoin(int index)
+    
+    public void BuyCoin(int index) // 셀 클릭 시 코인 획득
     {
-
-        SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);
-        //SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
-
-        Debug.Log($"{SessionManager.GetAllUserIds()[0]}유저 현재 코인: {userSession.Coins}");
+        SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
 
         userSession.Coins = userSession.Coins + nums[index];
 
-        Debug.Log($"{SessionManager.GetAllUserIds()[0]}유저 코인 증가 후: {userSession.Coins}");
+        SessionManager.UpdateSession(SessionManager.currentUserId, userSession.Coins, userSession.Grade, userSession.RankPoint);
 
+
+        /* // 테스트 코드
+        SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
+        userSession.Coins = userSession.Coins + nums[index];
         SessionManager.UpdateSession(SessionManager.GetAllUserIds()[0], userSession.Coins, userSession.Grade, userSession.RankPoint);
+        */
     }
 
 

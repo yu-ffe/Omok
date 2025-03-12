@@ -72,8 +72,19 @@ public class RankingManager : MonoBehaviour
             ));
         }
 
-        // Grade를 기준으로 오름차순 정렬 (낮을수록 앞쪽)
-        userDataList.Sort((a, b) => a.Grade.CompareTo(b.Grade));
+
+        // Grade가 같다면 승률이 높은 사람이 앞쪽으로 정렬
+        userDataList.Sort((a, b) =>
+        {
+            if (a.Grade != b.Grade)
+                return a.Grade.CompareTo(b.Grade); // Grade 기준 오름차순 정렬
+
+            // 승률 계산 (승리 횟수 / 총 경기 수)
+            float winRateA = (a.Win + a.Lose == 0) ? 0 : (a.Win / (float)(a.Win + a.Lose));
+            float winRateB = (b.Win + b.Lose == 0) ? 0 : (b.Win / (float)(b.Win + b.Lose));
+
+            return winRateB.CompareTo(winRateA); // 승률 기준 내림차순 정렬
+        });
 
         // 정렬된 데이터를 리스트에 추가
         foreach (var userData in userDataList)
@@ -85,6 +96,18 @@ public class RankingManager : MonoBehaviour
             loseList.Add(userData.Lose);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     void ResetData()
@@ -174,7 +197,17 @@ public class RankingManager : MonoBehaviour
     }
 
 
+    public float GetWinRate(int index)
+    {
+        int wins = GetWin(index);
+        int losses = GetLose(index);
 
+        int totalGames = wins + losses;
+        if (totalGames == 0) return 0f; // 경기 기록이 없을 경우 0% 반환
+
+        float winRate = (wins / (float)totalGames) * 100f;
+        return Mathf.Round(winRate * 100) / 100; // 소수점 2자리 반올림
+    }
 
 
 
