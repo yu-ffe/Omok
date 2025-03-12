@@ -5,16 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/SceneManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/SceneManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1/Crack1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest1/Crack1.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2/Crack1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/willbedeleted/CrackTest2/Crack1.cs.meta" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/Notation.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/Notation.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
     </list>
-    <list default="true" id="70b4a124-c9fc-4507-b74e-4278e317e0ec" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,12 +30,12 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Main/Commons/Singleton.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c3dca0e61d5249b79ac00f7b2c7a01ef176e00/4a/d148e704/PlayerPrefs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/CellState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/RankingManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/RecordManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/KimHyeun/Scripts/ScrollViewSet.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/Notation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
@@ -59,9 +53,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "42-feature-users__AddKeyValue",
-    "git-widget-placeholder": "feature/doubleton-uimanager",
-    "git-widget-placeholder": "add/image-resource",
+    "git-widget-placeholder": "feature/notation/save-play",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -142,5 +134,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/UIManager.cs</url>
+          <line>13</line>
+          <properties documentPath="C:\yu0.0ffe\unity\Omok\Assets\workspace\YU__FFE\Scripts\UIManager.cs" containingFunctionPresentation="메서드 'ShowUI'">
+            <startOffsets>
+              <option value="572" />
+            </startOffsets>
+            <endOffsets>
+              <option value="603" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
