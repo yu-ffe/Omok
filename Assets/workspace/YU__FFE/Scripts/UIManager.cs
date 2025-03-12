@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace workspace.YU__FFE.Scripts {
-    public class UIManager : Common.Singleton<UIManager> {
+    public class UIManager : Common.Doubleton<UIManager> {
         private readonly Dictionary<string, GameObject> _uiInstances = new Dictionary<string, GameObject>();
 
         public GameObject ShowUI(string key, GameObject prefab, Transform parent) {
