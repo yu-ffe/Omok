@@ -13,9 +13,9 @@ public class RecordManager : MonoBehaviour
 
 
 
-    public void GetRecordData() // ±âº¸ ÆË¾÷ ¿ÀÇÂ ½Ã È£Ãâ
+    public void GetRecordData() // ê¸°ë³´ íŒì—… ì˜¤í”ˆ ì‹œ í˜¸ì¶œ
     {
-        // ±âº¸ µ¥ÀÌÅÍ ºÒ·¯¿À±â ÇÊ¿ä  (playerpref ±â·Ï ºÒ·¯¿À±â)
+        // ê¸°ë³´ ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸° í•„ìš”  (playerpref ê¸°ë¡ ë¶ˆëŸ¬ì˜¤ê¸°)
 
 
 
@@ -24,7 +24,7 @@ public class RecordManager : MonoBehaviour
     }
 
 
-    // TODO ±âº¸ ÇÃ·¹ÀÌ È£Ãâ ±â´É
+    // TODO ê¸°ë³´ í”Œë ˆì´ í˜¸ì¶œ ê¸°ëŠ¥
 
 
 

@@ -13,9 +13,9 @@ public class ShopManager : MonoBehaviour
 
 
 
-    public void GetItemData() // ¾ÆÀÌÅÛ ÆË¾÷ ¿ÀÇÂ ½Ã È£Ãâ
+    public void GetItemData() // ì•„ì´í…œ íŒì—… ì˜¤í”ˆ ì‹œ í˜¸ì¶œ
     {
-        // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ºÒ·¯¿À±â ÇÊ¿ä
+        // ì•„ì´í…œ ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸° í•„ìš”
 
 
 
@@ -24,7 +24,7 @@ public class ShopManager : MonoBehaviour
     }
 
 
-    // TODO ¼¿ Å¬¸¯ ½Ã ÄÚÀÎ È¹µæ
+    // TODO ì…€ í´ë¦­ ì‹œ ì½”ì¸ íšë“
 
 
 

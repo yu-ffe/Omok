@@ -15,12 +15,12 @@ public class RankingManager : MonoBehaviour
     public int lose;
 
     
-    public void GetUserData() // ·©Å· ÆË¾÷ ¿ÀÇÂ ½Ã È£Ãâ
+    public void GetUserData() // ë­í‚¹ íŒì—… ì˜¤í”ˆ ì‹œ í˜¸ì¶œ
     {
-        // À¯Àú µ¥ÀÌÅÍ ºÒ·¯¿À±â ÇÊ¿ä  (playerpref ±â·Ï ºÒ·¯¿À±â) - È¸¿ø°¡ÀÔ, ÇÁ·ÎÇÊ ¿¬µ¿ (´Ğ³×ÀÓ) (±Ş¼ö,½Â,ÆĞ)
+        // ìœ ì € ë°ì´í„° ë¶ˆëŸ¬ì˜¤ê¸° í•„ìš”  (playerpref ê¸°ë¡ ë¶ˆëŸ¬ì˜¤ê¸°) - íšŒì›ê°€ì…, í”„ë¡œí•„ ì—°ë™ (ë‹‰ë„¤ì„) (ê¸‰ìˆ˜,ìŠ¹,íŒ¨)
 
         
-        // ¸ğµç À¯Àú id Ã£±â, ÇØ´ç À¯ÀúµéÀÇ Á¤º¸(µñ¼Å³Ê¸® Çü½Ä) Á¢±Ù
+        // ëª¨ë“  ìœ ì € id ì°¾ê¸°, í•´ë‹¹ ìœ ì €ë“¤ì˜ ì •ë³´(ë”•ì…”ë„ˆë¦¬ í˜•ì‹) ì ‘ê·¼
 
 
         List<string> userIdList = SessionManager.GetAllUserIds();
@@ -47,7 +47,7 @@ public class RankingManager : MonoBehaviour
     
 
 
-    // TODO ±Ş¼ö(level) ±â¹İ ·©Å·(³·À» ¼ö·Ï »óÀ§), µ¿ÀÏ ±Ş¼ö ½Ã ½Â·ü ¿ì¼±
+    // TODO ê¸‰ìˆ˜(level) ê¸°ë°˜ ë­í‚¹(ë‚®ì„ ìˆ˜ë¡ ìƒìœ„), ë™ì¼ ê¸‰ìˆ˜ ì‹œ ìŠ¹ë¥  ìš°ì„ 
 
 
 
