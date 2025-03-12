@@ -31,7 +31,7 @@ namespace KimHyeun {
 
         public void BuyCoin(int index) // 셀 클릭 시 코인 획득
         {
-            SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
+            UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
 
             userSession.Coins = userSession.Coins + nums[index];
 

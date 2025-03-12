@@ -60,7 +60,7 @@ namespace KimHyeun {
 
             for (int i = 0; i < userIdList.Count; i++)
             {
-                SessionManager.UserSession userSession = SessionManager.GetSession(userIdList[i]);
+                UserSession userSession = SessionManager.GetSession(userIdList[i]);
 
                 userDataList.Add((
                     SessionManager.GetUserProfileSprite(userSession.ProfileNum),
