@@ -99,23 +99,27 @@ namespace MJ
             string id = inputId.text.Trim();
             string password = EncryptPassword(inputPassword.text);
             string nickname = inputNickname.text.Trim();
+            int profile = _profileNumber;
 
-            // 아이디 목록 추가
+            // 기본 값
+            int coins = 1000;
+            int grade = 18;       // 시작 급수
+            int rankPoint = 0;    // 시작 포인트
+
+            // 데이터 저장
             string ids = PlayerPrefs.GetString("user_ids", "");
-            if (string.IsNullOrEmpty(ids))
-                ids = id;
-            else
-                ids += "," + id;
-
+            ids = string.IsNullOrEmpty(ids) ? id : $"{ids},{id}";
             PlayerPrefs.SetString("user_ids", ids);
-
-            // 개별 데이터 저장
             PlayerPrefs.SetString($"user_{id}_password", password);
             PlayerPrefs.SetString($"user_{id}_nickname", nickname);
-            PlayerPrefs.SetInt($"user_{id}_profile", _profileNumber);
-
+            PlayerPrefs.SetInt($"user_{id}_profile", profile);
+            PlayerPrefs.SetInt($"user_{id}_coins", coins);
+            PlayerPrefs.SetInt($"user_{id}_grade", grade);
+            PlayerPrefs.SetInt($"user_{id}_rankPoint", rankPoint);
             PlayerPrefs.Save();
-            Debug.Log($"회원가입 데이터 저장 완료: {id}");
+
+            // 세션 등록
+            SessionManager.AddSession(id, nickname, profile, coins, grade, rankPoint);
         }
 
         // ========== 프로필 이미지 선택 ==========
@@ -138,13 +142,11 @@ namespace MJ
         void AutoLogin(string id)
         {
             SessionManager.currentUserId = id;
-            SessionManager.nickname = PlayerPrefs.GetString($"user_{id}_nickname");
-            SessionManager.profileNum = PlayerPrefs.GetInt($"user_{id}_profile");
-
-            // 메인 화면 이동 로직 (씬 로드 등)
-            Debug.Log($"{SessionManager.nickname}님 로그인 완료, 메인 화면으로 이동");
-            // SceneManager.LoadScene("MainScene"); 
+            Debug.Log($"자동 로그인 완료: {id}");
         }
     }
+    // ========== 세션 매니저  ==========
+    
+    
 
 }
