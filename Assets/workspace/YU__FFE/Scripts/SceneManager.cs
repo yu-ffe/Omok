@@ -1,8 +1,4 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using workspace.YU__FFE.Scripts.Common;
-
-namespace workspace.YU__FFE.Scripts.Managers {
+namespace workspace.YU__FFE.Scripts {
     public class SceneManager : Singleton<SceneManager> {
         private SceneManager() { }
 
