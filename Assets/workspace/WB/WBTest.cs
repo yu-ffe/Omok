@@ -10,13 +10,13 @@ public class WBTest : MonoBehaviour
     [ContextMenu("ShowPanel")]
     void ShowPanel()
     {
-        UI_Manager.Get.Show(key);
+        UI_Manager.Instance.Show(key);
     }
 
     [ContextMenu("HidePanel")]
     void HidePanel()
     {
-        UI_Manager.Get.Hide(key);
+        UI_Manager.Instance.Hide(key);
     }
 
 

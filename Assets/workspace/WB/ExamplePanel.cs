@@ -14,7 +14,7 @@ namespace WB
         public override void Show()
         {
             gameObject.SetActive(true);
-            UI_Manager.Get.AddPanel(panelKey, this);
+            UI_Manager.Instance.AddPanel(panelKey, this);
         }
         public override void Hide()
         {
@@ -23,14 +23,14 @@ namespace WB
 
         public override void OnDisable()
         {
-            WB.UI_Manager.Get.AddCallback("coin", RefreshCoin);
-            WB.UI_Manager.Get.AddCallback("winlose", RefreshWinLoseStat);
+            WB.UI_Manager.Instance.AddCallback("coin", RefreshCoin);
+            WB.UI_Manager.Instance.AddCallback("winlose", RefreshWinLoseStat);
         }
 
         public override void OnEnable()
         {
-            WB.UI_Manager.Get.RemoveCallback("coin");
-            WB.UI_Manager.Get.RemoveCallback("winlose");
+            WB.UI_Manager.Instance.RemoveCallback("coin");
+            WB.UI_Manager.Instance.RemoveCallback("winlose");
         }
 
         public void RefreshCoin()

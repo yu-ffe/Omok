@@ -96,7 +96,7 @@ public class LoginPanel : MonoBehaviour
 
         if (result == LoginResult.Success_Login)
         {
-            UI_Manager.Get.Show("Main");
+            // UI_Manager.Instance.Show("Main");//... 아직 
         }
         else
             txtMessage.text = $"Failed : {result}";
