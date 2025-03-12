@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class UI_Popop : MonoBehaviour, IPopopUI
+public class UI_Popup : MonoBehaviour, IPopopUI, IObserverUI
 {
     public GameObject objPopup;     //root
     public TextMeshProUGUI textMsg; //child 0
@@ -41,60 +41,38 @@ public class UI_Popop : MonoBehaviour, IPopopUI
             yield return null;
 
         //메인 Popup 등록
-        UI_Manager.Get.popop = this;
+        UI_Manager.Get.popup = this;
+    }
+
+    public void Show(string msg, string okText = null, string cancelText = null, UnityAction okAction = null, UnityAction cancelAction = null)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Hide()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Refresh()
+    {
+        //?? tpfhrhcxla
+
+    }
+
+    public void OnNotify()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnNotify(string msg)
+    {
+        Refresh();
     }
 
     //옵션. 공통 애니매이션
     DG.Tweening.Sequence sequenceShow;
     DG.Tweening.Sequence sequenceHide;
 
-    public void Hide()
-    {
-        //닫을 때 효과
-        if (sequenceHide == null)
-        {
-            //필요하면 만들기
-        }
-        else
-            sequenceHide.Restart();
-        // objPopup.SetActive(false); // 시퀀스 쓰려면 OnComplete에 해야함
-
-        if (sequenceHide == null)
-            objPopup.SetActive(false);
-    }
-
-    public void Refresh()
-    {
-
-    }
-
-    public void Show(string msg, string okText, string cancelText, UnityAction okAction, UnityAction cancelAction)
-    {
-        textMsg.text = msg;
-        textOk.text = okText;
-        textCancel.text = cancelText;
-
-        // Dotween Animation 효과
-        objPopup.SetActive(true);
-        if (sequenceShow == null)
-        {
-            //필요하면 만들기
-        }
-        else
-            sequenceShow.Restart();
-
-        // 확인 버튼에 콜백 함수 할당
-        btnOk.onClick.RemoveAllListeners();
-        btnOk.onClick.AddListener(Hide);
-        if (okAction != null)
-            btnOk.onClick.AddListener(okAction);
-
-        // 확인 버튼에 콜백 함수 할당
-        btnCancel.onClick.RemoveAllListeners();
-        btnCancel.onClick.AddListener(Hide);
-        if (cancelAction != null)
-            btnCancel.onClick.AddListener(cancelAction);
-
-
-    }
+    public string NotifyKey { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 }

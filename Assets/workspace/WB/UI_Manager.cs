@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +14,8 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
-
-    public UI_Popop popop;
+    // 공통 Popup창
+    public UI_Popup popup;
     Dictionary<string, List<IObserverUI>> observers;
 
 
@@ -37,11 +36,30 @@ public class UI_Manager : MonoBehaviour
 
         observers[bindingKey].Add(observer);
     }
+
     public void OnNotifyUI(string bindingKey)
     {
         if (!observers.ContainsKey(bindingKey))
         {
             return;
+        }
+
+        for (int i = 0; i < observers[bindingKey].Count; i++)
+        {
+            observers[bindingKey][i].OnNotify();
+        }
+    }
+
+    public void OnNotifyUI(string bindingKey, string msg)
+    {
+        if (!observers.ContainsKey(bindingKey))
+        {
+            return;
+        }
+
+        for (int i = 0; i < observers[bindingKey].Count; i++)
+        {
+            observers[bindingKey][i].OnNotify();
         }
     }
 }
