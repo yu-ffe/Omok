@@ -105,6 +105,8 @@ namespace MJ
             int coins = 1000;
             int grade = 18;       // 시작 급수
             int rankPoint = 0;    // 시작 포인트
+            int winCount = 0;     // 시작 승리 수
+            int loseCount = 0;    // 시작 패배 수
 
             // 데이터 저장
             string ids = PlayerPrefs.GetString("user_ids", "");
@@ -116,10 +118,13 @@ namespace MJ
             PlayerPrefs.SetInt($"user_{id}_coins", coins);
             PlayerPrefs.SetInt($"user_{id}_grade", grade);
             PlayerPrefs.SetInt($"user_{id}_rankPoint", rankPoint);
+            PlayerPrefs.SetInt($"user_{id}_winCount", winCount);
+            PlayerPrefs.SetInt($"user_{id}_loseCount", loseCount);
             PlayerPrefs.Save();
 
             // 세션 등록
-            SessionManager.AddSession(id, nickname, profile, coins, grade, rankPoint);
+            SessionManager.AddSession(id, nickname, profile, coins, grade, 
+                rankPoint, winCount, loseCount);
         }
 
         // ========== 프로필 이미지 선택 ==========
