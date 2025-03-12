@@ -43,8 +43,11 @@ namespace MJ
             int coins = PlayerPrefs.GetInt($"user_{id}_coins", 0);
             int grade = PlayerPrefs.GetInt($"user_{id}_grade", 18); // 기본 18급
             int rankPoint = PlayerPrefs.GetInt($"user_{id}_rankPoint", 0); // 기본 0
+            int winCount = PlayerPrefs.GetInt($"user_{id}_winCount", 0); // 기본 0
+            int loseCount = PlayerPrefs.GetInt($"user_{id}_loseCount", 0); // 기본 0
 
-            SessionManager.AddSession(id, nickname, profileNum, coins, grade, rankPoint);
+            SessionManager.AddSession(id, nickname, profileNum, coins, grade, 
+                rankPoint, winCount, loseCount);
             SessionManager.currentUserId = id; // 현재 유저 ID 저장
 
             // ========= 로그인 성공 알림 =========
