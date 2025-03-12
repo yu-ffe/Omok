@@ -37,16 +37,22 @@ namespace MJ
                 return;
             }
 
-            // 로그인 성공 시 세션 저장
-            SessionManager.currentUserId = id;
-            SessionManager.nickname = PlayerPrefs.GetString($"user_{id}_nickname");
-            SessionManager.profileNum = PlayerPrefs.GetInt($"user_{id}_profile");
+            // ========= 세션 등록 (전체 데이터 포함) =========
+            string nickname = PlayerPrefs.GetString($"user_{id}_nickname");
+            int profileNum = PlayerPrefs.GetInt($"user_{id}_profile");
+            int coins = PlayerPrefs.GetInt($"user_{id}_coins", 0);
+            int grade = PlayerPrefs.GetInt($"user_{id}_grade", 18); // 기본 18급
+            int rankPoint = PlayerPrefs.GetInt($"user_{id}_rankPoint", 0); // 기본 0
 
-            Debug.Log($"로그인 성공! {SessionManager.nickname}님 환영합니다.");
-            alertText.text = $"{SessionManager.nickname}님 환영합니다!";
+            SessionManager.AddSession(id, nickname, profileNum, coins, grade, rankPoint);
+            SessionManager.currentUserId = id; // 현재 유저 ID 저장
 
-            // (선택) 메인 화면 이동
-            // SceneManager.LoadScene("MainScene"); // 예시
+            // ========= 로그인 성공 알림 =========
+            Debug.Log($"로그인 성공! {nickname}님 환영합니다. (급수: {grade}급, 포인트: {rankPoint})");
+            alertText.text = $"{nickname}님 환영합니다!";
+
+            // 메인 화면 이동
+            // SceneManager.LoadScene("MainScene"); 
         }
 
         // ========== 아이디 존재 확인 ==========
@@ -57,26 +63,18 @@ namespace MJ
             return System.Array.Exists(idArray, x => x == id);
         }
 
-        // ========== 비밀번호 암호화 (회원가입과 동일한 방식) ==========
+        // ========== 비밀번호 암호화 (회원가입과 동일) ==========
         string EncryptPassword(string plainPassword)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainPassword);
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        // ========== (선택) 회원가입 화면으로 이동 ==========
+        // ========== 회원가입 화면으로 이동 ==========
         public void OnClickGoToSignUp()
         {
-            // SceneManager.LoadScene("SignUpScene"); // 실제 사용 예
+            // SceneManager.LoadScene("SignUpScene");
             Debug.Log("회원가입 화면으로 이동");
         }
-    }
-
-    // ========== 현재 로그인 유저 저장용 클래스 ==========
-    public static class SessionManager
-    {
-        public static string currentUserId;
-        public static string nickname;
-        public static int profileNum;
     }
 }
