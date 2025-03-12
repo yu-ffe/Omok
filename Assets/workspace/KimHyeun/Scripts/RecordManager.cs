@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RecordManager : MonoBehaviour
 {
+    [Header("기보 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
     List<Sprite> resultSpriteList;
@@ -17,6 +18,8 @@ public class RecordManager : MonoBehaviour
         recordNameList = new List<string>();
         nickNameList = new List<string>();
         dateList = new List<int>();
+
+        GetRecordData();
     }
 
     public void GetRecordData() // 기보 팝업 오픈 시 호출
@@ -30,11 +33,11 @@ public class RecordManager : MonoBehaviour
 
 
 
-        scrollViewSet.StageSelectPopSet();
+       // scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
 
-    // TODO 기보 플레이 호출 기능
+    // TODO 기보 플레이 호출 기능 (기보 시스템 구축 대기)
 
 
 
@@ -46,6 +49,11 @@ public class RecordManager : MonoBehaviour
         recordNameList.Clear();
         nickNameList.Clear();
         dateList.Clear();
+    }
+
+    public int GetMaxCellNum()
+    {
+        return resultSpriteList.Count;
     }
 
 

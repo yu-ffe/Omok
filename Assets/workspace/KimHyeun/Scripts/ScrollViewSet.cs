@@ -38,9 +38,28 @@ public class ScrollViewSet : MonoBehaviour
     private void Start()
     {
         scrollRect.onValueChanged.AddListener(OnScroll);
-
-        CellInfoSet();
     }
+
+    public void StageSelectPopSet(int maxCellNum) // 최초 외부 호출
+    {
+        scrollRect.verticalNormalizedPosition = 1f;
+
+        totalCells = maxCellNum;
+
+        if (createCellCount > totalCells) // 생성 셀 개수 보정
+        {
+            createCellCount = totalCells;
+        }
+
+        if (totalCells > 0)
+        {
+            CellInfoSet();
+
+            UpdateStages(GetStartIndex());
+        }
+    }
+
+
 
     void CellInfoSet()
     {
@@ -127,11 +146,7 @@ public class ScrollViewSet : MonoBehaviour
     }
 
 
-    public void StageSelectPopSet() // 최초 외부 호출
-    {
-        scrollRect.verticalNormalizedPosition = 1f;
-        UpdateStages(GetStartIndex());
-    }
+  
 
 
     private void OnScroll(Vector2 scrollPos)
@@ -148,6 +163,7 @@ public class ScrollViewSet : MonoBehaviour
                 pool.Add(stageObj);
             }
 
+
             CellPositionSet(startIndex / cellRowCount);
 
             UpdateStages(startIndex); // 셀 위치에 따른 추가 조정
@@ -163,10 +179,12 @@ public class ScrollViewSet : MonoBehaviour
                 pool.Insert(0, stageObj);
             }
 
+
             CellPositionSet(startIndex / cellRowCount);
 
             UpdateStages(startIndex); // 셀 위치에 따른 추가 조정
         }
+
 
         lastStartIndex = startIndex;
     }
@@ -241,6 +259,7 @@ public class ScrollViewSet : MonoBehaviour
 
         if (state.cellType == CellState.CellType.Ranking)
         {
+            Debug.Log($"랭킹 {index}번 셀 데이터 로드");
             state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
             state.nameText.text = RankingManager.Instance.GetName(index);
             state.subText1.text = RankingManager.Instance.GetGrade(index).ToString();
@@ -260,12 +279,12 @@ public class ScrollViewSet : MonoBehaviour
 
         else if (state.cellType == CellState.CellType.Shop)
         {
+            Debug.Log($"상점 {index}번 셀 데이터 로드");
             state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
             state.nameText.text = ShopManager.Instance.GetName(index);
             state.subText1.text = ShopManager.Instance.GetPrice(index).ToString();
         }
         // UI 업데이트
-      
 
 
         // 이벤트 리스너 업데이트

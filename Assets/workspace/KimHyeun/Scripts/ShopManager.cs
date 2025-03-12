@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
+    [Header("상점 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
+    [Header("필수 할당")]
     [SerializeField] Sprite[] itemSprites;
     [SerializeField] string[] itemNames;
     [SerializeField] int[] prices;
 
 
-    
-    
+    private void Start()
+    {
+        GetItemData();
+    }
+
 
     public void GetItemData() // 아이템 팝업 오픈 시 호출
     {
@@ -22,11 +27,11 @@ public class ShopManager : MonoBehaviour
 
 
 
-        scrollViewSet.StageSelectPopSet();
+        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
 
-    // TODO 셀 클릭 시 코인 획득
+    // TODO 셀 클릭 시 코인 획득 기능 추가
 
 
 
@@ -35,6 +40,11 @@ public class ShopManager : MonoBehaviour
 
 
 
+
+    public int GetMaxCellNum()
+    {
+        return itemNames.Length;
+    }
 
 
 

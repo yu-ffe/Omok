@@ -127,12 +127,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataObj: {fileID: 4888825283153065785}
-  cell_Image: {fileID: 0}
-  nameText: {fileID: 0}
+  cell_Image: {fileID: 2755442101861699528}
+  nameText: {fileID: 7535580686218221054}
   subText1: {fileID: 5593246194424531343}
   subText2: {fileID: 8814254845580941160}
   subText3: {fileID: 3114446304093063213}
-  cellType: 0
+  cellType: 2
+  deleteButtonObj: {fileID: 2025891258178063643}
 --- !u!1 &2025891258178063643
 GameObject:
   m_ObjectHideFlags: 0

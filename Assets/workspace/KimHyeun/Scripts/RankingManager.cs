@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class RankingManager : MonoBehaviour
 {
+    [Header("랭킹 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
     List<Sprite> profileSpriteList;
@@ -14,6 +15,9 @@ public class RankingManager : MonoBehaviour
     List<int> winList;
     List<int> loseList;
 
+    [Header("테스트")]
+    public Sprite[] profileSpritesFromInspector; // 인스펙터에서 연결하는 배열
+
     private void Start()
     {
         profileSpriteList = new List<Sprite>();
@@ -21,6 +25,17 @@ public class RankingManager : MonoBehaviour
         GradeList = new List<int>();
         winList = new List<int>();
         loseList = new List<int>();
+
+
+        // 테스트
+        // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
+        // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
+        // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
+        // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
+
+        SessionManager.ProfileSprites = profileSpritesFromInspector;
+        SessionManager.LoadAllSessions();
+        GetUserData();
     }
 
     public void GetUserData() // 랭킹 팝업 오픈 시 호출
@@ -35,7 +50,7 @@ public class RankingManager : MonoBehaviour
         for (int i = 0; i < userIdList.Count; i++)
         {
             SessionManager.UserSession userSession = SessionManager.GetSession(userIdList[i]);
-
+           
             profileSpriteList.Add(SessionManager.GetUserProfileSprite(userSession.ProfileNum));
             nickNameList.Add(userSession.Nickname);
             GradeList.Add(userSession.Grade);
@@ -43,9 +58,7 @@ public class RankingManager : MonoBehaviour
             loseList.Add(userSession.LoseCount);
         }
 
-
-
-        scrollViewSet.StageSelectPopSet();
+        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
 
@@ -64,7 +77,10 @@ public class RankingManager : MonoBehaviour
 
 
 
-
+    public int GetMaxCellNum()
+    {
+        return profileSpriteList.Count;
+    }
 
     public Sprite GetSprite(int index)
     {
