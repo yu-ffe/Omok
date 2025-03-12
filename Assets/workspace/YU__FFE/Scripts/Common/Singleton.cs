@@ -1,14 +1,18 @@
 using UnityEngine;
 
+
 namespace workspace.YU__FFE.Scripts.Common {
+    /// <summary>
+    /// Generic Singleton class 
+    /// </summary>
     public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T> {
-        private static T instance;
+        private static T _instance;
         public static T Instance {
             get {
-                if (instance == null) {
-                    instance = (T)System.Activator.CreateInstance(typeof(T), true);
+                if (_instance == null) {
+                    _instance = (T)System.Activator.CreateInstance(typeof(T), true);
                 }
-                return instance;
+                return _instance;
             }
         }
 
