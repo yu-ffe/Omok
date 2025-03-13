@@ -29,7 +29,6 @@ public class WBTest : MonoBehaviour
             msg: popupMsg,
             okText: "okok",
             cancelText: "nono",
-            800, 1000,
             () => { Debug.Log("Click OK"); },
             () => { Debug.Log("Click Cancel"); });
     }

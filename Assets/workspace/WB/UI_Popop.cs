@@ -28,7 +28,7 @@ namespace WB
         public void Show(
             string msg,  // 메세지
             string okText = null, string cancelText = null, // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
-            float width = 600, float height = 600, //창 크기
+                                                            // //// float width = 600, float height = 600, //창 크기 (삭제)
             UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
         {
             //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
@@ -41,9 +41,9 @@ namespace WB
             btnCancel.onClick.RemoveAllListeners();
             btnOk.onClick.AddListener(HidePopup);
             btnCancel.onClick.AddListener(HidePopup);
-            //창 크기, 메시지 설정
-            rectWindow.sizeDelta = new Vector2(width, height);
-            textMsg.text = msg;
+            // //창 크기, 메시지 설정
+            //// rectWindow.sizeDelta = new Vector2(width, height);
+            //// textMsg.text = msg;
             //버트 이벤트 연결
             if (okAction != null)
                 btnOk.onClick.AddListener(okAction);
@@ -56,6 +56,7 @@ namespace WB
             // 연결된 이벤트가 둘 다 없으면 확인 버튼만 활성화
             btnCancel.gameObject.SetActive(okAction != null || cancelAction != null);
         }
+
 
         public virtual void ShowStartEvent()
         {
