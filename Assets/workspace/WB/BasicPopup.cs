@@ -4,38 +4,41 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WB;
-
-public class BasicPopup : UI_Popup
+namespace WB
 {
-    bool isComponentConnected;
-    public override void ShowStartEvent()
+    public class BasicPopup : UI_Popup
     {
-        Debug.Log($"Show Start Event {gameObject.name} = Component Check");
-        if (!isComponentConnected)
+        bool isComponentConnected;
+        public override void ShowStartEvent()
         {
-            if (objPopup == null)
-                objPopup = this.gameObject;
+            Debug.Log($"Show Start Event {gameObject.name} = Component Check");
+            if (!isComponentConnected)
+            {
+                if (objPopup == null)
+                    objPopup = this.gameObject;
 
-            if (rectWindow == null)
-                rectWindow = transform.GetChild(0).GetComponent<RectTransform>();
+                if (rectWindow == null)
+                    rectWindow = transform.GetChild(0).GetComponent<RectTransform>();
 
-            if (textMsg == null)
-                textMsg = rectWindow.GetChild(0).GetComponent<TextMeshProUGUI>();
+                if (textMsg == null)
+                    textMsg = rectWindow.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-            if (btnOk == null)
-                btnOk = rectWindow.GetChild(1).GetComponent<Button>();
+                if (btnOk == null)
+                    btnOk = rectWindow.GetChild(1).GetComponent<Button>();
 
-            if (btnCancel == null)
-                btnCancel = rectWindow.GetChild(2).GetComponent<Button>();
+                if (btnCancel == null)
+                    btnCancel = rectWindow.GetChild(2).GetComponent<Button>();
 
-            if (textOk == null)
-                textOk = btnOk.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+                if (textOk == null)
+                    textOk = btnOk.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-            if (textCancel == null)
-                textCancel = btnCancel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+                if (textCancel == null)
+                    textCancel = btnCancel.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-            isComponentConnected = true;
+                isComponentConnected = true;
+            }
         }
     }
-}
 
+
+}
