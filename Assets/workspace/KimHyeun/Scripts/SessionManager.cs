@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
 
 
 namespace KimHyeun {
@@ -32,16 +32,36 @@ namespace KimHyeun {
     }
 
 
-
     public static class SessionManager
     {
         // 현재 게임 세션 내 모든 유저 정보 (메모리 저장)
         private static Dictionary<string, UserSession> userSessions = new Dictionary<string, UserSession>();
 
         public static string currentUserId; // 현재 로그인 유저 ID
-        public static Sprite[] ProfileSprites; // 프로필 이미지 스프라이트 목록(외부에서 게임이 시작될때, 초기화 필요)
+        // 버튼 안 이미지 저장용 (게임 시작 시 SignUpManager가 초기화)
+        public static Sprite[] ProfileSprites;
+        // 스프라이트 배열도 따로 선언 필요 (게임 시작 시 SignUpManager가 초기화)
+        public static Image[] ProfileButtonImages;
 
-       
+        // 버튼 안 이미지 Sprite 반환 함수
+        public static Sprite GetProfileButtonSprite(int index)
+        {
+            if (ProfileButtonImages == null || ProfileButtonImages.Length == 0)
+            {
+                Debug.LogWarning("[SessionManager] 프로필 버튼 이미지가 초기화되지 않았습니다.");
+                return null;
+            }
+
+            if (index >= 0 && index < ProfileButtonImages.Length)
+            {
+                return ProfileButtonImages[index].sprite;
+            }
+            else
+            {
+                Debug.LogWarning($"[SessionManager] 잘못된 프로필 인덱스 요청: {index}");
+                return null;
+            }
+        }
 
         // ========== 세션 추가 및 저장 ==========
         public static void AddSession(string userId, string nickname, int profileNum,
