@@ -131,32 +131,39 @@ namespace WB
 
         void ShowGameResult()
         {
+            string result = "승리";// "패배"
+            int value = 0;
+            string get = value > 0 ? "얻었" : "잃었";
+            string resultMsg = $"게임에서 {result}했습니다.{value}승급 포인트를 {get}습니다.";
             //게임 로직에 따라 변경
-            string result = "승리";//or "패배" 
             UI_Manager.Instance.popup.Show(
-                $"{result}하였습니다.",
-                "기보저장", "메인화면으로",
-                okAction:
-                    ShowAskRecord,   // 나가기 누르면 기보 저장 묻는 팝업 띄우기
-                cancelAction: () =>
-                { }
+                resultMsg,
+                "확인", "기보저장",
+                okAction: ExitToMain,
+                cancelAction: ShowAskRecord
                 );
+
+            //점수 획득/손실 ui Show
+        }
+
+
+        void ExitToMain()
+        {
+
         }
 
         void ShowAskRecord()
         {
+
             //게임 로직에 따라 변경
             UI_Manager.Instance.popup.Show(
                 $"현재게임의 기보를 저장하시겠습니까?",
                 "저장", "저장 안 함",
                 okAction: () =>
                 {
-
+                    //기보 저장
                 },
-                cancelAction: () =>
-                {
-
-                }
+                cancelAction: ExitToMain
                 );
         }
 

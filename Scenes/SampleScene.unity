@@ -577,7 +577,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5681357333857577708, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6916633976698750952, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
       propertyPath: m_Pivot.x
@@ -658,6 +658,23 @@ PrefabInstance:
     - target: {fileID: 6916633976698750952, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262480277112107999, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
+      propertyPath: m_text
+      value: "\uAC8C\uC784\uC5D0\uC11C {a}\uD588\uC2B5\uB2C8\uB2E4.\n{b}\uC2B9\uAE09
+        \uD3EC\uC778\uD2B8\uB97C {c}\uC2B5\uB2C8\uB2E4."
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262480277112107999, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
+      propertyPath: m_fontSize
+      value: 46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262480277112107999, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262480277112107999, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 46
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -755,6 +772,10 @@ PrefabInstance:
     - target: {fileID: 8882544919086370188, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_Name
       value: GamePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8882544919086370188, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
