@@ -110,7 +110,10 @@ namespace WB
                 );
         }
 
-        void ExitToMain() { }
+        void ExitToMain()
+        {
+            UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+        }
 
         void HidePopup()
         {
