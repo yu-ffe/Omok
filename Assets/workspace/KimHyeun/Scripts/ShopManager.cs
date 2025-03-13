@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class ShopManager : MonoBehaviour
+    public class ShopManager : Singleton<ShopManager>
     {
         [Header("상점 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
@@ -15,12 +15,7 @@ namespace KimHyeun {
         [SerializeField] int[] prices;
 
 
-        private void Start()
-        {
-            /// 테스트
-            GetItemData();
-        }
-
+        
 
         public void GetItemData() // 아이템 팝업 오픈 시 호출
         {
@@ -39,7 +34,7 @@ namespace KimHyeun {
 
 
             /* // 테스트 코드
-            SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
+            UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
             userSession.Coins = userSession.Coins + nums[index];
             SessionManager.UpdateSession(SessionManager.GetAllUserIds()[0], userSession.Coins, userSession.Grade, userSession.RankPoint);
             */
@@ -120,7 +115,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
 
         private static ShopManager _instance;
 
@@ -153,7 +148,7 @@ namespace KimHyeun {
             {
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }
 

@@ -3,41 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class RankingManager : MonoBehaviour
+    public class RankingManager : Singleton<RankingManager>
     {
         [Header("랭킹 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
 
-        List<Sprite> profileSpriteList;
-        List<string> nickNameList;
-        List<int> GradeList;
-        List<int> winList;
-        List<int> loseList;
+        List<Sprite> profileSpriteList = new List<Sprite>();
+        List<string> nickNameList = new List<string>();
+        List<int> GradeList = new List<int>();
+        List<int> winList = new List<int>();
+        List<int> loseList = new List<int>();
 
-        [Header("인스펙터 할당 필수")]
-        public Sprite[] profileSpritesFromInspector; // 인스펙터에서 연결하는 배열
+        
 
-        private void Start()
-        {
-            profileSpriteList = new List<Sprite>();
-            nickNameList = new List<string>();
-            GradeList = new List<int>();
-            winList = new List<int>();
-            loseList = new List<int>();
-
-
-            /// 테스트
-            // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
-            // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
-            // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
-            // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
-
-            /// 테스트 코드
-            SessionManager.ProfileSprites = profileSpritesFromInspector; // 인스펙터에 할당된 스프라이트 SessionManager에 할당
-            SessionManager.LoadAllSessions(); // 유저 데이터 불러오기(SignInManager 에 있는지 확인, 있으면 지워도 됨)
-            GetUserData(); // 호출 
-            /// 
-        }
 
         public void GetUserData() // 랭킹 팝업 오픈 시 호출
         {
@@ -79,8 +57,8 @@ namespace KimHyeun {
                     return a.Grade.CompareTo(b.Grade); // Grade 기준 오름차순 정렬
 
                 // 승률 계산 (승리 횟수 / 총 경기 수)
-                float winRateA = (a.Win + a.Lose == 0) ? 0 : (a.Win / (float)(a.Win + a.Lose));
-                float winRateB = (b.Win + b.Lose == 0) ? 0 : (b.Win / (float)(b.Win + b.Lose));
+                float winRateA = GetWinRate(a.Win, a.Lose);
+                float winRateB = GetWinRate(b.Win, b.Lose);
 
                 return winRateB.CompareTo(winRateA); // 승률 기준 내림차순 정렬
             });
@@ -102,7 +80,10 @@ namespace KimHyeun {
 
 
 
-
+        public float GetWinRate(int winCount, int loseCount) // 승률 반환 (일반 계산용)
+        {
+            return (winCount + loseCount == 0) ? 0 : (winCount / (float)(winCount + loseCount)) * 100;
+        }
 
 
 
@@ -196,7 +177,7 @@ namespace KimHyeun {
         }
 
 
-        public float GetWinRate(int index)
+        public float GetWinRate(int index) // 승류 반환 (여러 유저 계산용)
         {
             int wins = GetWin(index);
             int losses = GetLose(index);
@@ -214,7 +195,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
         private static RankingManager _instance;
 
         public static RankingManager Instance
@@ -247,6 +228,8 @@ namespace KimHyeun {
                 Destroy(gameObject);
             }
         }
+
+        */
     }
 }
 

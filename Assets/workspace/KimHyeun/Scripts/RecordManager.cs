@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class RecordManager : MonoBehaviour
+    public class RecordManager : Singleton<RecordManager>
     {
         [Header("기보 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
 
-        List<Sprite> resultSpriteList;
-        List<string> recordNameList;
-        List<string> nickNameList;
-        List<int> dateList;
+        List<Sprite> resultSpriteList = new List<Sprite>();
+        List<string> recordNameList = new List<string>();
+        List<string> nickNameList = new List<string>();
+        List<int> dateList = new List<int>();
 
         private void Start()
         {
-            resultSpriteList = new List<Sprite>();
-            recordNameList = new List<string>();
-            nickNameList = new List<string>();
-            dateList = new List<int>();
-
+            
+            /// 테스트
             GetRecordData();
         }
 
@@ -38,9 +35,9 @@ namespace KimHyeun {
         }
 
 
-        // TODO 기보 플레이 호출 기능 (기보 시스템 구축 대기)
+        // TODO (기보 구현 후) 기보 플레이 호출 기능 (기보 시스템 구축 대기)
 
-        // TODO 기보 제거 기능
+        // TODO (기보 구현 후) 기보 제거 기능
         public void RemoveRecord(int index)
         {
             Debug.Log($"{index}인덱스 기보 제거(RecordManager)");
@@ -116,7 +113,7 @@ namespace KimHyeun {
             }
         }
 
-        // TODO 날짜 형식 변환 필요
+        // TODO (기보 구현 후)날짜 형식 변환 필요
         public int GetDate(int index)
         {
             if (dateList.Count > index)
@@ -138,7 +135,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
         private static RecordManager _instance;
 
         public static RecordManager Instance
@@ -170,7 +167,7 @@ namespace KimHyeun {
             {
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }
 
