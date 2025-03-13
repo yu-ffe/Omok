@@ -33,7 +33,6 @@ namespace WB
         {
             UI_Manager.Instance.AddCallback("turn", TurnStateRefresh);
             UI_Manager.Instance.AddCallback("time", TimeRefresh);
-            UI_Manager.Instance.AddCallback("result", ShowGameResult);
         }
 
         public override void Show()
@@ -129,43 +128,13 @@ namespace WB
             txtTimer.text = Mathf.RoundToInt(leftTime).ToString();
         }
 
-        void ShowGameResult()
-        {
-            string result = "승리";// "패배"
-            int value = 0;
-            string get = value > 0 ? "얻었" : "잃었";
-            string resultMsg = $"게임에서 {result}했습니다.{value}승급 포인트를 {get}습니다.";
-            //게임 로직에 따라 변경
-            UI_Manager.Instance.popup.Show(
-                resultMsg,
-                "확인", "기보저장",
-                okAction: ExitToMain,
-                cancelAction: ShowAskRecord
-                );
-
-            //점수 획득/손실 ui Show
-        }
-
 
         void ExitToMain()
         {
 
         }
 
-        void ShowAskRecord()
-        {
 
-            //게임 로직에 따라 변경
-            UI_Manager.Instance.popup.Show(
-                $"현재게임의 기보를 저장하시겠습니까?",
-                "저장", "저장 안 함",
-                okAction: () =>
-                {
-                    //기보 저장
-                },
-                cancelAction: ExitToMain
-                );
-        }
 
 
 
