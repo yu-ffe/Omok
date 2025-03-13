@@ -2742,7 +2742,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cafe24Ssurround-v2.0 Atlas Material
-  m_Shader: {fileID: 4800000, guid: 108abbbd2f93849e881ba70b6440c1f1, type: 3}
+  m_Shader: {fileID: 4800000, guid: e4b9081271d0a4c8aa34d84e3ab830d8, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []

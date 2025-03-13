@@ -17,16 +17,19 @@ namespace WB
         public TextMeshProUGUI textCancel; //chidl 3 - child 0
 
 
+
+        void Awake()
+        {
+            UI_Manager.Instance.popup = this;
+
+        }
         void Start()
         {
             UI_Manager.Instance.AddCallback("result", Show_WithScore);
+            gameObject.SetActive(false);
         }
 
-        public virtual void ShowStartEvent()
-        {
-
-        }
-
+        public virtual void ShowStartEvent() { }
 
 
         /// <summary> 팝업창을 띄웁니다. </summary>

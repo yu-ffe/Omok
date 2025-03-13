@@ -75,7 +75,9 @@ namespace WB
                 Debug.Log("잘못된 키입니다.");
                 return;
             }
-            Hide(nowShowingPanelType);
+
+            if (nowShowingPanelType != PanelType.None)
+                Hide(nowShowingPanelType);
 
             panels[panelKey].Show();
 

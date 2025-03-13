@@ -51,7 +51,6 @@ namespace WB
         {
             //Login
             Show_LoginPhase();
-
             gameObject.SetActive(true);
         }
 

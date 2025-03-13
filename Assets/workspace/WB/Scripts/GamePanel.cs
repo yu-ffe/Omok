@@ -31,6 +31,7 @@ namespace WB
 
         void Start()
         {
+            UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Game, this);
             UI_Manager.Instance.AddCallback("turn", TurnStateRefresh);
             UI_Manager.Instance.AddCallback("time", TimeRefresh);
         }
@@ -44,7 +45,7 @@ namespace WB
 
             LoadGameState();
 
-
+            gameObject.SetActive(true);
         }
         public override void Hide()
         {

@@ -17,13 +17,13 @@ namespace WB
 
         void Start()
         {
-            UI_Manager.Instance.AddCallback("userinfo", ResfreshUserInfo);
             UI_Manager.Instance.AddPanel(panelType, this);
+            gameObject.SetActive(false);
         }
         public override void Show()
         {
-            gameObject.SetActive(true);
             ResfreshUserInfo();
+            gameObject.SetActive(true);
         }
         public override void Hide()
         {
