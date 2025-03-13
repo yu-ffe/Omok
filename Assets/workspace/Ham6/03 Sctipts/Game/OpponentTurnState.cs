@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 
 namespace workspace.Ham6._03_Sctipts.Game
 {
@@ -24,4 +24,4 @@ namespace workspace.Ham6._03_Sctipts.Game
             }
         }
     }
-}
+}*/
