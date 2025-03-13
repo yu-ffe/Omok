@@ -15,7 +15,12 @@ namespace KimHyeun {
         [SerializeField] int[] prices;
 
 
-        
+        public void SetScrollView(ScrollViewSet scrollViewSet)
+        {
+            this.scrollViewSet = scrollViewSet;
+        }
+
+
 
         public void GetItemData() // 아이템 팝업 오픈 시 호출
         {

@@ -77,14 +77,24 @@ namespace KimHyeun {
 
 
 
-        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가
+        void ButtonInfoSet()
+        {
+            ButtonClickListenerSet(); // 버튼 클릭 이벤트 할당
+            ButtonTextSet(); // 버튼 텍스트 할당
+        }
+
+
+        void ButtonClickListenerSet()
         {
             gameStartButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_GameStartButton(); });
             recordButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RecordButton(); });
             rankingButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RankingButton(); });
             shopButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_ShopButton(); });
             settingButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_SettingButton(); });
+        }
 
+        void ButtonTextSet()
+        {
             gameStartButtonText.text = "대국 시작";
             recordButtonText.text = "내 기보";
             rankingButtonText.text = "랭킹";

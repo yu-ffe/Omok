@@ -13,6 +13,11 @@ namespace KimHyeun {
         List<string> nickNameList = new List<string>();
         List<int> dateList = new List<int>();
 
+        public void SetScrollView(ScrollViewSet scrollViewSet)
+        {
+            this.scrollViewSet = scrollViewSet;
+        }
+
         private void Start()
         {
             
