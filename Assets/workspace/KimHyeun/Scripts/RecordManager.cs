@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class RecordManager : MonoBehaviour
+    public class RecordManager : Singleton<RecordManager>
     {
         [Header("기보 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
@@ -138,7 +138,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
         private static RecordManager _instance;
 
         public static RecordManager Instance
@@ -170,7 +170,7 @@ namespace KimHyeun {
             {
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }
 

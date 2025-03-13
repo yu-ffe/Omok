@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class RankingManager : MonoBehaviour
+    public class RankingManager : Singleton<RankingManager>
     {
         [Header("랭킹 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
@@ -214,7 +214,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
         private static RankingManager _instance;
 
         public static RankingManager Instance
@@ -247,6 +247,8 @@ namespace KimHyeun {
                 Destroy(gameObject);
             }
         }
+
+        */
     }
 }
 

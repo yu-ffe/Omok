@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace KimHyeun {
-    public class ShopManager : MonoBehaviour
+    public class ShopManager : Singleton<ShopManager>
     {
         [Header("상점 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
@@ -120,7 +120,7 @@ namespace KimHyeun {
 
 
 
-
+        /*
 
         private static ShopManager _instance;
 
@@ -153,7 +153,7 @@ namespace KimHyeun {
             {
                 Destroy(gameObject);
             }
-        }
+        }*/
     }
 }
 
