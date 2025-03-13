@@ -73,6 +73,7 @@ namespace WB
 
         public void Show_WithScore()
         {
+            //게임 결과 불러오기
             string result = "승리";// "패배"
             int value = 0;
             string get = value > 0 ? "얻었" : "잃었";
@@ -80,12 +81,13 @@ namespace WB
             string resultMsg = $"게임에서 {result}했습니다.{value}승급 포인트를 {get}습니다.";
 
             UnityAction nextAction = ShowAskRecord;
-            scoreBoard.ShowScore(value);//Next Score X
             Show(
                 resultMsg,
                 "확인", textBtn,
                 okAction: ExitToMain,
                 cancelAction: nextAction);
+
+            scoreBoard.ShowScore(value);//Next Score X
 
         }
 
