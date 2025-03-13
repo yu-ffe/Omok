@@ -80,7 +80,7 @@ namespace WB
             string resultMsg = $"게임에서 {result}했습니다.{value}승급 포인트를 {get}습니다.";
 
             UnityAction nextAction = ShowAskRecord;
-
+            scoreBoard.ShowScore(value);//Next Score X
             Show(
                 resultMsg,
                 "확인", textBtn,
