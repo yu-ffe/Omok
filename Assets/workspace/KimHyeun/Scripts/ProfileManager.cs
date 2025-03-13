@@ -15,7 +15,7 @@ namespace KimHyeun {
         [SerializeField] TMP_Text winRateText;
         [SerializeField] TMP_Text nickNameText;
 
-        [Header("버튼 역할 오브젝트,텍스트 필수 할당")]
+        [Header("필수 할당 - 버튼 역할 오브젝트,텍스트")]
         [SerializeField] GameObject gameStartButton;
         [SerializeField] TMP_Text gameStartButtonText;
         [SerializeField] GameObject recordButton;
@@ -28,7 +28,21 @@ namespace KimHyeun {
         [SerializeField] TMP_Text settingButtonText;
 
 
-        
+        private void Start()
+        {
+            /// 테스트 코드
+           // SessionManager.LoadAllSessions();
+
+            SessionManager.currentUserId = SessionManager.GetAllUserIds()[0]; // 임의의 1번 유저를 로그인한 유저로 설정
+
+
+            UserInfoShow();
+            ButtonInfoShow();
+            /// 
+
+
+        }
+
 
         public void UserInfoShow() // TODO 로그인 시 호출, 상점 코인 구매 시 호출, 게임 종료 후 프로필 정보로 돌아가면 호출 -> 프로필 정보 변경 시 호출
         {
@@ -38,6 +52,7 @@ namespace KimHyeun {
         void UserInfoSet()
         {
             UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
+
 
             if (userSession != null)
             {

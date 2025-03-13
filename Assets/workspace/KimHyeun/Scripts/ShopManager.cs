@@ -39,7 +39,7 @@ namespace KimHyeun {
 
 
             /* // 테스트 코드
-            SessionManager.UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
+            UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
             userSession.Coins = userSession.Coins + nums[index];
             SessionManager.UpdateSession(SessionManager.GetAllUserIds()[0], userSession.Coins, userSession.Grade, userSession.RankPoint);
             */

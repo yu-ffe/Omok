@@ -20,6 +20,7 @@ namespace KimHyeun {
             nickNameList = new List<string>();
             dateList = new List<int>();
 
+            /// 테스트
             GetRecordData();
         }
 

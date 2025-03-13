@@ -14,9 +14,6 @@ namespace KimHyeun {
         List<int> winList;
         List<int> loseList;
 
-        [Header("인스펙터 할당 필수")]
-        public Sprite[] profileSpritesFromInspector; // 인스펙터에서 연결하는 배열
-
         private void Start()
         {
             profileSpriteList = new List<Sprite>();
@@ -32,9 +29,6 @@ namespace KimHyeun {
             // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
             // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
 
-            /// 테스트 코드
-            SessionManager.ProfileSprites = profileSpritesFromInspector; // 인스펙터에 할당된 스프라이트 SessionManager에 할당
-            SessionManager.LoadAllSessions(); // 유저 데이터 불러오기(SignInManager 에 있는지 확인, 있으면 지워도 됨)
             GetUserData(); // 호출 
             /// 
         }
