@@ -1881,7 +1881,7 @@ MonoBehaviour:
   imgProfileRight: {fileID: 6260467834570762745}
   txtNickNameRight: {fileID: 3029061084697200118}
   txtTimer: {fileID: 5131311388313040898}
-  imgLeftTime: {fileID: 0}
+  imgLeftTime: {fileID: 8135301992997616603}
   imgGameTurn:
   - {fileID: 8738289646115438141}
   - {fileID: 6410778378725459515}

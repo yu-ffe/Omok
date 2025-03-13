@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
-
 namespace WB
 {
     public class UI_Popup : MonoBehaviour

@@ -42,6 +42,10 @@ namespace WB
                 FindComponents();
 
             LoadProfile();
+
+            LoadGameState();
+
+
         }
         public override void Hide()
         {
@@ -68,7 +72,8 @@ namespace WB
             txtNickNameLeft = imgProfileLeft.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             imgProfileRight = parentsProfile.GetChild(1).GetChild(0).GetComponent<Image>();
             txtNickNameRight = imgProfileRight.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            txtTimer = parentsInfo.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>();
+            imgLeftTime = parentsInfo.GetChild(0).GetComponent<Image>();
+            txtTimer = imgLeftTime.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             imgGameTurn[0] = parentsInfo.GetChild(1).GetComponent<Image>();
             imgGameTurn[1] = parentsInfo.GetChild(2).GetComponent<Image>();
             isComponentsConnected = true;
@@ -106,6 +111,7 @@ namespace WB
 
         void TurnStateRefresh()
         {
+
             //게임 로직에 따라 변경
             Debug.Log("Game Panel : TurnStateRefresh");
             //Temp Test value
@@ -172,7 +178,18 @@ namespace WB
         /// <summary> 기권버튼 이벤트 </summary>
         public void Button_GiveUp()
         {
+            UI_Manager.Instance.popup.Show(
+            msg: "기권 하시겠습니까?",
+            "기권", "취소",
+            okAction: () =>
+            {
 
+            },
+            cancelAction: () =>
+            {
+
+            }
+            );
         }
 
         /// <summary> 착수버튼 이벤트 </summary>
