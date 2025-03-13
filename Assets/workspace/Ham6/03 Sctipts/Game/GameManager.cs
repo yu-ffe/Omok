@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using workspace.Ham6._03_Sctipts.Game;
 
 public class GameManager : Singleton<GameManager>
 {
