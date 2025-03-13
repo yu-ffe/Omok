@@ -29,28 +29,15 @@ namespace KimHyeun {
         [SerializeField] TMP_Text settingButtonText;
 
 
-        private void Start()
-        {
-            /// 테스트 코드
-           // SessionManager.LoadAllSessions();
-
-            SessionManager.currentUserId = SessionManager.GetAllUserIds()[0]; // 임의의 1번 유저를 로그인한 유저로 설정
+      
 
 
-            UserInfoShow();
-            ButtonInfoShow();
-            /// 
-
-
-        }
-
-
-        public void UserInfoShow() // TODO 로그인 시 호출, 상점 코인 구매 시 호출, 게임 종료 후 프로필 정보로 돌아가면 호출 -> 프로필 정보 변경 시 호출
+        public void UserInfoShow() 
         {
             UserInfoSet();
         }
 
-        public void ButtonInfoShow() // TODO 메인 화면 전환 시 호출 (로그인 시, 게임 종료 후)
+        public void ButtonInfoShow() 
         {
             ButtonInfoSet();
         }
@@ -90,7 +77,7 @@ namespace KimHyeun {
 
 
 
-        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가, 버튼 이름 설정
+        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가
         {
             gameStartButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("게임 시작 버튼 클릭"); });
             recordButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("내 기보 버튼 클릭"); });
@@ -98,11 +85,11 @@ namespace KimHyeun {
             shopButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("상점 버튼 클릭"); });
             settingButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("설정 버튼 클릭"); });
 
-            gameStartButtonText.text = "GameStartButton";
-            recordButtonText.text = "RecordButton";
-            rankingButtonText.text = "RankingButton";
-            shopButtonText.text = "ShopButton";
-            settingButtonText.text = "SettingButton";
+            gameStartButtonText.text = "대국 시작";
+            recordButtonText.text = "내 기보";
+            rankingButtonText.text = "랭킹";
+            shopButtonText.text = "상점";
+            settingButtonText.text = "설정";
         }
     }
 }

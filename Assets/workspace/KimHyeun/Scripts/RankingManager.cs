@@ -21,16 +21,6 @@ namespace KimHyeun {
             GradeList = new List<int>();
             winList = new List<int>();
             loseList = new List<int>();
-
-
-            /// 테스트
-            // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
-            // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
-            // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
-            // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
-
-            GetUserData(); // 호출 
-            /// 
         }
 
         public void GetUserData() // 랭킹 팝업 오픈 시 호출

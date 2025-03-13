@@ -15,12 +15,7 @@ namespace KimHyeun {
         [SerializeField] int[] prices;
 
 
-        private void Start()
-        {
-            /// 테스트
-            GetItemData();
-        }
-
+        
 
         public void GetItemData() // 아이템 팝업 오픈 시 호출
         {

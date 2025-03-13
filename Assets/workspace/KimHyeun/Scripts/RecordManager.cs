@@ -39,9 +39,9 @@ namespace KimHyeun {
         }
 
 
-        // TODO 기보 플레이 호출 기능 (기보 시스템 구축 대기)
+        // TODO (기보 구현 후) 기보 플레이 호출 기능 (기보 시스템 구축 대기)
 
-        // TODO 기보 제거 기능
+        // TODO (기보 구현 후) 기보 제거 기능
         public void RemoveRecord(int index)
         {
             Debug.Log($"{index}인덱스 기보 제거(RecordManager)");
@@ -117,7 +117,7 @@ namespace KimHyeun {
             }
         }
 
-        // TODO 날짜 형식 변환 필요
+        // TODO (기보 구현 후)날짜 형식 변환 필요
         public int GetDate(int index)
         {
             if (dateList.Count > index)
