@@ -79,8 +79,8 @@ namespace KimHyeun {
                     return a.Grade.CompareTo(b.Grade); // Grade 기준 오름차순 정렬
 
                 // 승률 계산 (승리 횟수 / 총 경기 수)
-                float winRateA = (a.Win + a.Lose == 0) ? 0 : (a.Win / (float)(a.Win + a.Lose));
-                float winRateB = (b.Win + b.Lose == 0) ? 0 : (b.Win / (float)(b.Win + b.Lose));
+                float winRateA = GetWinRate(a.Win, a.Lose);
+                float winRateB = GetWinRate(b.Win, b.Lose);
 
                 return winRateB.CompareTo(winRateA); // 승률 기준 내림차순 정렬
             });
@@ -102,7 +102,10 @@ namespace KimHyeun {
 
 
 
-
+        public float GetWinRate(int winCount, int loseCount) // 승률 반환 (일반 계산용)
+        {
+            return (winCount + loseCount == 0) ? 0 : (winCount / (float)(winCount + loseCount)) * 100;
+        }
 
 
 
@@ -196,7 +199,7 @@ namespace KimHyeun {
         }
 
 
-        public float GetWinRate(int index)
+        public float GetWinRate(int index) // 승류 반환 (여러 유저 계산용)
         {
             int wins = GetWin(index);
             int losses = GetLose(index);
