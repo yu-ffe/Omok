@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
-
 namespace WB
 {
     public class UI_Popup : MonoBehaviour
@@ -12,10 +10,24 @@ namespace WB
         public GameObject objPopup;     //root
         public RectTransform rectWindow;//창 크기
         public TextMeshProUGUI textMsg; //child 0
-        public Button btnOk;            //child 1
-        public Button btnCancel;        //chidl 2
-        public TextMeshProUGUI textOk;  //child 1 - child 0
-        public TextMeshProUGUI textCancel; //chidl 2 - child 0
+        public UserScorePopup scoreBoard; // child 1
+        public Button btnOk;            //child 2
+        public Button btnCancel;        //chidl 3
+        public TextMeshProUGUI textOk;  //child 2 - child 0
+        public TextMeshProUGUI textCancel; //chidl 3 - child 0
+
+
+        void Start()
+        {
+            UI_Manager.Instance.AddCallback("result", Show_WithScore);
+        }
+
+        public virtual void ShowStartEvent()
+        {
+
+        }
+
+
 
         /// <summary> 팝업창을 띄웁니다. </summary>
         /// <param name="msg">내용</param>
@@ -31,6 +43,7 @@ namespace WB
                                                             // //// float width = 600, float height = 600, //창 크기 (삭제)
             UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
         {
+            scoreBoard.gameObject.SetActive(false);
             //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
             ShowStartEvent();
 
@@ -58,15 +71,56 @@ namespace WB
         }
 
 
-        public virtual void ShowStartEvent()
+        public void Show_WithScore()
         {
+            //게임 결과 불러오기
+            string result = "승리";// "패배"
+            int value = 0;
+            string get = value > 0 ? "얻었" : "잃었";
+            string textBtn = "";
+            string resultMsg = $"게임에서 {result}했습니다.{value}승급 포인트를 {get}습니다.";
 
+            UnityAction nextAction = ShowAskRecord;
+            Show(
+                resultMsg,
+                "확인", textBtn,
+                okAction: ExitToMain,
+                cancelAction: nextAction);
+
+            scoreBoard.ShowScore(value);//Next Score X
+
+        }
+
+
+        void ShowAskRecord()
+        {
+            //게임 로직에 따라 변경
+            UI_Manager.Instance.popup.Show(
+                $"현재게임의 기보를 저장하시겠습니까?",
+                "저장", "저장 안 함",
+                okAction: () =>
+                {
+                    //기보 저장
+                },
+                cancelAction: () =>
+                {
+                    //나가기
+                    ExitToMain();
+                }
+                );
+        }
+
+        void ExitToMain()
+        {
+            UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
         }
 
         void HidePopup()
         {
             objPopup.SetActive(false);
         }
+
+
     }
 }
 
