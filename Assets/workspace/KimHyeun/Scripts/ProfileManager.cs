@@ -14,6 +14,7 @@ namespace KimHyeun {
         [SerializeField] TMP_Text loseText;
         [SerializeField] TMP_Text winRateText;
         [SerializeField] TMP_Text nickNameText;
+        [SerializeField] TMP_Text gradeText;
 
         [Header("필수 할당 - 버튼 역할 오브젝트,텍스트")]
         [SerializeField] GameObject gameStartButton;
@@ -49,6 +50,18 @@ namespace KimHyeun {
             UserInfoSet();
         }
 
+        public void ButtonInfoShow() // TODO 메인 화면 전환 시 호출 (로그인 시, 게임 종료 후)
+        {
+            ButtonInfoSet();
+        }
+
+
+
+
+
+
+
+
         void UserInfoSet()
         {
             UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
@@ -56,16 +69,17 @@ namespace KimHyeun {
 
             if (userSession != null)
             {
-                coinText.text = userSession.Coins.ToString();
+                coinText.text = userSession.Coins.ToString() + " 코인";
                 profile_Image.sprite = SessionManager.GetUserProfileSprite(userSession.ProfileNum);
-                winText.text = userSession.WinCount.ToString();
-                loseText.text = userSession.LoseCount.ToString();
+                winText.text = userSession.WinCount.ToString() + " 승";
+                loseText.text = userSession.LoseCount.ToString() + " 패";
 
                 // 승률 계산
                 float winRate = RankingManager.Instance.GetWinRate(userSession.WinCount, userSession.LoseCount);               
                 winRateText.text = winRate.ToString("F2") + "%";  // 소수점 2자리까지 표시
 
                 nickNameText.text = userSession.Nickname;
+                gradeText.text = userSession.Grade.ToString() + " 급";
             }
 
             else
@@ -76,13 +90,7 @@ namespace KimHyeun {
 
 
 
-        public void ButtonInfoShow() // TODO 메인 화면 전환 시 호출 (로그인 시, 게임 종료 후)
-        {
-            ButtonInfoSet();
-        }
-
-
-        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가
+        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가, 버튼 이름 설정
         {
             gameStartButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("게임 시작 버튼 클릭"); });
             recordButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("내 기보 버튼 클릭"); });
