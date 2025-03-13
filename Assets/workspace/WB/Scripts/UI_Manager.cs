@@ -13,8 +13,9 @@ namespace WB
             Login,
             Main,
             Game,
-
-
+            Record,
+            Shop,
+            Ranking,
         }
         public UI_Popup popup;
         Dictionary<string, UnityAction> callBack;
