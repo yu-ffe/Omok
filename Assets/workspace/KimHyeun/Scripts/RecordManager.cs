@@ -8,18 +8,14 @@ namespace KimHyeun {
         [Header("기보 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
 
-        List<Sprite> resultSpriteList;
-        List<string> recordNameList;
-        List<string> nickNameList;
-        List<int> dateList;
+        List<Sprite> resultSpriteList = new List<Sprite>();
+        List<string> recordNameList = new List<string>();
+        List<string> nickNameList = new List<string>();
+        List<int> dateList = new List<int>();
 
         private void Start()
         {
-            resultSpriteList = new List<Sprite>();
-            recordNameList = new List<string>();
-            nickNameList = new List<string>();
-            dateList = new List<int>();
-
+            
             /// 테스트
             GetRecordData();
         }

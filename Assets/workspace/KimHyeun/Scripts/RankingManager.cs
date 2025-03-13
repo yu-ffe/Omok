@@ -8,20 +8,14 @@ namespace KimHyeun {
         [Header("랭킹 스크롤 뷰 필수 할당")]
         [SerializeField] ScrollViewSet scrollViewSet;
 
-        List<Sprite> profileSpriteList;
-        List<string> nickNameList;
-        List<int> GradeList;
-        List<int> winList;
-        List<int> loseList;
+        List<Sprite> profileSpriteList = new List<Sprite>();
+        List<string> nickNameList = new List<string>();
+        List<int> GradeList = new List<int>();
+        List<int> winList = new List<int>();
+        List<int> loseList = new List<int>();
 
-        private void Start()
-        {
-            profileSpriteList = new List<Sprite>();
-            nickNameList = new List<string>();
-            GradeList = new List<int>();
-            winList = new List<int>();
-            loseList = new List<int>();
-        }
+        
+
 
         public void GetUserData() // 랭킹 팝업 오픈 시 호출
         {

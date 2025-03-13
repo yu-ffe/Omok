@@ -15,7 +15,6 @@ namespace KimHyeun {
             // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
             // SessionManager.AddSession("TestId4", "TestNickName4", 0, 100, 1, 0, 0, 0);
 
-
             SessionManager.currentUserId = SessionManager.GetAllUserIds()[0]; // 임의의 1번 유저를 로그인한 유저로 설정
 
 

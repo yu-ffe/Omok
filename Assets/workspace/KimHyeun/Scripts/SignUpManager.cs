@@ -24,7 +24,7 @@ namespace KimHyeun {
 
         private int _profileNumber = -1; // 선택된 프로필 번호 (-1: 선택 안함)
 
-        void Start()
+        void Awake()
         {
             // 모든 저장된 유저 세션 불러오기
             SessionManager.LoadAllSessions();
