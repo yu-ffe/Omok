@@ -17,16 +17,18 @@ namespace KimHyeun {
 
         [Header("버튼 역할 오브젝트,텍스트 필수 할당")]
         [SerializeField] GameObject gameStartButton;
-        [SerializeField] TMP_Text gameStartText;
+        [SerializeField] TMP_Text gameStartButtonText;
         [SerializeField] GameObject recordButton;
-        [SerializeField] TMP_Text recordText;
+        [SerializeField] TMP_Text recordButtonText;
         [SerializeField] GameObject rankingButton;
-        [SerializeField] TMP_Text rankingText;
+        [SerializeField] TMP_Text rankingButtonText;
         [SerializeField] GameObject shopButton;
-        [SerializeField] TMP_Text shopText;
+        [SerializeField] TMP_Text shopButtonText;
         [SerializeField] GameObject settingButton;
-        [SerializeField] TMP_Text settingText;
+        [SerializeField] TMP_Text settingButtonText;
 
+
+        
 
         public void UserInfoShow() // TODO 로그인 시 호출, 상점 코인 구매 시 호출, 게임 종료 후 프로필 정보로 돌아가면 호출 -> 프로필 정보 변경 시 호출
         {
@@ -55,6 +57,29 @@ namespace KimHyeun {
             {
                 Debug.LogError("현재 로그인된 유저 정보가 없습니다.");
             }
+        }
+
+
+
+        public void ButtonInfoShow() // TODO 메인 화면 전환 시 호출 (로그인 시, 게임 종료 후)
+        {
+            ButtonInfoSet();
+        }
+
+
+        void ButtonInfoSet() // TODO 버튼 클릭 시 호출 추가
+        {
+            gameStartButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("게임 시작 버튼 클릭"); });
+            recordButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("내 기보 버튼 클릭"); });
+            rankingButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("랭킹 버튼 클릭"); });
+            shopButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("상점 버튼 클릭"); });
+            settingButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("설정 버튼 클릭"); });
+
+            gameStartButtonText.text = "GameStartButton";
+            recordButtonText.text = "RecordButton";
+            rankingButtonText.text = "RankingButton";
+            shopButtonText.text = "ShopButton";
+            settingButtonText.text = "SettingButton";
         }
     }
 }
