@@ -12,6 +12,8 @@ namespace WB
             None,
             Login,
             Main,
+            Game,
+
 
         }
         public UI_Popup popup;
