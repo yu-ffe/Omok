@@ -43,15 +43,12 @@ namespace KimHyeun {
                 profile_Image.sprite = SessionManager.GetUserProfileSprite(userSession.ProfileNum);
                 winText.text = userSession.WinCount.ToString();
                 loseText.text = userSession.LoseCount.ToString();
-                winRateText.text = userSession.LoseCount.ToString();
 
-                // 승률 계산 (승률 = 승리 수 / (승리 수 + 패배 수) * 100)
-                float winRate = (userSession.WinCount + userSession.LoseCount) > 0
-                    ? (float)userSession.WinCount / (userSession.WinCount + userSession.LoseCount) * 100
-                    : 0;
+                // 승률 계산
+                float winRate = RankingManager.Instance.GetWinRate(userSession.WinCount, userSession.LoseCount);               
+                winRateText.text = winRate.ToString("F2") + "%";  // 소수점 2자리까지 표시
 
-                // 소수점 2자리까지 표시
-                winRateText.text = winRate.ToString("F2") + "%";
+                nickNameText.text = userSession.Nickname;
             }
 
             else
