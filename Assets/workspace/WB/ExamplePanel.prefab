@@ -420,7 +420,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1121851869422948600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621b0e87a78b5488ca63b76fa1619f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelKey: Examaple
+  panelType: 0
   txtCoin: {fileID: 8611327969627689814}
   txtWin: {fileID: 8961992207825169192}
   txtLose: {fileID: 1169489362473215818}
