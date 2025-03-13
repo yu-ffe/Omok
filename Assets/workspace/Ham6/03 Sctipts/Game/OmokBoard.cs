@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using workspace.Ham6._03_Sctipts.Game;
 
 public class OmokBoard : MonoBehaviour
 {
@@ -13,22 +14,42 @@ public class OmokBoard : MonoBehaviour
     private float scaledPadding; // 현재 UI 기준 비례 공백
     private float cellSize; // 현재 UI 기준 한 칸 크기
     private Vector2 startPosition; // 바둑판의 시작 좌표
-
+    
+    public delegate void OnGridClicked(int row, int col);
+    public OnGridClicked OnOnGridClickedDelegate;
+/*
+    public void InitStones()
+    {
+        for (int i = 0; i < blocks.Length; i++)
+        {
+            blocks[i].InitMarker(i, blockIndex =>
+            {
+                var clickedRow = blockIndex / 3;
+                var clickedCol = blockIndex % 3;
+                
+                OnOnGridClickedDelegate?.Invoke(clickedRow, clickedCol);
+            });
+        }
+    }
+*/
     void Start()
     {
         CalculateSizes();
         
         // 테스트용 바둑알 배치
-        bool isblack = false;
+        Constants.PlayerType playerType = Constants.PlayerType.PlayerA;
         for (int i = 0; i < 15; i++)
         {
             for (int j = 0; j < 15; j++)
             {
-                PlaceStone(j, i, isblack);
-                isblack = !isblack;
+                PlaceStone(playerType, j, i);
+                if (playerType == Constants.PlayerType.PlayerA)
+                {
+                    playerType = Constants.PlayerType.PlayerB;
+                }
+                
             }
         }
-        
     }
 
     //바둑판 크기의 비례한 공백과 시작위치 계산
@@ -48,19 +69,6 @@ public class OmokBoard : MonoBehaviour
         Debug.Log($"시작 좌표: {startPosition}");
     }
 
-    //바둑알 착수 함수
-    public void PlaceStone(int x, int y, bool isBlack)
-    {
-        Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 로컬위치로 바꿔줌
-        GameObject stone = Instantiate(isBlack ? MakerBlackPrefab : MakerWhitePrefab, boardImage); //바둑판의 자식으로 바둑알 생성
-        
-        RectTransform stoneRect = stone.GetComponent<RectTransform>(); //바둑알의 로컬위치
-        stoneRect.anchoredPosition = localPos; //바둑알의 로컬위치 조정
-        
-        float stoneSize = cellSize * 0.85f; // 바둑알 크기(한 칸 크기의 85%)
-        stone.GetComponent<RectTransform>().sizeDelta = new Vector2(stoneSize, stoneSize); // 바둑알 크기 조정
-    }
-
     //바둑알의 배열을 읽고 로컬위치로 바꿔주는 함수
     public Vector2 GetLocalPosition(int x, int y)
     {
@@ -70,5 +78,18 @@ public class OmokBoard : MonoBehaviour
         Debug.Log($"{x}, {y} 의 좌표: {localX}, {localY}");
 
         return new Vector2(localX, localY);
+    }
+    
+    //바둑알을 로컬위치에 착수하는 함수
+    public void PlaceStone(Constants.PlayerType playerType, int x, int y)
+    {
+        Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 로컬위치로 바꿔줌
+        GameObject stone = Instantiate(playerType == Constants.PlayerType.PlayerA ? MakerBlackPrefab : MakerWhitePrefab, boardImage); //바둑판의 자식으로 바둑알 생성
+        
+        RectTransform stoneRect = stone.GetComponent<RectTransform>(); //바둑알의 로컬위치
+        stoneRect.anchoredPosition = localPos; //바둑알의 로컬위치 조정
+        
+        float stoneSize = cellSize * 0.85f; // 바둑알 크기(한 칸 크기의 85%)
+        stone.GetComponent<RectTransform>().sizeDelta = new Vector2(stoneSize, stoneSize); // 바둑알 크기 조정
     }
 }
