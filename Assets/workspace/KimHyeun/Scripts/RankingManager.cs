@@ -16,6 +16,11 @@ namespace KimHyeun {
 
         
 
+        public void SetScrollView(ScrollViewSet scrollViewSet)
+        {
+            this.scrollViewSet = scrollViewSet;
+        }
+
 
         public void GetUserData() // 랭킹 팝업 오픈 시 호출
         {
