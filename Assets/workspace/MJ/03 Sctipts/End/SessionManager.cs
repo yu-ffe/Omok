@@ -11,8 +11,10 @@ namespace MJ
         private static Dictionary<string, UserSession> userSessions = new Dictionary<string, UserSession>();
 
         public static string currentUserId; // 현재 로그인 유저 ID
+        
         // 버튼 안 이미지 저장용 (게임 시작 시 SignUpManager가 초기화)
         public static Sprite[] ProfileSprites;
+        
         // 스프라이트 배열도 따로 선언 필요 (게임 시작 시 SignUpManager가 초기화)
         public static Image[] ProfileButtonImages;
         
