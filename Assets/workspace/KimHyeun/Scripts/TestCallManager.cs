@@ -30,6 +30,9 @@ namespace KimHyeun {
             ProfileManager.Instance.ButtonInfoShow();
 
 
+
+
+            GradeChangeManager.GradeUpdate(SessionManager.currentUserId, SessionManager.GetSession(SessionManager.currentUserId), GameResult.Win);
             /// 
         }
 
