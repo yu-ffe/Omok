@@ -11,7 +11,7 @@ public class UserSession
 
     // 생성자
     public UserSession(string nickname, int profileNum, int coins, int grade, 
-        int rankPoint, int winCount, int loseCount)
+                       int rankPoint, int winCount, int loseCount)
     {
         Nickname = nickname;
         ProfileNum = profileNum;

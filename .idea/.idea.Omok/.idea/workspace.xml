@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SessionManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SignUpManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/WB/Scripts/MainPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/WB/Scripts/MainPanel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/대국 사용 관련.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/대국 사용 관련.txt.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,26 +16,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Minji-GWON"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Minji-GWON&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/yu-ffe/Omok.git",
-    "accountId": "72af1083-43f2-4c61-b898-4d0cdb5e60a4"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
+    &quot;accountId&quot;: &quot;72af1083-43f2-4c61-b898-4d0cdb5e60a4&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2uHhVHqRTlN9r1OsVeZFiAgfir0" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -51,7 +47,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/minji/signin-update",
+    "git-widget-placeholder": "feature/yu/notation/record-history",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
