@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Main/SceneManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Main/SceneManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/대국 사용 관련.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Notation/대국 사용 관련.txt.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
