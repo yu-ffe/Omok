@@ -4,34 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 
-namespace KimHyeun {
-
-    [System.Serializable]
-    public class UserSession
-    {
-        public string Nickname;
-        public int ProfileNum;
-        public int Coins;
-        public int Grade;
-        public int RankPoint;
-        public int WinCount;  // 승리 횟수
-        public int LoseCount; // 패배 횟수
-
-        // 생성자
-        public UserSession(string nickname, int profileNum, int coins, int grade,
-            int rankPoint, int winCount, int loseCount)
-        {
-            Nickname = nickname;
-            ProfileNum = profileNum;
-            Coins = coins;
-            Grade = grade;
-            RankPoint = rankPoint;
-            WinCount = winCount;
-            LoseCount = loseCount;
-        }
-    }
-
-
+namespace KimHyeun {   
     public static class SessionManager
     {
         // 현재 게임 세션 내 모든 유저 정보 (메모리 저장)
