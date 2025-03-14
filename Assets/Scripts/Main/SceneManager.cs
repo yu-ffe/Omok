@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using workspace.YU__FFE.Scripts.Common;
 
+
 public class SceneManager : Singleton<SceneManager> {
     private SceneManager() {
     }

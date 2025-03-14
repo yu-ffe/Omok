@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using workspace.YU__FFE.Scripts;
 
 namespace WB
 {
@@ -17,16 +18,24 @@ namespace WB
         public TextMeshProUGUI textCancel; //chidl 3 - child 0
 
 
+
+        void Awake()
+        {
+            UI_Manager.Instance.popup = this;
+
+        }
         void Start()
         {
             UI_Manager.Instance.AddCallback("result", Show_WithScore);
+            gameObject.SetActive(false);
         }
 
-        public virtual void ShowStartEvent()
+        void OnDestroy()
         {
-
+            UI_Manager.Instance.RemoveCallback("result");
         }
 
+        public virtual void ShowStartEvent() { }
 
 
         /// <summary> 팝업창을 띄웁니다. </summary>
@@ -43,11 +52,15 @@ namespace WB
                                                             // //// float width = 600, float height = 600, //창 크기 (삭제)
             UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
         {
-            scoreBoard.gameObject.SetActive(false);
-            //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
             ShowStartEvent();
 
+            scoreBoard.gameObject.SetActive(false);
+            //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
+
             objPopup.SetActive(true);
+
+            textMsg.text = msg;
+
 
             //버튼 이벤트 초기화
             btnOk.onClick.RemoveAllListeners();
@@ -112,7 +125,8 @@ namespace WB
 
         void ExitToMain()
         {
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+            // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+            SceneManager.Instance.LoadScene("Main");
         }
 
         void HidePopup()

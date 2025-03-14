@@ -16,6 +16,7 @@ namespace WB
             Record,
             Shop,
             Ranking,
+            Option,
         }
         public UI_Popup popup;
         Dictionary<string, UnityAction> callBack;
@@ -58,6 +59,17 @@ namespace WB
             callBack[key] += action;
         }
 
+        public void RequestExecute(string key)
+        {
+            if (!callBack.ContainsKey(key))
+            {
+                Debug.Log($"[{key}]와 연결된 콜백이 없습니다.");
+                return;
+            }
+            callBack[key].Invoke();
+        }
+
+
         public void RemoveCallback(string key)
         {
             if (!callBack.ContainsKey(key))
@@ -75,7 +87,9 @@ namespace WB
                 Debug.Log("잘못된 키입니다.");
                 return;
             }
-            Hide(nowShowingPanelType);
+
+            if (nowShowingPanelType != PanelType.None)
+                Hide(nowShowingPanelType);
 
             panels[panelKey].Show();
 
