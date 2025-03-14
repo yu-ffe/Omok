@@ -5,11 +5,10 @@ using UnityEngine;
 namespace KimHyeun {
     public class TestCallManager : Singleton<TestCallManager>
     {
-
+        /// 테스트용 코드 모음
 
         private void Start()
         {
-            /// 테스트용 코드 호출 모음
             // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
             // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
             // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
@@ -35,9 +34,15 @@ namespace KimHyeun {
         }
 
 
-
-
     }
 
+
+    public enum GameResult
+    {
+        None, // 게임 진행 중
+        Win, // 플레이어 승
+        Lose, // 플레이어 패
+        Draw // 비김
+    }
 }
 
