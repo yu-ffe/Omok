@@ -29,11 +29,6 @@ public class Timer : MonoBehaviour
         InitTimer(); // 시작 시 초기화
     }
 
-    private void Start()
-    {
-        StartTimer();
-    }
-
     private void Update()
     {
         if (_isPaused) return;

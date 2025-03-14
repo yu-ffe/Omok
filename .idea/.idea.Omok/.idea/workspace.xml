@@ -6,20 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Data.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sounds.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SessionManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SessionManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SigninManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SoundManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/UserSession.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/UserSession.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
