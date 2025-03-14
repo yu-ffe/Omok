@@ -74,3 +74,30 @@ crashlytics-build.properties
 
 # .github 폴더와 하위 파일들을 무시
 /.github/
+
+
+# Server 폴더 내의 불필요한 파일/폴더 무시
+
+# Node.js 모듈 폴더 (패키지 다운로드 경로)
+Server/node_modules/
+
+# 환경 변수 파일 (민감한 정보 포함 가능)
+Server/.env
+
+# 캐시 및 로그 파일
+Server/npm-debug.log
+Server/yarn-error.log
+Server/.npm/
+
+# 빌드 결과물 (일반적으로 서버 사이드에서는 필요 없음)
+Server/dist/
+Server/build/
+
+# OS 관련 불필요한 파일
+Server/.DS_Store
+Server/Thumbs.db
+
+# 편집기 및 IDE 설정 파일
+Server/.vscode/
+Server/.idea/
+Server/.eslintcache
