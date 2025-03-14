@@ -13,7 +13,7 @@ namespace WB
         public TextMeshProUGUI txtCoin;
         public TextMeshProUGUI txtUserName;
 
-        SessionManager.UserSession UseData => SessionManager.GetSession(SessionManager.currentUserId);
+        UserSession UseData => SessionManager.GetSession(SessionManager.currentUserId);
 
         void Start()
         {
