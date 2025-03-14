@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SessionManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SignUpManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/WB/Scripts/MainPanel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/WB/Scripts/MainPanel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/02 Scenes/Main 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SignUpManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/SoundManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/MJ/06 Sounds/MainMixer.mixer" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/MJ/06 Sounds/MainMixer.mixer" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +51,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/minji/signin-update",
+    "git-widget-placeholder": "feature/minji/soundMixer",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -111,7 +111,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741911429967</updated>
-      <workItem from="1741911432734" duration="3155000" />
+      <workItem from="1741911432734" duration="6575000" />
     </task>
     <servers />
   </component>
