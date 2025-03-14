@@ -163,7 +163,7 @@ AudioSource:
   m_GameObject: {fileID: 45633884}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5146814810361997667, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
   m_audioClip: {fileID: 8300000, guid: 77451f817e496954ebb2676bd5bb2235, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -291,7 +291,7 @@ AudioSource:
   m_GameObject: {fileID: 227347458}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5146814810361997667, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
   m_audioClip: {fileID: 8300000, guid: c33206d3c82199b42ab3167b23c007cd, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -419,7 +419,7 @@ AudioSource:
   m_GameObject: {fileID: 268182576}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5146814810361997667, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
   m_audioClip: {fileID: 8300000, guid: a9108b09b41225745b8186f147478d99, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -660,6 +660,7 @@ MonoBehaviour:
   - {fileID: 227347460}
   - {fileID: 2128102281}
   - {fileID: 268182578}
+  audioMixer: {fileID: 24100000, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
 --- !u!4 &1644284685
 Transform:
   m_ObjectHideFlags: 0
@@ -830,7 +831,7 @@ AudioSource:
   m_GameObject: {fileID: 1840499429}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -4069536103659317142, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
   m_audioClip: {fileID: 8300000, guid: af2c3360cc6f4f6428f0658090678bff, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -1045,7 +1046,7 @@ AudioSource:
   m_GameObject: {fileID: 2128102279}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -5146814810361997667, guid: 170a58c7150ddcd4596fa63dfc48c319, type: 2}
   m_audioClip: {fileID: 8300000, guid: 5516498714de74447bf4f3dea6e09a1b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
