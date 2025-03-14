@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WB;
 
 public class AutoLogin
 {
@@ -24,16 +25,22 @@ public class AutoLogin
                 if (isSuccess)
                 {
                     Debug.Log($"자동 로그인 성공: {message}");
-                    // TODO 로그인 성공과 동일 처리 필요
+                    UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
                 }
 
                 else
                 {
                     Debug.Log($"자동 로그인 실패: {message}");
-                    // 아무일도 없음
+                    UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
                 }
             }
-        }        
+            else
+            {
+                Debug.Log($"로그인 기록 없음");
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+            }
+
+        }
     }
 
     // 로그인 성공 시 유저 ID 저장
