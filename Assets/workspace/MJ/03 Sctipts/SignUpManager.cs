@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace MJ
 {
-    public class SignUpManager : MonoBehaviour
+    public class SignUpManager : Singleton<SignUpManager> 
     {
         [Header("회원가입 UI 연결")] 
         public TMP_InputField inputId;
@@ -25,19 +25,14 @@ namespace MJ
         
         private int _profileNumber = -1; // 선택된 프로필 번호 (-1: 선택 안함)
 
-        void Start()
+        protected override void Awake()
         {
-            // 모든 저장된 유저 세션 불러오기
-            SessionManager.LoadAllSessions();
-            Debug.Log("모든 유저 세션 로드 완료");
+            base.Awake();
 
-            // 프로필 스프라이트 초기화
+            // 초기화
+            SessionManager.LoadAllSessions();
             SessionManager.ProfileSprites = profileSprites;
-            Debug.Log("프로필 스프라이트 초기화 완료");
-            
-            // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
             SessionManager.ProfileButtonImages = profileImages;
-            Debug.Log("프로필 버튼 이미지 초기화 완료");
         }
         
         // ========== 회원가입 버튼 클릭 시 호출 ==========
