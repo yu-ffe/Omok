@@ -1,40 +1,28 @@
-using System;
-
 namespace MJ
 {
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
     
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : Singleton<SoundManager>
     {
-        public static SoundManager Instance { get; private set;}
-        
         [Header("오디오 소스")]
         public AudioSource bgmSource;
         public AudioSource[] sfxSources;
         
         private const string BGM_VOLUME_KEY = "BGM_VOLUME";
         private const string SFX_VOLUME_KEY = "SFX_VOLUME";
-
-        private void Awake()
+        
+        protected override void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        private void Start()
-        {
+            base.Awake();
             InitialixVolume();
         }
 
+        
+        /// <summary>
+        /// 볼륨 초기화 (PlayerPrebs 저장 된 값 불러오기)
+        /// </summary>
         void InitialixVolume()
         {
             float saveBgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);

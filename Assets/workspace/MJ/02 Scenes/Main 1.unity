@@ -1874,6 +1874,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5466099089376631658, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_text
+      value: SFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466099089376631658, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5466099089376631658, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 5620640775570272160, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1906,6 +1918,32 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6072333788688505571, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_text
+      value: 'confirm
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6072333788688505571, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 6072333788688505571, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8674175789716351418, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_text
+      value: BGM
+      objectReference: {fileID: 0}
+    - target: {fileID: 8674175789716351418, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 8674175789716351418, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8905178944217122710, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
       propertyPath: m_Name
       value: Setting Panel
