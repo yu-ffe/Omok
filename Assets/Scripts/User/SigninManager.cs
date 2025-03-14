@@ -36,6 +36,12 @@ public static class SigninManager
             return (false, "비밀번호가 일치하지 않습니다.");
         }
 
+        return SessionUp(id);       
+    }
+
+
+    public static (bool isSuccsess, string message) SessionUp(string id)
+    {
         // ========= 세션 등록 (전체 데이터 포함) =========
         string nickname = PlayerPrefs.GetString($"user_{id}_nickname");
         int profileNum = PlayerPrefs.GetInt($"user_{id}_profile");
@@ -51,6 +57,8 @@ public static class SigninManager
 
         // ========= 로그인 성공 알림 =========
         Debug.Log($"로그인 성공! {nickname}님 환영합니다. (급수: {grade}급, 포인트: {rankPoint})");
+
+
         // alertText.text = $"{nickname}님 환영합니다!";
         return (true, $"{nickname}님 환영합니다!");
         // 메인 화면 이동
