@@ -39,12 +39,16 @@ namespace WB
         public TextMeshProUGUI txtButtonUpper;
         public TextMeshProUGUI txtButtonLower;
 
-
+        bool IsSignedIn => !string.IsNullOrEmpty(SessionManager.currentUserId);
 
 
         void Start()
         {
             UI_Manager.Instance.AddPanel(panelType, this);
+
+            //Login 여부 확인
+
+            gameObject.SetActive(false);
         }
 
         public override void Show()
@@ -155,7 +159,10 @@ namespace WB
         LoginResult TryLogin(string eMail, string password)
         {
             //로그인 시도
+
+
             return LoginResult.Success_Login;
+
         }
 
         LoginResult TrySignUp(string eMail, string password, string checkPassword, string nickName)

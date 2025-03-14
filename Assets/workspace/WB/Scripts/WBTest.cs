@@ -5,31 +5,38 @@ using WB;
 
 public class WBTest : MonoBehaviour
 {
-    public UI_Manager.PanelType pnl;
 
-    [ContextMenu("ShowPanel")]
-    void ShowPanel()
+    public GameObject objScreen;
+
+    public void AppStart()
     {
-        UI_Manager.Instance.Show(pnl);
+        SessionManager.LoadAllSessions();
+
+        objScreen.SetActive(false);
+
+        UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+
+        gameObject.SetActive(false);
     }
 
-    [ContextMenu("HidePanel")]
-    void HidePanel()
-    {
-        UI_Manager.Instance.Hide(pnl);
-    }
 
-
-    public BasicPopup basicPopup;
-    public string popupMsg;
+    // public BasicPopup basicPopup;
+    public string testPopupMsg;
     [ContextMenu("Popup Test")]
     void PopupTest()
     {
-        basicPopup.Show(
-            msg: popupMsg,
+        UI_Manager.Instance.popup.Show(
+            msg: testPopupMsg,
             okText: "okok",
             cancelText: "nono",
             () => { Debug.Log("Click OK"); },
             () => { Debug.Log("Click Cancel"); });
+    }
+
+    public UI_Manager.PanelType panelType;
+    [ContextMenu("Show Test")]
+    void ShowTest()
+    {
+        UI_Manager.Instance.Show(panelType);
     }
 }

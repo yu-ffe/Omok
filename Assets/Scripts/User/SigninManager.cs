@@ -1,7 +1,8 @@
 using UnityEngine;
 using TMPro;
 
-public class SigninManager : MonoBehaviour {
+public class SigninManager : MonoBehaviour
+{
     [Header("로그인 UI 연결 (TMP)")]
     public TMP_InputField inputId;
     public TMP_InputField inputPassword;
@@ -10,22 +11,26 @@ public class SigninManager : MonoBehaviour {
     public TMP_Text alertText;
 
     // ========== 로그인 버튼 클릭 시 호출 ==========
-    public void OnClickLogin() {
+    public void OnClickLogin()
+    {
         string id = inputId.text.Trim();
         string password = inputPassword.text;
 
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
+        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password))
+        {
             alertText.text = "아이디와 비밀번호를 모두 입력하세요.";
             return;
         }
 
-        if (!IsUserExist(id)) {
+        if (!IsUserExist(id))
+        {
             alertText.text = "존재하지 않는 아이디입니다.";
             return;
         }
 
         string savedPassword = PlayerPrefs.GetString($"user_{id}_password");
-        if (EncryptPassword(password) != savedPassword) {
+        if (EncryptPassword(password) != savedPassword)
+        {
             alertText.text = "비밀번호가 일치하지 않습니다.";
             return;
         }
@@ -58,20 +63,23 @@ public class SigninManager : MonoBehaviour {
     }
 
     // ========== 아이디 존재 확인 ==========
-    bool IsUserExist(string id) {
+    bool IsUserExist(string id)
+    {
         string ids = PlayerPrefs.GetString("user_ids", "");
         string[] idArray = ids.Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries);
         return System.Array.Exists(idArray, x => x == id);
     }
 
     // ========== 비밀번호 암호화 (회원가입과 동일) ==========
-    string EncryptPassword(string plainPassword) {
+    string EncryptPassword(string plainPassword)
+    {
         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainPassword);
         return System.Convert.ToBase64String(plainTextBytes);
     }
 
     // ========== 회원가입 화면으로 이동 ==========
-    public void OnClickGoToSignUp() {
+    public void OnClickGoToSignUp()
+    {
         // SceneManager.LoadScene("SignUpScene");
         Debug.Log("회원가입 화면으로 이동");
     }
