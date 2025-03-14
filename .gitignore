@@ -101,3 +101,5 @@ Server/Thumbs.db
 Server/.vscode/
 Server/.idea/
 Server/.eslintcache
+
+Server/ngrok.exe
