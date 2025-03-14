@@ -7,7 +7,7 @@ public class AutoLogin
     const string AutoLoginIDKey = "AutoLoginIdKey";
     const string AutoLoginKey = "AutoLoginKey";
 
-    // TODO 게임 시작 시 자동 로그인 시도 (초기화 후에 호출)
+    // TODO 게임 첫 시작 시 자동 로그인 시도 (초기화 후에 호출)
     public static void LastLoginUserCall()
     {
         if (PlayerPrefs.GetInt(AutoLoginKey, 1) == 1) // 기본 활성화 상태
@@ -26,10 +26,11 @@ public class AutoLogin
                     Debug.Log($"자동 로그인 성공: {message}");
                     // TODO 로그인 성공과 동일 처리 필요
                 }
+
                 else
                 {
                     Debug.Log($"자동 로그인 실패: {message}");
-                    // TODO 로그인 실패 시 로그인 화면으로 이동하는 처리 필요
+                    // 아무일도 없음
                 }
             }
         }        
