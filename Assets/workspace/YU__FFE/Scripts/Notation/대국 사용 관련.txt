@@ -1,0 +1,7 @@
+기록 저장
+1. GameManager에 GameRecord 등록: 게임 플레이시 기록
+2. GameEnd에 GameRecord를 Notation(Singleton)에 추가
+
+기록 재생
+Notation에 기록된 MatchHistory에 등록 및 순차적 사용
+참조) Notation의 MatchHistory는 밖으로 빼도 무관함
