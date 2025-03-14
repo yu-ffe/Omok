@@ -449,6 +449,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestGame
       objectReference: {fileID: 0}
+    - target: {fileID: 3882991396960474050, guid: 6ac9ef985e5d0854f819435777151e94, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5563924451874744827, guid: 6ac9ef985e5d0854f819435777151e94, type: 3}
       propertyPath: m_LocalPosition.x
       value: -540
@@ -715,8 +719,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1728948292}
   - {fileID: 609069990}
+  - {fileID: 1728948292}
   - {fileID: 1409432882}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -817,6 +821,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: OmokBoard
       objectReference: {fileID: 0}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: uiRaycaster
+      value: 
+      objectReference: {fileID: 2114001623}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: UIeventSystem
+      value: 
+      objectReference: {fileID: 118917681}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: rectTransform
+      value: 
+      objectReference: {fileID: 609069990}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

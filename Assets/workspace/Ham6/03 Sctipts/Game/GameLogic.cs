@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using workspace.Ham6._03_Sctipts.Game;
+using Update = Unity.VisualScripting.Update;
 
 
-    public abstract class BasePlayerState
+public abstract class BasePlayerState
     {
         // 상태에 진입할 때 실행
         public abstract void OnEnter(GameLogic gameLogic);
@@ -38,6 +40,7 @@ using workspace.Ham6._03_Sctipts.Game;
             }
         }
     }
+
     //직접 플레이하는 상태 (싱글 또는 멀티플레이)
     public class PlayerState : BasePlayerState
     {
@@ -113,6 +116,7 @@ using workspace.Ham6._03_Sctipts.Game;
             }
         }
     }
+
     //AI 플레이 상태
     public class AIState : BasePlayerState
     {
@@ -145,6 +149,36 @@ using workspace.Ham6._03_Sctipts.Game;
             gameLogic.SetState(gameLogic.firstPlayerState); // AI 턴 후 플레이어로 변경
         }
     }
+
+    /* TODO: 멀티시 구현
+    //네트워크 플레이
+    public class MultiplayState : BasePlayerState
+    {
+        private Constants.PlayerType _playerType;
+        private bool _isFirstPlayer;
+    
+        private MultiplayManager _multiplayManager;
+
+        public MultiplayState(bool isFirstPlayer, MultiplayManager multiplayManager)
+        {
+            _isFirstPlayer = isFirstPlayer;
+            _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+            _multiplayManager = multiplayManager;
+        }
+    
+        public override void OnEnter(GameLogic gameLogic)
+        {
+            _multiplayManager.OnOpponentMove = moveData =>
+            {
+                var row = moveData.position / 3;
+                var col = moveData.position % 3;
+                UnityThread.executeInUpdate(() =>
+                {
+                    HandleMove(gameLogic, row, col);                
+                });
+            };
+        }
+        */
 
     public class GameLogic : IDisposable
     {
@@ -185,6 +219,15 @@ using workspace.Ham6._03_Sctipts.Game;
                 secondPlayerState = new AIState(); // AI 플레이어
 
                 // 첫 번째 플레이어부터 시작
+                SetState(firstPlayerState);
+                break;
+            }
+            case Constants.GameType.DualPlayer:
+            {
+                firstPlayerState = new PlayerState(true);
+                secondPlayerState = new PlayerState(false);
+                // 게임 시작
+                
                 SetState(firstPlayerState);
                 break;
             }
@@ -248,14 +291,14 @@ using workspace.Ham6._03_Sctipts.Game;
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
-            OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
+            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
             return true;
         }
         // 플레이어 B가 놓는 경우
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
-            OmokBoard.PlaceStone(playerType, row, col);
+            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col);
             return true;
         }
         return false;
