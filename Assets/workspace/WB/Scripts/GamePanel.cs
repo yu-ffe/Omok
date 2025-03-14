@@ -31,6 +31,9 @@ namespace WB
 
         void Start()
         {
+            if (!isComponentsConnected)
+                FindComponents();
+
             UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Game, this);
             UI_Manager.Instance.AddCallback("turn", TurnStateRefresh);
             UI_Manager.Instance.AddCallback("time", TimeRefresh);
@@ -38,8 +41,7 @@ namespace WB
 
         public override void Show()
         {
-            if (!isComponentsConnected)
-                FindComponents();
+
 
             LoadProfile();
 
@@ -49,7 +51,7 @@ namespace WB
         }
         public override void Hide()
         {
-
+            gameObject.SetActive(false);
         }
 
         public override void OnDisable()
@@ -160,7 +162,7 @@ namespace WB
             "기권", "취소",
             okAction: () =>
             {
-
+                SceneManager.Instance.LoadSceneAsync("Main");
             },
             cancelAction: () =>
             {

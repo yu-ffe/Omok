@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using KimHyeun;
 using UnityEngine;
 using WB;
+using workspace.YU__FFE.Scripts;
 
 public class RankingPanel : WB.UI_Panel
 {
@@ -24,6 +25,7 @@ public class RankingPanel : WB.UI_Panel
     }
     public override void Hide()
     {
+        gameObject.SetActive(false);
     }
 
     public override void OnDisable()
@@ -33,5 +35,7 @@ public class RankingPanel : WB.UI_Panel
     public override void OnEnable()
     {
     }
+
+    public void OnClick_Back() => UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
 
 }
