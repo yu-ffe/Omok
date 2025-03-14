@@ -7,7 +7,7 @@ namespace KimHyeun {
     {
         const int rankPointRange = 30;
 
-        public int GetRankPointRange()
+        public static int GetRankPointRange()
         {
             return rankPointRange;
         }

@@ -34,6 +34,10 @@ namespace KimHyeun {
             // 유저 아이디, 해당 유저의 세션과 대국 결과를 전달받아서 급수를 업데이트 하는 함수.
             // TODO 게임 종료 후 승급 애니메이션 과정에 호출(이전 상태와 비교를 위해)
             GradeChangeManager.GradeUpdate(SessionManager.currentUserId, SessionManager.GetSession(SessionManager.currentUserId), GameResult.Win);
+
+
+            int rankPointRange = GradeChangeManager.GetRankPointRange(); // 게임 종료 시 승급 포인트 양끝 범위를 얻는 함수
+
             /// 
         }
 
