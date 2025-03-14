@@ -9,7 +9,7 @@ public class SigninManager : MonoBehaviour
 
     [Header("알림 텍스트 (TMP)")]
     public TMP_Text alertText;
-
+    
     // ========== 로그인 버튼 클릭 시 호출 ==========
     public void OnClickLogin()
     {
@@ -44,14 +44,8 @@ public class SigninManager : MonoBehaviour
         int winCount = PlayerPrefs.GetInt($"user_{id}_winCount", 0); // 기본 0
         int loseCount = PlayerPrefs.GetInt($"user_{id}_loseCount", 0); // 기본 0
 
-        SessionManager.AddSession(id,
-            nickname,
-            profileNum,
-            coins,
-            grade,
-            rankPoint,
-            winCount,
-            loseCount);
+        SessionManager.AddSession(id, nickname, profileNum, coins, grade, 
+            rankPoint, winCount, loseCount);
         SessionManager.currentUserId = id; // 현재 유저 ID 저장
 
         // ========= 로그인 성공 알림 =========

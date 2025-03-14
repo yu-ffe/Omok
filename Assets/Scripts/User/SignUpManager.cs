@@ -6,8 +6,9 @@ using System.Linq;
 using TMPro;
 using UnityEngine.UI;
 
-public class SignUpManager : MonoBehaviour {
-    [Header("회원가입 UI 연결")]
+public class SignUpManager : MonoBehaviour
+{
+    [Header("회원가입 UI 연결")] 
     public TMP_InputField inputId;
     public TMP_InputField inputPassword;
     public TMP_InputField inputPasswordCheck;
@@ -16,12 +17,32 @@ public class SignUpManager : MonoBehaviour {
     public Image[] profileImages; // 프로필 이미지 (아이콘용) 연결 (버튼에 있는 이미지 컴포넌트)
 
     [Header("알림 텍스트")] public TMP_Text alertText;
-
+    
+    [Header("프로필 스프라이트")] 
+    public Sprite[] profileSprites;
+    
     private int _profileNumber = -1; // 선택된 프로필 번호 (-1: 선택 안함)
 
+    void Start()
+    {
+        // 모든 저장된 유저 세션 불러오기
+        SessionManager.LoadAllSessions();
+        Debug.Log("모든 유저 세션 로드 완료");
+
+        // 프로필 스프라이트 초기화
+        SessionManager.ProfileSprites = profileSprites;
+        Debug.Log("프로필 스프라이트 초기화 완료");
+        
+        // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
+        SessionManager.ProfileButtonImages = profileImages;
+        Debug.Log("프로필 버튼 이미지 초기화 완료");
+    }
+    
     // ========== 회원가입 버튼 클릭 시 호출 ==========
-    public void OnClickSignUp() {
-        if (ValidateInput()) {
+    public void OnClickSignUp()
+    {
+        if (ValidateInput())
+        {
             SaveUserData();
             alertText.text = "회원가입 성공! 메인 화면으로 이동합니다.";
             Debug.Log("회원가입 완료");
@@ -32,29 +53,34 @@ public class SignUpManager : MonoBehaviour {
     }
 
     // ========== 유효성 검사 ==========
-    bool ValidateInput() {
+    bool ValidateInput()
+    {
         string id = inputId.text.Trim();
         string password = inputPassword.text;
         string passwordCheck = inputPasswordCheck.text;
         string nickname = inputNickname.text.Trim();
 
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
-            string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname)) {
+            string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname))
+        {
             alertText.text = "모든 항목을 입력하세요.";
             return false;
         }
 
-        if (!IsEmailFormat(id)) {
+        if (!IsEmailFormat(id))
+        {
             alertText.text = "올바른 이메일 형식이 아닙니다.";
             return false;
         }
 
-        if (IsIdDuplicated(id)) {
+        if (IsIdDuplicated(id))
+        {
             alertText.text = "이미 존재하는 아이디입니다.";
             return false;
         }
 
-        if (password != passwordCheck) {
+        if (password != passwordCheck)
+        {
             alertText.text = "비밀번호가 일치하지 않습니다.";
             return false;
         }
@@ -63,25 +89,29 @@ public class SignUpManager : MonoBehaviour {
     }
 
     // ========== 이메일 형식 체크 ==========
-    bool IsEmailFormat(string email) {
+    bool IsEmailFormat(string email)
+    {
         return email.Contains("@") && email.Contains(".");
     }
 
     // ========== 아이디 중복 확인 ==========
-    bool IsIdDuplicated(string id) {
+    bool IsIdDuplicated(string id)
+    {
         string ids = PlayerPrefs.GetString("user_ids", "");
         string[] idArray = ids.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         return idArray.Contains(id);
     }
 
     // ========== 비밀번호 암호화 (Base64) ==========
-    string EncryptPassword(string plainPassword) {
+    string EncryptPassword(string plainPassword)
+    {
         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainPassword);
         return System.Convert.ToBase64String(plainTextBytes);
     }
 
     // ========== 데이터 저장 ==========
-    void SaveUserData() {
+    void SaveUserData()
+    {
         string id = inputId.text.Trim();
         string password = EncryptPassword(inputPassword.text);
         string nickname = inputNickname.text.Trim();
@@ -89,10 +119,10 @@ public class SignUpManager : MonoBehaviour {
 
         // 기본 값
         int coins = 1000;
-        int grade = 18; // 시작 급수
-        int rankPoint = 0; // 시작 포인트
-        int winCount = 0; // 시작 승리 수
-        int loseCount = 0; // 시작 패배 수
+        int grade = 18;       // 시작 급수
+        int rankPoint = 0;    // 시작 포인트
+        int winCount = 0;     // 시작 승리 수
+        int loseCount = 0;    // 시작 패배 수
 
         // 데이터 저장
         string ids = PlayerPrefs.GetString("user_ids", "");
@@ -109,23 +139,19 @@ public class SignUpManager : MonoBehaviour {
         PlayerPrefs.Save();
 
         // 세션 등록
-        SessionManager.AddSession(id,
-            nickname,
-            profile,
-            coins,
-            grade,
-            rankPoint,
-            winCount,
-            loseCount);
+        SessionManager.AddSession(id, nickname, profile, coins, grade, 
+            rankPoint, winCount, loseCount);
     }
 
     // ========== 프로필 이미지 선택 ==========
-    public void OnClickSelectProfile(int index) {
+    public void OnClickSelectProfile(int index)
+    {
         _profileNumber = index;
         Debug.Log($"선택한 프로필 번호: {_profileNumber}");
 
         // 모든 버튼 초기화 (테두리 색 원상복구)
-        for (int i = 0; i < profileButtons.Length; i++) {
+        for (int i = 0; i < profileButtons.Length; i++)
+        {
             profileImages[i].color = Color.white; // 기본색 (선택 안됨)
         }
 
@@ -134,9 +160,9 @@ public class SignUpManager : MonoBehaviour {
     }
 
     // ========== 자동 로그인 ==========
-    void AutoLogin(string id) {
+    void AutoLogin(string id)
+    {
         SessionManager.currentUserId = id;
         Debug.Log($"자동 로그인 완료: {id}");
     }
 }
-// ========== 세션 매니저  ==========
