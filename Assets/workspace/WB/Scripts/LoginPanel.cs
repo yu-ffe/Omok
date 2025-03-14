@@ -10,30 +10,22 @@ namespace WB
 {
     public class LoginPanel : UI_Panel
     {
-        public enum LoginResult : byte
-        {
-            // 성공
-            Success_SignUp,
-            Success_Login,
 
-            // 실패 이유들..?구체적으로 필요할까요?
-            Failed_Email,
-            Failed_Password,
-            Failed_CheckPassword,
-            Failed_NickName,
-        }
-        public GameObject objSignup;
-
+        [Header("타이틀/메세지")]
         public TextMeshProUGUI txtTitle;
         public TextMeshProUGUI txtMessage;
 
-
+        [Header("텍스트입력")]
         public TMP_InputField inputEmail;
         public TMP_InputField inputPassword;
         public TMP_InputField inputCheckPassword;
         public TMP_InputField inputNickName;
 
+        [Header("프로필 이미지 선택")]
 
+        public GameObject objProfileImages;
+
+        [Header("하단 버튼 2개")]
         public Button btnUpper;
         public Button btnLower;
         public TextMeshProUGUI txtButtonUpper;
@@ -42,11 +34,27 @@ namespace WB
         bool IsSignedIn => !string.IsNullOrEmpty(SessionManager.currentUserId);
 
 
+
+        [Header("프로필 이미지 관련 > SessionManager에 전달 됨")]
+        // public Button[] profileButtons; // 버튼 배열로 받기 (이미지 포함된 버튼)
+        public Image[] profileImages; // 프로필 이미지 (아이콘용) 연결 (버튼에 있는 이미지 컴포넌트)
+        public Sprite[] profileSprites;
+        int selectedImageIndex = -1;
+
         void Start()
         {
             UI_Manager.Instance.AddPanel(panelType, this);
 
             //Login 여부 확인
+
+            // 프로필 스프라이트 초기화
+            SessionManager.ProfileSprites = profileSprites;
+            Debug.Log("프로필 스프라이트 초기화 완료");
+
+            // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
+            SessionManager.ProfileButtonImages = profileImages;
+            Debug.Log("프로필 버튼 이미지 초기화 완료");
+
 
             gameObject.SetActive(false);
         }
@@ -93,6 +101,8 @@ namespace WB
 
             txtButtonUpper.text = "Login";
             txtButtonLower.text = "SignUp";
+
+            objProfileImages.SetActive(false);
         }
 
         [ContextMenu("Show_SignUpPhase")]
@@ -115,21 +125,29 @@ namespace WB
 
             txtButtonUpper.text = "SignUp";
             txtButtonLower.text = "Cancel";
+
+            objProfileImages.SetActive(true);
         }
 
+
+        public void OnClick_PrifileImage(int index)
+        {
+            selectedImageIndex = index;
+            for (int i = 0; i < profileImages.Length; i++)
+                profileImages[i].color = i == index ? Color.white : Color.gray;
+
+        }
 
 
         public void OnClick_Login()
         {
             //로그인 시도
-            var result = TryLogin(inputEmail.text, inputPassword.text);
+            var (isSuccsess, message) = SigninManager.TryLogin(inputEmail.text.Trim(), inputPassword.text);
 
-            if (result == LoginResult.Success_Login)
-            {
-                // UI_Manager.Instance.Show("Main");//... 아직 
-            }
-            else
-                txtMessage.text = $"Failed : {result}";
+            txtMessage.text = message;
+
+            if (isSuccsess)
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
         }
 
         public void OnClick_Signup_Show()
@@ -139,15 +157,27 @@ namespace WB
 
         public void OnClick_SignUp_TrySignUp()
         {
-            // 회원 가입 시도
-            var result = TrySignUp(inputEmail.text, inputPassword.text, inputCheckPassword.text, inputNickName.text);
-            if (result == LoginResult.Success_SignUp)
+            if (selectedImageIndex == -1)
             {
-                Show_LoginPhase();
-                txtMessage.text = "SignUp Sucess";
+                txtMessage.text = "프로필 이미지를 선택해주세요";
+                return;
             }
-            else
-                txtMessage.text = $"Failed : {result}";
+            // 회원 가입 시도
+            var (isSuccsess, message) = SignUpManager.TrySignUp
+                (
+                    id: inputEmail.text.Trim(),
+                    password: inputPassword.text,
+                    passwordCheck: inputCheckPassword.text,
+                    nickname: inputNickName.text.Trim(),
+                    imgIndex: selectedImageIndex
+                );
+
+            txtMessage.text = message;
+            if (isSuccsess)
+            {
+                // Show_LoginPhase();
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+            }
         }
 
         public void OnClick_SignUp_Cancel()
@@ -155,21 +185,6 @@ namespace WB
             Show_LoginPhase();
         }
 
-
-        LoginResult TryLogin(string eMail, string password)
-        {
-            //로그인 시도
-
-
-            return LoginResult.Success_Login;
-
-        }
-
-        LoginResult TrySignUp(string eMail, string password, string checkPassword, string nickName)
-        {
-            //회원가입 시도
-            return LoginResult.Success_SignUp;
-        }
 
     }
 

@@ -6,13 +6,9 @@ using WB;
 public class WBTest : MonoBehaviour
 {
 
-    public GameObject objScreen;
-
     public void AppStart()
     {
         SessionManager.LoadAllSessions();
-
-        objScreen.SetActive(false);
 
         UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
 

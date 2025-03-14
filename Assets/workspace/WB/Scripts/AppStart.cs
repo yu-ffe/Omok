@@ -7,16 +7,24 @@ namespace WB
 {
     public class AppStart : MonoBehaviour
     {
-        // Start is called before the first frame update
+
+        void Awake()
+        {
+            SessionManager.LoadAllSessions();
+        }
         void Start()
         {
-
+            //앱 초기 세팅
+            Debug.Log("App Start");
         }
 
-        // Update is called once per frame
-        void Update()
+        public void Onclick_AppStart()
         {
 
+            UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+
+            gameObject.SetActive(false);
         }
+
     }
 }
