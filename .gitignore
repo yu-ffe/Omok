@@ -103,3 +103,7 @@ Server/.idea/
 Server/.eslintcache
 
 Server/ngrok.exe
+
+
+# Cafe24Ssurround-v2.0 폰트 에셋 무시
+Assets/Resources/Fonts/Cafe24Ssurround-v2.0/*.asset
