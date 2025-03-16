@@ -5,6 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/Server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/models/User.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/models/User.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/views/error.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/views/index.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/views/index.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/views/index.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/views/layout.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/Server/views/layout.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/views/layout.jade" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" afterDir="false" />
     </list>
@@ -46,18 +57,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/minji/AI-grade-&&-timer",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+<component name="PropertiesComponent">
+  <![CDATA[
+  {
+    "keyToString": {
+      "RunOnceActivity.ShowReadmeOnStart": "true",
+      "RunOnceActivity.git.unshallow": "true",
+      "git-widget-placeholder": "feature/yu/server/nodejs", <!-- feature/yu/server/nodejs을 사용 -->
+      "node.js.detected.package.eslint": "true",
+      "node.js.selected.package.eslint": "(autodetect)",
+      "node.js.selected.package.tslint": "(autodetect)",
+      "nodejs_package_manager_path": "npm",
+      "vue.rearranger.settings.migration": "true"
+    }
   }
-}]]></component>
+  ]]>
+</component>
+
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.51f1\Editor\Unity.exe" />
@@ -111,6 +127,8 @@
       <option name="presentableId" value="Default" />
       <updated>1741911429967</updated>
       <workItem from="1741911432734" duration="6575000" />
+      <workItem from="1741934865966" duration="301000" />
+      <workItem from="1742094453598" duration="686000" />
     </task>
     <servers />
   </component>
