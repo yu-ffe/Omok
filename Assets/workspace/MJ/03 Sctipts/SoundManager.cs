@@ -24,7 +24,7 @@ namespace MJ
             InitializeVolume();
         }
         
-        /// <summary>
+        /// <summary> 
         /// 볼륨 초기화 (PlayerPrebs 저장 된 값 불러오기)
         /// </summary>
         void InitializeVolume()

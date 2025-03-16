@@ -16,25 +16,17 @@ namespace WB
         {
             //앱 초기 세팅
             Debug.Log("App Start");
-            if (!string.IsNullOrEmpty(SessionManager.currentUserId))
-            {
-                UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
-                gameObject.SetActive(false);
-            }
-            else
-            {
-                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
-                gameObject.SetActive(false);
-            }
-        }
-
-        public void Onclick_AppStart()
-        {
-
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
-
+            AutoLogin.LastLoginUserCall();
             gameObject.SetActive(false);
         }
+
+        // public void Onclick_AppStart()
+        // {
+
+        //     UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+
+        //     gameObject.SetActive(false);
+        // }
 
     }
 }
