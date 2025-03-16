@@ -12,34 +12,35 @@ var authRouter = require("./routes/auth");
 
 var app = express();
 
-// MongoDB 연결
-
+// 📌 MongoDB 연결 (옵션 정리)
 var databaseURL = "mongodb://localhost:27017/Omok";
 mongoose
-  // .connect(process.env.MONGO_URI, {
-  .connect(databaseURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(databaseURL)
   .then(() => console.log("✅ MongoDB 연결 성공"))
   .catch((err) => console.error("❌ MongoDB 연결 실패:", err));
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+
+// 📌 미들웨어 설정
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public"))); // 📌 정적 파일 제공
 
+// 📌 라우트 설정
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/auth", authRouter); // 👈 로그인 & 회원가입 라우터 추가됨
+app.use("/auth", authRouter); // 로그인 & 회원가입 라우터 추가
 
-// 404 에러 핸들링
+// 📌 404 에러 핸들링
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// 오류 핸들러
+// 📌 오류 핸들러
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -48,8 +49,3 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-
-
-
-//ngrok config add-authtoken 2uIE2xkE7s0eq5mRRmjV20pYGHJ_2TEU1vctCqQBVmyZCXe1
-//ngrok http http://localhost:80
