@@ -1,9 +1,9 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+    // req.session.user가 정의되어 있지 않으면 null로 처리
+    res.render("index", { user:"ete" });
 });
 
 module.exports = router;

@@ -1,4 +1,19 @@
-<%- include('layout') %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Omok Server</title>
+</head>
+<body>
+    <h1>Welcome to Omok Server</h1>
 
-<h1>Welcome to Omok Server</h1>
-<p>This is the main page.</p>
+    <% if (user && user.nickname) { %>  <!-- user 객체가 존재하고 nickname도 있는지 확인 -->
+        <p>현재 로그인된 사용자: <%= user.nickname %></p>
+        <a href="/auth/logout"><button>로그아웃</button></a>
+    <% } else { %>
+        <a href="/auth/login"><button>로그인</button></a>
+        <a href="/auth/register"><button>회원가입</button></a>
+    <% } %>
+
+</body>
+</html>

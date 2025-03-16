@@ -49,3 +49,35 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+var session = require("express-session");
+
+app.use(session({
+  secret: "your_secret_key",  // 보안 키
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }   // HTTPS가 아니라면 false로 설정
+}));
+
+// 세션에 인위적으로 user 객체를 추가하여 테스트
+app.use((req, res, next) => {
+  console.log("세션 미들웨어 실행");
+  if (!req.session.user) {
+    req.session.user = { nickname: "testUser", id: 123 }; // 세션에 user 객체 설정
+    console.log("세션에 user 설정:", req.session.user); // 콘솔에서 세션 값 확인
+  }
+  next();
+});
+
+app.get("/", (req, res) => {
+  if (req.session.user) {
+    console.log("세션에 저장된 user:", req.session.user); // 콘솔에서 확인
+    res.send(`<h1>Welcome, ${req.session.user.nickname}!</h1>`);
+  } else {
+    res.send("<h1>No user in session</h1>");
+  }
+});
+
+app.listen(3000, () => {
+  console.log("서버가 3000번 포트에서 실행 중...");
+});
