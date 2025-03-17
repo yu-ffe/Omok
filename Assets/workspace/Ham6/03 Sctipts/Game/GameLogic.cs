@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using workspace.Ham6._03_Sctipts.Game;
+using workspace.Ham6.AI;
 using Update = Unity.VisualScripting.Update;
 
 
@@ -126,18 +127,20 @@ public abstract class BasePlayerState
         // AI가 자동으로 착수하는 로직
         public override void OnEnter(GameLogic gameLogic)
         {
-            /*TODO: AI알고리즘 작성
-            var result = MinimaxAIController.GetBestMove(gameLogic.GetBoard());
+            HamAI hamAI = new HamAI(gameLogic.GetBoard());
+            
+            // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
+            var move = hamAI.GetBestMove();
 
-            if (result.HasValue)
+            if (move.Item1 >= 0 && move.Item2 >= 0)
             {
-                HandleMove(gameLogic, result.Value.row, result.Value.col); // AI 착수
+                HandleMove(gameLogic, move.Item1, move.Item2);
             }
             else
             {
                 gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
             }
-            */
+            
         }
 
         public override void OnExit(GameLogic gameLogic) { }
@@ -312,6 +315,8 @@ public abstract class BasePlayerState
         {
             _board[row, col] = playerType;
             lastPlace = (row, col);
+            
+            Debug.Log($"{row},{col}에 보드상에 흑돌 기입");
             OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
             
             return true;
@@ -321,6 +326,8 @@ public abstract class BasePlayerState
         {
             _board[row, col] = playerType;
             lastPlace = (row, col);
+            
+            Debug.Log($"{row},{col}에 보드상에 백돌 기입");
             OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col);
             
             return true;
@@ -342,7 +349,50 @@ public abstract class BasePlayerState
     //게임의 승패를 판단하는 함수
     private bool CheckGameWin(Constants.PlayerType playerType)
     {
-        int[][] directions = new int[][] {
+        int[][] directions = new int[][]
+        {
+            new int[] { 0, 1 }, new int[] { 1, 0 }, new int[] { 1, 1 }, new int[] { 1, -1 }
+        };
+
+        // 보드의 모든 셀 순회 (BOARD_SIZE는 15)
+        for (int r = 0; r < OmokBoard.gridSize; r++)
+        {
+            for (int c = 0; c < OmokBoard.gridSize; c++)
+            {
+                Constants.PlayerType cell = _board[r, c];
+                // 비어 있는 셀은 건너뜁니다.
+                if (cell == Constants.PlayerType.None) continue;
+
+                // 4가지 방향에 대해 연속된 돌의 개수 평가
+                foreach (var dir in directions)
+                {
+                    // 시작점인지 확인 (이전에 같은 돌이 있다면 이미 계산된 것으로 간주)
+                    int prevR = r - dir[0];
+                    int prevC = c - dir[1];
+                    if (prevR >= 0 && prevR < OmokBoard.gridSize && prevC >= 0 && prevC < OmokBoard.gridSize &&
+                        _board[prevR, prevC] == cell)
+                        continue;
+
+                    int count = 1; // 현재 셀 포함
+                    int nr = r + dir[0];
+                    int nc = c + dir[1];
+                    while (nr >= 0 && nr < OmokBoard.gridSize && nc >= 0 && nc < OmokBoard.gridSize && _board[nr, nc] == cell)
+                    {
+                        count++;
+                        nr += dir[0];
+                        nc += dir[1];
+                    }
+
+                    // 5개 이상의 연속 돌이 있으면 즉시 승리 판단
+                    if (count >= 5)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        /*int[][] directions = new int[][] {
             new int[] { 1, 0 }, // 수직
             new int[] { 0, 1 }, // 수평
             new int[] { 1, 1 }, // 대각선 ↘
@@ -362,9 +412,9 @@ public abstract class BasePlayerState
                 }
             }
             if (count >= 5) return true;
-        }
+        }*/
 
-        return false; // 승리 조건 없음
+        return false;
     }
     
     //게임 종료 시 호출

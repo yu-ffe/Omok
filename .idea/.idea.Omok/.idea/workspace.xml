@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/MCTS.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/MCTS.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerBlack.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerBlack.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerWhite.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerWhite.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +45,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/TimerManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
     &quot;customColor&quot;: &quot;&quot;,
     &quot;associatedIndex&quot;: 1
@@ -62,7 +72,7 @@
 }]]></component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.51f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\2022.3.51f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\euyju\Documents\GitHub\Omok -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\euyju\Documents\GitHub\Omok" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -70,7 +80,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unity 시작" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.51f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="D:\2022.3.51f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\euyju\Documents\GitHub\Omok -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\euyju\Documents\GitHub\Omok" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -121,6 +131,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />

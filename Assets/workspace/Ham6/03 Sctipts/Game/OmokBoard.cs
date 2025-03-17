@@ -87,8 +87,8 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         float playableSize = currentBoardSize - (scaledPadding * 2); // 공백을 제외한 실제 바둑판 크기
         cellSize = playableSize / (gridSize - 1); // 한 칸 크기 (간격 기준)
         
-        // 바둑알 시작 좌표 설정 (공백을 기준으로 조정)
-        startPosition = new Vector2(scaledPadding, -scaledPadding);
+        // 바둑알 시작 좌표를 우하단으로 설정 (공백을 기준으로 조정)
+        startPosition = new Vector2(scaledPadding, scaledPadding);
     }
 
     //마우스로 입력 받은 보드 로컬좌표를 배열로 바꾸는 함수
@@ -120,6 +120,10 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             Image targetImage = stone.GetComponent<Image>();
             targetImage.color = new Color(1, 1, 1, 0.6f); // 반투명 설정
         }
+        else if (stoneType == Constants.StoneType.Normal)
+        {
+            Debug.Log($"{x},{y}에 착수");
+        }
         
         RectTransform stoneRect = stone.GetComponent<RectTransform>(); //바둑알의 바둑판로컬위치
         stoneRect.anchoredPosition = localPos; //바둑알의 바둑판로컬위치 조정
@@ -132,7 +136,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     public Vector2 GetLocalPosition(int x, int y)
     {
         float localX  = startPosition.x + (x * cellSize);
-        float localY  = startPosition.y - (y * cellSize); // Y 방향은 아래로 감소
+        float localY  = startPosition.y + (y * cellSize); // Y 방향은 위로
 
         return new Vector2(localX, localY);
     }
@@ -158,12 +162,12 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             out localPoint // 변환된 로컬 좌표 저장
         );
 
-        float leftTopX = localPoint.x + (rectTransform.rect.width * 0.5f);
-        float leftTopY = (rectTransform.rect.height * 0.5f) - localPoint.y;
+        float leftBottomX = localPoint.x + (rectTransform.rect.width * 0.5f);
+        float leftBottomY = localPoint.y + (rectTransform.rect.height * 0.5f);
 
-        Vector2 leftTopPoint = new Vector2(leftTopX, leftTopY);
+        Vector2 leftBottomPoint = new Vector2(leftBottomX, leftBottomY);
         
-        boardCoord = GetCoord(leftTopPoint);
+        boardCoord = GetCoord(leftBottomPoint);
     }
     
     // UI에 마우스를 눌렀을 때 실행
