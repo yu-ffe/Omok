@@ -8,7 +8,7 @@ public class AutoLogin
     const string AutoLoginIDKey = "AutoLoginIdKey";
     const string AutoLoginKey = "AutoLoginKey";
 
-    // TODO 게임 첫 시작 시 자동 로그인 시도 (초기화 후에 호출)
+    // 게임 첫 시작 시 자동 로그인 시도 (초기화 후에 호출)
     public static void LastLoginUserCall()
     {
         if (PlayerPrefs.GetInt(AutoLoginKey, 1) == 1) // 기본 활성화 상태
@@ -50,8 +50,7 @@ public class AutoLogin
         PlayerPrefs.Save(); // 변경 사항 즉시 저장
     }
 
-    // TODO 설정쪽에서  SetAutoLogin 를 사용해서 온오프 가능
-
+    // 자동 로그인 오오프
     public static void SetAutoLogin(bool isEnabled)
     {
         PlayerPrefs.SetInt(AutoLoginKey, isEnabled ? 1 : 0); // 1이면 활성화, 0이면 비활성화
