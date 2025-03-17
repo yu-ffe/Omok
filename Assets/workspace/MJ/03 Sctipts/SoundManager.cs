@@ -29,49 +29,11 @@ namespace MJ
         /// </summary>
         void InitializeVolume()
         {
-            float bgmVolume  = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
-            float sfxVolume  = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
+            float saveBgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
+            float saveSfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
             
-            ApplyBgmVolume(bgmVolume);
-            ApplySfxVolume(sfxVolume);
-        }
-        
-        public void SetBgmVolume(float value)
-        {
-            ApplyBgmVolume(value);
-            PlayerPrefs.SetFloat(BGM_VOLUME_KEY, value); // 원본 값 저장
-            PlayerPrefs.Save();
-        }
-        
-        
-        public void SetSfxVolume(float value)
-        {
-            ApplySfxVolume(value);
-            PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value); // 원본 값 저장
-            PlayerPrefs.Save();
-        }
-        
-        /// <summary> 실제 오디오 믹서 적용 (볼륨 처리) </summary>
-        private void ApplyBgmVolume(float value)
-        {
-            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
-            audioMixer.SetFloat("BGMVolume", volume);
-        }
-        
-        private void ApplySfxVolume(float value)
-        {
-            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
-            audioMixer.SetFloat("SFXVolume", volume);
-        }
-        
-        public float GetSavedBgmVolume()
-        {
-            return PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
-        }
-
-        public float GetSavedSfxVolume()
-        {
-            return PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
+            SetBgmVolume(saveBgmVolume);
+            SetSfxVolume(saveSfxVolume);
         }
 
         public void PlayBGM(AudioClip clip, bool loop = true)
@@ -110,7 +72,23 @@ namespace MJ
         {
             PlaySFX(3);
         }
-        
+
+        public void SetBgmVolume(float value)
+        {
+            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+            audioMixer.SetFloat("BGMVolume", volume);
+            PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
+            PlayerPrefs.Save();
+        }
+
+        public void SetSfxVolume(float value)
+        {
+            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+            audioMixer.SetFloat("SFXVolume", volume);
+            PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
+            PlayerPrefs.Save();
+        }
+
         public void MuteAll(bool mute)
         {
             bgmSource.mute = mute;
