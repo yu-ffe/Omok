@@ -12,6 +12,9 @@ namespace MJ
         public Slider bgmSlider;
         public Slider sfxSlider;
         
+        [Header("자동 로그인 토글 연결")]
+        public Toggle autoLoginToggle;
+        
         [Header("세팅 패널 프리팹 ")]
         public GameObject settingPanelPrefab;
         
@@ -23,13 +26,26 @@ namespace MJ
         void Start()
         {
             LoadSoundSettings();
+            
+            // 자동 로그인 토클 초기화 (저장된 상태 불러오기)
+            bool isAutoLoginEnabled = AutoLogin.GetAutoLogin();
+            autoLoginToggle.isOn = isAutoLoginEnabled;
+            
+            // 토글 변경 시 자동 로그인 설정 저장
+            autoLoginToggle.onValueChanged.AddListener(OnAutoLoginToggleChanged);
+        }
+        
+        // 자동 로그인 토글 콜백
+        private void OnAutoLoginToggleChanged(bool isOn)
+        {
+            AutoLogin.SetAutoLogin(isOn);
         }
         
         // ========= 사운드 설정 로드 ========== 
         private void LoadSoundSettings()
         {
-            float bgmVolume = PlayerPrefs.GetFloat(SETTING_VOLUME_KEY, 1f);
-            float sfxVolume = PlayerPrefs.GetFloat(SETTING_VOLUME_KEY, 1f);
+            float bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
+            float sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
             
             bgmSlider.value = bgmVolume;
             sfxSlider.value = sfxVolume;
