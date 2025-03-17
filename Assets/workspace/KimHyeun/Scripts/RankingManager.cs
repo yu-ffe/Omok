@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace KimHyeun {
+namespace KimHyeun
+{
     public class RankingManager : Singleton<RankingManager>
     {
         [Header("랭킹 스크롤 뷰 필수 할당")]
@@ -14,7 +15,12 @@ namespace KimHyeun {
         List<int> winList = new List<int>();
         List<int> loseList = new List<int>();
 
-        
+
+
+        public void SetScrollView(ScrollViewSet scrollViewSet)
+        {
+            this.scrollViewSet = scrollViewSet;
+        }
 
 
         public void GetUserData() // 랭킹 팝업 오픈 시 호출

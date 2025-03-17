@@ -5,11 +5,10 @@ using UnityEngine;
 namespace KimHyeun {
     public class TestCallManager : Singleton<TestCallManager>
     {
-
+        /// 테스트용 코드 모음
 
         private void Start()
         {
-            /// 테스트용 코드 호출 모음
             // SessionManager.AddSession("TestId1", "TestNickName1", 0, 1000, 18, 0, 0, 0);
             // SessionManager.AddSession("TestId2", "TestNickName2", 0, 500, 7, 0, 0, 0);
             // SessionManager.AddSession("TestId3", "TestNickName3", 0, 300, 10, 0, 0, 0);
@@ -18,10 +17,10 @@ namespace KimHyeun {
             SessionManager.currentUserId = SessionManager.GetAllUserIds()[0]; // 임의의 1번 유저를 로그인한 유저로 설정
 
 
-            // TODO 랭킹 팝업 호출 시 실행 필요
+            // 랭킹 팝업 호출 시 실행
             RankingManager.Instance.GetUserData(); 
 
-            // TODO 상점 팝업 호출 시 실행 필요
+            // 상점 팝업 호출 시 실행
             ShopManager.Instance.GetItemData(); 
 
             // TODO 로그인 시 호출, 상점 코인 구매 시 호출, 게임 종료 후 프로필 정보로 돌아가면 호출 -> 프로필 정보 변경 시 호출
@@ -31,13 +30,27 @@ namespace KimHyeun {
             ProfileManager.Instance.ButtonInfoShow();
 
 
+
+            // 유저 아이디, 해당 유저의 세션과 대국 결과를 전달받아서 급수를 업데이트 하는 함수.
+            // TODO 게임 종료 후 승급 애니메이션 과정에 호출(이전 상태와 비교를 위해)
+            GradeChangeManager.GradeUpdate(SessionManager.currentUserId, SessionManager.GetSession(SessionManager.currentUserId), GameResult.Win);
+
+
+            int rankPointRange = GradeChangeManager.GetRankPointRange(); // 게임 종료 시 승급 포인트 양끝 범위를 얻는 함수
+
             /// 
         }
 
 
-
-
     }
 
+
+    public enum GameResult
+    {
+        None, // 게임 진행 중
+        Win, // 플레이어 승
+        Lose, // 플레이어 패
+        Draw // 비김
+    }
 }
 

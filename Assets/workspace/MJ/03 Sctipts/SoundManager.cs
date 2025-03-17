@@ -1,4 +1,4 @@
-using System;
+using UnityEngine.Audio;
 
 namespace MJ
 {
@@ -6,36 +6,28 @@ namespace MJ
     using System.Collections.Generic;
     using UnityEngine;
     
-    public class SoundManager : MonoBehaviour
+    public class SoundManager : Singleton<SoundManager>
     {
-        public static SoundManager Instance { get; private set;}
-        
         [Header("오디오 소스")]
         public AudioSource bgmSource;
         public AudioSource[] sfxSources;
         
+        [Header("오디오 믹서")]
+        public AudioMixer audioMixer;
+        
         private const string BGM_VOLUME_KEY = "BGM_VOLUME";
         private const string SFX_VOLUME_KEY = "SFX_VOLUME";
-
-        private void Awake()
+        
+        protected override void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            base.Awake();
+            InitializeVolume();
         }
-
-        private void Start()
-        {
-            InitialixVolume();
-        }
-
-        void InitialixVolume()
+        
+        /// <summary> 
+        /// 볼륨 초기화 (PlayerPrebs 저장 된 값 불러오기)
+        /// </summary>
+        void InitializeVolume()
         {
             float saveBgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
             float saveSfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
@@ -53,7 +45,7 @@ namespace MJ
 
         public void PlaySFX(int index)
         {
-            if (index >= 0 && index < sfxSources.Length)
+            if (index >= 0 && index < sfxSources.Length && sfxSources[index] != null)
                 sfxSources[index].Play();
         }
         
@@ -81,19 +73,18 @@ namespace MJ
             PlaySFX(3);
         }
 
-        public void SetBgmVolume(float volume)
+        public void SetBgmVolume(float value)
         {
-            bgmSource.volume = volume;
+            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+            audioMixer.SetFloat("BGMVolume", volume);
             PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
             PlayerPrefs.Save();
         }
 
-        public void SetSfxVolume(float volume)
+        public void SetSfxVolume(float value)
         {
-            foreach (var sgx in sfxSources)
-            {
-                if(sgx != null) sgx.volume = volume;
-            }
+            float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
+            audioMixer.SetFloat("SFXVolume", volume);
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
             PlayerPrefs.Save();
         }
