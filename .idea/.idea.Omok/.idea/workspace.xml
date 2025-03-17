@@ -17,17 +17,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;Minji-GWON&quot;
-  }
-}</component>
+    &quot;lastFilter&quot;: {
+      &quot;state&quot;: &quot;OPEN&quot;,
+      &quot;assignee&quot;: &quot;Minji-GWON&quot;
+    }
+  }</component>
   <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
-    &quot;accountId&quot;: &quot;72af1083-43f2-4c61-b898-4d0cdb5e60a4&quot;
-  }
-}</component>
+    &quot;selectedUrlAndAccountId&quot;: {
+      &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
+      &quot;accountId&quot;: &quot;72af1083-43f2-4c61-b898-4d0cdb5e60a4&quot;
+    }
+  }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
@@ -35,9 +35,9 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 1
-}</component>
+    &quot;customColor&quot;: &quot;&quot;,
+    &quot;associatedIndex&quot;: 1
+  }</component>
   <component name="ProjectId" id="2uHhVHqRTlN9r1OsVeZFiAgfir0" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -50,7 +50,7 @@
     &quot;keyToString&quot;: {
       &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
       &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-      &quot;git-widget-placeholder&quot;: &quot;feature/yu/server/nodejs&quot;, &lt;!-- feature/yu/server/nodejs을 사용 --&gt;
+      &quot;git-widget-placeholder&quot;: &quot;feature/yu/server/nodejs&quot;,
       &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
       &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
       &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -126,4 +126,15 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>

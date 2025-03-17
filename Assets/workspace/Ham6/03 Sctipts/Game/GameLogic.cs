@@ -1,11 +1,13 @@
-/*using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using workspace.Ham6._03_Sctipts.Game;
+using Update = Unity.VisualScripting.Update;
 
 
-    public abstract class BasePlayerState
+public abstract class BasePlayerState
     {
         // 상태에 진입할 때 실행
         public abstract void OnEnter(GameLogic gameLogic);
@@ -38,6 +40,7 @@ using workspace.Ham6._03_Sctipts.Game;
             }
         }
     }
+
     //직접 플레이하는 상태 (싱글 또는 멀티플레이)
     public class PlayerState : BasePlayerState
     {
@@ -48,7 +51,7 @@ using workspace.Ham6._03_Sctipts.Game;
         private MultiplayManager _multiplayManager; // 네트워크 멀티플레이어 관리
         private string _roomId; // 멀티플레이 방 ID
         private bool _isMultiplay; // 멀티플레이 여부
-        #1#
+        */
 
         //싱글 플레이어 생성자
         public PlayerState(bool isFirstPlayer)
@@ -69,12 +72,12 @@ using workspace.Ham6._03_Sctipts.Game;
             _roomId = roomId;
             _isMultiplay = true;
         }
-        #1#
+        */
 
         // 상태 진입 시 실행 (플레이어 입력을 처리할 수 있도록 설정)
         public override void OnEnter(GameLogic gameLogic)
         {
-            gameLogic.blockController.OnBlockClickedDelegate = (row, col) =>
+            gameLogic.OmokBoard.OnOnGridClickedDelegate = (row, col) =>
             {
                 HandleMove(gameLogic, row, col);
             };
@@ -83,7 +86,7 @@ using workspace.Ham6._03_Sctipts.Game;
         // 상태 종료 시 실행 (이벤트 핸들러 해제)
         public override void OnExit(GameLogic gameLogic)
         {
-            gameLogic.blockController.OnBlockClickedDelegate = null;
+            gameLogic.OmokBoard.OnOnGridClickedDelegate = null;
         }
 
         // 돌을 놓는 동작 처리
@@ -97,7 +100,7 @@ using workspace.Ham6._03_Sctipts.Game;
             {
                 _multiplayManager.SendPlayerMove(_roomId, row * 3 + col);
             }
-            #1#
+            */
         }
 
         // 다음 턴으로 전환
@@ -113,13 +116,14 @@ using workspace.Ham6._03_Sctipts.Game;
             }
         }
     }
+
     //AI 플레이 상태
     public class AIState : BasePlayerState
     {
         // AI가 자동으로 착수하는 로직
         public override void OnEnter(GameLogic gameLogic)
         {
-            //TODO: AI알고리즘 작성
+            /*TODO: AI알고리즘 작성
             var result = MinimaxAIController.GetBestMove(gameLogic.GetBoard());
 
             if (result.HasValue)
@@ -130,6 +134,7 @@ using workspace.Ham6._03_Sctipts.Game;
             {
                 gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
             }
+            */
         }
 
         public override void OnExit(GameLogic gameLogic) { }
@@ -145,9 +150,39 @@ using workspace.Ham6._03_Sctipts.Game;
         }
     }
 
+    /* TODO: 멀티시 구현
+    //네트워크 플레이
+    public class MultiplayState : BasePlayerState
+    {
+        private Constants.PlayerType _playerType;
+        private bool _isFirstPlayer;
+    
+        private MultiplayManager _multiplayManager;
+
+        public MultiplayState(bool isFirstPlayer, MultiplayManager multiplayManager)
+        {
+            _isFirstPlayer = isFirstPlayer;
+            _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+            _multiplayManager = multiplayManager;
+        }
+    
+        public override void OnEnter(GameLogic gameLogic)
+        {
+            _multiplayManager.OnOpponentMove = moveData =>
+            {
+                var row = moveData.position / 3;
+                var col = moveData.position % 3;
+                UnityThread.executeInUpdate(() =>
+                {
+                    HandleMove(gameLogic, row, col);                
+                });
+            };
+        }
+        */
+
     public class GameLogic : IDisposable
     {
-    public BlockController blockController; // 바둑판(게임판) 컨트롤러
+    public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
 
     //상태 패턴을 활용한 플레이어 상태 관리
@@ -169,11 +204,11 @@ using workspace.Ham6._03_Sctipts.Game;
     }
 
     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(BlockController blockController, Constants.GameType gameType)
+    public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
     {
-        this.blockController = blockController;
+        this.OmokBoard = OmokBoard;
 
-        // 바둑판 배열 초기화 (3x3 크기)
+        // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
 
         switch (gameType)
@@ -184,6 +219,15 @@ using workspace.Ham6._03_Sctipts.Game;
                 secondPlayerState = new AIState(); // AI 플레이어
 
                 // 첫 번째 플레이어부터 시작
+                SetState(firstPlayerState);
+                break;
+            }
+            case Constants.GameType.DualPlayer:
+            {
+                firstPlayerState = new PlayerState(true);
+                secondPlayerState = new PlayerState(false);
+                // 게임 시작
+                
                 SetState(firstPlayerState);
                 break;
             }
@@ -225,7 +269,7 @@ using workspace.Ham6._03_Sctipts.Game;
                 });
                 break;
             }
-            #1#
+            */
         }
     }
     
@@ -247,14 +291,14 @@ using workspace.Ham6._03_Sctipts.Game;
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
-            blockController.PlaceMarker(Block.MarkerType.O, row, col); // UI에 마커 추가
+            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
             return true;
         }
         // 플레이어 B가 놓는 경우
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
-            blockController.PlaceMarker(Block.MarkerType.X, row, col);
+            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col);
             return true;
         }
         return false;
@@ -300,6 +344,6 @@ using workspace.Ham6._03_Sctipts.Game;
         /* TODO: 멀티시 구현
         _multiplayManager?.LeaveRoom(_roomId);
         _multiplayManager?.Dispose();
-        #1#
+        */
     }
-}*/
+}

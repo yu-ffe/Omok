@@ -9,10 +9,17 @@ namespace workspace.Ham6._03_Sctipts.Game
             PlayerB
         }
 
+        public enum StoneType
+        {
+            Normal,
+            Hint
+        }
+
         public enum GameType
         {
             SinglePlayer,
-            MultiPlayer
+            DualPlayer,
+            MultiPlayer,
         }
     }
 }
