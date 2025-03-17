@@ -5,12 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Structs.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Structs.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager_Junk.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager_Junk.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SessionManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SessionManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserSessionData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserSessionData.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Common/Constants.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +47,7 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/86/bbceb1b9/PlayerPrefs.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/TimerManager.cs" root0="FORCE_HIGHLIGHTING" />

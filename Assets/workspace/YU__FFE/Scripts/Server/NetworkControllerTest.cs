@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace workspace.YU__FFE.Scripts.Server {
     public class NetworkControllerTest : MonoBehaviour {
-        private NetworkManager networkManager;
+        private NetworkManager_Junk _networkManagerJunk;
         
         public TMP_InputField usernameInput;
         public TMP_InputField nicknameInput;
@@ -16,7 +16,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         public Button LogoutButton;
 
         public void Start() {
-            networkManager = NetworkManager.Instance;
+            _networkManagerJunk = NetworkManager_Junk.Instance;
             loginButton.onClick.AddListener(() => StartCoroutine(TestSignin()));
             RegisterButton.onClick.AddListener(() => StartCoroutine(TestSignup()));
             LogoutButton.onClick.AddListener(() => StartCoroutine(TestLogout()));
@@ -24,13 +24,13 @@ namespace workspace.YU__FFE.Scripts.Server {
 
         // 회원가입 테스트
         public IEnumerator TestSignup() {
-            NetworkManager.SignupData signupData = new NetworkManager.SignupData {
+            NetworkManager_Junk.SignupData signupData = new NetworkManager_Junk.SignupData {
                 username = usernameInput.text,
                 nickname = nicknameInput.text,
                 password = passwordInput.text
             };
 
-            yield return StartCoroutine(networkManager.Signup(signupData, 
+            yield return StartCoroutine(_networkManagerJunk.Signup(signupData, 
                 () => {
                     Debug.Log("회원가입 성공");
                 },
@@ -41,12 +41,12 @@ namespace workspace.YU__FFE.Scripts.Server {
 
         // 로그인 테스트
         public IEnumerator TestSignin() {
-            NetworkManager.SigninData signinData = new NetworkManager.SigninData {
+            NetworkManager_Junk.SigninData signinData = new NetworkManager_Junk.SigninData {
                 username = usernameInput.text,
                 password = passwordInput.text
             };
 
-            yield return StartCoroutine(networkManager.Signin(signinData,
+            yield return StartCoroutine(_networkManagerJunk.Signin(signinData,
                 () => { 
                     Debug.Log("로그인 성공"); 
                 },
@@ -58,7 +58,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         public IEnumerator TestLogout()
         {
             // Signout 메소드가 반환하는 IEnumerator를 올바르게 처리
-            yield return StartCoroutine(networkManager.Signout(
+            yield return StartCoroutine(_networkManagerJunk.Signout(
                 () => {
                     Debug.Log("로그아웃 성공");
                 },

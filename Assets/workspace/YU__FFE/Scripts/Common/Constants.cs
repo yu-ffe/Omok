@@ -3,4 +3,5 @@ namespace workspace.YU__FFE.Scripts.Common {
         public const string ServerURL = "http://localhost"; // Express 서버 URL
 
     }
+
 }
