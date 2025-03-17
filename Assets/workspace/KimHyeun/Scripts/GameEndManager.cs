@@ -42,7 +42,7 @@ namespace KimHyeun {
 
         
 
-        public void SetEndGameInfo(GameResult gameResult) 
+        public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
         {
             // 승점바 설정
             GradeBarSetting();
@@ -144,9 +144,20 @@ namespace KimHyeun {
         // TODO 각 버튼 기능 추가
         void EndButtonClickListenerSet()
         {
-            okButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("확인 버튼 클릭(메인 프로필로 돌아가기)"); });
-            restartButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("재대국 버튼 클릭(AI,듀얼-재시작)"); });
-            recordButton.AddComponent<Button>().onClick.AddListener(() => { Debug.Log("기보 저장 버튼 클릭(기보 저장 확인 팝업 출력)"); });
+            // 기존에 있는 Button 컴포넌트를 가져오고, 없으면 추가
+            Button okBtn = okButton.GetComponent<Button>() ?? okButton.AddComponent<Button>();
+            Button restartBtn = restartButton.GetComponent<Button>() ?? restartButton.AddComponent<Button>();
+            Button recordBtn = recordButton.GetComponent<Button>() ?? recordButton.AddComponent<Button>();
+
+            // 기존 리스너 제거 (중복 방지)
+            okBtn.onClick.RemoveAllListeners();
+            restartBtn.onClick.RemoveAllListeners();
+            recordBtn.onClick.RemoveAllListeners();
+
+            // 새로운 클릭 리스너 추가
+            okBtn.onClick.AddListener(() => { Debug.Log("확인 버튼 클릭(메인 프로필로 돌아가기)"); });
+            restartBtn.onClick.AddListener(() => { Debug.Log("재대국 버튼 클릭(AI, 듀얼-재시작)"); });
+            recordBtn.onClick.AddListener(() => { Debug.Log("기보 저장 버튼 클릭(기보 저장 확인 팝업 출력)"); });
         }
 
         void EndButtonTextSet()
@@ -270,5 +281,12 @@ namespace KimHyeun {
             // 변동된 값 기준 셀너비 재설정
             UpdateCellScales(afterRankPoint, true);
         }
-    }  
+
+
+
+
+
+
+
+    }
 }
