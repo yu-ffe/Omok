@@ -162,8 +162,6 @@ namespace KimHyeun {
             UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
 
             
-
-            Debug.Log($"이전 랭크 포인트: {userSession.RankPoint}");
             UpdateCellScales(userSession.RankPoint); // 이전 랭크 포인트 기준 우선 표기
 
             // 승패 포인트 설정
@@ -201,7 +199,7 @@ namespace KimHyeun {
                     break;
             }
         }
-        
+
         void UpdateCellScales(float rankPoint, bool animate = false)
         {
             float scaleValue = Mathf.Abs(rankPoint) / 10f;  // RankPoint 값을 10으로 나눠 범위 변환
@@ -220,15 +218,14 @@ namespace KimHyeun {
 
                     if (animate)
                     {
-                        if (i == fullCells)
+                        if (i == fullCells && fullCells > 0) // 십의 자리 변화가 있을 경우 이전 셀이 먼저 변화
                         {
-                            // 십의 자리 변화가 있을 경우 이전 셀이 먼저 변화 후 실행
-                            seq.Append(targetCells[i - 1].DOScaleX(1f, 0.25f).SetEase(Ease.OutQuad));
-                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.25f).SetEase(Ease.OutQuad));
+                            seq.Append(targetCells[i - 1].DOScaleX(1f, 0.2f));
+                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
                         }
                         else
                         {
-                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.25f).SetEase(Ease.OutQuad));
+                            seq.Join(targetCells[i].DOScaleX(targetScaleX, 0.2f));
                         }
                     }
                     else
@@ -241,11 +238,11 @@ namespace KimHyeun {
             seq.Play(); // 애니메이션 실행
         }
 
+
         void RankPointSet(UserSession userSession, GameResult gameResult)
         {
             // 실질적 승급 계산
             int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
-            Debug.Log($"변동된 총 랭크 포인트: {afterRankPoint}");
 
             int needPlayNum = 0;
 
