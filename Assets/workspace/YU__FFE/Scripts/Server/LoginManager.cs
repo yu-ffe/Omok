@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 // 서버 연결 -> 로그인 테스트
 namespace workspace.YU__FFE.Scripts.Server {
+    /// <summary>
+    /// 더 이상 동작하지 않음: 서버 코드 수정
+    /// </summary>
     public class LoginManager : MonoBehaviour {
         public TextMeshProUGUI loginIdText; // coins 값 출력
         public TMP_InputField nicknameInput;
