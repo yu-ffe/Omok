@@ -163,35 +163,37 @@ namespace KimHyeun {
 
             // gradeResultText -> 등급 결과에 따라 영향
 
-            // 유저 아이디, 해당 유저의 세션과 대국 결과를 전달받아서 급수를 업데이트 하는 함수.
-            // 승급 애니메이션 과정에 호출(이전 상태와 비교를 위해)
-            //  GradeChangeManager.GradeUpdate(SessionManager.currentUserId, userSession, gameResult);
 
             Debug.Log($"이전 랭크 포인트: {userSession.RankPoint}");
-            UpdateCellScales(userSession.RankPoint);
+            UpdateCellScales(userSession.RankPoint); // 이전 랭크 포인트 기준 우선 표기
 
+            // 승패 포인트 설정
+            int getPointPlusValue = GradeChangeManager.GetWinPoint(userSession.Grade);
+            int getPointMinusValue = GradeChangeManager.GetLosePoint();
 
             switch (gameResult) 
             {
                 case GameResult.Win:
-                    resultText.text = "승리!";
+                    resultText.text = "승리!\n" + getPointPlusValue + "포인트 획득";
 
-                    // TODO 승점 표기 애니메이션, 승급 애니메이션 체크
-
+                    // 승점 변동 애니메이션
+                    RankPointSet(userSession, gameResult);
 
                     break;
 
                 case GameResult.Lose:
-                    resultText.text = "패배!";
+                    resultText.text = "패배!\n" + getPointMinusValue + "포인트 손실";
 
-                    // TODO 승점 표기 애니메이션, 강등 애니메이션 체크
+                    // 승점 변동 애니메이션
+                    RankPointSet(userSession, gameResult);
 
                     break;
 
                 case GameResult.Draw:
-                    resultText.text = "무승부!";
+                    resultText.text = "무승부!\n포인트 변동 없음";
 
-                    // TODO 승점 표기 애니메이션
+                    // 승점 변동 애니메이션
+                    RankPointSet(userSession, gameResult);
 
                     break;
 
@@ -200,48 +202,63 @@ namespace KimHyeun {
                     break;
             }
         }
-
-        void UpdateCellScales(float rankPoint)
+        
+        void UpdateCellScales(float rankPoint, bool animate = false)
         {
             float scaleValue = Mathf.Abs(rankPoint) / 10f;  // RankPoint 값을 10으로 나눠 범위 변환
             int fullCells = Mathf.FloorToInt(scaleValue);  // 가득 찬 셀 개수
             float partialFill = scaleValue - fullCells;    // 마지막 셀의 소수점 값 (0~1)
 
-            if (rankPoint > 0)
+            Transform[] targetCells = rankPoint > 0 ? gradePlusCells : gradeMinusCells;
+
+            Sequence seq = DOTween.Sequence(); // DOTween 애니메이션 순차 실행
+
+            for (int i = 0; i < targetCells.Length; i++)
             {
-                for (int i = 0; i < gradePlusCells.Length; i++)
+                if (targetCells[i] != null)
                 {
-                    if (gradePlusCells[i] != null)
+                    float targetScaleX = (i < fullCells) ? 1f : (i == fullCells ? partialFill : 0f);
+
+                    if (animate)
                     {
-                        if (i < fullCells)
-                            gradePlusCells[i].localScale = new Vector3(1f, 1f, 1f);  // 가득 찬 셀
-                        else if (i == fullCells)
-                            gradePlusCells[i].localScale = new Vector3(partialFill, 1f, 1f); // 소수점 적용
+                        if (i == fullCells)
+                        {
+                            // 십의 자리 변화가 있을 경우 이전 셀이 먼저 변화 후 실행
+                            seq.Append(targetCells[i - 1].DOScaleX(1f, 0.25f).SetEase(Ease.OutQuad));
+                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.25f).SetEase(Ease.OutQuad));
+                        }
                         else
-                            gradePlusCells[i].localScale = new Vector3(0f, 1f, 1f);  // 나머지는 0
+                        {
+                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.25f).SetEase(Ease.OutQuad));
+                        }
+                    }
+                    else
+                    {
+                        targetCells[i].localScale = new Vector3(targetScaleX, 1f, 1f);
                     }
                 }
             }
-            else if (rankPoint < 0)
-            {
-                for (int i = 0; i < gradeMinusCells.Length; i++)
-                {
-                    if (gradeMinusCells[i] != null)
-                    {
-                        if (i < fullCells)
-                            gradeMinusCells[i].localScale = new Vector3(1f, 1f, 1f);
-                        else if (i == fullCells)
-                            gradeMinusCells[i].localScale = new Vector3(partialFill, 1f, 1f);
-                        else
-                            gradeMinusCells[i].localScale = new Vector3(0f, 1f, 1f);
-                    }
-                }
-            }
+
+            seq.Play(); // 애니메이션 실행
         }
 
+        void RankPointSet(UserSession userSession, GameResult gameResult)
+        {
+            StartCoroutine(RankAnimation(userSession, gameResult));
+        }
+
+        IEnumerator RankAnimation(UserSession userSession, GameResult gameResult)
+        {
+
+            yield return new WaitForSeconds(0.5f);
 
 
+            // 실질적 승급 계산
+            int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
+            Debug.Log($"변동된 총 랭크 포인트: {afterRankPoint}");
 
-
+            // 변동된 값 기준 셀너비 재설정
+            UpdateCellScales(afterRankPoint, true);
+        }
     }  
 }
