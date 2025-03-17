@@ -18,8 +18,7 @@ namespace workspace.YU__FFE.Scripts.User {
         // SaveUserSession(string userId) -> SaveUserSession()
         private void SaveUserData() {
             // 세션 -> SessionManager, 
-            NetworkManager.Instance.SaveUserDataRequest(Server.Session.SessionManager.Instance.SessionToken,
-                PlayerManager.Instance.playerData,
+            NetworkManager.Instance.SaveUserDataRequest(
                 (success, message) => {
                     if (success) {
                         Debug.Log("성공: " + message);
@@ -29,8 +28,8 @@ namespace workspace.YU__FFE.Scripts.User {
                     }
                 });
         }
-        
-        
+
+
         // ========== 유저 세션 업데이트 (예: 코인/급수 변경 후) ==========
         public static void UpdateData(string userId, int coins, int grade, int rankPoint) {
             // if (userSessions.ContainsKey(userId)) {
@@ -41,7 +40,7 @@ namespace workspace.YU__FFE.Scripts.User {
             //     Debug.Log($"세션 업데이트: {userId} (코인: {coins}, 급수: {grade}, 포인트: {rankPoint})");
             // }
         }
-        
+
         public static void AddWin(string userId) {
             // var user = GetSession(userId);
             // if (user != null) {
@@ -59,6 +58,6 @@ namespace workspace.YU__FFE.Scripts.User {
             //     Debug.Log($"패배 기록: {user.Nickname} - 총 패배 {user.LoseCount}회");
             // }
         }
-        
+
     }
 }

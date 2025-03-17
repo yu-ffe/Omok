@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManagerJunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManagerJunk.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkManager_Junk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkManager_Junk.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkControllerTestJunk.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkControllerTestJunk.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,13 +36,15 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/86/bbceb1b9/PlayerPrefs.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/46/45c039b7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/86/bbceb1b9/PlayerPrefs.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/TimerManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -136,6 +130,7 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
