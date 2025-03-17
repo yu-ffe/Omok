@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Fonts/Cafe24Ssurround-v2.0/Cafe24Ssurround-v2.0 SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Fonts/Cafe24Ssurround-v2.0/Cafe24Ssurround-v2.0 SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,26 +15,28 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "haham6"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;haham6&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/yu-ffe/Omok.git",
-    "accountId": "76a9a247-112a-4de8-baff-21445dc651b6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
+    &quot;accountId&quot;: &quot;76a9a247-112a-4de8-baff-21445dc651b6&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/MainPanelController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
-  <component name="ProjectId" id="2uHj4R4ktlVFTYVnIS98kPsfFrb" />
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2uHj2MspUqR4Is6QFFTX8Iatqj0" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -56,6 +54,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -107,17 +106,19 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="디폴트 작업">
       <changelist id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="" />
-      <created>1741912236236</created>
+      <created>1741912203474</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1741912236236</updated>
-      <workItem from="1741912299391" duration="926000" />
+      <updated>1741912203474</updated>
+      <workItem from="1741912203486" duration="29574000" />
+      <workItem from="1742170085940" duration="698000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
@@ -125,4 +126,15 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
 </project>
