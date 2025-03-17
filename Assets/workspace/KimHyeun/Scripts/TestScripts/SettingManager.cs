@@ -83,10 +83,11 @@ namespace KimHyeun {
 
 
 
-
-        public void SetLoginOnOff()
+        
+        public void SetLoginOnOff() // 디폴트 값 true
         {
-            AutoLogin.GetAutoLogin();
+            Debug.Log($"자동 로그인 {AutoLogin.GetAutoLogin()} 상태에서 {!AutoLogin.GetAutoLogin()}로 변경");
+            AutoLogin.SetAutoLogin(!AutoLogin.GetAutoLogin());
         }
     }
 
