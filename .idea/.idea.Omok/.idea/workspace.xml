@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" afterDir="false" />
@@ -14,6 +15,13 @@
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/LoginManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/LoginManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/auth.js" afterDir="false" />
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X))
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

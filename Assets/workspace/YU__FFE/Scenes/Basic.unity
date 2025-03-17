@@ -122,6 +122,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
 --- !u!1 &229540429
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,6 +226,9 @@ RectTransform:
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!1 &486041483
+=======
+--- !u!1 &357648939
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,9 +236,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 486041486}
-  - component: {fileID: 486041485}
-  - component: {fileID: 486041484}
+  - component: {fileID: 357648942}
+  - component: {fileID: 357648941}
+  - component: {fileID: 357648940}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -242,21 +246,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &486041484
+--- !u!81 &357648940
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486041483}
+  m_GameObject: {fileID: 357648939}
   m_Enabled: 1
---- !u!20 &486041485
+--- !u!20 &357648941
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486041483}
+  m_GameObject: {fileID: 357648939}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -301,13 +305,13 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &486041486
+--- !u!4 &357648942
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486041483}
+  m_GameObject: {fileID: 357648939}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
@@ -316,7 +320,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
 --- !u!1 &805703794
+=======
+--- !u!1 &413499173
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,6 +332,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
   - component: {fileID: 805703795}
   - component: {fileID: 805703798}
   - component: {fileID: 805703797}
@@ -843,6 +852,11 @@ GameObject:
   - component: {fileID: 2028500852}
   - component: {fileID: 2028500851}
   - component: {fileID: 2028500850}
+=======
+  - component: {fileID: 413499176}
+  - component: {fileID: 413499175}
+  - component: {fileID: 413499174}
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -850,13 +864,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
 --- !u!114 &2028500850
+=======
+--- !u!114 &413499174
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
   m_GameObject: {fileID: 2028500849}
+=======
+  m_GameObject: {fileID: 413499173}
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
@@ -870,13 +892,21 @@ MonoBehaviour:
   m_InputActionsPerSecond: 10
   m_RepeatDelay: 0.5
   m_ForceModuleActive: 0
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
 --- !u!114 &2028500851
+=======
+--- !u!114 &413499175
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
   m_GameObject: {fileID: 2028500849}
+=======
+  m_GameObject: {fileID: 413499173}
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
@@ -885,13 +915,21 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
 --- !u!4 &2028500852
+=======
+--- !u!4 &413499176
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
   m_GameObject: {fileID: 2028500849}
+=======
+  m_GameObject: {fileID: 413499173}
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -904,6 +942,11 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+<<<<<<< HEAD:Assets/workspace/YU__FFE/Scenes/SignInUpOutTestScene.unity
   - {fileID: 486041486}
   - {fileID: 229540433}
   - {fileID: 2028500852}
+=======
+  - {fileID: 357648942}
+  - {fileID: 413499176}
+>>>>>>> parent of b203007 (add: NetworkManager 기능 추가 및 구현 (테스트 X)):Assets/workspace/YU__FFE/Scenes/Basic.unity
