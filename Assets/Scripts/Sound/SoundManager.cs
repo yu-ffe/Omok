@@ -18,7 +18,6 @@ public class SoundManager : Singleton<SoundManager>
     protected override void Awake()
     {
         base.Awake();
-        Debug.Log("SoundManager 초기화 완료"); // 확인용 로그
         InitializeVolume();
     }
     
@@ -70,24 +69,12 @@ public class SoundManager : Singleton<SoundManager>
     {
         PlaySFX(3);
     }
-    
-    // 볼륨 가져오기 (슬라이더 초기화용)
-    public float GetSavedBgmVolume()
-    {
-        return PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f); 
-    }
-
-    public float GetSavedSfxVolume()
-    {
-        return PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f); 
-    }
-
 
     public void SetBgmVolume(float value)
     {
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("BGMVolume", volume);
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, value); 
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
         PlayerPrefs.Save();
     }
 
@@ -95,7 +82,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("SFXVolume", volume);
-        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
         PlayerPrefs.Save();
     }
 
