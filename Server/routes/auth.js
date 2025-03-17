@@ -67,5 +67,38 @@ router.get("/logout", (req, res) => {
         res.redirect("/");
     });
 });
-//
+
+router.post("/login_json", async (req, res) => {
+    const { nickname, password } = req.body;
+
+    try {
+        const user = await User.findOne({ nickname });
+        if (!user) {
+            return res.status(401).json({ success: false, message: "존재하지 않는 유저입니다." });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "비밀번호가 일치하지 않습니다." });
+        }
+
+        // 로그인 성공 후 coins 값을 포함한 응답 반환
+        res.json({
+            success: true,
+            nickname: user.nickname,
+            coins: user.coins || 0, // coins 값이 없을 경우 기본값 0 설정
+            profileNum: user.profileNum || 0, // 예시로 다른 필드를 추가 가능
+            grade: user.grade || 0 // 예시로 다른 필드를 추가 가능
+        });
+
+    } catch (err) {
+        console.error("로그인 오류:", err);
+        res.status(500).json({ success: false, message: "서버 오류 발생" });
+    }
+});
+
+
+
+
+
 module.exports = router;

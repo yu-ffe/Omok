@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/LoginManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/ServerManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/LoginManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/routes/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/auth.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
