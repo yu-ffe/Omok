@@ -18,17 +18,17 @@ namespace KimHyeun {
             return rankPointRange;
         }
 
-        public static int GetWinPointWithLowGrade()
+        static int GetWinPointWithLowGrade()
         {
             return winPointWithLowGrade;
         }
 
-        public static int GetWinPointWithMiddleGrade()
+        static int GetWinPointWithMiddleGrade()
         {
             return winPointWithMiddleGrade;
         }
 
-        public static int GetWinPointWithHighGrade()
+        static int GetWinPointWithHighGrade()
         {
             return winPointWithHighGrade;
         }

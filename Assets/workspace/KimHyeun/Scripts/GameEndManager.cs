@@ -161,8 +161,7 @@ namespace KimHyeun {
             // 현재 로그인된 유저 세션ID, 해당 세션 정보 불러오기
             UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
 
-            // gradeResultText -> 등급 결과에 따라 영향
-
+            
 
             Debug.Log($"이전 랭크 포인트: {userSession.RankPoint}");
             UpdateCellScales(userSession.RankPoint); // 이전 랭크 포인트 기준 우선 표기
@@ -244,18 +243,32 @@ namespace KimHyeun {
 
         void RankPointSet(UserSession userSession, GameResult gameResult)
         {
-            StartCoroutine(RankAnimation(userSession, gameResult));
-        }
-
-        IEnumerator RankAnimation(UserSession userSession, GameResult gameResult)
-        {
-
-            yield return new WaitForSeconds(0.5f);
-
-
             // 실질적 승급 계산
             int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
             Debug.Log($"변동된 총 랭크 포인트: {afterRankPoint}");
+
+            int needPlayNum = 0;
+
+            if (afterRankPoint >= 0)
+            {
+                needPlayNum = (GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade);
+            }
+
+            else
+            {
+                needPlayNum = GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(userSession.Grade) +
+                    (afterRankPoint / GradeChangeManager.GetWinPoint(userSession.Grade));
+            }
+
+            gradeResultText.text = needPlayNum + "게임 승리 시 승급";
+
+            StartCoroutine(RankAnimation(afterRankPoint));
+        }
+
+        IEnumerator RankAnimation(int afterRankPoint)
+        {
+            yield return new WaitForSeconds(0.5f);
+
 
             // 변동된 값 기준 셀너비 재설정
             UpdateCellScales(afterRankPoint, true);
