@@ -126,6 +126,48 @@ namespace workspace.YU__FFE.Scripts.Server {
                 }
             }
         }
+        
+        public IEnumerator Signout(Action success, Action failure)
+        {
+            string sid = PlayerPrefs.GetString("sid", "");
+    
+            if (string.IsNullOrEmpty(sid))
+            {
+                failure?.Invoke(); // 세션이 없으면 바로 실패 처리
+                yield break; // 즉시 종료
+            }
+
+            using (UnityWebRequest www = new UnityWebRequest(Constants.ServerURL + "/auth/signout", UnityWebRequest.kHttpVerbPOST))
+            {
+                www.SetRequestHeader("Cookie", sid);
+                www.downloadHandler = new DownloadHandlerBuffer();
+
+                // 로그아웃 요청
+                yield return StartCoroutine(SendSignoutRequest(www, success, failure));
+            }
+        }
+
+        private IEnumerator SendSignoutRequest(UnityWebRequest www, Action success, Action failure)
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.Log("로그아웃 실패: " + www.error);
+                failure?.Invoke();
+            }
+            else
+            {
+                // 세션 종료
+                PlayerPrefs.DeleteKey("sid");
+
+                // 로그아웃 성공
+                Debug.Log("로그아웃 성공");
+                success?.Invoke();
+            }
+        }
+
+        
         //
         // // 📌 점수 조회
         // public IEnumerator GetScore(Action<ScoreResult> success, Action failure)

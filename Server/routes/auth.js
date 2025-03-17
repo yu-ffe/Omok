@@ -82,10 +82,10 @@ router.post("/signin", async (req, res) => {
     }
 });
 
-// 📌 로그아웃
-router.get("/logout", (req, res) => {
+// 📌 로그아웃 -> signout으로 변경
+router.get("/signout", (req, res) => {
     req.session.destroy(() => {
-        res.redirect("/");
+        res.redirect("/"); // 로그아웃 후 홈페이지로 리다이렉트
     });
 });
 
