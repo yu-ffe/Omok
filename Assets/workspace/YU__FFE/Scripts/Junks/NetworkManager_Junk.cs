@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 using workspace.YU__FFE.Scripts.Common;
 
-namespace workspace.YU__FFE.Scripts.Server {
-    public class NetworkManager_Junk : Singleton<NetworkManager_Junk>
+namespace workspace.YU__FFE.Scripts.Junks {
+    public class NetworkManagerJunk : Singleton<NetworkManagerJunk>
     {
         
         // 📌 회원가입 처리

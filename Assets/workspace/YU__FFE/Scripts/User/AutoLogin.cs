@@ -17,7 +17,7 @@ namespace workspace.YU__FFE.Scripts.User {
 
                 // 마지막 로그인 유저 ID 정보가 있으면
                 if (!string.IsNullOrEmpty(userId)) {
-                    var (isSuccess, message) = SigninManager.SessionUp(userId);
+                    var (isSuccess, message) = SignInManager.SessionUp(userId);
 
                     if (isSuccess) {
                         Debug.Log($"자동 로그인 성공: {message}");

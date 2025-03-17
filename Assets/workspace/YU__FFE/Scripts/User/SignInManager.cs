@@ -2,22 +2,9 @@ using UnityEngine;
 using TMPro;
 
 
-// 3.14 임원빈
-// UI 기능을 따로 분리. MonoBehaviour 불필요. 전역함수로 변경하겠습니다.
-// public class SigninManager : MonoBehaviour
 namespace workspace.YU__FFE.Scripts.User {
-    public static class SigninManager {
-        // [Header("로그인 UI 연결 (TMP)")]
-        // public TMP_InputField inputId;
-        // public TMP_InputField inputPassword;
-
-        // [Header("알림 텍스트 (TMP)")]
-        // public TMP_Text alertText;
-
-
-        //3.14 임원빈
-        // 로그인 호출 함수 추가 리턴값 (결과 / 메세지)
-        // 기존 함수는 혹시 모르니 주석처리하겠습니다.
+    public class SignInManager : Singleton<SignInManager> {
+        
         public static (bool isSuccsess, string message) TryLogin(string id, string password) {
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
                 return (false, "아이디와 비밀번호를 모두 입력하세요.");
@@ -31,8 +18,6 @@ namespace workspace.YU__FFE.Scripts.User {
             if (EncryptPassword(password) != savedPassword) {
                 return (false, "비밀번호가 일치하지 않습니다.");
             }
-
-
 
             return SessionUp(id);
         }

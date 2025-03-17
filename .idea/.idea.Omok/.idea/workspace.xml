@@ -5,23 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SessionManager.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SessionManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManagerJunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/LoginManagerJunk.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkManager_Junk.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkManager_Junk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Network/NetworkManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkControllerTestJunk.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkControllerTest.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Junks/NetworkControllerTestJunk.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/NetworkHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/Server/Session/SessionManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/AutoLogin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignUpManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserSessionData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserSessionData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SignInManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/SigninManager.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/UserData.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/YU__FFE/Scripts/User/PlayerData.cs.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

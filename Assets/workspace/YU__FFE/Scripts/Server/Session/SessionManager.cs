@@ -1,136 +1,144 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using workspace.YU__FFE.Scripts.Common;
 using workspace.YU__FFE.Scripts.Server.Network;
 
-namespace workspace.YU__FFE.Scripts.Server.Session {
-
-    public class SessionManager : Singleton<SessionManager> {
-
+namespace workspace.YU__FFE.Scripts.Server.Session
+{
+    public class SessionManager : Singleton<SessionManager>
+    {
         private const string ServerUrl = Constants.ServerURL;
-        public string SessionToken { get; set; }
-        
-        
-        private void Awake() {
-            LoadLocalSessionToken(); // 게임 실행 시 세션 로드
-        }
-        
-        // ========== 로컬에서 세션 토큰 불러오기 ==========
-        private void LoadLocalSessionToken() {
-            if (PlayerPrefs.HasKey("SessionToken")) {
-                SessionToken = PlayerPrefs.GetString("SessionToken");
-                Debug.Log($"[SessionManager] 로컬 세션 토큰 로드: {SessionToken}");
-            }
-            else {
-                Debug.Log("[SessionManager] 저장된 세션 토큰이 없습니다.");
-            }
-        }
-        
+        public string SessionToken { get; private set; }
+        private string refreshToken; // 리프레시 토큰 저장
 
-        public static Sprite[] ProfileSprites;
-        // 스프라이트 배열도 따로 선언 필요 (게임 시작 시 SignUpManager가 초기화)
-        public static Image[] ProfileButtonImages;
-
-        // 버튼 안 이미지 Sprite 반환 함수
-        public static Sprite GetProfileButtonSprite(int index) {
-            if (ProfileButtonImages == null || ProfileButtonImages.Length == 0) {
-                Debug.LogWarning("[SessionManager] 프로필 버튼 이미지가 초기화되지 않았습니다.");
-                return null;
-            }
-
-            if (index >= 0 && index < ProfileButtonImages.Length) {
-                return ProfileButtonImages[index].sprite;
-            }
-            else {
-                Debug.LogWarning($"[SessionManager] 잘못된 프로필 인덱스 요청: {index}");
-                return null;
-            }
+        // ========== 로컬 세션 저장 ========== 
+        public void SetSessionToken(string token)
+        {
+            SessionToken = token;
         }
 
-
-        // ========== 특정 유저 세션 가져오기 ==========
-        // GetSession(string userId) ->GetSession()
-        public string GetSession() {
-            return SessionToken;
+        // 리프레시 토큰을 로컬에 저장
+        public void SetRefreshToken(string token)
+        {
+            refreshToken = token;
+            PlayerPrefs.SetString("RefreshToken", token); // PlayerPrefs에 저장 (로컬 저장소)
         }
 
-        // 더 이상 지원하지 않음: 여러명의 유저 세션을 저장할 수 없음
-        // ========== 모든 유저 세션 불러오기 (게임 시작 시) ==========
-        // public static void LoadAllSessions() {
-        //     userSessions.Clear();
-        //     foreach (string userId in GetAllStoredUserIds()) {
-        //         string json = PlayerPrefs.GetString(userId, "");
-        //         if (!string.IsNullOrEmpty(json)) {
-        //             UserSession session = JsonUtility.FromJson<UserSession>(json);
-        //             userSessions[userId] = session;
-        //             Debug.Log($"세션 로드: {userId} - {session.Nickname}");
-        //         }
-        //     }
-        //     Debug.Log($"총 {userSessions.Count}명의 유저 세션 로드 완료");
-        // }
+        // 리프레시 토큰을 로컬에서 로드
+        private string GetRefreshToken()
+        {
+            return PlayerPrefs.GetString("RefreshToken", string.Empty); // 저장된 리프레시 토큰 가져오기
+        }
 
-        // ========== 특정 유저 세션 삭제 ===========
-        public IEnumerator RemoveSession(System.Action<bool, string> callback) {
-            string url = ServerUrl + "removeSession"; // 세션 삭제 API 엔드포인트
+        // ========== 서버에서 세션 검증 ========== 
+        private IEnumerator VerifyServerSession(System.Action<bool> callback)
+        {
+            string url = ServerUrl + "verifySession";
             WWWForm form = new WWWForm();
             form.AddField("sessionToken", SessionToken);
 
             UnityWebRequest request = UnityWebRequest.Post(url, form);
             yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success) {
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonUtility.FromJson<BaseResponse>(jsonResponse);
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<BaseResponse>(request.downloadHandler.text);
+                callback(response.success);
+            }
+            else
+            {
+                Debug.LogError("[SessionManager] 서버와 연결 실패.");
+                callback(false);
+            }
+        }
 
-                if (response.success) {
-                    callback(true, "세션이 성공적으로 삭제되었습니다.");
-                    Debug.Log($"세션 삭제: {SessionToken}");
+        // ========== 서버에서 새 세션 요청 ========== 
+        public IEnumerator RequestNewSession(string id)
+        {
+            string url = ServerUrl + "createSession";
+            WWWForm form = new WWWForm();
+            form.AddField("id", id);
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<SessionResponse>(request.downloadHandler.text);
+
+                if (response.success)
+                {
+                    SetSessionToken(response.sessionToken);
+                    SetRefreshToken(response.refreshToken); // 리프레시 토큰도 저장
+                    Debug.Log("[SessionManager] 새로운 세션을 생성했습니다.");
                 }
-                else {
-                    callback(false, response.message);
+                else
+                {
+                    Debug.LogWarning($"[SessionManager] 세션 생성 실패: {response.message}");
                 }
             }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
+            else
+            {
+                Debug.LogError("[SessionManager] 서버 연결 실패.");
             }
         }
 
-        // ========== 프로필 이미지 반환 함수 ==========
-        public static Sprite GetUserProfileSprite(int profileNum) {
-            if (ProfileSprites == null || ProfileSprites.Length == 0) {
-                Debug.LogWarning("[SessionManager] 프로필 스프라이트가 설정되지 않았습니다.");
-                return null;
+        // ========== 리프레시 토큰을 사용하여 세션 갱신 ========== 
+        public IEnumerator RefreshSession(System.Action<bool> callback)
+        {
+            string storedRefreshToken = GetRefreshToken();
+            if (string.IsNullOrEmpty(storedRefreshToken))
+            {
+                Debug.LogError("[SessionManager] 리프레시 토큰이 없습니다.");
+                callback(false);
+                yield break;
             }
 
-            if (profileNum >= 0 && profileNum < ProfileSprites.Length) {
-                return ProfileSprites[profileNum];
+            string url = ServerUrl + "refreshSession";
+            WWWForm form = new WWWForm();
+            form.AddField("refreshToken", storedRefreshToken);
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var response = JsonUtility.FromJson<SessionResponse>(request.downloadHandler.text);
+
+                if (response.success)
+                {
+                    SetSessionToken(response.sessionToken); // 새로운 세션 토큰 설정
+                    SetRefreshToken(response.refreshToken); // 새로운 리프레시 토큰 저장
+                    Debug.Log("[SessionManager] 세션 갱신 성공.");
+                    callback(true);
+                }
+                else
+                {
+                    Debug.LogWarning("[SessionManager] 세션 갱신 실패: " + response.message);
+                    callback(false);
+                }
             }
-            else {
-                Debug.LogWarning($"[SessionManager] 잘못된 프로필 번호 요청: {profileNum}");
-                return null;
+            else
+            {
+                Debug.LogError("[SessionManager] 서버와 연결 실패.");
+                callback(false);
             }
         }
-
-        // ========== 새로운 유저 ID 저장 ==========
-        private void SaveLocalSessionToken(string userId) {
-            PlayerPrefs.SetString("SessionToken", string.Join(",", SessionToken));
-            PlayerPrefs.Save();
-
-        }
-
-        // ========== 유저 ID 삭제 ========== 
-        private static void RemoveLocalUserId(string userId) {
-            // 세션 토큰 삭제 (유저 ID와 관련된 세션 토큰을 삭제)
-            string sessionTokenKey = "SessionToken_" + userId; // 각 유저 ID에 고유한 세션 토큰을 사용
-            PlayerPrefs.DeleteKey(sessionTokenKey); // 유저 ID에 해당하는 세션 토큰 삭제
-            PlayerPrefs.Save();
-        }
-
-
-
     }
 
+    // ========== 서버 응답 모델 ========== 
+    [System.Serializable]
+    public class BaseResponse
+    {
+        public bool success;
+        public string message;
+    }
 
+    [System.Serializable]
+    public class SessionResponse : BaseResponse
+    {
+        public string sessionToken;
+        public string refreshToken; // 리프레시 토큰 추가
+    }
 }

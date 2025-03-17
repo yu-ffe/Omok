@@ -1,12 +1,11 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace workspace.YU__FFE.Scripts.Server {
-    public class NetworkControllerTest : MonoBehaviour {
-        private NetworkManager_Junk _networkManagerJunk;
+namespace workspace.YU__FFE.Scripts.Junks {
+    public class NetworkControllerTestJunk : MonoBehaviour {
+        private NetworkManagerJunk _networkManagerJunk;
         
         public TMP_InputField usernameInput;
         public TMP_InputField nicknameInput;
@@ -16,7 +15,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         public Button LogoutButton;
 
         public void Start() {
-            _networkManagerJunk = NetworkManager_Junk.Instance;
+            _networkManagerJunk = NetworkManagerJunk.Instance;
             loginButton.onClick.AddListener(() => StartCoroutine(TestSignin()));
             RegisterButton.onClick.AddListener(() => StartCoroutine(TestSignup()));
             LogoutButton.onClick.AddListener(() => StartCoroutine(TestLogout()));
@@ -24,7 +23,7 @@ namespace workspace.YU__FFE.Scripts.Server {
 
         // 회원가입 테스트
         public IEnumerator TestSignup() {
-            NetworkManager_Junk.SignupData signupData = new NetworkManager_Junk.SignupData {
+            NetworkManagerJunk.SignupData signupData = new NetworkManagerJunk.SignupData {
                 username = usernameInput.text,
                 nickname = nicknameInput.text,
                 password = passwordInput.text
@@ -41,7 +40,7 @@ namespace workspace.YU__FFE.Scripts.Server {
 
         // 로그인 테스트
         public IEnumerator TestSignin() {
-            NetworkManager_Junk.SigninData signinData = new NetworkManager_Junk.SigninData {
+            NetworkManagerJunk.SigninData signinData = new NetworkManagerJunk.SigninData {
                 username = usernameInput.text,
                 password = passwordInput.text
             };

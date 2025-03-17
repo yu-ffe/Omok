@@ -10,6 +10,42 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
     public class NetworkManager : Singleton<NetworkManager> {
         private const string ServerUrl = Constants.ServerURL;
 
+        // 회원가입 요청 함수
+        public IEnumerator SignUpRequest(System.Action<bool, string, string, string> callback) {
+            string url = ServerUrl + "signup"; // 회원가입 API 엔드포인트
+            PlayerData playerData = PlayerManager.Instance.playerData;
+            WWWForm form = new WWWForm();
+            form.AddField("id", playerData.id);
+            form.AddField("nickname", playerData.nickname);
+            form.AddField("password", playerData.password);
+            form.AddField("profileNum", playerData.profileNum);
+            form.AddField("coins", playerData.coins);
+            form.AddField("grade", playerData.grade);
+            form.AddField("rankPoint", playerData.rankPoint);
+            form.AddField("winCount", playerData.winCount);
+            form.AddField("loseCount", playerData.loseCount);
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success) {
+                // 서버로부터 응답 받은 JSON 처리
+                string jsonResponse = request.downloadHandler.text;
+                var response = JsonConvert.DeserializeObject<SignUpResponse>(jsonResponse);
+
+                if (response.success) {
+                    // 리프레시 토큰과 세션 토큰을 반환
+                    callback(true, response.message, response.refreshToken, response.sessionToken);
+                }
+                else {
+                    callback(false, response.message, null, null);
+                }
+            }
+            else {
+                callback(false, "서버와의 연결이 실패했습니다.", null, null);
+            }
+        }
+        
         // 로그인 요청 함수
         public static IEnumerator SignInRequest(string userId, string password, System.Action<bool, string> callback) {
             string url = ServerUrl + "login"; // 로그인 API 엔드포인트
@@ -100,19 +136,32 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // UserData 저장 요청 함수
-        public IEnumerator SaveUserDataRequest(string userId, UserData userData, System.Action<bool, string> callback) {
+        public IEnumerator SaveUserDataRequest(PlayerData playerData, System.Action<bool, string> callback) {
             string url = ServerUrl + "saveUserData"; // UserData 저장 API 엔드포인트
+            string token = Session.SessionManager.Instance.SessionToken;
+
+            // 세션 검증을 위한 헤더 추가
+            if (string.IsNullOrEmpty(token)) {
+                callback(false, "세션 토큰이 유효하지 않습니다.");
+                yield break;
+            }
+
             WWWForm form = new WWWForm();
-            form.AddField("userId", userId);
-            form.AddField("nickname", userData.Nickname);
-            form.AddField("profileNum", userData.ProfileNum);
-            form.AddField("coins", userData.Coins);
-            form.AddField("grade", userData.Grade);
-            form.AddField("rankPoint", userData.RankPoint);
-            form.AddField("winCount", userData.WinCount);
-            form.AddField("loseCount", userData.LoseCount);
+            form.AddField("userId", playerData.id);
+            form.AddField("nickname", playerData.nickname);
+            form.AddField("password", playerData.password);
+            form.AddField("profileNum", playerData.profileNum);
+            form.AddField("coins", playerData.coins);
+            form.AddField("grade", playerData.grade);
+            form.AddField("rankPoint", playerData.rankPoint);
+            form.AddField("winCount", playerData.winCount);
+            form.AddField("loseCount", playerData.loseCount);
 
             UnityWebRequest request = UnityWebRequest.Post(url, form);
+
+            // 세션 토큰을 헤더에 추가
+            request.SetRequestHeader("Authorization", "Bearer " + token);
+
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success) {
@@ -132,17 +181,17 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             }
         }
 
-        
+
         public static void SetUserData(string userId, string nickname, int profileNum,
                                        int coins, int grade, int rankPoint, int winCount, int loseCount) {
-            PlayerManager.Instance.userData = new UserData(nickname, profileNum, coins, grade, rankPoint, winCount, loseCount);
+            PlayerManager.Instance.playerData = new PlayerData(nickname, profileNum, coins, grade, rankPoint, winCount, loseCount);
             Debug.Log($"세션 추가: {userId} - {nickname}");
             //
             // SaveUserData(); // 저장
         }
-        
+
         // UserData 가져오기 요청 함수
-        public static IEnumerator GetUserDataRequest(string userId, System.Action<bool, UserData, string> callback) {
+        public static IEnumerator GetUserDataRequest(string userId, System.Action<bool, PlayerData, string> callback) {
             string url = ServerUrl + "getUserData"; // UserData 가져오기 API 엔드포인트
             WWWForm form = new WWWForm();
             form.AddField("userId", userId);
@@ -157,7 +206,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
                 if (response.success) {
                     // 서버에서 가져온 UserData를 전달
-                    UserData userData = new UserData(
+                    PlayerData playerData = new PlayerData(
                         response.nickname,
                         response.profileNum,
                         response.coins,
@@ -167,7 +216,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                         response.loseCount
                     );
 
-                    callback(true, userData, response.message);
+                    callback(true, playerData, response.message);
                 }
                 else {
                     callback(false, null, response.message);
@@ -191,6 +240,14 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
     public class BaseResponse {
         public bool success;
         public string message;
+    }
+    
+    // 회원가입 응답 구조체
+    public class SignUpResponse {
+        public bool success;
+        public string message;
+        public string refreshToken;  // 발급된 리프레시 토큰
+        public string sessionToken;  // 발급된 세션 토큰
     }
 
     // UserData 응답 구조체

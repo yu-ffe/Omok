@@ -8,7 +8,7 @@ namespace workspace.YU__FFE.Scripts.User {
         // ========== 세션 추가 및 저장 ==========
         public void SetUserData(string userId, string nickname, int profileNum,
                                 int coins, int grade, int rankPoint, int winCount, int loseCount) {
-            PlayerManager.Instance.userData = new UserData(nickname, profileNum, coins, grade, rankPoint, winCount, loseCount);
+            PlayerManager.Instance.playerData = new PlayerData(nickname, profileNum, coins, grade, rankPoint, winCount, loseCount);
             Debug.Log($"세션 추가: {userId} - {nickname}");
 
             SaveUserData(); // 저장
@@ -19,7 +19,7 @@ namespace workspace.YU__FFE.Scripts.User {
         private void SaveUserData() {
             // 세션 -> SessionManager, 
             NetworkManager.Instance.SaveUserDataRequest(Server.Session.SessionManager.Instance.SessionToken,
-                PlayerManager.Instance.userData,
+                PlayerManager.Instance.playerData,
                 (success, message) => {
                     if (success) {
                         Debug.Log("성공: " + message);
