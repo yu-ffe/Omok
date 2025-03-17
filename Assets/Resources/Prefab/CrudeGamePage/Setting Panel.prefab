@@ -231,7 +231,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1045270564004867251}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MJ.SettingManager, Assembly-CSharp
         m_MethodName: OnClickCloseButton
         m_Mode: 1
@@ -1241,7 +1241,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1045270564004867251}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MJ.SettingManager, Assembly-CSharp
         m_MethodName: OnClickConfirmButton
         m_Mode: 1
@@ -1959,7 +1959,7 @@ GameObject:
   - component: {fileID: 3863743425720509708}
   - component: {fileID: 7960264292182185308}
   - component: {fileID: 1032104287775402914}
-  - component: {fileID: 1045270564004867251}
+  - component: {fileID: 6785295210149697563}
   m_Layer: 5
   m_Name: Setting Panel
   m_TagString: Untagged
@@ -2029,7 +2029,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1045270564004867251
+--- !u!114 &6785295210149697563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2041,7 +2041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ccb1bc744bf5374ebc0093549d9637d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelType: 7
   bgmSlider: {fileID: 1759899847043007733}
   sfxSlider: {fileID: 258568022193662030}
   autoLoginToggle: {fileID: 4857944467122985861}
-  settingPanelPrefab: {fileID: 8905178944217122710}
