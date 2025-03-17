@@ -41,6 +41,7 @@ public static class SigninManager
         return SessionUp(id);       
     }
 
+    
 
     public static (bool isSuccsess, string message) SessionUp(string id)
     {
