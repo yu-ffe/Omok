@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WB;
 using workspace.YU__FFE.Scripts;
 
 namespace MJ
 {
-    public class SettingManager : MonoBehaviour
+    public class SettingManager : UI_Panel
     {
         [Header("슬라이더 연결")]
         public Slider bgmSlider;
@@ -15,18 +16,48 @@ namespace MJ
         [Header("자동 로그인 토글 연결")]
         public Toggle autoLoginToggle;
         
-        [Header("세팅 패널 프리팹 ")]
-        public GameObject settingPanelPrefab;
-        
-        private GameObject _currentSettingPanel;
-        
-        private const string SETTING_VOLUME_KEY = "SettingPanel";
-        
         // ========= 사운드 초기화 (게임 시작 시) ========== 
         void Start()
         {
-            LoadSoundSettings();
+            UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Option, this);
+            gameObject.SetActive(false);
+            Debug.Log("SettingPanel 등록 완료");
             
+            LoadSoundSettings();
+            InitAutoLoginToggle();
+        }
+        
+        public override void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public override void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public override void OnEnable() { }
+
+        public override void OnDisable() { }
+        
+        // ========= 사운드 설정 로드 ========== 
+        private void LoadSoundSettings()
+        {
+            float bgmVolume = SoundManager.Instance.GetSavedBgmVolume();
+            float sfxVolume = SoundManager.Instance.GetSavedSfxVolume();
+            
+            bgmSlider.value = bgmVolume;
+            sfxSlider.value = sfxVolume;
+            
+            // 슬라이더 값 바뀌면 SoundManager에 위임
+            bgmSlider.onValueChanged.AddListener(SoundManager.Instance.SetBgmVolume);
+            sfxSlider.onValueChanged.AddListener(SoundManager.Instance.SetSfxVolume);
+        }
+        
+        // 자동 로그인 토글 초기화
+        private void InitAutoLoginToggle()
+        {
             // 자동 로그인 토클 초기화 (저장된 상태 불러오기)
             bool isAutoLoginEnabled = AutoLogin.GetAutoLogin();
             autoLoginToggle.isOn = isAutoLoginEnabled;
@@ -41,43 +72,16 @@ namespace MJ
             AutoLogin.SetAutoLogin(isOn);
         }
         
-        // ========= 사운드 설정 로드 ========== 
-        private void LoadSoundSettings()
-        {
-            float bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
-            float sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
-            
-            bgmSlider.value = bgmVolume;
-            sfxSlider.value = sfxVolume;
-            
-            // 슬라이더 이벤트 연결
-            bgmSlider.onValueChanged.AddListener(SetBGMVolume);
-            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
-        }
-        
-        // ========= 배경음 볼륨 설정 ==========
-        public void SetBGMVolume(float volume)
-        {
-            SoundManager.Instance.SetBgmVolume(volume);
-        }
-        
-        // ========= 효과음 볼륨 설정 ==========
-        public void SetSFXVolume(float volume)
-        {
-            SoundManager.Instance.SetSfxVolume(volume);
-        }
-        
         // ========= 설정 패널 열기 ==========
-        public void OpenSettingPanel(Transform parent)
+        public void OpenSettingPanel()
         {
-            _currentSettingPanel = Instantiate(settingPanelPrefab, parent);
+            UI_Manager.Instance.Show(UI_Manager.PanelType.Option);
         }
         
         // ========= 설정 패널 닫기 ==========
         public void CloseSettingPanel()
         {
-            UIManager.Instance.HideUI(SETTING_VOLUME_KEY);
-            _currentSettingPanel = null;
+            UI_Manager.Instance.Hide(UI_Manager.PanelType.Option);
         }
         
         // ========= 확인 버튼  ==========
@@ -95,9 +99,10 @@ namespace MJ
         // ========= 설정 패널 상태 확인 ==========
         public bool IsSettingPanelOpen()
         {
-            return _currentSettingPanel != null;
+            return UI_Manager.Instance.nowShowingPanelType == UI_Manager.PanelType.Option;
         }
 
+        
     }
 
 }
