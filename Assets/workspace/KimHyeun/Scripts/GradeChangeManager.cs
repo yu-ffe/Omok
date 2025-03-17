@@ -7,11 +7,38 @@ namespace KimHyeun {
     {
         const int rankPointRange = 30;
 
+        const int winPointWithLowGrade = 10;
+        const int winPointWithMiddleGrade = 6;
+        const int winPointWithHighGrade = 3;
+
+        const int losePoint = 10;
+
         public static int GetRankPointRange()
         {
             return rankPointRange;
         }
-        
+
+        public static int GetWinPointWithLowGrade()
+        {
+            return winPointWithLowGrade;
+        }
+
+        public static int GetWinPointWithMiddleGrade()
+        {
+            return winPointWithMiddleGrade;
+        }
+
+        public static int GetWinPointWithHighGrade()
+        {
+            return winPointWithHighGrade;
+        }
+
+
+        public static int GetLosePoint()
+        {
+            return losePoint;
+        }
+
 
         public static void GradeUpdate(string userId, UserSession userSession, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
         {
@@ -23,9 +50,9 @@ namespace KimHyeun {
 
                         int winPoint = 3; // 기본 승리 포인트
 
-                        if (userSession.Grade >= 10) winPoint = 10; // 10급~18급: 10점 증가
-                        else if (userSession.Grade >= 5) winPoint = 6; // 5급~9급: 6점 증가
-                        else winPoint = 3; // 1급~4급: 3점 증가
+                        if (userSession.Grade >= 10) winPoint = winPointWithLowGrade; // 10급~18급: 10점 증가
+                        else if (userSession.Grade >= 5) winPoint = winPointWithMiddleGrade; // 5급~9급: 6점 증가
+                        else winPoint = winPointWithHighGrade; // 1급~4급: 3점 증가
 
                         if (userSession.Grade > 1) // 1급은 승점 제외
                         {
@@ -44,7 +71,7 @@ namespace KimHyeun {
 
                     case GameResult.Lose:
 
-                        userSession.RankPoint -= 10; // 패배 시 승급 포인트 감소
+                        userSession.RankPoint -= losePoint; // 패배 시 승급 포인트 감소
 
                         if (userSession.RankPoint <= -rankPointRange) // -30점 도달 시 강등
                         {
