@@ -57,4 +57,14 @@ public class AutoLogin
         PlayerPrefs.SetInt(AutoLoginKey, isEnabled ? 1 : 0); // 1이면 활성화, 0이면 비활성화
         PlayerPrefs.Save();
     }
+
+    public static bool GetAutoLogin()
+    {
+        if(PlayerPrefs.GetInt(AutoLoginKey, 1) == 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
