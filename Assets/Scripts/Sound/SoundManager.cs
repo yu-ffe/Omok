@@ -87,7 +87,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("BGMVolume", volume);
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, value); 
         PlayerPrefs.Save();
     }
 
@@ -95,7 +95,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("SFXVolume", volume);
-        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, volume);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value);
         PlayerPrefs.Save();
     }
 

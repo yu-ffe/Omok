@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WB;
 using workspace.YU__FFE.Scripts;
+using WB;
 
 namespace MJ
 {
@@ -16,6 +17,7 @@ namespace MJ
         [Header("자동 로그인 토글 연결")]
         public Toggle autoLoginToggle;
         
+<<<<<<< Updated upstream
         // ========= 사운드 초기화 (게임 시작 시) ========== 
         void Start()
         {
@@ -63,15 +65,106 @@ namespace MJ
             autoLoginToggle.isOn = isAutoLoginEnabled;
             
             // 토글 변경 시 자동 로그인 설정 저장
+=======
+        private bool isInitialized = false;
+        
+        // ========= 사운드 초기화 (게임 시작 시) ========== 
+        void Start()
+        {
+            //  사운드 슬라이더 초기화 (값 설정만, 저장 X)
+            LoadSoundSettings();
+
+            //  슬라이더 조작 시 저장 (유저 조작만 저장)
+            bgmSlider.onValueChanged.AddListener(OnBgmSliderChanged);
+            sfxSlider.onValueChanged.AddListener(OnSfxSliderChanged);
+
+            //  자동 로그인 초기화
+            InitAutoLogin();
+>>>>>>> Stashed changes
             autoLoginToggle.onValueChanged.AddListener(OnAutoLoginToggleChanged);
+
+            //  UI 패널 등록
+            UI_Manager.Instance.AddPanel(panelType, this);
+            gameObject.SetActive(false); // 처음엔 안 보이게
+
+            //  초기화 완료 표시 (이후부터 유저 조작 간주)
+            isInitialized = true;
         }
         
-        // 자동 로그인 토글 콜백
+        /// <summary>
+        /// 자동 로그인 값 초기화 (처음엔 무조건 ON)
+        /// </summary>
+        private void InitAutoLogin()
+        {
+            autoLoginToggle.isOn = AutoLogin.GetAutoLogin(); // 저장된 값으로 초기화
+        }
+
         private void OnAutoLoginToggleChanged(bool isOn)
         {
             AutoLogin.SetAutoLogin(isOn);
+            Debug.Log("[SettingManager] 자동 로그인 설정: " + isOn);
         }
         
+<<<<<<< Updated upstream
+=======
+        // ========= 사운드 설정 로드 ========== 
+        private void LoadSoundSettings()
+        {
+            float bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
+            float sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
+            
+            // 콜백 없이 값 설정
+            bgmSlider.value = bgmVolume;
+            sfxSlider.value = sfxVolume;
+        }
+        
+        /// <summary>
+        /// BGM 슬라이더 조작 시
+        /// </summary>
+        private void OnBgmSliderChanged(float value)
+        {
+            if (!isInitialized) return; // 초기화 중엔 무시
+            
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.SetBgmVolume(value); // 내부에서 저장
+            }
+        }
+
+        /// <summary>
+        /// SFX 슬라이더 조작 시
+        /// </summary>
+        /// <summary>
+        /// SFX 슬라이더 사용자 조작 시 저장
+        /// </summary>
+        private void OnSfxSliderChanged(float value)
+        {
+            if (!isInitialized) return; // 초기화 중엔 무시
+
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.SetSfxVolume(value); // 내부에서 저장
+            }
+        }
+        
+        // ========= 배경음 볼륨 설정 ==========
+        public void SetBGMVolume(float volume)
+        {
+            SoundManager.Instance.SetBgmVolume(volume);
+        }
+        
+        // ========= 효과음 볼륨 설정 ==========
+        public void SetSFXVolume(float volume)
+        {
+            SoundManager.Instance.SetSfxVolume(volume);
+        }
+        
+        public override void Show() => gameObject.SetActive(true);
+        public override void Hide() => gameObject.SetActive(false);
+        public override void OnEnable(){}
+        public override void OnDisable(){}
+        
+>>>>>>> Stashed changes
         // ========= 설정 패널 열기 ==========
         public void OpenSettingPanel()
         {
@@ -95,12 +188,15 @@ namespace MJ
         {
             CloseSettingPanel();
         }
+<<<<<<< Updated upstream
         
         // ========= 설정 패널 상태 확인 ==========
         public bool IsSettingPanelOpen()
         {
             return UI_Manager.Instance.nowShowingPanelType == UI_Manager.PanelType.Option;
         }
+=======
+>>>>>>> Stashed changes
 
         
     }
