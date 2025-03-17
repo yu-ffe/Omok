@@ -28,6 +28,9 @@ namespace KimHyeun {
 
             // TODO 메인 화면 전환 시 호출 (로그인 시, 게임 종료 후)
             ProfileManager.Instance.ButtonInfoShow();
+
+            // TODO EndGame(GameResult gameResult) 내부에서 실행
+            GameEndManager.Instance.SetEndGameInfo(GameResult.Win);
         }
 
 

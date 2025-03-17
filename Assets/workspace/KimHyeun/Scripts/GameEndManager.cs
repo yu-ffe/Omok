@@ -6,7 +6,7 @@ using TMPro;
 using DG.Tweening;
 
 namespace KimHyeun {
-    public class GameEndManager : MonoBehaviour
+    public class GameEndManager : Singleton<GameEndManager>
     {
         /*
         
@@ -40,12 +40,9 @@ namespace KimHyeun {
         [SerializeField] GameObject recordButton;
         [SerializeField] TMP_Text recordButtonText;
 
-        private void Start()
-        {
-            SetEndGameInfo(GameResult.Win);
-        }
+        
 
-        public void SetEndGameInfo(GameResult gameResult) // EndGame(GameResult gameResult) 내부에서 실행
+        public void SetEndGameInfo(GameResult gameResult) 
         {
             // 승점바 설정
             GradeBarSetting();
@@ -170,6 +167,7 @@ namespace KimHyeun {
             // 승급 애니메이션 과정에 호출(이전 상태와 비교를 위해)
             //  GradeChangeManager.GradeUpdate(SessionManager.currentUserId, userSession, gameResult);
 
+            Debug.Log($"이전 랭크 포인트: {userSession.RankPoint}");
             UpdateCellScales(userSession.RankPoint);
 
 
@@ -180,7 +178,6 @@ namespace KimHyeun {
 
                     // TODO 승점 표기 애니메이션, 승급 애니메이션 체크
 
-                   
 
                     break;
 
@@ -206,29 +203,40 @@ namespace KimHyeun {
 
         void UpdateCellScales(float rankPoint)
         {
-            // RankPoint 값을 절대값으로 변환 후 10으로 나누기
-            float scaleValue = Mathf.Abs(rankPoint) / 10f;  // 절대값으로 변환하여 양수로 처리
+            float scaleValue = Mathf.Abs(rankPoint) / 10f;  // RankPoint 값을 10으로 나눠 범위 변환
+            int fullCells = Mathf.FloorToInt(scaleValue);  // 가득 찬 셀 개수
+            float partialFill = scaleValue - fullCells;    // 마지막 셀의 소수점 값 (0~1)
 
-            // 플러스 셀의 x 스케일 값 설정
-            for (int i = 0; i < gradePlusCells.Length; i++)
+            if (rankPoint > 0)
             {
-                if (gradePlusCells[i] != null)
+                for (int i = 0; i < gradePlusCells.Length; i++)
                 {
-                    // 양수일 때 플러스 셀은 채워짐
-                    gradePlusCells[i].localScale = new Vector3(i < scaleValue ? 1f : 0f, 1f, 1f);
+                    if (gradePlusCells[i] != null)
+                    {
+                        if (i < fullCells)
+                            gradePlusCells[i].localScale = new Vector3(1f, 1f, 1f);  // 가득 찬 셀
+                        else if (i == fullCells)
+                            gradePlusCells[i].localScale = new Vector3(partialFill, 1f, 1f); // 소수점 적용
+                        else
+                            gradePlusCells[i].localScale = new Vector3(0f, 1f, 1f);  // 나머지는 0
+                    }
                 }
             }
-
-            // 마이너스 셀의 x 스케일 값 설정
-            for (int i = 0; i < gradeMinusCells.Length; i++)
+            else if (rankPoint < 0)
             {
-                if (gradeMinusCells[i] != null)
+                for (int i = 0; i < gradeMinusCells.Length; i++)
                 {
-                    // 음수일 때 마이너스 셀은 채워짐
-                    gradeMinusCells[i].localScale = new Vector3(i < scaleValue ? 1f : 0f, 1f, 1f);
+                    if (gradeMinusCells[i] != null)
+                    {
+                        if (i < fullCells)
+                            gradeMinusCells[i].localScale = new Vector3(1f, 1f, 1f);
+                        else if (i == fullCells)
+                            gradeMinusCells[i].localScale = new Vector3(partialFill, 1f, 1f);
+                        else
+                            gradeMinusCells[i].localScale = new Vector3(0f, 1f, 1f);
+                    }
                 }
             }
-
         }
 
 
