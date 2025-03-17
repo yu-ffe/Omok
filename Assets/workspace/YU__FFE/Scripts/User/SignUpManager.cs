@@ -149,7 +149,7 @@ public static class SignUpManager// : MonoBehaviour
         PlayerPrefs.Save();
 
         // 세션 등록
-        SessionManager.SetSessionData(id, nickname, profile, coins, grade,
+        Server.Session.SessionManager.SetUserData(id, nickname, profile, coins, grade,
             rankPoint, winCount, loseCount);
 
     }
@@ -229,7 +229,7 @@ public static class SignUpManager// : MonoBehaviour
     // ========== 자동 로그인 ==========
     static void AutoLogin(string id)
     {
-        SessionManager.currentUserId = id;
+        Server.Session.SessionManager.currentUserId = id;
         Debug.Log($"자동 로그인 완료: {id}");
     }
 }

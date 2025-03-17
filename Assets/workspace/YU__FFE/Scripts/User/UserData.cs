@@ -2,8 +2,7 @@ namespace workspace.YU__FFE.Scripts.User
 {
     [System.Serializable]
     //UserSession -> UserSessionData
-    public class UserSessionData
-    {
+    public class UserData {
         public string Nickname;
         public int ProfileNum;
         public int Coins;
@@ -11,9 +10,9 @@ namespace workspace.YU__FFE.Scripts.User
         public int RankPoint;
         public int WinCount;  // 승리 횟수
         public int LoseCount; // 패배 횟수
-
+        
         // 생성자
-        public UserSessionData(string nickname, int profileNum, int coins, int grade, 
+        public UserData(string nickname, int profileNum, int coins, int grade, 
                            int rankPoint, int winCount, int loseCount)
         {
             Nickname = nickname;

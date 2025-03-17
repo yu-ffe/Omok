@@ -49,7 +49,7 @@ namespace workspace.YU__FFE.Scripts.User {
             int winCount = PlayerPrefs.GetInt($"user_{id}_winCount", 0); // 기본 0
             int loseCount = PlayerPrefs.GetInt($"user_{id}_loseCount", 0); // 기본 0
 
-            SessionManager.SetSessionData(id,
+            Server.Session.SessionManager.SetUserData(id,
                 nickname,
                 profileNum,
                 coins,
@@ -57,7 +57,7 @@ namespace workspace.YU__FFE.Scripts.User {
                 rankPoint,
                 winCount,
                 loseCount);
-            SessionManager.currentUserId = id; // 현재 유저 ID 저장
+            Server.Session.SessionManager.currentUserId = id; // 현재 유저 ID 저장
 
             // ========= 로그인 성공 알림 =========
             Debug.Log($"로그인 성공! {nickname}님 환영합니다. (급수: {grade}급, 포인트: {rankPoint})");
