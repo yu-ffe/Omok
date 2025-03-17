@@ -59,6 +59,27 @@ namespace KimHyeun {
         {
             if (gradeBar == null) return;
 
+            // 기존에 존재하는 오브젝트들을 삭제
+            for (int i = 0; i < gradeMinusCells.Length; i++)
+            {
+                if (gradeMinusCells[i] != null)
+                {
+                    Destroy(gradeMinusCells[i].gameObject); // 기존 셀 제거
+                }
+            }
+
+            for (int i = 0; i < gradePlusCells.Length; i++)
+            {
+                if (gradePlusCells[i] != null)
+                {
+                    Destroy(gradePlusCells[i].gameObject); // 기존 셀 제거
+                }
+            }
+
+            // gradeMinusCells, gradePlusCells 배열 초기화
+            gradeMinusCells = new RectTransform[3];
+            gradePlusCells = new RectTransform[3];
+
             float barWidth = gradeBar.rect.width;  // 전체 바의 가로 크기
             float barHeight = gradeBar.rect.height; // 전체 바의 세로 크기
             float cellSpacing = 10f;  // 셀 간격
@@ -218,9 +239,20 @@ namespace KimHyeun {
             float partialFill = scaleValue - fullCells;    // 마지막 셀의 소수점 값 (0~1)
 
             Transform[] targetCells = rankPoint > 0 ? gradePlusCells : gradeMinusCells;
+            Transform[] oppositeCells = rankPoint > 0 ? gradeMinusCells : gradePlusCells;
 
             Sequence seq = DOTween.Sequence(); // DOTween 애니메이션 순차 실행
 
+            // 반대쪽 셀들의 스케일을 0으로 초기화
+            foreach (var cell in oppositeCells)
+            {
+                if (cell != null)
+                {
+                    seq.Join(cell.DOScaleX(0f, 0.2f)); // 반대쪽 셀의 스케일을 0으로
+                }
+            }
+
+            // 플러스/마이너스 셀들에 대해 애니메이션을 처리
             for (int i = 0; i < targetCells.Length; i++)
             {
                 if (targetCells[i] != null)
@@ -229,14 +261,21 @@ namespace KimHyeun {
 
                     if (animate)
                     {
-                        if (i == fullCells && fullCells > 0) // 십의 자리 변화가 있을 경우 이전 셀이 먼저 변화
+                        // 십의 자리가 변동될 때는 애니메이션 순차적으로 실행
+                        if (i == fullCells && fullCells > 0) // 십의 자리 변화가 있을 경우
                         {
-                            seq.Append(targetCells[i - 1].DOScaleX(1f, 0.2f));
-                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
+                            if (rankPoint > 0)  // 플러스 셀 감소
+                            {
+                                seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
+                            }
+                            else  // 마이너스 셀 증가
+                            {
+                                seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
+                            }
                         }
                         else
                         {
-                            seq.Join(targetCells[i].DOScaleX(targetScaleX, 0.2f));
+                            seq.Join(targetCells[i].DOScaleX(targetScaleX, 0.2f)); // 다른 셀들은 동시 실행
                         }
                     }
                     else
@@ -249,7 +288,6 @@ namespace KimHyeun {
             seq.Play(); // 애니메이션 실행
         }
 
-
         void RankPointSet(UserSession userSession, GameResult gameResult)
         {
             // 실질적 승급 계산
@@ -259,13 +297,12 @@ namespace KimHyeun {
 
             if (afterRankPoint >= 0)
             {
-                needPlayNum = (GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade);
+                needPlayNum = Mathf.CeilToInt((GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade));
             }
-
             else
             {
-                needPlayNum = GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(userSession.Grade) +
-                    (afterRankPoint / GradeChangeManager.GetWinPoint(userSession.Grade));
+                needPlayNum = Mathf.CeilToInt(GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(userSession.Grade) +
+                    (afterRankPoint / GradeChangeManager.GetWinPoint(userSession.Grade)));
             }
 
             gradeResultText.text = needPlayNum + "게임 승리 시 승급";
