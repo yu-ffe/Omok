@@ -13,7 +13,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     [SerializeField] private GameObject MakerBlackPrefab; // 흑바둑알 프리팹
     [SerializeField] private GameObject MakerWhitePrefab; // 백바둑알 프리팹
     private GameObject hintStone; // 투명알 프리팹
-    [SerializeField] private int gridSize = 15; // 격자 수 (15x15)
+    public int gridSize = 15; // 격자 수 (15x15)
 
     private float scaledPadding; // 현재 UI 기준 비례 공백
     private float cellSize; // 현재 UI 기준 한 칸 크기
@@ -21,13 +21,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     private bool inBoard = false; // 보드 안에 있는지 여부
     
-    private Camera mainCamera;    // 레이캐스팅을 위한 메인 카메라 참조
-    
-    public GraphicRaycaster uiRaycaster; // UI에서 Raycast를 수행할 GraphicRaycaster
-    public EventSystem UIeventSystem; // UI 이벤트 시스템
-    
     public RectTransform rectTransform;
-    
     
     private Vector2 localPoint;     //마우스의 좌표를 UI좌표로 바꾼 값
     private Vector2Int boardCoord;  //UI좌표를 배열로 바꾼 값
@@ -51,8 +45,6 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
 
     void Start()
     {
-        mainCamera = Camera.main;                  // 메인 카메라를 찾아 할당
-        
         CalculateSizes();
     }
 
@@ -62,18 +54,27 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         if (inBoard)
         {
             // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
-            ShowHintStone(Constants.PlayerType.PlayerA, boardCoord);
+            ShowHintStone(boardCoord);
         }
     }
     
     //미리보기 돌 생성함수
-    private void ShowHintStone(Constants.PlayerType playerType, Vector2Int coord)
+    private void ShowHintStone(Vector2Int coord)
     {
+        Constants.PlayerType currentPlayer = GameManager.Instance.GameLogicInstance.GetCurrentPlayerType();
+        
         // 미리보기용 투명한 돌 표시 (기존 미리보기용 오브젝트를 지우고 다시 생성)
         hintStone = GameObject.Find("HintStone");
         if (hintStone) Destroy(hintStone);
-
-        PlaceStone(playerType, Constants.StoneType.Hint, coord.x ,coord.y);
+        
+        if (!GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y))
+        {
+            // 돌을 놓을 수 없는 자리이면 힌트 돌 표시하지 않음
+            Destroy(hintStone);
+            return;
+        }
+        
+        PlaceStone(currentPlayer, Constants.StoneType.Hint, coord.x ,coord.y);
     }
 
     //바둑판 크기의 비례한 공백과 시작위치 계산

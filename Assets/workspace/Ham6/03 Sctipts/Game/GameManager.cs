@@ -14,6 +14,8 @@ public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
     private Constants.GameType _gameType;
     private GameLogic _gameLogic;
 
+    public GameLogic GameLogicInstance => _gameLogic;
+    
     // UI 타이머 업데이트 함수
     public void UpdateTimerUI()
     {

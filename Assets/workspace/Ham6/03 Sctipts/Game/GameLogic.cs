@@ -44,9 +44,11 @@ public abstract class BasePlayerState
     //직접 플레이하는 상태 (싱글 또는 멀티플레이)
     public class PlayerState : BasePlayerState
     {
-        private Constants.PlayerType _playerType; // 플레이어 타입 (A 또는 B)
+        public Constants.PlayerType _playerType; // 플레이어 타입 (A 또는 B)
         private bool _isFirstPlayer; // 첫 번째 플레이어 여부
     
+        public Constants.PlayerType CurrentPlayerType => _playerType;
+        
         /* TODO: 멀티시 구현
         private MultiplayManager _multiplayManager; // 네트워크 멀티플레이어 관리
         private string _roomId; // 멀티플레이 방 ID
@@ -58,6 +60,7 @@ public abstract class BasePlayerState
         {
             _isFirstPlayer = isFirstPlayer;
             _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+            
             
             //TODO: 멀티시 구현
             //_isMultiplay = false;
@@ -184,6 +187,7 @@ public abstract class BasePlayerState
     {
     public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
+    private (int, int) lastPlace;
 
     //상태 패턴을 활용한 플레이어 상태 관리
     public BasePlayerState firstPlayerState; // 첫 번째 플레이어 상태
@@ -210,7 +214,7 @@ public abstract class BasePlayerState
 
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
-
+        
         switch (gameType)
         {
             case Constants.GameType.SinglePlayer:
@@ -281,6 +285,22 @@ public abstract class BasePlayerState
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
     }
     
+    public Constants.PlayerType GetCurrentPlayerType()
+    {
+        if (_currentPlayerState is PlayerState playerState)
+        {
+            return playerState.CurrentPlayerType;
+        }
+        // AIState나 다른 상태인 경우 별도의 처리 필요하다면 여기서 처리
+        return Constants.PlayerType.None;
+    }
+    
+    //보드가 비워져잇는지 체크하는 함수
+    public bool IsCellEmpty(int row, int col)
+    {
+        return _board[row, col] == Constants.PlayerType.None;
+    }
+    
     //보드에 새로운 값을 할당하는 함수
     public bool SetNewBoardValue(Constants.PlayerType playerType, int row, int col)
     {
@@ -291,14 +311,18 @@ public abstract class BasePlayerState
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
+            lastPlace = (row, col);
             OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
+            
             return true;
         }
         // 플레이어 B가 놓는 경우
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
+            lastPlace = (row, col);
             OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col);
+            
             return true;
         }
         return false;
@@ -307,8 +331,8 @@ public abstract class BasePlayerState
     //게임 결과 확인 함수
     public GameResult CheckGameResult()
     {
-        if (CheckGameWin(Constants.PlayerType.PlayerA)) { return GameResult.Win; }
-        if (CheckGameWin(Constants.PlayerType.PlayerB)) { return GameResult.Lose; }
+        if (CheckGameWin(Constants.PlayerType.PlayerA)) { Debug.Log($"{Constants.PlayerType.PlayerA}승리"); return GameResult.Win; }
+        if (CheckGameWin(Constants.PlayerType.PlayerB)) { Debug.Log($"{Constants.PlayerType.PlayerB}승리"); return GameResult.Lose; }
         //TODO: 무승부 조건
         //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
         
@@ -318,7 +342,27 @@ public abstract class BasePlayerState
     //게임의 승패를 판단하는 함수
     private bool CheckGameWin(Constants.PlayerType playerType)
     {
-        //TODO : 오목 승리조건 작성
+        int[][] directions = new int[][] {
+            new int[] { 1, 0 }, // 수직
+            new int[] { 0, 1 }, // 수평
+            new int[] { 1, 1 }, // 대각선 ↘
+            new int[] { 1, -1 } // 대각선 ↙
+        };
+
+        int x = lastPlace.Item1, y = lastPlace.Item2;
+
+        foreach (var dir in directions) {
+            int count = 1;
+            for (int d = -1; d <= 1; d += 2) {
+                int nx = x + dir[0] * d, ny = y + dir[1] * d;
+                while (nx >= 0 && nx < OmokBoard.gridSize && ny >= 0 && ny < OmokBoard.gridSize && _board[nx, ny] == playerType) {
+                    count++;
+                    nx += dir[0] * d;
+                    ny += dir[1] * d;
+                }
+            }
+            if (count >= 5) return true;
+        }
 
         return false; // 승리 조건 없음
     }
@@ -329,6 +373,8 @@ public abstract class BasePlayerState
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
+        
+        Debug.Log("게임의 승패가 결정되어 게임이 끝남");
         //TODO: UI활성화
         //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }

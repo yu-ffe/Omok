@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/User/SigninManager.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,18 +48,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-    &quot;keyToString&quot;: {
-      &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-      &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-      &quot;git-widget-placeholder&quot;: &quot;feature/yu/server/nodejs&quot;,
-      &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-      &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-      &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-      &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-      &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
-    }
-  }</component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature/game-manager/logic",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.51f1\Editor\Unity.exe" />
