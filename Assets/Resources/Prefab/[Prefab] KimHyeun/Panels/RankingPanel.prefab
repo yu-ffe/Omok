@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 7075679607226264356}
   - component: {fileID: 1806288154220077780}
   - component: {fileID: 9150571951691424517}
-  - component: {fileID: 4680794389813711226}
+  - component: {fileID: 3089745847991621056}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4680794389813711226
+--- !u!114 &3089745847991621056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,10 +244,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1061533550155415049}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3783e89d1df553a42bfa0c50689534b9, type: 3}
+  m_Script: {fileID: 11500000, guid: a9f3f3e0731e87b4c8ffbcb57c65b7b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 1595900103211384090, guid: ac29d74f709397f4c9bfd120fb015f7f, type: 3}
+  cellPrefab: {fileID: 1595900103211384090, guid: 26de5a987df13924b98a4155b7532887, type: 3}
   content: {fileID: 873733278752834907}
   contentRectTransform: {fileID: 1611621341234998260}
   scrollRect: {fileID: 9150571951691424517}
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8365499750314379401}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4386978160043296443}
   m_HandleRect: {fileID: 2651584970984664279}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

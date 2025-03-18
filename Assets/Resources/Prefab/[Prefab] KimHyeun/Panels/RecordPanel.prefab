@@ -246,7 +246,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6182348952107205510}
   m_HandleRect: {fileID: 3439181217688355323}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -450,7 +450,7 @@ GameObject:
   - component: {fileID: 6473900788454728723}
   - component: {fileID: 651736603946964513}
   - component: {fileID: 1982181595169843063}
-  - component: {fileID: 8558107615407538351}
+  - component: {fileID: 7376328139517612577}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -548,7 +548,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8558107615407538351
+--- !u!114 &7376328139517612577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -557,10 +557,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6360014437459954420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3783e89d1df553a42bfa0c50689534b9, type: 3}
+  m_Script: {fileID: 11500000, guid: a9f3f3e0731e87b4c8ffbcb57c65b7b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 1595900103211384090, guid: c1505abc7c2f4e8488f4772e1df36215, type: 3}
+  cellPrefab: {fileID: 1595900103211384090, guid: eacc285fa4f5a2f40b088667f7b319ac, type: 3}
   content: {fileID: 7233151210833976172}
   contentRectTransform: {fileID: 1324718273517624438}
   scrollRect: {fileID: 1982181595169843063}
@@ -764,8 +764,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7238021856335024108}
   m_HandleRect: {fileID: 3559035460374145125}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 1.0000001
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
