@@ -7,8 +7,21 @@
 <<<<<<< Updated upstream
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/OmokBoard.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/OmokBoard.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameOverState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameOverState.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/IGameState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/IGameState.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/MyTurnState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/MyTurnState.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OpponentTurnState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OpponentTurnState.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/ReadyState.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/ReadyState.cs.meta" beforeDir="false" />
     </list>
 =======
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="" />
@@ -119,7 +132,7 @@
       <workItem from="1741911432734" duration="6575000" />
       <workItem from="1741934865966" duration="301000" />
       <workItem from="1742094453598" duration="686000" />
-      <workItem from="1742256876497" duration="14594000" />
+      <workItem from="1742256876497" duration="18360000" />
     </task>
     <servers />
   </component>

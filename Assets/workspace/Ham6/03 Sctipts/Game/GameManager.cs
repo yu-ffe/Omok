@@ -28,6 +28,14 @@ public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
         _gameType = gameType;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
     }
+    
+    public void ChangeToMainScene()
+    {
+        _gameLogic?.Dispose();
+        _gameLogic = null;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Scene");
+    }
+    
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Game Scene")

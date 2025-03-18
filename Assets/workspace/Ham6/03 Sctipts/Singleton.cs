@@ -74,11 +74,11 @@ namespace workspace.Ham6._03_Sctipts
         /// <summary>
         /// 수동 해제 시
         /// </summary>
-        protected virtual void OnDestroy()
+        /*protected virtual void OnDestroy()
         {
             isShuttingDown = true;
             UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
+        }*/
         
         protected abstract  void OnSceneLoaded(Scene scene, LoadSceneMode mode);
     }

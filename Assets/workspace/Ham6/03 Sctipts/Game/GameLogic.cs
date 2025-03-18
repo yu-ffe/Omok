@@ -146,7 +146,6 @@ public abstract class BasePlayerState
                 Debug.Log("둘 수 있는 수가 없음");
                 gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
             }
-            
         }
 
         public override void OnExit(GameLogic gameLogic) { }
@@ -437,7 +436,9 @@ public abstract class BasePlayerState
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
-        
+        Debug.Log("게임끝");
+        GameManager.Instance.ChangeToMainScene();
+
         //TODO: UI활성화
         //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }
