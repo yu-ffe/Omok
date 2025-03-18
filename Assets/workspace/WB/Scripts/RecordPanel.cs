@@ -18,7 +18,7 @@ public class RecordPanel : UI_Panel
     {
         // 매니저 스크롤 뷰에 해당 스크롤 뷰 할당
         RecordManager.Instance.SetScrollView(scrollView);
-        RecordManager.Instance.GetRecordData();
+        RecordManager.Instance.LoadRecordData();
         gameObject.SetActive(true);
     }
 
