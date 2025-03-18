@@ -27,7 +27,9 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
 
         // 리프레시 토큰을 로컬에서 로드
         public string GetRefreshToken() {
-            return _refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);        }
+            return _refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);
+            
+        }
         
         public void UpdateAccessToken(string token) {
             this._accessToken = token; //
@@ -37,14 +39,14 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
         }
 
         
-        public void UpdateTokens(string refreshToken, string sessionToken) {
+        public void UpdateTokens(string refreshToken, string accessToken) {
             if (!string.IsNullOrEmpty(refreshToken)) {
-                Server.Session.SessionManager.Instance.UpdateRefreshToken(refreshToken);
+                UpdateRefreshToken(refreshToken);
                 Debug.Log("리프레시 토큰 저장 완료");
             }
 
-            if (!string.IsNullOrEmpty(sessionToken)) {
-                Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
+            if (!string.IsNullOrEmpty(accessToken)) { 
+                UpdateSessionToken(accessToken);
                 Debug.Log("세션 토큰 저장 완료");
             }
         }

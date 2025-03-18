@@ -28,15 +28,13 @@ namespace workspace.YU__FFE.Scripts.User {
 
             StartCoroutine(NetworkManager.SignInRequest((response) => {
                 if (response is not null) {
-
                     Server.Session.SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
                     NetworkManager.Instance.GetUserInfoRequest((data) => {
                         if (data is not null) {
                             UpdateUserData(data);
                         }
-                        // 이부분은 따로 처리해야함
+                        // 이부분은 따로 로그 찍히게 수정
                     });
-
                 } 
                 callback(response != null, response?.message);
             }));

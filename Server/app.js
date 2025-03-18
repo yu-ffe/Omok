@@ -57,16 +57,16 @@ var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
 var signupRouter = require("./routes/auth/signup");
-var signupRouter = require("./routes/auth/signin");
-var signupRouter = require("./routes/auth/signout");
+var signinRouter = require("./routes/auth/signin");
+var signoutRouter = require("./routes/auth/signout");
 
 // 📌 라우트 설정
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter); // 회원가입 라우터 등록
 app.use("/auth/signup", signupRouter); // 회원가입 라우터 등록
-app.use("/auth/signin", signupRouter); // 회원가입 라우터 등록
-app.use("/auth/signout", signupRouter); // 회원가입 라우터 등록
+app.use("/auth/signin", signinRouter); // 회원가입 라우터 등록
+app.use("/auth/signout", signoutRouter); // 회원가입 라우터 등록
 
 
 

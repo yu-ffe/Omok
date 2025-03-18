@@ -68,16 +68,12 @@ namespace workspace.YU__FFE.Scripts.User {
 
         private void CheckIdAvailability(string id, Action<bool, string> callback) {
             StartCoroutine(NetworkManager.CheckIdRequest(id,
-                (checkResponse) => {
-                    callback(checkResponse.success, checkResponse.message);
-                }));
+                (checkResponse) => { callback(checkResponse.success, checkResponse.message); }));
         }
 
         private void CheckNicknameAvailability(string nickname, Action<bool, string> callback) {
             StartCoroutine(NetworkManager.CheckNicknameRequest(nickname,
-                (checkResponse) => {
-                    callback(checkResponse.success, checkResponse.message);
-                }));
+                (checkResponse) => { callback(checkResponse.success, checkResponse.message); }));
         }
 
         /// <summary>
@@ -90,30 +86,21 @@ namespace workspace.YU__FFE.Scripts.User {
 
             PlayerManager.Instance.playerData.SetPrivateData(id, nickname, password, profile);
 
-            Debug.Log("회원가입 시도");
             StartCoroutine(NetworkManager.SignUpRequest((response) => {
-                Debug.Log("회원가입 시도");
                 if (response is not null) {
+                    // TODO: Auto SignIn하고 아래 코드 실행
                     Server.Session.SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
                     SaveNewUserData();
                 }
-                Debug.Log("회원가입 성공");
-                callback(response!=null, response?.message);
+                callback(response != null, response?.message);
             }));
 
             PlayerManager.Instance.playerData.ClearPrivateData();
         }
-        
+
         // 유저 데이터 저장 요청
         private void SaveNewUserData() {
-            NetworkManager.Instance.SaveNewUserDataRequest((saveSuccess, saveMessage) => {
-                if (saveSuccess) {
-                    Debug.Log("유저 데이터 저장 성공: " + saveMessage);
-                }
-                else {
-                    Debug.LogError("유저 데이터 저장 실패: " + saveMessage);
-                }
-            });
+            NetworkManager.Instance.SaveNewUserDataRequest((saveSuccess, saveMessage) => { });
         }
 
         // 이메일 형식 체크

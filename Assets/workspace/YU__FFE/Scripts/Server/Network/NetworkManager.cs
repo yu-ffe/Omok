@@ -18,7 +18,6 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
         // ReSharper disable Unity.PerformanceAnalysis
         public static IEnumerator SignUpRequest(Action<TokenResponse> callback) {
-            Debug.Log("SignUpRequest");
             string url = $"{Constants.ServerURL}/auth/signup";
             PlayerData playerData = PlayerManager.Instance.playerData;
 
@@ -27,7 +26,6 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             form.AddField("password", playerData.password);
             form.AddField("nickname", playerData.nickname);
             form.AddField("profileNum", playerData.profileNum);
-            Debug.Log("profileNum: " + playerData.profileNum);
 
             using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
                 yield return request.SendWebRequest();
@@ -49,7 +47,6 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
                 yield return request.SendWebRequest();
 
-                Debug.Log("CheckDuplicateRequest: " + request.downloadHandler.text);
                 callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
             }
         }
@@ -68,23 +65,22 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
         // ReSharper disable Unity.PerformanceAnalysis
         public static IEnumerator SignInRequest(Action<TokenResponse> callback) {
-            string url = $"{Constants.ServerURL}/login";
+            string url = $"{Constants.ServerURL}/auth/signin";
             PlayerData playerData = PlayerManager.Instance.playerData;
 
             WWWForm form = new WWWForm();
             form.AddField("id", playerData.id);
             form.AddField("password", playerData.password);
 
-
             using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
                 yield return request.SendWebRequest();
 
-                bool success = request.result == UnityWebRequest.Result.Success;
                 string responseText = request.downloadHandler.text;
-
-                callback?.Invoke(success ? JsonConvert.DeserializeObject<TokenResponse>(responseText) : null);
+                callback?.Invoke(JsonConvert.DeserializeObject<TokenResponse>(responseText));
             }
         }
+
+
 
         // ======================================================
         //                        로그아웃
@@ -116,6 +112,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             string url = $"{Constants.ServerURL}/user/info";
             string accessToken = Session.SessionManager.Instance.GetAccessToken();
             int retryCount = 0;
+            Debug.Log("GetUserInfoRequest: " + accessToken);
 
             while (retryCount < MaxRetryCount) {
                 using (UnityWebRequest request = UnityWebRequest.Get(url)) {
@@ -240,7 +237,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // UserData 저장 요청 함수
-        public IEnumerator SaveNewUserDataRequest(System.Action<bool, string> callback) {
+        public IEnumerator SaveNewUserDataRequest(Action<bool, string> callback) {
             string url = $"{Constants.ServerURL}saveUserData"; // UserData 저장 API 엔드포인트
             string token = Session.SessionManager.Instance.GetAccessToken();
 
@@ -343,11 +340,9 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         public int rankPoint;
         public int winCount;
         public int loseCount;
-        public string sessionToken;
-        public string refreshToken;
 
         public UserDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount,
-                                int loseCount, string sessionToken, string refreshToken) {
+                                int loseCount) {
             this.nickname = nickname;
             this.profileNum = profileNum;
             this.coins = coins;
@@ -355,8 +350,6 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             this.rankPoint = rankPoint;
             this.winCount = winCount;
             this.loseCount = loseCount;
-            this.sessionToken = sessionToken;
-            this.refreshToken = refreshToken;
         }
     }
 
