@@ -18,56 +18,41 @@ namespace workspace.YU__FFE.Scripts.User {
         }
 
         /// <summary>
-        /// 1. 로그인
-        /// 2. 세션 재등록 Refresh, Session 토큰 재발급
-        /// 3. 데이터 불러오기
+        /// 1. 로그인 시도 및 토큰 갱신
+        /// 2. 세션 토큰으로 UserData 불러오기 및 저장
         /// </summary>
         private void SignIn(string id, string pwd, Action<bool, string> callback) {
             string password = EncryptPassword(pwd);
 
-            // Id, Password 저장 -> 로그인 -> Id, Password 제거
-            // 왜 why 굳이 이런방식? -> 이유없음
             PlayerManager.Instance.playerData.SetPrivateData(id, password);
 
-            StartCoroutine(NetworkManager.Instance.SignInRequest((login, data) => {
-                if (login.success) {
-                    Debug.Log("로그인 성공");
+            StartCoroutine(NetworkManager.SignInRequest((response) => {
+                if (response is not null) {
 
-                    // 로그인 성공 시 세션 갱신
-                    UpdateTokens(login.refreshToken, login.accessToken, callback);
-                    //TODO: 플레이어 데이터 가져오는 기능 필요.
-                    UpdateUserData( data);
+                    Server.Session.SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
+                    NetworkManager.Instance.GetUserInfoRequest((data) => {
+                        if (data is not null) {
+                            UpdateUserData(data);
+                        }
+                        // 이부분은 따로 처리해야함
+                    });
 
-                } else {
-                    // 로그인 실패
-                }
+                } 
+                callback(response != null, response?.message);
             }));
             
             PlayerManager.Instance.playerData.ClearPrivateData();
 
         }
 
-        // 세션 갱신 처리
-        private void UpdateTokens(string refreshToken, string sessionToken, Action<bool, string> callback) {
-            if (!string.IsNullOrEmpty(refreshToken)) {
-                Server.Session.SessionManager.Instance.UpdateRefreshToken(refreshToken);
-                Debug.Log("리프레시 토큰 저장 완료");
-            }
-
-            if (!string.IsNullOrEmpty(sessionToken)) {
-                Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
-                Debug.Log("세션 토큰 저장 완료");
-            }
-        }
-
-        private void UpdateUserData(UserData data) {
-            PlayerManager.Instance.playerData.nickname = data.nickname;
-            PlayerManager.Instance.playerData.profileNum = data.profileNum;
-            PlayerManager.Instance.playerData.coins = data.coins;
-            PlayerManager.Instance.playerData.grade = data.grade;
-            PlayerManager.Instance.playerData.rankPoint = data.rankPoint;
-            PlayerManager.Instance.playerData.winCount = data.winCount;
-            PlayerManager.Instance.playerData.loseCount = data.loseCount;
+        private void UpdateUserData(UserDataResponse dataResponse) {
+            PlayerManager.Instance.playerData.nickname = dataResponse.nickname;
+            PlayerManager.Instance.playerData.profileNum = dataResponse.profileNum;
+            PlayerManager.Instance.playerData.coins = dataResponse.coins;
+            PlayerManager.Instance.playerData.grade = dataResponse.grade;
+            PlayerManager.Instance.playerData.rankPoint = dataResponse.rankPoint;
+            PlayerManager.Instance.playerData.winCount = dataResponse.winCount;
+            PlayerManager.Instance.playerData.loseCount = dataResponse.loseCount;
         }
 
         // ========== 비밀번호 암호화 (회원가입과 동일) ==========

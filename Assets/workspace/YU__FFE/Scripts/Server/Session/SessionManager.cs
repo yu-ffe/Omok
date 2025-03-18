@@ -7,34 +7,53 @@ using workspace.YU__FFE.Scripts.Server.Network;
 namespace workspace.YU__FFE.Scripts.Server.Session {
     public class SessionManager : Singleton<SessionManager> {
         private const string ServerUrl = Constants.ServerURL;
-        public string SessionToken { get; private set; }
-        private string refreshToken; // 리프레시 토큰 저장
+        private string _accessToken;
+        private string _refreshToken; // 리프레시 토큰 저장
 
+        private void Awake() {
+            _refreshToken = GetRefreshToken();
+        }
+        
         // ========== 로컬 세션 저장 ========== 
         public void UpdateSessionToken(string token) {
-            SessionToken = token;
+            _accessToken = token;
         }
 
         // 리프레시 토큰을 로컬에 저장
         public void UpdateRefreshToken(string token) {
-            refreshToken = token;
+            _refreshToken = token;
             PlayerPrefs.SetString("RefreshToken", token); // PlayerPrefs에 저장 (로컬 저장소)
         }
 
         // 리프레시 토큰을 로컬에서 로드
         public string GetRefreshToken() {
-            return refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);        }
+            return _refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);        }
         
-        // 리프레시 토큰을 로컬에서 로드
-        public string GetSessionToken() {
-            return SessionToken; // 저장된 리프레시 토큰 가져오기
+        public void UpdateAccessToken(string token) {
+            this._accessToken = token; //
+        }
+        public string GetAccessToken() {
+            return _accessToken; // 저장된 리프레시 토큰 가져오기
         }
 
+        
+        public void UpdateTokens(string refreshToken, string sessionToken) {
+            if (!string.IsNullOrEmpty(refreshToken)) {
+                Server.Session.SessionManager.Instance.UpdateRefreshToken(refreshToken);
+                Debug.Log("리프레시 토큰 저장 완료");
+            }
+
+            if (!string.IsNullOrEmpty(sessionToken)) {
+                Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
+                Debug.Log("세션 토큰 저장 완료");
+            }
+        }
+        
         // ========== 서버에서 세션 검증 ========== 
         private IEnumerator VerifyServerSession(System.Action<bool> callback) {
             string url = ServerUrl + "verifySession";
             WWWForm form = new WWWForm();
-            form.AddField("sessionToken", SessionToken);
+            form.AddField("sessionToken", _accessToken);
 
             UnityWebRequest request = UnityWebRequest.Post(url, form);
             yield return request.SendWebRequest();

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,115 +9,205 @@ using workspace.YU__FFE.Scripts.User;
 
 namespace workspace.YU__FFE.Scripts.Server.Network {
     public class NetworkManager : Singleton<NetworkManager> {
-        private const string ServerUrl = Constants.ServerURL;
-        
-        // 회원가입 요청 함수
-        public IEnumerator SignUpRequest(System.Action<SignUpResponse> callback) {
-            Debug.Log("회원가입 요청: NetworkManager");
-            string url = $"{ServerUrl}/auth/signup"; // 회원가입 API 엔드포인트
+
+        private const int MaxRetryCount = 3; // 연결 실패시 최대 재시도 횟수
+
+        // ======================================================
+        //                        회원가입
+        // ======================================================
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        public static IEnumerator SignUpRequest(Action<TokenResponse> callback) {
+            Debug.Log("SignUpRequest");
+            string url = $"{Constants.ServerURL}/auth/signup";
             PlayerData playerData = PlayerManager.Instance.playerData;
+
             WWWForm form = new WWWForm();
             form.AddField("id", playerData.id);
-            form.AddField("password", playerData.password); // 비밀번호만 먼저 전송
-            form.AddField("nickname", playerData.nickname); // 닉네임은 나중에 추가할 수 있음 (회원가입 성공 후 처리)
+            form.AddField("password", playerData.password);
+            form.AddField("nickname", playerData.nickname);
             form.AddField("profileNum", playerData.profileNum);
+            Debug.Log("profileNum: " + playerData.profileNum);
 
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
+            using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
+                yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<SignUpResponse>(jsonResponse);
+                bool success = request.result == UnityWebRequest.Result.Success;
+                string responseText = request.downloadHandler.text;
 
-                if (response.success) {
-                    callback(response);
-                }
-                else {
-                    callback(response);
-                }
-            }
-            else {
-                callback(new SignUpResponse(false, "서버와의 연결에 실패하였습니다.", null, null));
+                callback?.Invoke(success ? JsonConvert.DeserializeObject<TokenResponse>(responseText) : null);
             }
         }
-        
-        // 아이디 또는 닉네임 중복 체크 요청 함수
-        public IEnumerator CheckDuplicateRequest(string type, string value, System.Action<bool, string> callback) {
-            Debug.Log($"{type} 중복 체크 요청: NetworkManager");
-            string url = $"{ServerUrl}/auth/signup/check"; // 중복 체크 API 엔드포인트
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        private static IEnumerator CheckDuplicateRequest(string type, string value, Action<CheckResponse> callback) {
+            string url = $"{Constants.ServerURL}/auth/signup/check";
             WWWForm form = new WWWForm();
-            form.AddField("type", type);    // 'nickname' 또는 'id'를 type으로 전달
-            form.AddField("value", value);  // 중복 체크할 아이디 또는 닉네임
+            form.AddField("type", type); // 'nickname' or 'id' as type
+            form.AddField("value", value);
 
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
+            using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
+                yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
-
-                if (response.success) {
-                    callback(true, response.message); // 사용 가능한 값
-                }
-                else {
-                    callback(false, response.message); // 이미 존재하는 값
-                }
-            }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
+                Debug.Log("CheckDuplicateRequest: " + request.downloadHandler.text);
+                callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
             }
         }
 
-// 아이디 중복 체크 요청 함수 (리팩토링)
-        public IEnumerator CheckIdRequest(string id, System.Action<bool, string> callback) {
-            yield return CheckDuplicateRequest("id", id, callback); // 아이디 중복 체크
+        public static IEnumerator CheckIdRequest(string id, Action<CheckResponse> callback) {
+            yield return CheckDuplicateRequest("id", id, callback);
         }
 
-// 닉네임 중복 체크 요청 함수 (리팩토링)
-        public IEnumerator CheckNicknameRequest(string nickname, System.Action<bool, string> callback) {
-            yield return CheckDuplicateRequest("nickname", nickname, callback); // 닉네임 중복 체크
+        public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback) {
+            yield return CheckDuplicateRequest("nickname", nickname, callback);
         }
 
+        // ======================================================
+        //                         로그인
+        // ======================================================
 
-        // 로그인 요청 함수
-        public IEnumerator SignInRequest(System.Action<LoginInfo, UserData> callback) {
-            string url = $"{ServerUrl}/login"; // 로그인 API 엔드포인트
+        // ReSharper disable Unity.PerformanceAnalysis
+        public static IEnumerator SignInRequest(Action<TokenResponse> callback) {
+            string url = $"{Constants.ServerURL}/login";
             PlayerData playerData = PlayerManager.Instance.playerData;
+
             WWWForm form = new WWWForm();
             form.AddField("id", playerData.id);
             form.AddField("password", playerData.password);
 
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
+
+            using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
+                yield return request.SendWebRequest();
+
+                bool success = request.result == UnityWebRequest.Result.Success;
+                string responseText = request.downloadHandler.text;
+
+                callback?.Invoke(success ? JsonConvert.DeserializeObject<TokenResponse>(responseText) : null);
+            }
+        }
+
+        // ======================================================
+        //                        로그아웃
+        // ======================================================
+
+        public static IEnumerator LogOutRequest(Action<bool> callback) {
+            string url = $"{Constants.ServerURL}/logout";
+            string refreshToken = Session.SessionManager.Instance.GetRefreshToken();
+
+            if (string.IsNullOrEmpty(refreshToken)) {
+                callback?.Invoke(false);
+                yield break;
+            }
+
+            using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
+                request.SetRequestHeader("Authorization", $"Bearer {refreshToken}");
+                yield return request.SendWebRequest();
+
+                callback?.Invoke(request.result == UnityWebRequest.Result.Success);
+            }
+        }
+
+        // ======================================================
+        //                    유저 정보 가져오기
+        // ======================================================
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        public IEnumerator GetUserInfoRequest(Action<UserDataResponse> callback) {
+            string url = $"{Constants.ServerURL}/user/info";
+            string accessToken = Session.SessionManager.Instance.GetAccessToken();
+            int retryCount = 0;
+
+            while (retryCount < MaxRetryCount) {
+                using (UnityWebRequest request = UnityWebRequest.Get(url)) {
+                    request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+                    yield return request.SendWebRequest();
+
+                    if (request.result == UnityWebRequest.Result.Success) {
+                        string jsonResponse = request.downloadHandler.text;
+                        UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(jsonResponse);
+                        callback?.Invoke(userDataResponse);
+                        yield break;
+                    }
+
+                    if (request.responseCode != 401)
+                        continue;
+                    yield return RefreshAccessTokenRequest((success, newAccessToken) => {
+                        if (success && !string.IsNullOrEmpty(newAccessToken)) {
+                            Session.SessionManager.Instance.UpdateAccessToken(newAccessToken);
+                            accessToken = newAccessToken;
+                        }
+                        else {
+                            callback?.Invoke(null);
+                        }
+                    });
+                    retryCount++;
+                }
+            }
+            callback?.Invoke(null);
+        }
+        // ======================================================
+        //                        그 외
+        // ======================================================
+        
+        private static IEnumerator RefreshAccessTokenRequest(Action<bool, string> callback) {
+            string url = $"{Constants.ServerURL}/auth/refresh";
+            string refreshToken = Session.SessionManager.Instance.GetRefreshToken();
+
+            if (string.IsNullOrEmpty(refreshToken)) {
+                callback?.Invoke(false, null);
+                yield break;
+            }
+
+            using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
+                request.SetRequestHeader("Authorization", $"Bearer {refreshToken}");
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success) {
+                    string jsonResponse = request.downloadHandler.text;
+                    var response = JsonConvert.DeserializeObject<TokenResponse>(jsonResponse);
+                    if (response != null && !string.IsNullOrEmpty(response.accessToken)) {
+                        callback?.Invoke(true, response.accessToken); // 새로운 accessToken 반환
+                    }
+                    else {
+                        callback?.Invoke(false, null);
+                    }
+                }
+                else {
+                    callback?.Invoke(false, null);
+                    Debug.LogError("RefreshAccessTokenRequest failed: " + request.error);
+                }
+            }
+        }
+
+
+
+        // <================ 수정지점 (개인확인용)
+
+
+        public IEnumerator UserDataRequest() {
+            string url = $"{Constants.ServerURL}/userdata"; // 유저 데이터 API 엔드포인트
+            UnityWebRequest request = UnityWebRequest.Get(url);
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.Success) {
                 // 서버로부터 응답 받은 JSON 처리
                 string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
+                var userData = JsonConvert.DeserializeObject<UserDataResponse>(jsonResponse);
 
-                // 로그인 성공 시 응답 처리
-                if (response.login.success) {
-
-                    // 콜백 호출 (로그인 성공)
-                    callback(response.login, response.data);
-                }
-                else {
-                    // 로그인 실패 시 콜백 호출
-                    callback(response.login, null);
-                }
+                // 유저 데이터 처리 (예: 저장 또는 UI 갱신)
+                // PlayerManager.Instance.UpdateUserData(userData);
             }
             else {
-                // 서버와 연결 실패 시 콜백 호출
-                callback(null, null);
+                // 서버와 연결 실패 시 처리
+                Debug.LogError("UserDataRequest failed: " + request.error);
             }
         }
 
-       
+
+
         // 자동 로그인 시도
-        public static IEnumerator TryAutoLogin(System.Action<LoginInfo, UserData> callback) {
-            string url = $"{ServerUrl}/autoLogin"; // 자동 로그인 API 엔드포인트
+        public static IEnumerator TryAutoLogin(System.Action<TokenResponse, UserDataResponse> callback) {
+            string url = $"{Constants.ServerURL}/autoLogin"; // 자동 로그인 API 엔드포인트
             string sessionToken = PlayerPrefs.GetString("SessionToken", "");
 
             if (string.IsNullOrEmpty(sessionToken)) {
@@ -134,14 +225,14 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 string jsonResponse = request.downloadHandler.text;
                 var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
 
-                if (response.login.success) {
-                    // 자동 로그인 성공 시 콜백 호출
-                    callback(response.login, response.data);
-                }
-                else {
-                    // 자동 로그인 실패 시 콜백 호출
-                    callback(null, null);
-                }
+                // if (response.login.) {
+                //     // 자동 로그인 성공 시 콜백 호출
+                //     callback(response.login, response.data);
+                // }
+                // else {
+                //     // 자동 로그인 실패 시 콜백 호출
+                //     callback(null, null);
+                // }
             }
             else {
                 callback(null, null);
@@ -149,9 +240,9 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // UserData 저장 요청 함수
-        public IEnumerator SaveUserDataRequest(System.Action<bool, string> callback) {
-            string url = $"{ServerUrl}saveUserData"; // UserData 저장 API 엔드포인트
-            string token = Session.SessionManager.Instance.SessionToken;
+        public IEnumerator SaveNewUserDataRequest(System.Action<bool, string> callback) {
+            string url = $"{Constants.ServerURL}saveUserData"; // UserData 저장 API 엔드포인트
+            string token = Session.SessionManager.Instance.GetAccessToken();
 
             // 세션 검증을 위한 헤더 추가
             if (string.IsNullOrEmpty(token)) {
@@ -162,6 +253,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             PlayerData playerData = PlayerManager.Instance.playerData;
 
             WWWForm form = new WWWForm();
+            // TODO: 기본값으로 모두 변경
             form.AddField("userId", playerData.id);
             form.AddField("nickname", playerData.nickname);
             form.AddField("password", playerData.password);
@@ -195,11 +287,10 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // UserData 가져오기 요청 함수
-        public static IEnumerator GetUserDataRequest(string userId, System.Action<bool, PlayerData, string> callback) {
-            string url = $"{ServerUrl}getUserData"; // UserData 가져오기 API 엔드포인트
+        public static IEnumerator GetUserDataRequest(System.Action<bool, PlayerData, string> callback) {
+            string url = $"{Constants.ServerURL}getUserData"; // UserData 가져오기 API 엔드포인트
             WWWForm form = new WWWForm();
-            form.AddField("userId", userId);
-
+            
             UnityWebRequest request = UnityWebRequest.Post(url, form);
             yield return request.SendWebRequest();
 
@@ -233,30 +324,18 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
     }
 
     public class SignInResponse {
-        public LoginInfo login;
-        public UserData data;
+        public TokenResponse login;
+        public UserDataResponse DataResponse;
 
-        public SignInResponse(LoginInfo login, UserData data) {
+        public SignInResponse(TokenResponse login, UserDataResponse dataResponse) {
             this.login = login;
-            this.data = data;
+            this.DataResponse = dataResponse;
         }
     }
 
-    public class LoginInfo {
-        public bool success;
-        public string message;
-        public string accessToken;
-        public string refreshToken;
 
-        public LoginInfo(bool success, string message, string accessToken, string refreshToken) {
-            this.success = success;
-            this.message = message;
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
-        }
-    }
 
-    public class UserData {
+    public class UserDataResponse {
         public string nickname;
         public int profileNum;
         public int coins;
@@ -267,8 +346,8 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         public string sessionToken;
         public string refreshToken;
 
-        public UserData(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount, 
-                        int loseCount, string sessionToken, string refreshToken) {
+        public UserDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount,
+                                int loseCount, string sessionToken, string refreshToken) {
             this.nickname = nickname;
             this.profileNum = profileNum;
             this.coins = coins;
@@ -281,25 +360,23 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
     }
 
-    
+
     public class BaseResponse {
         public bool success;
         public string message;
     }
-    
+
     public class CheckResponse {
-        public bool success;  // 요청 성공 여부
-        public string message; // 메시지 (사용 가능한 아이디/닉네임인지 여부)
+        public bool success;
+        public string message;
     }
 
 
-    public class SignUpResponse {
-        public bool success;
+    public class TokenResponse {
         public string message;
         public string accessToken;
         public string refreshToken;
-        public SignUpResponse(bool success, string message, string accessToken, string refreshToken) {
-            this.success = success;
+        public TokenResponse(string message, string accessToken, string refreshToken) {
             this.message = message;
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;

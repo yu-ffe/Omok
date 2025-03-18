@@ -18,7 +18,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         // SaveUserSession(string userId) -> SaveUserSession()
         private void SaveUserData() {
             // 세션 -> SessionManager, 
-            NetworkManager.Instance.SaveUserDataRequest(
+            NetworkManager.Instance.SaveNewUserDataRequest(
                 (success, message) => {
                     if (success) {
                         Debug.Log("성공: " + message);

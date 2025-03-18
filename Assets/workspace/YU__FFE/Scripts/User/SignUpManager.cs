@@ -10,6 +10,7 @@ using workspace.YU__FFE.Scripts.Server.Network;
 
 namespace workspace.YU__FFE.Scripts.User {
     public class SignUpManager : Singleton<SignUpManager> {
+
         public void TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname)) {
@@ -17,13 +18,26 @@ namespace workspace.YU__FFE.Scripts.User {
                 return;
             }
 
+            // 이메일 형식 제거 -> id 변수값에 맞춰서 다 만들어서 변수명 다 바꾸기 어려움 (서버포함)
+            // 나중에 가능할때 다시 수정
             // 이메일 형식 확인
-            if (!IsEmailFormat(id)) {
-                callback(false, "올바른 이메일 형식이 아닙니다.");
+            // if (!IsEmailFormat(id)) {
+            //     callback(false, "올바른 이메일 형식이 아닙니다.");
+            //     return;
+            // }
+
+            //이거는 테스트 후 사용
+            // if (!IsPasswordValid(password)) {
+            //     callback(false, "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
+            //     return;
+            // }
+
+            if (!CheckPasswordMatch(password, passwordCheck)) {
+                callback(false, "비밀번호가 일치하지 않습니다.");
                 return;
             }
 
-            // 아이디 중복 체크
+            Debug.Log("아이디 중복 확인");
             CheckIdAvailability(id,
                 (idSuccess, idMessage) => {
                     if (!idSuccess) {
@@ -31,7 +45,6 @@ namespace workspace.YU__FFE.Scripts.User {
                         return;
                     }
 
-                    // 닉네임 중복 체크
                     CheckNicknameAvailability(nickname,
                         (nicknameSuccess, nicknameMessage) => {
                             if (!nicknameSuccess) {
@@ -39,88 +52,61 @@ namespace workspace.YU__FFE.Scripts.User {
                                 return;
                             }
 
-                            // 비밀번호 확인
-                            if (password != passwordCheck) {
-                                callback(false, "비밀번호가 일치하지 않습니다.");
-                                return;
-                            }
-
-                            // 모든 검증을 마친 후 회원가입 처리
                             SignUp(id, password, nickname, imgIndex, callback);
                         });
                 });
         }
 
-        // 아이디 중복 체크
+        private static bool CheckPasswordMatch(string password, string passwordCheck) {
+            return password == passwordCheck;
+        }
+
+        private static bool IsPasswordValid(string password) {
+            string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+            return Regex.IsMatch(password, passwordPattern);
+        }
+
         private void CheckIdAvailability(string id, Action<bool, string> callback) {
-            StartCoroutine(NetworkManager.Instance.CheckIdRequest(id,
-                (success, message) => {
-                    if (success)
-                        callback(true, "사용 가능한 아이디입니다.");
-                    else
-                        callback(false, "이미 존재하는 아이디입니다.");
+            StartCoroutine(NetworkManager.CheckIdRequest(id,
+                (checkResponse) => {
+                    callback(checkResponse.success, checkResponse.message);
                 }));
         }
 
-        // 닉네임 중복 체크
         private void CheckNicknameAvailability(string nickname, Action<bool, string> callback) {
-            StartCoroutine(NetworkManager.Instance.CheckNicknameRequest(nickname,
-                (success, message) => {
-                    if (success)
-                        callback(true, "사용 가능한 닉네임입니다.");
-                    else
-                        callback(false, "이미 존재하는 닉네임입니다.");
+            StartCoroutine(NetworkManager.CheckNicknameRequest(nickname,
+                (checkResponse) => {
+                    callback(checkResponse.success, checkResponse.message);
                 }));
         }
 
         /// <summary>
-        /// 1. 플레이어 데이터 생성
-        /// 2. 회원가입 계정 생성
-        /// 3. PlayerData, refresh, session 토큰 발급 및 로컬 저장 -> (id)
-        /// 4. refresh 토큰으로 session 토큰 발급
-        /// 5. ----
+        /// 1. PlayerData 저장
+        /// 2. 회원가입 시도 + 토큰 발행 및 저장
+        /// 3. PlayerData 개인정보 해제
         /// </summary>
         private void SignUp(string id, string pwd, string nickname, int profile, Action<bool, string> callback) {
             string password = EncryptPassword(pwd);
 
             PlayerManager.Instance.playerData.SetPrivateData(id, nickname, password, profile);
 
-            StartCoroutine(NetworkManager.Instance.SignUpRequest((response) => {
-                if (response.success) {
-                    Debug.Log("회원가입 성공: " + response.message);
-
-                    // 리프레시 토큰과 세션 토큰 저장
-                    UpdateTokens(response.refreshToken, response.accessToken);
-
-                    // 유저 데이터 저장 요청
-                    SaveUserData();
-
-                    callback(true, "회원가입 성공");
+            Debug.Log("회원가입 시도");
+            StartCoroutine(NetworkManager.SignUpRequest((response) => {
+                Debug.Log("회원가입 시도");
+                if (response is not null) {
+                    Server.Session.SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
+                    SaveNewUserData();
                 }
-                else {
-                    callback(false, "회원가입 실패: " + response.message);
-                }
+                Debug.Log("회원가입 성공");
+                callback(response!=null, response?.message);
             }));
-            
+
             PlayerManager.Instance.playerData.ClearPrivateData();
         }
-
-        // 리프레시 토큰 및 세션 토큰 저장
-        private void UpdateTokens(string refreshToken, string sessionToken) {
-            if (!string.IsNullOrEmpty(refreshToken)) {
-                Server.Session.SessionManager.Instance.UpdateRefreshToken(refreshToken);
-                Debug.Log("리프레시 토큰 저장 완료");
-            }
-
-            if (!string.IsNullOrEmpty(sessionToken)) {
-                Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
-                Debug.Log("세션 토큰 저장 완료");
-            }
-        }
-
+        
         // 유저 데이터 저장 요청
-        private void SaveUserData() {
-            NetworkManager.Instance.SaveUserDataRequest((saveSuccess, saveMessage) => {
+        private void SaveNewUserData() {
+            NetworkManager.Instance.SaveNewUserDataRequest((saveSuccess, saveMessage) => {
                 if (saveSuccess) {
                     Debug.Log("유저 데이터 저장 성공: " + saveMessage);
                 }

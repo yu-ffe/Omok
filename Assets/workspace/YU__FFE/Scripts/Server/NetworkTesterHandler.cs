@@ -45,7 +45,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         
         public void UpdateToken() {
             coinText.text = PlayerManager.Instance.playerData.coins.ToString();
-            sessionToken.text = Session.SessionManager.Instance.GetSessionToken();
+            sessionToken.text = Session.SessionManager.Instance.GetAccessToken();
             freshToken.text = Session.SessionManager.Instance.GetRefreshToken();
             statusText.text = "토큰 갱신 완료";
         }

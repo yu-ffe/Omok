@@ -5,6 +5,7 @@ var router = express.Router();
 
 // 📌 회원가입 처리
 router.post("/", async (req, res) => {
+    console.log("회원가입 요청:", req.body); // 요청 바디 로그
     const { id, password, nickname, profileNum } = req.body;
 
     try {
@@ -31,13 +32,11 @@ router.post("/", async (req, res) => {
     }
 });
 
-
-// 📌 중복 체크 (닉네임 또는 아이디)
-router.get("/check", async (req, res) => {
-    const { type, value } = req.query;
+router.post("/check", async (req, res) => {
+    const { type, value } = req.body; // req.query -> req.body로 변경
 
     if (!type || !value) {
-        return res.status(400).json({ error: "type과 value를 모두 제공해야 합니다." });
+        return res.status(400).json({ success: false, message: "type과 value를 모두 제공해야 합니다." });
     }
 
     try {
@@ -47,7 +46,7 @@ router.get("/check", async (req, res) => {
         if (type === "nickname") {
             existingUser = await User.findOne({ nickname: value });
             if (existingUser) {
-                return res.status(400).json({ error: "이미 존재하는 닉네임입니다." });
+                return res.status(400).json({ success: false, message: "이미 존재하는 닉네임입니다." });
             }
             return res.json({ success: true, message: "사용 가능한 닉네임입니다." });
 
@@ -55,16 +54,16 @@ router.get("/check", async (req, res) => {
         } else if (type === "id") {
             existingUser = await User.findOne({ id: value });
             if (existingUser) {
-                return res.status(400).json({ error: "이미 존재하는 아이디입니다." });
+                return res.status(400).json({ success: false, message: "이미 존재하는 아이디입니다." });
             }
             return res.json({ success: true, message: "사용 가능한 아이디입니다." });
 
         } else {
-            return res.status(400).json({ error: "유효한 type 값(nickname 또는 id)을 제공해야 합니다." });
+            return res.status(400).json({ success: false, message: "유효한 type 값(nickname 또는 id)을 제공해야 합니다." });
         }
     } catch (err) {
         console.error("중복 체크 오류:", err);
-        res.status(500).json({ error: "중복 체크 중 오류 발생" });
+        res.status(500).json({ success: false, message: "중복 체크 중 오류 발생" });
     }
 });
 
