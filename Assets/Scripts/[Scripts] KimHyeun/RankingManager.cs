@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using WB;
 
-public class RankingManager : Singleton<RankingManager>
+public class RankingManager : UI_Panel
 {
+    public static RankingManager Instance { get; private set; }
+    
     [Header("랭킹 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
@@ -13,7 +18,20 @@ public class RankingManager : Singleton<RankingManager>
     List<int> winList = new List<int>();
     List<int> loseList = new List<int>();
 
+    public Button btnClose;
 
+    void Awake()
+    {
+        if(Instance == null) Instance = this;
+        else Destroy(this.gameObject);
+    }
+
+    void Start()
+    {
+        UI_Manager.Instance.AddPanel(panelType, this);
+        btnClose.onClick.AddListener(Hide);
+        gameObject.SetActive(false);
+    }
 
     public void SetScrollView(ScrollViewSet scrollViewSet)
     {
@@ -78,20 +96,10 @@ public class RankingManager : Singleton<RankingManager>
         }
     }
 
-
-
-
-
-
-
     public float GetWinRate(int winCount, int loseCount) // 승률 반환 (일반 계산용)
     {
         return (winCount + loseCount == 0) ? 0 : (winCount / (float)(winCount + loseCount)) * 100;
     }
-
-
-
-
 
 
     void ResetData()
@@ -103,82 +111,13 @@ public class RankingManager : Singleton<RankingManager>
         loseList.Clear();
     }
 
+    public int GetMaxCellNum() => profileSpriteList.Count;
 
-
-
-
-
-
-
-    public int GetMaxCellNum()
-    {
-        return profileSpriteList.Count;
-    }
-
-    public Sprite GetSprite(int index)
-    {
-        if (profileSpriteList.Count > index)
-        {
-            return profileSpriteList[index];
-        }
-
-        else
-        {
-            return null;
-        }
-    }
-
-    public string GetName(int index)
-    {
-        if (nickNameList.Count > index)
-        {
-            return nickNameList[index];
-        }
-
-        else
-        {
-            return null;
-        }
-    }
-
-    public int GetGrade(int index)
-    {
-        if (gradeList.Count > index)
-        {
-            return gradeList[index];
-        }
-
-        else
-        {
-            return 0;
-        }
-    }
-
-    public int GetWin(int index)
-    {
-        if (winList.Count > index)
-        {
-            return winList[index];
-        }
-
-        else
-        {
-            return 0;
-        }
-    }
-
-    public int GetLose(int index)
-    {
-        if (loseList.Count > index)
-        {
-            return loseList[index];
-        }
-
-        else
-        {
-            return 0;
-        }
-    }
+    public Sprite GetSprite(int index) => (profileSpriteList.Count > index) ? profileSpriteList[index] : null;
+    public string GetName(int index) => (nickNameList.Count > index) ? nickNameList[index] : null;
+    public int GetGrade(int index) => (gradeList.Count > index) ? gradeList[index] : 0;
+    public int GetWin(int index) => (winList.Count > index) ? winList[index] : 0;
+    public int GetLose(int index) => (loseList.Count > index) ? loseList[index] : 0;
 
 
     public float GetWinRate(int index) // 승류 반환 (여러 유저 계산용)
@@ -193,10 +132,28 @@ public class RankingManager : Singleton<RankingManager>
         return Mathf.Round(winRate * 100) / 100; // 소수점 2자리 반올림
     }
 
+    public void LoadRankingData()
+    {
+        ResetData();
+        List<string> userIdList = SessionManager.GetAllUserIds();
+        SortingAndSave(userIdList);
+        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+    }
+    
+    public override void Show()
+    {
+        gameObject.SetActive(true);
+        LoadRankingData();
+    }
 
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+    }
 
+    public override void OnEnable() { }
 
-
-
+    public override void OnDisable() { }
 }
 
