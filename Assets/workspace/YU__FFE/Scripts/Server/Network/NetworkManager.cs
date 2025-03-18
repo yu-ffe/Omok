@@ -8,9 +8,9 @@ using workspace.YU__FFE.Scripts.User;
 namespace workspace.YU__FFE.Scripts.Server.Network {
     public class NetworkManager : Singleton<NetworkManager> {
         private const string ServerUrl = Constants.ServerURL;
-
+        
         // 회원가입 요청 함수
-        public IEnumerator SignUpRequest(System.Action<bool, string, string, string> callback) {
+        public IEnumerator SignUpRequest(System.Action<SignUpResponse> callback) {
             Debug.Log("회원가입 요청: NetworkManager");
             string url = $"{ServerUrl}/auth/signup"; // 회원가입 API 엔드포인트
             PlayerData playerData = PlayerManager.Instance.playerData;
@@ -29,14 +29,14 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 var response = JsonConvert.DeserializeObject<SignUpResponse>(jsonResponse);
 
                 if (response.success) {
-                    callback(true, response.message, response.accessToken, response.refreshToken);
+                    callback(response);
                 }
                 else {
-                    callback(false, response.message, null, null);
+                    callback(response);
                 }
             }
             else {
-                callback(false, "서버와의 연결이 실패했습니다.", null, null);
+                callback(new SignUpResponse(false, "서버와의 연결에 실패하였습니다.", null, null));
             }
         }
         
@@ -95,7 +95,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // 로그인 요청 함수
-        public IEnumerator SignInRequest(System.Action<bool, string> callback) {
+        public IEnumerator SignInRequest(System.Action<SignInResponse, PlayerData> callback) {
             string url = $"{ServerUrl}login"; // 로그인 API 엔드포인트
             PlayerData playerData = PlayerManager.Instance.playerData;
             WWWForm form = new WWWForm();
@@ -111,14 +111,14 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
 
                 if (response.success) {
-                    callback(true, response.message);
+                    callback(response, playerData);
                 }
                 else {
-                    callback(false, response.message);
+                    callback(response, null);
                 }
             }
             else {
-                callback(false, "서버와의 연결이 실패했습니다.");
+                callback(new SignInResponse(false, "서버와의 연결이 실패했습니다.", null, null), null);
             }
         }
 
@@ -272,6 +272,15 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
     public class SignInResponse {
         public bool success;
         public string message;
+        public string accessToken;
+        public string refreshToken;
+        public SignInResponse(bool success, string message, string accessToken, string refreshToken) {
+            this.success = success;
+            this.message = message;
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
+        }
+        
     }
 
     public class BaseResponse {
@@ -290,6 +299,12 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         public string message;
         public string accessToken;
         public string refreshToken;
+        public SignUpResponse(bool success, string message, string accessToken, string refreshToken) {
+            this.success = success;
+            this.message = message;
+            this.accessToken = accessToken;
+            this.refreshToken = refreshToken;
+        }
     }
 
     public class GetUserDataResponse : BaseResponse {

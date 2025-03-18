@@ -37,7 +37,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         }
         
         public void SignIn() {
-            User.SignInManager.TryLogin(id_email.text, password.text, (b, s) => {
+            User.SignInManager.TrySignIn(id_email.text, password.text, (b, s) => {
                 Debug.Log(s);
                 statusText.text = s;
             });

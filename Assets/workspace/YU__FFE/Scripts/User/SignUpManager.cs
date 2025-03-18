@@ -85,12 +85,12 @@ namespace workspace.YU__FFE.Scripts.User {
 
             PlayerManager.Instance.playerData.SetPrivateData(id, nickname, password, profile);
 
-            StartCoroutine(NetworkManager.Instance.SignUpRequest((success, message, refreshToken, sessionToken) => {
-                if (success) {
-                    Debug.Log("회원가입 성공: " + message);
+            StartCoroutine(NetworkManager.Instance.SignUpRequest((response) => {
+                if (response.success) {
+                    Debug.Log("회원가입 성공: " + response.message);
 
                     // 리프레시 토큰과 세션 토큰 저장
-                    SaveTokens(refreshToken, sessionToken);
+                    UpdateTokens(response.refreshToken, response.accessToken);
 
                     // 유저 데이터 저장 요청
                     SaveUserData();
@@ -98,21 +98,22 @@ namespace workspace.YU__FFE.Scripts.User {
                     callback(true, "회원가입 성공");
                 }
                 else {
-                    callback(false, "회원가입 실패: " + message);
+                    callback(false, "회원가입 실패: " + response.message);
                 }
-                Debug.Log("회원가입 완료");
             }));
+            
+            PlayerManager.Instance.playerData.ClearPrivateData();
         }
 
         // 리프레시 토큰 및 세션 토큰 저장
-        private void SaveTokens(string refreshToken, string sessionToken) {
+        private void UpdateTokens(string refreshToken, string sessionToken) {
             if (!string.IsNullOrEmpty(refreshToken)) {
-                Server.Session.SessionManager.Instance.SetRefreshToken(refreshToken);
+                Server.Session.SessionManager.Instance.UpdateRefreshToken(refreshToken);
                 Debug.Log("리프레시 토큰 저장 완료");
             }
 
             if (!string.IsNullOrEmpty(sessionToken)) {
-                Server.Session.SessionManager.Instance.SetSessionToken(sessionToken);
+                Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
                 Debug.Log("세션 토큰 저장 완료");
             }
         }

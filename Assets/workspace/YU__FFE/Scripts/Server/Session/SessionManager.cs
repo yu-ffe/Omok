@@ -11,12 +11,12 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
         private string refreshToken; // 리프레시 토큰 저장
 
         // ========== 로컬 세션 저장 ========== 
-        public void SetSessionToken(string token) {
+        public void UpdateSessionToken(string token) {
             SessionToken = token;
         }
 
         // 리프레시 토큰을 로컬에 저장
-        public void SetRefreshToken(string token) {
+        public void UpdateRefreshToken(string token) {
             refreshToken = token;
             PlayerPrefs.SetString("RefreshToken", token); // PlayerPrefs에 저장 (로컬 저장소)
         }
@@ -62,8 +62,8 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
                 var response = JsonUtility.FromJson<SessionResponse>(request.downloadHandler.text);
 
                 if (response.success) {
-                    SetSessionToken(response.sessionToken);
-                    SetRefreshToken(response.refreshToken); // 리프레시 토큰도 저장
+                    UpdateSessionToken(response.sessionToken);
+                    UpdateRefreshToken(response.refreshToken); // 리프레시 토큰도 저장
                     Debug.Log("[SessionManager] 새로운 세션을 생성했습니다.");
                 }
                 else {
@@ -95,8 +95,8 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
                 var response = JsonUtility.FromJson<SessionResponse>(request.downloadHandler.text);
 
                 if (response.success) {
-                    SetSessionToken(response.sessionToken); // 새로운 세션 토큰 설정
-                    SetRefreshToken(response.refreshToken); // 새로운 리프레시 토큰 저장
+                    UpdateSessionToken(response.sessionToken); // 새로운 세션 토큰 설정
+                    UpdateRefreshToken(response.refreshToken); // 새로운 리프레시 토큰 저장
                     Debug.Log("[SessionManager] 세션 갱신 성공.");
                     callback(true);
                 }

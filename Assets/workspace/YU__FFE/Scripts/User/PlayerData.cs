@@ -45,6 +45,11 @@ namespace workspace.YU__FFE.Scripts.User {
             this.id = id;
             this.password = password;
         }
+        
+        public void ClearPrivateData() {
+            this.id = null;
+            this.password = null;
+        }
 
         public void SetPrivateData(string id, string nickname, string password, int profile) {
             this.id = id;
