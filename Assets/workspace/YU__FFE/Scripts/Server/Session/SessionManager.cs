@@ -23,7 +23,11 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
 
         // 리프레시 토큰을 로컬에서 로드
         public string GetRefreshToken() {
-            return PlayerPrefs.GetString("RefreshToken", string.Empty); // 저장된 리프레시 토큰 가져오기
+            return refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);        }
+        
+        // 리프레시 토큰을 로컬에서 로드
+        public string GetSessionToken() {
+            return SessionToken; // 저장된 리프레시 토큰 가져오기
         }
 
         // ========== 서버에서 세션 검증 ========== 

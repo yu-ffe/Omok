@@ -6,9 +6,11 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var session = require("express-session");
+var cors = require("cors"); // cors 모듈 추가
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+// var tokenRouter = require("./routes/token");
 var authRouter = require("./routes/auth");
 
 var app = express();
@@ -30,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static("public")); // 정적 파일 제공
+
 
 // 📌 캐시 방지 설정 (브라우저가 항상 최신 HTML 요청) ✅ **위치 이동**
 app.use((req, res, next) => {
@@ -57,7 +60,8 @@ app.use((req, res, next) => {
 // 📌 라우트 설정
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/auth", authRouter);
+app.use("/auth", authRouter); // 회원가입 라우터 등록
+// app.use("/token", tokenRouter);
 
 // 📌 404 에러 핸들링
 app.use(function (req, res, next) {

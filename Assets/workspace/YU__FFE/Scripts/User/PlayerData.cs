@@ -15,6 +15,8 @@ namespace workspace.YU__FFE.Scripts.User {
         public int winCount; // 승리 횟수
         public int loseCount; // 패배 횟수
 
+        public PlayerData() { }
+        
         // 생성자
         public PlayerData(string id, string nickname, string password, int profileNum, int coins, int grade,
                           int rankPoint, int winCount, int loseCount) {

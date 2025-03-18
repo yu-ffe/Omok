@@ -1,8 +1,8 @@
 using UnityEngine;
-using workspace.YU__FFE.Scripts.Server;
 using workspace.YU__FFE.Scripts.Server.Network;
+using workspace.YU__FFE.Scripts.User;
 
-namespace workspace.YU__FFE.Scripts.User {
+namespace workspace.YU__FFE.Scripts.Server {
     public class NetworkHandler {
 
         // ========== 세션 추가 및 저장 ==========

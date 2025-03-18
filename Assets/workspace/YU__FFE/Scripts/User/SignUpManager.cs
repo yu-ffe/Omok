@@ -10,10 +10,10 @@ using workspace.YU__FFE.Scripts.Server.Network;
 
 namespace workspace.YU__FFE.Scripts.User {
 
-    public static class SignUpManager // : MonoBehaviour
+    public class SignUpManager : Singleton<SignUpManager> // : MonoBehaviour
     {
 
-        public static void TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
+        public void TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
 
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
                 string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname)) {
@@ -37,10 +37,9 @@ namespace workspace.YU__FFE.Scripts.User {
                 callback(false, "비밀번호가 일치하지 않습니다.");
                 return;
             }
-            
+
             // 회원가입 처리 후 결과를 반환
             SignUp(id, password, nickname, imgIndex, callback);
-            Debug.Log("회원가입 완료");
         }
 
         /// <summary>
@@ -50,12 +49,12 @@ namespace workspace.YU__FFE.Scripts.User {
         /// 4. refresh 토큰으로 session 토큰 발급
         /// 5. ----
         /// </summary>
-        static void SignUp(string id, string pwd, string nickname, int profile, Action<bool, string> callback) {
+        void SignUp(string id, string pwd, string nickname, int profile, Action<bool, string> callback) {
             string password = EncryptPassword(pwd);
 
             PlayerManager.Instance.playerData.SetPrivateData(id, nickname, password, profile);
-            
-            NetworkManager.Instance.SignUpRequest((success, message, refreshToken, sessionToken) => {
+
+            StartCoroutine(NetworkManager.Instance.SignUpRequest((success, message, refreshToken, sessionToken) => {
                 if (success) {
                     Debug.Log("회원가입 성공: " + message);
 
@@ -75,19 +74,21 @@ namespace workspace.YU__FFE.Scripts.User {
                     NetworkManager.Instance.SaveUserDataRequest((saveSuccess, saveMessage) => {
                         if (saveSuccess) {
                             Debug.Log("유저 데이터 저장 성공: " + saveMessage);
-                        } else {
+                        }
+                        else {
                             Debug.LogError("유저 데이터 저장 실패: " + saveMessage);
                         }
                     });
 
                     // 회원가입 성공
                     callback(true, "회원가입 성공");
-                } else {
-                    Debug.LogError("회원가입 실패: " + message);
+                }
+                else {
                     // 회원가입 실패
                     callback(false, "회원가입 실패: " + message);
                 }
-            });
+                Debug.Log("회원가입 완료");
+            }));
         }
 
         // ========== 이메일 형식 체크 ========== 

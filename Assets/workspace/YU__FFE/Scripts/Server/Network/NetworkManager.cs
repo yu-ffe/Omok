@@ -11,12 +11,14 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
         // 회원가입 요청 함수
         public IEnumerator SignUpRequest(System.Action<bool, string, string, string> callback) {
-            string url = $"{ServerUrl}signup"; // 회원가입 API 엔드포인트
+            Debug.Log("회원가입 요청: NetworkManager");
+            string url = $"{ServerUrl}/auth/signup"; // 회원가입 API 엔드포인트
             PlayerData playerData = PlayerManager.Instance.playerData;
             WWWForm form = new WWWForm();
             form.AddField("id", playerData.id);
             form.AddField("password", playerData.password); // 비밀번호만 먼저 전송
             form.AddField("nickname", playerData.nickname); // 닉네임은 나중에 추가할 수 있음 (회원가입 성공 후 처리)
+            form.AddField("profileNum", playerData.profileNum);
 
             UnityWebRequest request = UnityWebRequest.Post(url, form);
             yield return request.SendWebRequest();
@@ -27,7 +29,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 var response = JsonConvert.DeserializeObject<SignUpResponse>(jsonResponse);
 
                 if (response.success) {
-                    callback(true, response.message, response.refreshToken, response.sessionToken);
+                    callback(true, response.message, response.accessToken, response.refreshToken);
                 }
                 else {
                     callback(false, response.message, null, null);
@@ -226,8 +228,8 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
     public class SignUpResponse {
         public bool success;
         public string message;
+        public string accessToken;
         public string refreshToken;
-        public string sessionToken;
     }
 
     public class GetUserDataResponse : BaseResponse {
