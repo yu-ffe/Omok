@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,6 +30,9 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     private Vector2 localPoint;     //마우스의 좌표를 UI좌표로 바꾼 값
     private Vector2Int boardCoord;  //UI좌표를 배열로 바꾼 값
+    
+    bool ismarker_Last = false;
+    GameObject marker_Last = null;
     
     public delegate void OnGridClicked(int row, int col);
     public OnGridClicked OnOnGridClickedDelegate;
@@ -83,13 +87,29 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     public void ShowLastStone()
     {
-        // 마지막마커 표시 (기존 마지막마커 오브젝트를 지우고 다시 생성)
-        GameObject marker_Last = GameObject.Find("marker_Last");
-        if (marker_Last) Destroy(marker_Last);
+        var lastMove = GameManager.Instance.GameLogicInstance.moveList.Last();
+        Vector2 localPos = GetLocalPosition(lastMove.x, lastMove.y);
         
-        Debug.Log($"마지막 돌 위치 {GameManager.Instance.GameLogicInstance.moveList.Last().x},{GameManager.Instance.GameLogicInstance.moveList.Last().y}");
-        
-        PlaceStone(Constants.PlayerType.PlayerA, Constants.StoneType.Last, GameManager.Instance.GameLogicInstance.moveList.Last().x ,GameManager.Instance.GameLogicInstance.moveList.Last().y);
+        if (ismarker_Last == false)
+        {
+            PlaceStone(Constants.PlayerType.PlayerA, Constants.StoneType.Last,
+                GameManager.Instance.GameLogicInstance.moveList.Last().x,
+                GameManager.Instance.GameLogicInstance.moveList.Last().y);
+            Debug.Log(
+                $"{GameManager.Instance.GameLogicInstance.moveList.Last().x},{GameManager.Instance.GameLogicInstance.moveList.Last().y}에 라스트 마크 생성");
+            
+            ismarker_Last = true;
+
+            marker_Last = GameObject.Find("marker_Last");
+        }
+
+        if(ismarker_Last)
+        {
+            RectTransform markerRect = marker_Last.GetComponent<RectTransform>();
+            markerRect.anchoredPosition = localPos;
+            markerRect.transform.SetAsLastSibling();
+            Debug.Log($"{localPos}로 마지막 돌을 옮김");
+        }
     }
 
     //바둑판 크기의 비례한 공백과 시작위치 계산
@@ -128,7 +148,9 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 바둑판로컬위치로 바꿔줌
 
         GameObject stone = null;
-
+        
+        float stoneSize = cellSize * 0.85f;
+        
         // 2. StoneType에 따라 적절한 프리팹 생성
         switch (stoneType)
         {
@@ -156,30 +178,33 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
                 }
                 break;
             }
+            
             case Constants.StoneType.Last:
                 stone = Instantiate(MarkerLastPrefab, boardImage);
+                stoneSize /= 3;
                 stone.name = "marker_Last";
                 break;
+            
             case Constants.StoneType.XMark:
                 stone = Instantiate(MarkerXPrefab, boardImage);
                 stone.name = "marker_X";
                 break;
+            
             case Constants.StoneType.PositionSelecor:
                 stone = Instantiate(MarkerPositionSelecorPrefab, boardImage);
                 stone.name = "marker_PositionSelecor";
                 break;
+            
             default:
                 Debug.LogError($"알 수 없는 StoneType: {stoneType}");
                 return;
         }
 
-        // 3. 생성된 돌의 위치와 크기 설정
         RectTransform stoneRect = stone.GetComponent<RectTransform>();
-        
+        // 3. 생성된 돌의 위치와 크기 설정
         if (stoneRect)
         {
             stoneRect.anchoredPosition = localPos;
-            float stoneSize = cellSize * 0.85f;
             stoneRect.sizeDelta = new Vector2(stoneSize, stoneSize);
         }
         else

@@ -6,17 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/TestGame.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/TestGame.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/OmokBoard.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/OmokBoard.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +115,7 @@
       <workItem from="1741911432734" duration="6575000" />
       <workItem from="1741934865966" duration="301000" />
       <workItem from="1742094453598" duration="686000" />
-      <workItem from="1742256876497" duration="9266000" />
+      <workItem from="1742256876497" duration="14594000" />
     </task>
     <servers />
   </component>
