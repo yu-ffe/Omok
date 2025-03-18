@@ -86,11 +86,26 @@ namespace KimHyeun {
 
         void ButtonClickListenerSet()
         {
-            gameStartButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_GameStartButton(); });
-            recordButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RecordButton(); });
-            rankingButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RankingButton(); });
-            shopButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_ShopButton(); });
-            settingButton.AddComponent<Button>().onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_SettingButton(); });
+            // 기존에 있는 Button 컴포넌트를 가져오고, 없으면 추가
+            Button gameStartBtn = gameStartButton.GetComponent<Button>() ?? gameStartButton.AddComponent<Button>();
+            Button recordBtn = recordButton.GetComponent<Button>() ?? recordButton.AddComponent<Button>();
+            Button rankingBtn = rankingButton.GetComponent<Button>() ?? rankingButton.AddComponent<Button>();
+            Button shopBtn = shopButton.GetComponent<Button>() ?? shopButton.AddComponent<Button>();
+            Button settingBtn = settingButton.GetComponent<Button>() ?? settingButton.AddComponent<Button>();
+
+            // 기존 리스너 제거 (중복 방지)
+            gameStartBtn.onClick.RemoveAllListeners();
+            recordBtn.onClick.RemoveAllListeners();
+            rankingBtn.onClick.RemoveAllListeners();
+            shopBtn.onClick.RemoveAllListeners();
+            settingBtn.onClick.RemoveAllListeners();
+
+            // 새로운 클릭 리스너 추가
+            gameStartBtn.onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_GameStartButton(); });
+            recordBtn.onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RecordButton(); });
+            rankingBtn.onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_RankingButton(); });
+            shopBtn.onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_ShopButton(); });
+            settingBtn.onClick.AddListener(() => { MainButtonClickManager.Instance.OnClick_SettingButton(); });
         }
 
         void ButtonTextSet()
