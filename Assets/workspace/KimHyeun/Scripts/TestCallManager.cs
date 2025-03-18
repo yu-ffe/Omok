@@ -33,7 +33,6 @@ namespace KimHyeun {
         }
 
 
-        // 게임 종료 처리 호출
         public void WinTest()
         {
             // TODO EndGame(GameResult gameResult) 내부에서 실행

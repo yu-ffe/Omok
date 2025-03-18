@@ -9,6 +9,16 @@ using System;
 namespace KimHyeun {
     public class GameEndManager : Singleton<GameEndManager>
     {
+        /*
+        
+- 승/패 UI- 승급/강등 표시
+-> 우선 실행
+- 승급/강등 애니메이션
+-> 중간에 승급 계산 함수
+- 기보 저장 여부 확인 팝업 버튼
+-> 기보 저장/취소 버튼 이벤트 실행 함수
+        */
+
         [Header("필수 할당")]
         [SerializeField] TMP_Text resultText;
         [SerializeField] TMP_Text gradeResultText;
@@ -153,6 +163,7 @@ namespace KimHyeun {
             EndButtonTextSet(); // 버튼 텍스트 할당
         }
 
+        // TODO 각 버튼 기능 추가
         void EndButtonClickListenerSet()
         {
             // 기존에 있는 Button 컴포넌트를 가져오고, 없으면 추가
@@ -166,9 +177,9 @@ namespace KimHyeun {
             recordBtn.onClick.RemoveAllListeners();
 
             // 새로운 클릭 리스너 추가
-            okBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_OkButton(); });
-            restartBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.DORestart(); });
-            recordBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_RecordButton(); });
+            okBtn.onClick.AddListener(() => { Debug.Log("확인 버튼 클릭(메인 프로필로 돌아가기)"); });
+            restartBtn.onClick.AddListener(() => { Debug.Log("재대국 버튼 클릭(AI, 듀얼-재시작)"); });
+            recordBtn.onClick.AddListener(() => { Debug.Log("기보 저장 버튼 클릭(기보 저장 확인 팝업 출력)"); });
         }
 
         void EndButtonTextSet()
