@@ -826,6 +826,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2114001623}
     - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MakerXPrefab
+      value: 
+      objectReference: {fileID: 7722446656633791298, guid: 867595d137c558345b8e4f4e8d14ccff, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MarkerXPrefab
+      value: 
+      objectReference: {fileID: 7722446656633791298, guid: 867595d137c558345b8e4f4e8d14ccff, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
       propertyPath: UIeventSystem
       value: 
       objectReference: {fileID: 118917681}
@@ -833,6 +841,38 @@ PrefabInstance:
       propertyPath: rectTransform
       value: 
       objectReference: {fileID: 609069990}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MakerLastPrefab
+      value: 
+      objectReference: {fileID: 4016033573401198558, guid: 5152e3b63b83e264f8c38e17f6a912ba, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MarkerLastPrefab
+      value: 
+      objectReference: {fileID: 4016033573401198558, guid: 5152e3b63b83e264f8c38e17f6a912ba, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MarkerBlackPrefab
+      value: 
+      objectReference: {fileID: 6790028352374096553, guid: 63345ca4122c69f448c7c34d25887572, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MarkerWhitePrefab
+      value: 
+      objectReference: {fileID: 6041824013351459230, guid: f4a836a045b64474f90f55cabb96dba6, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MakerPlannedPrefab
+      value: 
+      objectReference: {fileID: 6218907579910159926, guid: 7090b2ca55c9e1945bef92b71f63bc78, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MakerForbiddenPrefab
+      value: 
+      objectReference: {fileID: 7722446656633791298, guid: 867595d137c558345b8e4f4e8d14ccff, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MakerPositionSelecorPrefab
+      value: 
+      objectReference: {fileID: 6218907579910159926, guid: 7090b2ca55c9e1945bef92b71f63bc78, type: 3}
+    - target: {fileID: 7048652257110049964, guid: bf8a86239dcc95e4b8ffd5d8d1178888, type: 3}
+      propertyPath: MarkerPositionSelecorPrefab
+      value: 
+      objectReference: {fileID: 6218907579910159926, guid: 7090b2ca55c9e1945bef92b71f63bc78, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

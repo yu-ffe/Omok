@@ -12,7 +12,10 @@ namespace workspace.Ham6._03_Sctipts.Game
         public enum StoneType
         {
             Normal,
-            Hint
+            Hint,
+            Last,
+            XMark,
+            PositionSelecor
         }
 
         public enum GameType
