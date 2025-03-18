@@ -26,11 +26,21 @@ public class SoundManager : Singleton<SoundManager>
     /// </summary>
     void InitializeVolume()
     {
+        if(!PlayerPrefs.HasKey(BGM_VOLUME_KEY))
+            PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
+        
+        if(!PlayerPrefs.HasKey(SFX_VOLUME_KEY))
+            PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
+        
         float saveBgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 1.0f);
         float saveSfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1.0f);
-        
-        SetBgmVolume(saveBgmVolume);
-        SetSfxVolume(saveSfxVolume);
+
+        // 🔥 OptionPanelController가 있으면 슬라이더도 업데이트
+        if (OptionPanelController.Instance != null)
+        {
+            OptionPanelController.Instance.bgmSlider.value = saveBgmVolume;
+            OptionPanelController.Instance.sfxSlider.value = saveSfxVolume;
+        }
     }
 
     public void PlayBGM(AudioClip clip, bool loop = true)

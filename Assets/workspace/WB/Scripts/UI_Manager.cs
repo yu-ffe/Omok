@@ -20,7 +20,7 @@ namespace WB
         }
         public UI_Popup popup;
         Dictionary<string, UnityAction> callBack;
-        Dictionary<PanelType, UI_Panel> panels;
+        public Dictionary<PanelType, UI_Panel> panels;
         [SerializeField] PanelType nowShowingPanelType;
 
         public UI_Manager()
