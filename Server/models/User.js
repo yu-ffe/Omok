@@ -8,7 +8,9 @@ const UserSchema = new mongoose.Schema({
     rankPoint: { type: Number, default: 0 },
     winCount: { type: Number, default: 0 },
     loseCount: { type: Number, default: 0 },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    sessionToken: { type: String },
+    refreshToken: { type: String },
 });
 
 module.exports = mongoose.model("User", UserSchema);

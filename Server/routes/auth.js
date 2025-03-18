@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 var router = express.Router();
 
+var registerRouter = require("./auth/signup"); // register.js 라우터 불러오기
+
 // 📌 로그인 페이지 렌더링
 router.get("/login", (req, res) => {
     res.render("login"); // "views/login.ejs" 렌더링

@@ -39,6 +39,60 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 callback(false, "서버와의 연결이 실패했습니다.", null, null);
             }
         }
+        
+        // 아이디 중복 체크 요청 함수
+        public IEnumerator CheckIdRequest(string id, System.Action<bool, string> callback) {
+            Debug.Log("아이디 중복 체크 요청: NetworkManager");
+            string url = $"{ServerUrl}/auth/signup/checkId"; // 아이디 중복 체크 API 엔드포인트
+            WWWForm form = new WWWForm();
+            form.AddField("id", id);
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success) {
+                // 서버로부터 응답 받은 JSON 처리
+                string jsonResponse = request.downloadHandler.text;
+                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
+
+                if (response.success) {
+                    callback(true, response.message); // 사용 가능한 아이디
+                }
+                else {
+                    callback(false, response.message); // 이미 존재하는 아이디
+                }
+            }
+            else {
+                callback(false, "서버와의 연결이 실패했습니다.");
+            }
+        }
+
+// 닉네임 중복 체크 요청 함수
+        public IEnumerator CheckNicknameRequest(string nickname, System.Action<bool, string> callback) {
+            Debug.Log("닉네임 중복 체크 요청: NetworkManager");
+            string url = $"{ServerUrl}/auth/signup/checkNickname"; // 닉네임 중복 체크 API 엔드포인트
+            WWWForm form = new WWWForm();
+            form.AddField("nickname", nickname);
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success) {
+                // 서버로부터 응답 받은 JSON 처리
+                string jsonResponse = request.downloadHandler.text;
+                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
+
+                if (response.success) {
+                    callback(true, response.message); // 사용 가능한 닉네임
+                }
+                else {
+                    callback(false, response.message); // 이미 존재하는 닉네임
+                }
+            }
+            else {
+                callback(false, "서버와의 연결이 실패했습니다.");
+            }
+        }
 
         // 로그인 요청 함수
         public IEnumerator SignInRequest(System.Action<bool, string> callback) {
@@ -224,6 +278,12 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         public bool success;
         public string message;
     }
+    
+    public class CheckResponse {
+        public bool success;  // 요청 성공 여부
+        public string message; // 메시지 (사용 가능한 아이디/닉네임인지 여부)
+    }
+
 
     public class SignUpResponse {
         public bool success;
