@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5164557767769649444}
-  - component: {fileID: 2382436564970959513}
+  - component: {fileID: 293043090348756432}
   m_Layer: 0
   m_Name: GameEndManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2382436564970959513
+--- !u!114 &293043090348756432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4797529898272775699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 601277f539bc32146937f7b63d13924d, type: 3}
+  m_Script: {fileID: 11500000, guid: caa8e891a58fa2c43bc9b66cc67e7b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resultText: {fileID: 0}
@@ -49,8 +49,8 @@ MonoBehaviour:
   gradeMinText: {fileID: 0}
   gradeMaxText: {fileID: 0}
   gradeBar: {fileID: 0}
-  gradePlusCellPrefab: {fileID: 1506984166855900036, guid: c7c84efdecc3bc94e9a1d295265c1660, type: 3}
-  gradeMinusCellPrefab: {fileID: 8646609686867957861, guid: dc2912b359c0b5445ac7d1d70e51fd05, type: 3}
+  gradePlusCellPrefab: {fileID: 0}
+  gradeMinusCellPrefab: {fileID: 0}
   okButton: {fileID: 0}
   okButtonText: {fileID: 0}
   restartButton: {fileID: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1342399392026177644}
-  - component: {fileID: 862057178662812899}
+  - component: {fileID: 1808352024245250483}
   m_Layer: 0
   m_Name: ShopManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &862057178662812899
+--- !u!114 &1808352024245250483
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,19 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9196642358807154581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a89630fe32bd941b97836dc18ab6fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 37b0cabc5fa29a84590f81ef93921fc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   scrollViewSet: {fileID: 0}
-  itemSprites:
-  - {fileID: 21300000, guid: e4448a9ec915bd940af4d2e2af79b645, type: 3}
-  - {fileID: 21300000, guid: e4448a9ec915bd940af4d2e2af79b645, type: 3}
-  - {fileID: 21300000, guid: e4448a9ec915bd940af4d2e2af79b645, type: 3}
-  - {fileID: 21300000, guid: e4448a9ec915bd940af4d2e2af79b645, type: 3}
-  itemNames:
-  - Item1
-  - Item2
-  - Item3
-  - Item4
-  nums: f4010000e8030000d0070000b80b0000
-  prices: 00000000000000000000000000000000
+  itemSprites: []
+  itemNames: []
+  nums: 
+  prices: 
