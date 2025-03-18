@@ -22,7 +22,7 @@ namespace workspace.Ham6.AI
         private Constants.PlayerType[,] board;
 
         // 최대 탐색 깊이
-        private int maxDepth = 4;
+        public int maxDepth = 4;
 
         public HamAI(Constants.PlayerType[,] board) {
             this.board = board;
@@ -31,18 +31,36 @@ namespace workspace.Ham6.AI
         /// <summary>
         /// Alpha-Beta Pruning 알고리즘을 재귀적으로 실행하여 평가값을 반환합니다.
         /// </summary>
-        public int AlphaBetaPruning(int depth, int alpha, int beta) {
-            if (depth == maxDepth) {
+        public int AlphaBetaPruning(int depth, int alpha, int beta) 
+        {
+            if (depth == maxDepth) 
+            {
                 return EvaluateBoard();
             }
+            
+            List<(int, int)> validMoves = new List<(int, int)>();
 
+            for (int x = 0; x < BOARD_SIZE; x++) {
+                for (int y = 0; y < BOARD_SIZE; y++) {
+                    if (board[x, y] == Constants.PlayerType.None) {
+                        validMoves.Add((x, y));
+                    }
+                }
+            }
+
+            // 탐색 순서를 랜덤으로 섞음
+            validMoves = validMoves.OrderBy(_ => UnityEngine.Random.value).ToList();
+            
             if (depth % 2 == 0) { // AI 턴 (최대화)
                 int v = int.MinValue;
                 bool pruning = false;
 
-                for (int x = 0; x < BOARD_SIZE; x++) {
-                    for (int y = 0; y < BOARD_SIZE; y++) {
-                        if (board[x, y] == Constants.PlayerType.None) {
+                for (int x = 0; x < BOARD_SIZE; x++) 
+                {
+                    for (int y = 0; y < BOARD_SIZE; y++) 
+                    {
+                        if (board[x, y] == Constants.PlayerType.None) 
+                        {
                             if (!HasNeighbor(x, y))
                                 continue;
 
@@ -61,7 +79,9 @@ namespace workspace.Ham6.AI
                         break;
                 }
                 return v;
-            } else { // 플레이어 턴 (최소화)
+            } 
+            else 
+            { // 플레이어 턴 (최소화)
                 int v = int.MaxValue;
                 bool pruning = false;
 
@@ -147,7 +167,7 @@ namespace workspace.Ham6.AI
                         if (count >= 5)
                         {
                             // AI가 승리하면 매우 큰 양수, 플레이어가 승리하면 매우 큰 음수 반환
-                            return (cell == Constants.PlayerType.PlayerB) ? int.MaxValue : int.MinValue;
+                            return (cell == Constants.PlayerType.PlayerB) ? 2000000 : -2000000;
                         }
 
                         // 연속 돌 개수에 따른 가중치 점수를 추가합니다.
@@ -162,8 +182,6 @@ namespace workspace.Ham6.AI
 
             return score;
         }
-    
-
 
         /// <summary>
         /// (x,y) 위치에 주변 돌이 있는지 확인합니다.
@@ -195,13 +213,26 @@ namespace workspace.Ham6.AI
             for (int x = 0; x < BOARD_SIZE; x++) {
                 for (int y = 0; y < BOARD_SIZE; y++) {
                     // CHANGED: EMPTY -> Constants.PlayerType.None
-                    if (board[x, y] == Constants.PlayerType.None && HasNeighbor(x, y)) {
+                    if (board[x, y] == Constants.PlayerType.None) {
+                    //if (board[x, y] == Constants.PlayerType.None && HasNeighbor(x, y)) {
                         validMoves.Add((x, y));
                     }
                 }
             }
 
-            (int bestX, int bestY) = validMoves[0];
+            // 착수할 곳이 없으면 예외 처리
+            if (validMoves.Count == 0) {
+                Debug.LogError("착수 가능한 위치가 없습니다.");
+                return (-1, -1);
+            }
+            
+            validMoves.Sort((a, b) => {
+                int distA = Mathf.Abs(a.Item1 - BOARD_SIZE / 2) + Mathf.Abs(a.Item2 - BOARD_SIZE / 2);
+                int distB = Mathf.Abs(b.Item1 - BOARD_SIZE / 2) + Mathf.Abs(b.Item2 - BOARD_SIZE / 2);
+                return distA.CompareTo(distB);
+            });
+
+            List<(int, int)> bestMoves = new List<(int, int)>();
             int bestScore = int.MinValue;
 
             foreach (var move in validMoves) {
@@ -212,12 +243,14 @@ namespace workspace.Ham6.AI
 
                 if (score > bestScore) {
                     bestScore = score;
-                    bestX = move.Item1;
-                    bestY = move.Item2;
+                    bestMoves.Clear();
+                    bestMoves.Add(move);
+                } else if (score == bestScore) {
+                    bestMoves.Add(move); // 같은 점수면 후보군에 추가
                 }
             }
 
-            return (bestX, bestY);
+            return bestMoves[UnityEngine.Random.Range(0, bestMoves.Count)];
         }
     }
 }

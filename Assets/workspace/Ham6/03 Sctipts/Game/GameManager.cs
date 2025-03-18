@@ -26,11 +26,11 @@ public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TestGame");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
     }
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "TestGame")
+        if (scene.name == "Game Scene")
         {
             // 씬에 배치된 오브젝트 찾기 (BlockContorller, GameUIController)
             var omokBoard = GameObject.FindObjectOfType<OmokBoard>();

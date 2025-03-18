@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using workspace.Ham6._03_Sctipts.Game;
@@ -128,6 +130,8 @@ public abstract class BasePlayerState
         public override void OnEnter(GameLogic gameLogic)
         {
             HamAI hamAI = new HamAI(gameLogic.GetBoard());
+
+            hamAI.maxDepth = 4;
             
             // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
             var move = hamAI.GetBestMove();
@@ -138,6 +142,8 @@ public abstract class BasePlayerState
             }
             else
             {
+                Debug.Log($"{move.Item1},{move.Item2}");
+                Debug.Log("둘 수 있는 수가 없음");
                 gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
             }
             
@@ -190,7 +196,9 @@ public abstract class BasePlayerState
     {
     public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
-    private (int, int) lastPlace;
+    
+    //기보확인을 위한 리스트
+    public List<(Constants.PlayerType player, int x, int y)> moveList = new List<(Constants.PlayerType, int, int)>();
 
     //상태 패턴을 활용한 플레이어 상태 관리
     public BasePlayerState firstPlayerState; // 첫 번째 플레이어 상태
@@ -314,22 +322,28 @@ public abstract class BasePlayerState
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
-            lastPlace = (row, col);
             
             Debug.Log($"{row},{col}에 보드상에 흑돌 기입");
+            //기보저장
+            moveList.Add((playerType, row, col));
             OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
             
+            OmokBoard.ShowLastStone(); // 마지막 돌 표시
+
             return true;
         }
         // 플레이어 B가 놓는 경우
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
-            lastPlace = (row, col);
             
             Debug.Log($"{row},{col}에 보드상에 백돌 기입");
-            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col);
+            //기보저장
+            moveList.Add((playerType, row, col));
+            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
             
+            OmokBoard.ShowLastStone(); // 마지막 돌 표시
+
             return true;
         }
         return false;
@@ -424,7 +438,6 @@ public abstract class BasePlayerState
         firstPlayerState = null;
         secondPlayerState = null;
         
-        Debug.Log("게임의 승패가 결정되어 게임이 끝남");
         //TODO: UI활성화
         //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }

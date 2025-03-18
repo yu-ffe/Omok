@@ -5,19 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/MCTS.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/MCTS.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerBlack.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerBlack.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerWhite.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/MakerWhite.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/New Scene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/TestGame.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/TestGame.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/AI/HamAI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,18 +26,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-    &quot;lastFilter&quot;: {
-      &quot;state&quot;: &quot;OPEN&quot;,
-      &quot;assignee&quot;: &quot;Minji-GWON&quot;
-    }
-  }</component>
-  <component name="GithubPullRequestsUISettings">{
-    &quot;selectedUrlAndAccountId&quot;: {
-      &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
-      &quot;accountId&quot;: &quot;72af1083-43f2-4c61-b898-4d0cdb5e60a4&quot;
-    }
-  }</component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Minji-GWON"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/yu-ffe/Omok.git",
+    "accountId": "76a9a247-112a-4de8-baff-21445dc651b6"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
@@ -62,7 +61,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/game-manager/logic",
+    "git-widget-placeholder": "feature/game-manager/logic에 #129개",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -125,6 +124,7 @@
       <workItem from="1741911432734" duration="6575000" />
       <workItem from="1741934865966" duration="301000" />
       <workItem from="1742094453598" duration="686000" />
+      <workItem from="1742256876497" duration="9266000" />
     </task>
     <servers />
   </component>
