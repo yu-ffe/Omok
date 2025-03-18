@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using workspace.YU__FFE.Scripts;
+using workspace.YU__FFE.Scripts.UIScene;
 
 namespace MJ
 {

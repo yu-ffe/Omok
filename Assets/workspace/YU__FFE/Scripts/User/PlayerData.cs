@@ -57,6 +57,7 @@ namespace workspace.YU__FFE.Scripts.User {
             this.password = password;
             this.profileNum = profile;
         }
+        
     }
 
 }

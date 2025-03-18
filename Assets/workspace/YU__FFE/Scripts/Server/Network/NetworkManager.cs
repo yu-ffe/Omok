@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using workspace.YU__FFE.Scripts.Common;
+using workspace.YU__FFE.Scripts;
 using workspace.YU__FFE.Scripts.User;
 
 namespace workspace.YU__FFE.Scripts.Server.Network {
@@ -80,7 +81,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
 
         // 로그인 요청 함수
-        public IEnumerator SignInRequest(System.Action<SignInResponse, PlayerData> callback) {
+        public IEnumerator SignInRequest(System.Action<LoginInfo, UserData> callback) {
             string url = $"{ServerUrl}/login"; // 로그인 API 엔드포인트
             PlayerData playerData = PlayerManager.Instance.playerData;
             WWWForm form = new WWWForm();
@@ -96,76 +97,35 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
 
                 // 로그인 성공 시 응답 처리
-                if (response.success) {
-                    // 로그인 후 서버에서 받은 토큰 정보 저장 (세션 관리)
-                    playerData.accessToken = response.data.accessToken;
-                    playerData.refreshToken = response.data.refreshToken;
-
-                    // 추가로 필요한 사용자 데이터 저장
-                    playerData.nickname = response.data.nickname;
-                    playerData.profileNum = response.data.profileNum;
-                    playerData.coins = response.data.coins;
-                    playerData.grade = response.data.grade;
-                    playerData.rankPoint = response.data.rankPoint;
-                    playerData.winCount = response.data.winCount;
-                    playerData.loseCount = response.data.loseCount;
+                if (response.login.success) {
 
                     // 콜백 호출 (로그인 성공)
-                    callback(response, playerData);
+                    callback(response.login, response.data);
                 }
                 else {
                     // 로그인 실패 시 콜백 호출
-                    callback(response, null);
+                    callback(response.login, null);
                 }
             }
             else {
                 // 서버와 연결 실패 시 콜백 호출
-                callback(new SignInResponse(false, "서버와의 연결이 실패했습니다.", null, null), null);
+                callback(null, null);
             }
         }
 
-        // 세션 업데이트 요청 함수
-        public static IEnumerator UpdateDataRequest(int coins, int grade, int rankPoint, System.Action<bool, string> callback) {
-            string url = $"{ServerUrl}updateSession"; // 세션 업데이트 API 엔드포인트
-            string SessionToken = Session.SessionManager.Instance.SessionToken;
-            WWWForm form = new WWWForm();
-            form.AddField("userId", SessionToken);
-            form.AddField("coins", coins);
-            form.AddField("grade", grade);
-            form.AddField("rankPoint", rankPoint);
-
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
-
-                if (response.success) {
-                    callback(true, response.message);
-                }
-                else {
-                    callback(false, response.message);
-                }
-            }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
-            }
-        }
-
+       
         // 자동 로그인 시도
-        public static IEnumerator TryAutoLogin(System.Action<bool, string> callback) {
-            string url = $"{ServerUrl}autoLogin"; // 자동 로그인 API 엔드포인트
-            string SessionToken = PlayerPrefs.GetString("SessionToken", "");
+        public static IEnumerator TryAutoLogin(System.Action<LoginInfo, UserData> callback) {
+            string url = $"{ServerUrl}/autoLogin"; // 자동 로그인 API 엔드포인트
+            string sessionToken = PlayerPrefs.GetString("SessionToken", "");
 
-            if (string.IsNullOrEmpty(SessionToken)) {
-                callback(false, "저장된 로그인 정보가 없습니다.");
+            if (string.IsNullOrEmpty(sessionToken)) {
+                callback(null, null);
                 yield break;
             }
 
             WWWForm form = new WWWForm();
-            form.AddField("userId", SessionToken);
+            form.AddField("userId", sessionToken);
 
             UnityWebRequest request = UnityWebRequest.Post(url, form);
             yield return request.SendWebRequest();
@@ -174,15 +134,17 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 string jsonResponse = request.downloadHandler.text;
                 var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
 
-                if (response.success) {
-                    callback(true, response.message);
+                if (response.login.success) {
+                    // 자동 로그인 성공 시 콜백 호출
+                    callback(response.login, response.data);
                 }
                 else {
-                    callback(false, response.message);
+                    // 자동 로그인 실패 시 콜백 호출
+                    callback(null, null);
                 }
             }
             else {
-                callback(false, "서버와의 연결이 실패했습니다.");
+                callback(null, null);
             }
         }
 
@@ -270,21 +232,56 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
     }
 
-    // 응답 구조체들
     public class SignInResponse {
+        public LoginInfo login;
+        public UserData data;
+
+        public SignInResponse(LoginInfo login, UserData data) {
+            this.login = login;
+            this.data = data;
+        }
+    }
+
+    public class LoginInfo {
         public bool success;
         public string message;
         public string accessToken;
         public string refreshToken;
-        public SignInResponse(bool success, string message, string accessToken, string refreshToken) {
+
+        public LoginInfo(bool success, string message, string accessToken, string refreshToken) {
             this.success = success;
             this.message = message;
             this.accessToken = accessToken;
             this.refreshToken = refreshToken;
         }
-        
     }
 
+    public class UserData {
+        public string nickname;
+        public int profileNum;
+        public int coins;
+        public int grade;
+        public int rankPoint;
+        public int winCount;
+        public int loseCount;
+        public string sessionToken;
+        public string refreshToken;
+
+        public UserData(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount, 
+                        int loseCount, string sessionToken, string refreshToken) {
+            this.nickname = nickname;
+            this.profileNum = profileNum;
+            this.coins = coins;
+            this.grade = grade;
+            this.rankPoint = rankPoint;
+            this.winCount = winCount;
+            this.loseCount = loseCount;
+            this.sessionToken = sessionToken;
+            this.refreshToken = refreshToken;
+        }
+    }
+
+    
     public class BaseResponse {
         public bool success;
         public string message;

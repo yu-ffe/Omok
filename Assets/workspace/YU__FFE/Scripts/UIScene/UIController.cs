@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using workspace.YU__FFE.Scripts.Data.workspace.YU__FFE.Scripts.Data;
+using workspace.YU__FFE.Scripts.UIScene;
 
 namespace workspace.YU__FFE.Scripts {
     public class UIController : MonoBehaviour {

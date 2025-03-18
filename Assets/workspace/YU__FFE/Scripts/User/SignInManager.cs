@@ -29,17 +29,17 @@ namespace workspace.YU__FFE.Scripts.User {
             // 왜 why 굳이 이런방식? -> 이유없음
             PlayerManager.Instance.playerData.SetPrivateData(id, password);
 
-            StartCoroutine(NetworkManager.Instance.SignInRequest((response) => {
-                if (response.success) {
+            StartCoroutine(NetworkManager.Instance.SignInRequest((login, data) => {
+                if (login.success) {
                     Debug.Log("로그인 성공");
 
                     // 로그인 성공 시 세션 갱신
-                    UpdateTokens(response.refreshToken, response.accessToken, callback);
+                    UpdateTokens(login.refreshToken, login.accessToken, callback);
                     //TODO: 플레이어 데이터 가져오는 기능 필요.
-                    
+                    UpdateUserData( data);
+
                 } else {
                     // 로그인 실패
-                    callback(false, "로그인 실패: " + response.message);
                 }
             }));
             
@@ -58,6 +58,16 @@ namespace workspace.YU__FFE.Scripts.User {
                 Server.Session.SessionManager.Instance.UpdateSessionToken(sessionToken);
                 Debug.Log("세션 토큰 저장 완료");
             }
+        }
+
+        private void UpdateUserData(UserData data) {
+            PlayerManager.Instance.playerData.nickname = data.nickname;
+            PlayerManager.Instance.playerData.profileNum = data.profileNum;
+            PlayerManager.Instance.playerData.coins = data.coins;
+            PlayerManager.Instance.playerData.grade = data.grade;
+            PlayerManager.Instance.playerData.rankPoint = data.rankPoint;
+            PlayerManager.Instance.playerData.winCount = data.winCount;
+            PlayerManager.Instance.playerData.loseCount = data.loseCount;
         }
 
         // ========== 비밀번호 암호화 (회원가입과 동일) ==========

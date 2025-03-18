@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace workspace.YU__FFE.Scripts {
+namespace workspace.YU__FFE.Scripts.UIScene {
     public class UIManager : Common.Doubleton<UIManager> {
         private readonly Dictionary<string, GameObject> _uiInstances = new Dictionary<string, GameObject>();
 
