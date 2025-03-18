@@ -46,10 +46,9 @@ namespace KimHyeun {
             else return GetWinPointWithHighGrade();
         }
 
-        public static (int, bool) GetRankPointAndGradeUpdate(string userId, UserSession userSession, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
+        public static int GetRankPointAndGradeUpdate(string userId, UserSession userSession, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
         {
             int rankPoint = userSession.RankPoint;
-            bool isRankChange = false;
 
             if (userSession != null)
             {
@@ -72,7 +71,6 @@ namespace KimHyeun {
                             if (userSession.RankPoint >= rankPointRange) // 30점 도달 시 승급
                             {
                                 userSession.RankPoint = 0;
-                                isRankChange = true;
                                 userSession.Grade = Mathf.Clamp(userSession.Grade - 1, 1, 18); // 급수 상승
                             }
 
@@ -90,7 +88,6 @@ namespace KimHyeun {
                         if (userSession.RankPoint <= -rankPointRange) // -30점 도달 시 강등
                         {
                             userSession.RankPoint = 0;
-                            isRankChange = true;
                             userSession.Grade = Mathf.Clamp(userSession.Grade + 1, 1, 18); // 급수 감소
                         }
 
@@ -115,7 +112,7 @@ namespace KimHyeun {
                 Debug.LogError("승급 계산에 필요한 유저 데이터를 받지 못했습니다.");
             }
 
-            return (rankPoint, isRankChange);
+            return rankPoint;
         }
     }
 }
