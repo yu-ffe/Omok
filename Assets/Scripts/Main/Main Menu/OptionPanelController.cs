@@ -32,11 +32,8 @@ public class OptionPanelController : UI_Panel
         }
         else
         {
-            Destroy(gameObject); // 기존 인스턴스가 있으면 제거
+            Destroy(gameObject);
         }
-        
-        if (bgmSlider != null) bgmSlider.value = 1f;  
-        if (sfxSlider != null) sfxSlider.value = 1f;  
     }
     // ========= 사운드 초기화 (게임 시작 시) ========== 
     void Start()
