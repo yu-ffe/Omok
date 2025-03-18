@@ -40,63 +40,48 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             }
         }
         
-        // 아이디 중복 체크 요청 함수
+        // 아이디 또는 닉네임 중복 체크 요청 함수
+        public IEnumerator CheckDuplicateRequest(string type, string value, System.Action<bool, string> callback) {
+            Debug.Log($"{type} 중복 체크 요청: NetworkManager");
+            string url = $"{ServerUrl}/auth/signup/check"; // 중복 체크 API 엔드포인트
+            WWWForm form = new WWWForm();
+            form.AddField("type", type);    // 'nickname' 또는 'id'를 type으로 전달
+            form.AddField("value", value);  // 중복 체크할 아이디 또는 닉네임
+
+            UnityWebRequest request = UnityWebRequest.Post(url, form);
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success) {
+                // 서버로부터 응답 받은 JSON 처리
+                string jsonResponse = request.downloadHandler.text;
+                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
+
+                if (response.success) {
+                    callback(true, response.message); // 사용 가능한 값
+                }
+                else {
+                    callback(false, response.message); // 이미 존재하는 값
+                }
+            }
+            else {
+                callback(false, "서버와의 연결이 실패했습니다.");
+            }
+        }
+
+// 아이디 중복 체크 요청 함수 (리팩토링)
         public IEnumerator CheckIdRequest(string id, System.Action<bool, string> callback) {
-            Debug.Log("아이디 중복 체크 요청: NetworkManager");
-            string url = $"{ServerUrl}/auth/signup/checkId"; // 아이디 중복 체크 API 엔드포인트
-            WWWForm form = new WWWForm();
-            form.AddField("id", id);
-
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
-
-                if (response.success) {
-                    callback(true, response.message); // 사용 가능한 아이디
-                }
-                else {
-                    callback(false, response.message); // 이미 존재하는 아이디
-                }
-            }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
-            }
+            yield return CheckDuplicateRequest("id", id, callback); // 아이디 중복 체크
         }
 
-// 닉네임 중복 체크 요청 함수
+// 닉네임 중복 체크 요청 함수 (리팩토링)
         public IEnumerator CheckNicknameRequest(string nickname, System.Action<bool, string> callback) {
-            Debug.Log("닉네임 중복 체크 요청: NetworkManager");
-            string url = $"{ServerUrl}/auth/signup/checkNickname"; // 닉네임 중복 체크 API 엔드포인트
-            WWWForm form = new WWWForm();
-            form.AddField("nickname", nickname);
-
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<CheckResponse>(jsonResponse);
-
-                if (response.success) {
-                    callback(true, response.message); // 사용 가능한 닉네임
-                }
-                else {
-                    callback(false, response.message); // 이미 존재하는 닉네임
-                }
-            }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
-            }
+            yield return CheckDuplicateRequest("nickname", nickname, callback); // 닉네임 중복 체크
         }
+
 
         // 로그인 요청 함수
         public IEnumerator SignInRequest(System.Action<SignInResponse, PlayerData> callback) {
-            string url = $"{ServerUrl}login"; // 로그인 API 엔드포인트
+            string url = $"{ServerUrl}/login"; // 로그인 API 엔드포인트
             PlayerData playerData = PlayerManager.Instance.playerData;
             WWWForm form = new WWWForm();
             form.AddField("id", playerData.id);
@@ -110,14 +95,31 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 string jsonResponse = request.downloadHandler.text;
                 var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
 
+                // 로그인 성공 시 응답 처리
                 if (response.success) {
+                    // 로그인 후 서버에서 받은 토큰 정보 저장 (세션 관리)
+                    playerData.accessToken = response.data.accessToken;
+                    playerData.refreshToken = response.data.refreshToken;
+
+                    // 추가로 필요한 사용자 데이터 저장
+                    playerData.nickname = response.data.nickname;
+                    playerData.profileNum = response.data.profileNum;
+                    playerData.coins = response.data.coins;
+                    playerData.grade = response.data.grade;
+                    playerData.rankPoint = response.data.rankPoint;
+                    playerData.winCount = response.data.winCount;
+                    playerData.loseCount = response.data.loseCount;
+
+                    // 콜백 호출 (로그인 성공)
                     callback(response, playerData);
                 }
                 else {
+                    // 로그인 실패 시 콜백 호출
                     callback(response, null);
                 }
             }
             else {
+                // 서버와 연결 실패 시 콜백 호출
                 callback(new SignInResponse(false, "서버와의 연결이 실패했습니다.", null, null), null);
             }
         }
