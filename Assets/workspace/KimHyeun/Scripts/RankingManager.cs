@@ -11,7 +11,7 @@ namespace KimHyeun
 
         List<Sprite> profileSpriteList = new List<Sprite>();
         List<string> nickNameList = new List<string>();
-        List<int> GradeList = new List<int>();
+        List<int> gradeList = new List<int>();
         List<int> winList = new List<int>();
         List<int> loseList = new List<int>();
 
@@ -74,7 +74,7 @@ namespace KimHyeun
             {
                 profileSpriteList.Add(userData.Profile);
                 nickNameList.Add(userData.Nickname);
-                GradeList.Add(userData.Grade);
+                gradeList.Add(userData.Grade);
                 winList.Add(userData.Win);
                 loseList.Add(userData.Lose);
             }
@@ -100,7 +100,7 @@ namespace KimHyeun
         {
             profileSpriteList.Clear();
             nickNameList.Clear();
-            GradeList.Clear();
+            gradeList.Clear();
             winList.Clear();
             loseList.Clear();
         }
@@ -145,9 +145,9 @@ namespace KimHyeun
 
         public int GetGrade(int index)
         {
-            if (GradeList.Count > index)
+            if (gradeList.Count > index)
             {
-                return GradeList[index];
+                return gradeList[index];
             }
 
             else
@@ -200,42 +200,6 @@ namespace KimHyeun
 
 
 
-
-        /*
-        private static RankingManager _instance;
-
-        public static RankingManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<RankingManager>();
-                    if (_instance == null)
-                    {
-                        GameObject obj = new GameObject();
-                        obj.name = typeof(RankingManager).Name;
-                        _instance = obj.AddComponent<RankingManager>();
-                    }
-                }
-                return _instance;
-            }
-        }
-
-        private void Awake()
-        {
-            if (_instance == null)
-            {
-                _instance = this as RankingManager;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }
-
-        */
     }
 }
 
