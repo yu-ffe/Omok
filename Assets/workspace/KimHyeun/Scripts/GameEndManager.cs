@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
 
 namespace KimHyeun {
     public class GameEndManager : Singleton<GameEndManager>
@@ -40,7 +41,7 @@ namespace KimHyeun {
         [SerializeField] GameObject recordButton;
         [SerializeField] TMP_Text recordButtonText;
 
-        
+        Sequence currentSequence;
 
         public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
         {
@@ -232,8 +233,15 @@ namespace KimHyeun {
             }
         }
 
+        /*
         void UpdateCellScales(float rankPoint, bool animate = false)
         {
+            // 이전 시퀀스가 실행 중이면 즉시 종료
+            if (currentSequence != null && currentSequence.IsActive())
+            {
+                currentSequence.Kill(); // 현재 애니메이션 즉시 종료
+            }
+
             float scaleValue = Mathf.Abs(rankPoint) / 10f;  // RankPoint 값을 10으로 나눠 범위 변환
             int fullCells = Mathf.FloorToInt(scaleValue);  // 가득 찬 셀 개수
             float partialFill = scaleValue - fullCells;    // 마지막 셀의 소수점 값 (0~1)
@@ -242,6 +250,7 @@ namespace KimHyeun {
             Transform[] oppositeCells = rankPoint > 0 ? gradeMinusCells : gradePlusCells;
 
             Sequence seq = DOTween.Sequence(); // DOTween 애니메이션 순차 실행
+            currentSequence = seq; // 현재 시퀀스를 추적
 
             // 반대쪽 셀들의 스케일을 0으로 초기화
             foreach (var cell in oppositeCells)
@@ -252,31 +261,95 @@ namespace KimHyeun {
                 }
             }
 
-            // 플러스/마이너스 셀들에 대해 애니메이션을 처리
-            for (int i = 0; i < targetCells.Length; i++)
+            bool isIncreasing = false;
+            bool isDecreasing = false;
+
+            foreach (var cell in targetCells)
             {
+                if (cell != null)
+                {
+                    float currentScale = cell.localScale.x;
+                    float expectedScale = 0f;
+
+                    // Index 초과를 방지하기 위해 fullCells가 targetCells 배열의 길이를 초과하지 않도록 처리
+                    if (Array.IndexOf(targetCells, cell) < fullCells)
+                    {
+                        expectedScale = 1f;  // 채워진 셀
+                    }
+                    else if (Array.IndexOf(targetCells, cell) == fullCells)
+                    {
+                        expectedScale = partialFill;  // 마지막 셀의 소수점 값
+                    }
+                    else
+                    {
+                        expectedScale = 0f;  // 빈 셀
+                    }
+
+                    if (expectedScale > currentScale)
+                        isIncreasing = true;
+                    else if (expectedScale < currentScale)
+                        isDecreasing = true;
+                }
+            }
+
+            bool reverseOrder = false;
+
+            if (rankPoint > 0)
+            {
+                reverseOrder = isDecreasing;
+            }
+            else
+            {
+                reverseOrder = isDecreasing;
+            }
+
+            int startIndex = reverseOrder ? targetCells.Length - 1 : 0;
+            int endIndex = reverseOrder ? -1 : targetCells.Length;
+            int step = reverseOrder ? -1 : 1;
+
+            bool lastCellHandled = false; // 마지막 셀 처리 여부를 추적하는 변수
+
+            for (int i = startIndex; i != endIndex; i += step)
+            {
+                if (i < 0 || i >= targetCells.Length) continue; // 인덱스 초과 방지
+
                 if (targetCells[i] != null)
                 {
-                    float targetScaleX = (i < fullCells) ? 1f : (i == fullCells ? partialFill : 0f);
+                    float targetScaleX = 0f;
 
-                    if (animate)
+                    // 마지막 셀의 경우 partialFill을 사용
+                    if (i < fullCells)
                     {
-                        // 십의 자리가 변동될 때는 애니메이션 순차적으로 실행
-                        if (i == fullCells && fullCells > 0) // 십의 자리 변화가 있을 경우
+                        targetScaleX = 1f; // 채워진 셀
+                    }
+                    else if (i == fullCells)
+                    {
+                        targetScaleX = partialFill; // 마지막 셀의 소수점 값
+                    }
+                    else
+                    {
+                        targetScaleX = 0f; // 빈 셀
+                    }
+
+                    // 마지막 셀 처리
+                    if (!lastCellHandled && i == fullCells)
+                    {
+                        lastCellHandled = true; // 마지막 셀 처리되었음을 표시
+                        if (animate)
                         {
-                            if (rankPoint > 0)  // 플러스 셀 감소
-                            {
-                                seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
-                            }
-                            else  // 마이너스 셀 증가
-                            {
-                                seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
-                            }
+                            seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f)); // 마지막 셀 애니메이션 실행
                         }
                         else
                         {
-                            seq.Join(targetCells[i].DOScaleX(targetScaleX, 0.2f)); // 다른 셀들은 동시 실행
+                            targetCells[i].localScale = new Vector3(targetScaleX, 1f, 1f); // 마지막 셀 직접 설정
                         }
+                        continue; // 마지막 셀은 애니메이션이 실행된 후 다음 셀을 처리하지 않도록
+                    }
+
+                    // 마지막 셀 이후에는 애니메이션이 더 이상 실행되지 않도록 함
+                    if (animate)
+                    {
+                        seq.Append(targetCells[i].DOScaleX(targetScaleX, 0.2f));
                     }
                     else
                     {
@@ -287,25 +360,31 @@ namespace KimHyeun {
 
             seq.Play(); // 애니메이션 실행
         }
-
+        */
         void RankPointSet(UserSession userSession, GameResult gameResult)
         {
             // 실질적 승급 계산
-            int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
+            (int afterRankPoint, bool isRankChange) = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
 
-            int needPlayNum = 0;
+            int needPlayNum = Mathf.CeilToInt((float)(GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade));
 
-            if (afterRankPoint >= 0)
-            {
-                needPlayNum = Mathf.CeilToInt((GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade));
-            }
-            else
-            {
-                needPlayNum = Mathf.CeilToInt(GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(userSession.Grade) +
-                    (afterRankPoint / GradeChangeManager.GetWinPoint(userSession.Grade)));
-            }
+           
 
             gradeResultText.text = needPlayNum + "게임 승리 시 승급";
+
+            if (isRankChange) // 급수 변경됨
+            {
+                if (gameResult == GameResult.Win)
+                {
+                    gradeResultText.text = "승급!";
+                }
+
+                else
+                {
+                    gradeResultText.text = "강등!";
+                }
+            }
+
 
             StartCoroutine(RankAnimation(afterRankPoint));
         }
@@ -325,5 +404,135 @@ namespace KimHyeun {
 
 
 
+
+
+
+        void UpdateCellScales(float rankPoint, bool animate = false)
+        {
+            // 이전 시퀀스가 실행 중이면 즉시 종료
+            KillCurrentSequenceIfActive();
+
+            float scaleValue = Mathf.Abs(rankPoint) / 10f;  // RankPoint 값을 10으로 나눠 범위 변환
+            int fullCells = Mathf.FloorToInt(scaleValue);  // 가득 찬 셀 개수
+            float partialFill = scaleValue - fullCells;    // 마지막 셀의 소수점 값 (0~1)
+
+            Transform[] targetCells = GetTargetCells(rankPoint);
+            Transform[] oppositeCells = GetOppositeCells(rankPoint);
+
+            Sequence seq = DOTween.Sequence(); // DOTween 애니메이션 순차 실행
+            currentSequence = seq; // 현재 시퀀스를 추적
+
+            // 반대쪽 셀들의 스케일을 0으로 초기화
+            ResetOppositeCellsScale(seq, oppositeCells);
+
+            // 셀들의 상태 업데이트 및 애니메이션 실행
+            AnimateCells(seq, targetCells, fullCells, partialFill, animate);
+
+            seq.Play(); // 애니메이션 실행
+        }
+
+        void KillCurrentSequenceIfActive()
+        {
+            if (currentSequence != null && currentSequence.IsActive())
+            {
+                currentSequence.Kill(); // 현재 애니메이션 즉시 종료
+            }
+        }
+
+        Transform[] GetTargetCells(float rankPoint)
+        {
+            return rankPoint > 0 ? gradePlusCells : gradeMinusCells;
+        }
+
+        Transform[] GetOppositeCells(float rankPoint)
+        {
+            return rankPoint > 0 ? gradeMinusCells : gradePlusCells;
+        }
+
+        void ResetOppositeCellsScale(Sequence seq, Transform[] oppositeCells)
+        {
+            foreach (var cell in oppositeCells)
+            {
+                if (cell != null)
+                {
+                    seq.Join(cell.DOScaleX(0f, 0.2f)); // 반대쪽 셀의 스케일을 0으로
+                }
+            }
+        }
+
+        void AnimateCells(Sequence seq, Transform[] targetCells, int fullCells, float partialFill, bool animate)
+        {
+            bool isDecreasing = false;
+
+            // 각 셀의 상태에 따라 애니메이션을 준비
+            foreach (var cell in targetCells)
+            {
+                if (cell != null)
+                {
+                    float currentScale = cell.localScale.x;
+                    float expectedScale = GetExpectedScale(targetCells, fullCells, partialFill, cell);
+
+                    if (expectedScale < currentScale) isDecreasing = true;
+                }
+            }
+
+            bool reverseOrder = DetermineReverseOrder(isDecreasing, targetCells, fullCells);
+
+            int startIndex = reverseOrder ? targetCells.Length - 1 : 0;
+            int endIndex = reverseOrder ? -1 : targetCells.Length;
+            int step = reverseOrder ? -1 : 1;
+
+            bool lastCellHandled = false; // 마지막 셀 처리 여부를 추적하는 변수
+
+            // 셀에 대한 애니메이션 실행
+            for (int i = startIndex; i != endIndex; i += step)
+            {
+                if (i < 0 || i >= targetCells.Length) continue; // 인덱스 초과 방지
+
+                if (targetCells[i] != null)
+                {
+                    float targetScaleX = GetExpectedScale(targetCells, fullCells, partialFill, targetCells[i]);
+
+                    // 마지막 셀 처리
+                    if (!lastCellHandled && i == fullCells)
+                    {
+                        lastCellHandled = true; // 마지막 셀 처리되었음을 표시
+                        ApplyScale(targetCells[i], targetScaleX, animate, seq);
+                        continue; // 마지막 셀은 애니메이션이 실행된 후 다음 셀을 처리하지 않도록
+                    }
+
+                    ApplyScale(targetCells[i], targetScaleX, animate, seq);
+                }
+            }
+        }
+
+        float GetExpectedScale(Transform[] targetCells, int fullCells, float partialFill, Transform cell)
+        {
+            int index = Array.IndexOf(targetCells, cell);
+
+            if (index < fullCells)
+                return 1f; // 채워진 셀
+            else if (index == fullCells)
+                return partialFill; // 마지막 셀의 소수점 값
+            else
+                return 0f; // 빈 셀
+        }
+
+        bool DetermineReverseOrder(bool isDecreasing, Transform[] targetCells, int fullCells)
+        {
+            return isDecreasing;
+        }
+
+        void ApplyScale(Transform cell, float targetScaleX, bool animate, Sequence seq)
+        {
+            if (animate)
+            {
+                seq.Append(cell.DOScaleX(targetScaleX, 0.2f)); // 애니메이션 실행
+            }
+            else
+            {
+                cell.localScale = new Vector3(targetScaleX, 1f, 1f); // 직접 설정
+            }
+        }
     }
 }
