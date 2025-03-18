@@ -31,6 +31,9 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     private Vector2 localPoint;     //마우스의 좌표를 UI좌표로 바꾼 값
     private Vector2Int boardCoord;  //UI좌표를 배열로 바꾼 값
     
+    private Vector2Int selectedBoardCoord;  //마우스를 땟을 때 UI좌표를 배열로 바꾼 값
+
+    
     bool ismarker_Last = false;
     GameObject marker_Last = null;
     
@@ -260,16 +263,22 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     // UI에 마우스를 땟을 때 실행
     public void OnPointerUp(PointerEventData eventData)
     {
+        selectedBoardCoord = boardCoord;
+        GameObject marker_PositionSelecor = GameObject.Find("marker_PositionSelecor");
+        if (marker_PositionSelecor) Destroy(marker_PositionSelecor);
+        
+        PlaceStone(Constants.PlayerType.None, Constants.StoneType.PositionSelecor, selectedBoardCoord.x, selectedBoardCoord.y);
+    }
+    
+    public void OnPointerUpMarkerPositionSelecor()
+    {
         if (OnOnGridClickedDelegate != null)
         {
-            OnOnGridClickedDelegate.Invoke(boardCoord.x, boardCoord.y);
+            OnOnGridClickedDelegate.Invoke(selectedBoardCoord.x, selectedBoardCoord.y);
         }
         else
         {
             Debug.Log($"델리게이트 없음");
         }
-        
-        //PlaceStone(Constants.PlayerType.PlayerA,Constants.StoneType.Normal, boardCoord.x, boardCoord.y);
-        //Debug.Log($"UI 내부 클릭 위치: x: {boardCoord.x},y : {boardCoord.y}");
     }
 }
