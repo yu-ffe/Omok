@@ -21,14 +21,16 @@ namespace WB
         public TextMeshProUGUI txtNickNameRight;
 
 
-        [Header("시간/턴 정보")]
-        public TextMeshProUGUI txtTimer;
-        public Image imgLeftTime;
+        [Header("시간/턴 정보")] 
+        public Transform timerHolder;
+        public GameObject timerPrefab;
+        private GameObject timerInstance;
+        //public TextMeshProUGUI txtTimer;
+        //public Image imgLeftTime;
         public Image[] imgGameTurn = new Image[2];
 
         bool isComponentsConnected = false;
-
-
+        
         void Start()
         {
             if (!isComponentsConnected)
@@ -37,12 +39,41 @@ namespace WB
             UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Game, this);
             UI_Manager.Instance.AddCallback("turn", TurnStateRefresh);
             UI_Manager.Instance.AddCallback("time", TimeRefresh);
+            
+            SpawnTimer();
+        }
+
+        /// <summary>
+        /// Timer 프리팹을 Inspector에서 연결된 빈 오브젝트 위치에 배치
+        /// </summary>
+        void SpawnTimer()
+        {
+            if (timerPrefab == null)
+            {
+                Debug.LogError("Timer Prefab이 설정되지 않았습니다.");
+                return;
+            }
+
+            if (timerHolder == null)
+            {
+                Debug.LogError("Timer Holder가 Inspector에서 설정되지 않았습니다.");
+                return;
+            }
+            
+            // Timer 프리팹을 Timer Holder의 위치에 생성
+            timerInstance = Instantiate(timerPrefab, timerHolder);
+            
+            // RectTransform 설정
+            RectTransform timerRect = timerInstance.GetComponent<RectTransform>();
+            if (timerRect != null)
+            {
+                timerRect.anchoredPosition = Vector2.zero; // 빈 오브젝트의 위치 기준으로 정렬
+                timerRect.sizeDelta = new Vector2(200, 200); // 크기 조정
+            }
         }
 
         public override void Show()
         {
-
-
             LoadProfile();
 
             LoadGameState();
@@ -74,8 +105,8 @@ namespace WB
             txtNickNameLeft = imgProfileLeft.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             imgProfileRight = parentsProfile.GetChild(1).GetChild(0).GetComponent<Image>();
             txtNickNameRight = imgProfileRight.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            imgLeftTime = parentsInfo.GetChild(0).GetComponent<Image>();
-            txtTimer = imgLeftTime.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            //imgLeftTime = parentsInfo.GetChild(0).GetComponent<Image>();
+            //txtTimer = imgLeftTime.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             imgGameTurn[0] = parentsInfo.GetChild(1).GetComponent<Image>();
             imgGameTurn[1] = parentsInfo.GetChild(2).GetComponent<Image>();
             isComponentsConnected = true;
@@ -127,8 +158,8 @@ namespace WB
             //게임 로직에 따라 변경
             //Temp Test value
             float leftTime = Random.Range(0f, 30f);
-            imgLeftTime.fillAmount = leftTime / 30f;
-            txtTimer.text = Mathf.RoundToInt(leftTime).ToString();
+            //imgLeftTime.fillAmount = leftTime / 30f;
+            //txtTimer.text = Mathf.RoundToInt(leftTime).ToString();
         }
 
 
@@ -136,24 +167,8 @@ namespace WB
         {
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        
         /// <summary> 기권버튼 이벤트 </summary>
         public void Button_GiveUp()
         {
