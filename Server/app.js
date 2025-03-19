@@ -61,6 +61,7 @@ var signinRouter = require("./routes/auth/signin");
 var signoutRouter = require("./routes/auth/signout");
 var gameResultRouter = require("./routes/game/result");
 var userInfoRouter = require("./routes/user/info");
+var userProfileRouter = require("./routes/user/profile");
 
 // 📌 라우트 설정
 app.use("/", indexRouter);
@@ -71,6 +72,7 @@ app.use("/auth/signin", signinRouter);
 app.use("/auth/signout", signoutRouter); 
 app.use("/game/result", gameResultRouter); 
 app.use("/user/info", userInfoRouter); 
+app.use("/user/profile", userProfileRouter); 
 
 
 
