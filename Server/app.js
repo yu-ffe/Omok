@@ -53,6 +53,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// 기본 프로필 이미지 정적파일 제공
+app.use("/images", express.static(path.join(__dirname, "public/images")))
+
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
@@ -61,6 +64,7 @@ var signinRouter = require("./routes/auth/signin");
 var signoutRouter = require("./routes/auth/signout");
 var gameResultRouter = require("./routes/game/result");
 var userInfoRouter = require("./routes/user/info");
+var profileRouter = require("./routes/user/profile");
 
 // 📌 라우트 설정
 app.use("/", indexRouter);
@@ -71,6 +75,7 @@ app.use("/auth/signin", signinRouter);
 app.use("/auth/signout", signoutRouter); 
 app.use("/game/result", gameResultRouter); 
 app.use("/user/info", userInfoRouter); 
+app.subscribe("/user", profileRouter);
 
 
 

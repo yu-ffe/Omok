@@ -21,12 +21,30 @@ namespace workspace.YU__FFE.Scripts.Test {
         public Button updateToken;
         
         public TextMeshProUGUI statusText; // 로그인 상태 표시
+        
+        public Image profileImage; // 프로필 이미지 추가
 
         public void Start() {
-            registerButton.onClick.AddListener(SignUp);
-            loginButton.onClick.AddListener(SignIn);
-            autoLoginButton.onClick.AddListener(AutoSignIn);
-            updateToken.onClick.AddListener(UpdateToken);
+            //registerButton.onClick.AddListener(SignUp);
+            //loginButton.onClick.AddListener(SignIn);
+            //autoLoginButton.onClick.AddListener(AutoSignIn);
+            //updateToken.onClick.AddListener(UpdateToken);
+            
+            if (Server.Session.SessionManager.Instance == null) {
+                Debug.LogError("[NetworkTesterHandler] SessionManager가 초기화되지 않았습니다.");
+                return;
+            }
+
+            if (profileImage == null) {
+                Debug.LogError("[NetworkTesterHandler] Profile Image UI가 설정되지 않았습니다. Inspector에서 연결하세요.");
+                return;
+            }
+
+            string testUserId = "testUser123"; // ✅ 임의의 테스트 유저 ID 사용
+            Debug.Log($"[NetworkTesterHandler] 테스트용 userId: {testUserId}");
+
+            // ✅ 프로필 이미지 로드
+            Server.Session.SessionManager.Instance.GetUserProfileImage(testUserId, profileImage);
         }
         
         public void SignUp() {

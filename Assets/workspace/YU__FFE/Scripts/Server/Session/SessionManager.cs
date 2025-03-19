@@ -51,12 +51,61 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
             _refreshToken = string.Empty;
             PlayerPrefs.DeleteKey("RefreshToken");
         }
+        // ======================================================
+        //                   유저 프로필 로딩 추가
+        // ======================================================
+
+        public IEnumerator GetUserProfileImage(string userId, UnityEngine.UI.Image profileImageComponent) {
+            string url = $"{Constants.ServerURL}/user/profile?userId={userId}";
+            string accessToken = GetAccessToken();
+
+            using (UnityWebRequest request = UnityWebRequest.Get(url)) {
+                request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success) {
+                    var response = JsonConvert.DeserializeObject<ProfileResponse>(request.downloadHandler.text);
+                    if (!string.IsNullOrEmpty(response.profileUrl)) {
+                        StartCoroutine(DownloadProfileImage(response.profileUrl, profileImageComponent));
+                    } else {
+                        Debug.LogWarning("[SessionManager] 프로필 이미지 URL 없음, 기본 이미지 적용");
+                        profileImageComponent.sprite = Resources.Load<Sprite>("DefaultProfile"); // ✅ 기본 이미지 적용
+                    }
+                } else {
+                    Debug.LogError($"[SessionManager] 프로필 이미지 불러오기 실패: {request.error}");
+                    profileImageComponent.sprite = Resources.Load<Sprite>("DefaultProfile"); // ✅ 기본 이미지 적용
+                }
+            }
+        }
+
+
+        private IEnumerator DownloadProfileImage(string imageUrl, UnityEngine.UI.Image profileImageComponent) {
+            using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl)) {
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success) {
+                    Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+                    Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    profileImageComponent.sprite = sprite;
+                } else {
+                    Debug.LogError($"[SessionManager] 이미지 다운로드 실패: {request.error}");
+                    profileImageComponent.sprite = Resources.Load<Sprite>("DefaultProfile"); // 기본 이미지 설정
+                }
+            }
+        }
+
+
+        [Serializable]
+        private class ProfileResponse 
+        {
+            public string profileUrl;
+        }
         
         // ======================================================
         //                     유저 토큰 검증
         // ======================================================
 
-        private IEnumerator VerifyServerSession(Action<bool> callback) {
+        private IEnumerator VerifyServerSession (Action<bool> callback) {
             string url = Constants.ServerURL + "verifySession";
             WWWForm form = new WWWForm();
             form.AddField("sessionToken", _accessToken);
