@@ -38,6 +38,20 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
             return _refreshToken ?? PlayerPrefs.GetString("RefreshToken", string.Empty);
         }
         
+        public void ClearTokens() {
+            ClearAccessToken();
+            ClearRefreshToken();
+        }
+
+        private void ClearAccessToken() {
+            _accessToken = string.Empty;
+        }
+        
+        private void ClearRefreshToken() {
+            _refreshToken = string.Empty;
+            PlayerPrefs.DeleteKey("RefreshToken");
+        }
+        
         // ======================================================
         //                     유저 토큰 검증
         // ======================================================
