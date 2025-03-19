@@ -63,7 +63,7 @@ public class RankingManager : UI_Panel
 
         for (int i = 0; i < userIdList.Count; i++)
         {
-            // TODO: 해당 유저에 대한 데이터를 서버에서 가져오기
+            // TODO: 해당 유저별로 데이터를 서버에서 가져오기
             // PlayerData userSession = SessionManager.GetSession(userIdList[i]);
             //
             // userDataList.Add((
