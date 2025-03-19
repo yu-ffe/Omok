@@ -187,13 +187,13 @@ public class GameEndManager : Singleton<GameEndManager>
     public void SetAfterGameEnd(GameResult gameResult) // 게임 종료 처리
     {
         // 현재 로그인된 유저 세션ID, 해당 세션 정보 불러오기
-        UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
+        PlayerData playerData = PlayerManager.Instance.playerData;
 
 
-        UpdateCellScales(userSession.RankPoint); // 이전 랭크 포인트 기준 우선 표기
+        UpdateCellScales(playerData.rankPoint); // 이전 랭크 포인트 기준 우선 표기
 
         // 승패 포인트 설정
-        int getPointPlusValue = GradeChangeManager.GetWinPoint(userSession.Grade);
+        int getPointPlusValue = GradeChangeManager.GetWinPoint(playerData.grade);
         int getPointMinusValue = GradeChangeManager.GetLosePoint();
 
         switch (gameResult)
@@ -202,7 +202,7 @@ public class GameEndManager : Singleton<GameEndManager>
                 resultText.text = "승리!\n" + getPointPlusValue + "포인트 획득";
 
                 // 승점 변동 애니메이션
-                RankPointSet(userSession, gameResult);
+                RankPointSet(playerData, gameResult);
 
                 break;
 
@@ -210,7 +210,7 @@ public class GameEndManager : Singleton<GameEndManager>
                 resultText.text = "패배!\n" + getPointMinusValue + "포인트 손실";
 
                 // 승점 변동 애니메이션
-                RankPointSet(userSession, gameResult);
+                RankPointSet(playerData, gameResult);
 
                 break;
 
@@ -218,7 +218,7 @@ public class GameEndManager : Singleton<GameEndManager>
                 resultText.text = "무승부!\n포인트 변동 없음";
 
                 // 승점 변동 애니메이션
-                RankPointSet(userSession, gameResult);
+                RankPointSet(playerData, gameResult);
 
                 break;
 
@@ -284,21 +284,21 @@ public class GameEndManager : Singleton<GameEndManager>
         seq.Play(); // 애니메이션 실행
     }
 
-    void RankPointSet(UserSession userSession, GameResult gameResult)
+    void RankPointSet(PlayerData playerData, GameResult gameResult)
     {
         // 실질적 승급 계산
-        int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
+        int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(playerData.nickname, playerData, gameResult);
 
         int needPlayNum = 0;
 
         if (afterRankPoint >= 0)
         {
-            needPlayNum = Mathf.CeilToInt((GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(userSession.Grade));
+            needPlayNum = Mathf.CeilToInt((GradeChangeManager.GetRankPointRange() - afterRankPoint) / GradeChangeManager.GetWinPoint(playerData.grade));
         }
         else
         {
-            needPlayNum = Mathf.CeilToInt(GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(userSession.Grade) +
-                (afterRankPoint / GradeChangeManager.GetWinPoint(userSession.Grade)));
+            needPlayNum = Mathf.CeilToInt(GradeChangeManager.GetRankPointRange() / GradeChangeManager.GetWinPoint(playerData.grade) +
+                (afterRankPoint / GradeChangeManager.GetWinPoint(playerData.grade)));
         }
 
         gradeResultText.text = needPlayNum + "게임 승리 시 승급";

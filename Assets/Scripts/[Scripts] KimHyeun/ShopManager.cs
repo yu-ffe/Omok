@@ -95,9 +95,10 @@ public class ShopManager : UI_Panel
         {
             if (isCoinItem[index])
             {
-                UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
-                userSession.Coins += nums[index];
-                SessionManager.UpdateSession(SessionManager.currentUserId, userSession.Coins, userSession.Grade, userSession.RankPoint);
+                // TODO: 구매 관련은 서버에서 동작하는게 좋을듯.
+                // PlayerData playerData = SessionManager.GetSession(SessionManager.currentUserId);
+                // playerData.coins += nums[index];
+                // SessionManager.UpdateSession(SessionManager.currentUserId, userSession.Coins, userSession.Grade, userSession.RankPoint);
             }
             else
             {

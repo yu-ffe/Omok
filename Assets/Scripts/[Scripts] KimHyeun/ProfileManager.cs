@@ -50,22 +50,25 @@ public class ProfileManager : Singleton<ProfileManager>
 
     void UserInfoSet()
     {
-        UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
+        // PlayerData userSession = SessionManager.GetSession(SessionManager.id);
+        // TODO: 서버에서 플레이어 데이터 가져오기
+        PlayerData playerData = null;
 
-
-        if (userSession != null)
+        if (playerData != null)
         {
-            coinText.text = userSession.Coins.ToString() + " 코인";
-            profile_Image.sprite = SessionManager.GetUserProfileSprite(userSession.ProfileNum);
-            winText.text = userSession.WinCount.ToString() + " 승";
-            loseText.text = userSession.LoseCount.ToString() + " 패";
+            coinText.text = playerData.coins.ToString() + " 코인";
+            // TODO: 이거는 서버필요없음. UI관련 메니저라던가 하나 있으면 좋을듯
+            // profile_Image.sprite = SessionManager.GetUserProfileSprite(playerData.profileNum);
+            profile_Image.sprite = null;
+            winText.text = playerData.winCount.ToString() + " 승";
+            loseText.text = playerData.loseCount.ToString() + " 패";
 
             // 승률 계산
-            float winRate = RankingManager.Instance.GetWinRate(userSession.WinCount, userSession.LoseCount);
+            float winRate = RankingManager.Instance.GetWinRate(playerData.winCount, playerData.loseCount);
             winRateText.text = winRate.ToString("F2") + "%";  // 소수점 2자리까지 표시
 
-            nickNameText.text = userSession.Nickname;
-            gradeText.text = userSession.Grade.ToString() + " 급";
+            nickNameText.text = playerData.nickname;
+            gradeText.text = playerData.grade.ToString() + " 급";
         }
 
         else
