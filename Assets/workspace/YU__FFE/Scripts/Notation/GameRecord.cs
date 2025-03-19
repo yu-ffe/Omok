@@ -6,6 +6,7 @@ namespace workspace.YU__FFE.Scripts.Notation {
     public class GameRecord {
         private string _opponentName; // 대전 상대의 nickname
         private List<(int x, int y)> _points = new List<(int, int)>(); // 게임 중 대국 위치 기록
+        
         private int _currentIndex; // 현재 기록 위치
         private GameResultType _result; // 게임 결과
 
