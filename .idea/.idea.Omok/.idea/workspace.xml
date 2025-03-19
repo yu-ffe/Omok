@@ -5,22 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameOverState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameOverState.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/IGameState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/IGameState.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/MyTurnState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/MyTurnState.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OpponentTurnState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OpponentTurnState.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/ReadyState.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/ReadyState.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,22 +25,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "Minji-GWON"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Minji-GWON&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/yu-ffe/Omok.git",
-    "accountId": "76a9a247-112a-4de8-baff-21445dc651b6"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/yu-ffe/Omok.git&quot;,
+    &quot;accountId&quot;: &quot;76a9a247-112a-4de8-baff-21445dc651b6&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Timer/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/User/UserSession.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/workspace/MJ/03 Sctipts/TimerManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.visualscripting@1.9.4/Runtime/VisualScripting.Core/Unity/Singleton.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -61,18 +59,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/game-manager/logic에 #129개",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/game-manager/logic&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="D:\2022.3.51f1\Editor\Unity.exe" />
@@ -128,7 +126,8 @@
       <workItem from="1741911432734" duration="6575000" />
       <workItem from="1741934865966" duration="301000" />
       <workItem from="1742094453598" duration="686000" />
-      <workItem from="1742256876497" duration="18360000" />
+      <workItem from="1742256876497" duration="27234000" />
+      <workItem from="1742343181380" duration="37839000" />
     </task>
     <servers />
   </component>

@@ -6,16 +6,8 @@ namespace workspace.Ham6._03_Sctipts.Game
         {
             None, 
             PlayerA, 
-            PlayerB
-        }
-
-        public enum StoneType
-        {
-            Normal,
-            Hint,
-            Last,
-            XMark,
-            PositionSelecor
+            PlayerB,
+            PlayerX
         }
 
         public enum GameType

@@ -5,197 +5,195 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using workspace.Ham6._03_Sctipts;
 using workspace.Ham6._03_Sctipts.Game;
 using workspace.Ham6.AI;
 using Update = Unity.VisualScripting.Update;
 
-
 public abstract class BasePlayerState
+{
+    // 상태에 진입할 때 실행
+    public abstract void OnEnter(GameLogic gameLogic);
+
+    // 상태에서 벗어날 때 실행
+    public abstract void OnExit(GameLogic gameLogic);
+
+    // 특정 위치(row, col)에 돌을 놓는 함수
+    public abstract void HandleMove(GameLogic gameLogic, int row, int col);
+
+    // 다음 턴으로 전환하는 함수
+    protected abstract void HandleNextTurn(GameLogic gameLogic);
+
+    // 돌을 놓고 다음 상태로 이동하는 공통 처리 함수
+    protected void ProcessMove(GameLogic gameLogic, Constants.PlayerType playerType, int row, int col)
     {
-        // 상태에 진입할 때 실행
-        public abstract void OnEnter(GameLogic gameLogic);
-    
-        // 상태에서 벗어날 때 실행
-        public abstract void OnExit(GameLogic gameLogic);
-    
-        // 특정 위치(row, col)에 돌을 놓는 함수
-        public abstract void HandleMove(GameLogic gameLogic, int row, int col);
-    
-        // 다음 턴으로 전환하는 함수
-        protected abstract void HandleNextTurn(GameLogic gameLogic);
-
-        // 돌을 놓고 다음 상태로 이동하는 공통 처리 함수
-        protected void ProcessMove(GameLogic gameLogic, Constants.PlayerType playerType, int row, int col)
+        // 돌을 정상적으로 놓았을 경우
+        if (gameLogic.SetNewBoardValue(playerType, row, col))
         {
-            // 돌을 정상적으로 놓았을 경우
-            if (gameLogic.SetNewBoardValue(playerType, row, col))
+            var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
+
+            if (gameResult == GameLogic.GameResult.None)
             {
-                var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
-
-                if (gameResult == GameLogic.GameResult.None)
-                {
-                    HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
-                }
-                else
-                {
-                    gameLogic.EndGame(gameResult); // 게임이 끝났다면 종료 처리
-                }
-            }
-        }
-    }
-
-    //직접 플레이하는 상태 (싱글 또는 멀티플레이)
-    public class PlayerState : BasePlayerState
-    {
-        public Constants.PlayerType _playerType; // 플레이어 타입 (A 또는 B)
-        private bool _isFirstPlayer; // 첫 번째 플레이어 여부
-    
-        public Constants.PlayerType CurrentPlayerType => _playerType;
-        
-        /* TODO: 멀티시 구현
-        private MultiplayManager _multiplayManager; // 네트워크 멀티플레이어 관리
-        private string _roomId; // 멀티플레이 방 ID
-        private bool _isMultiplay; // 멀티플레이 여부
-        */
-
-        //싱글 플레이어 생성자
-        public PlayerState(bool isFirstPlayer)
-        {
-            _isFirstPlayer = isFirstPlayer;
-            _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
-            
-            
-            //TODO: 멀티시 구현
-            //_isMultiplay = false;
-        }
-
-        /* TODO : 멀티 플레이시 구현
-        멀티 플레이어 생성자
-        public PlayerState(bool isFirstPlayer, MultiplayManager multiplayManager, string roomId)
-            : this(isFirstPlayer)
-        {
-            _multiplayManager = multiplayManager;
-            _roomId = roomId;
-            _isMultiplay = true;
-        }
-        */
-
-        // 상태 진입 시 실행 (플레이어 입력을 처리할 수 있도록 설정)
-        public override void OnEnter(GameLogic gameLogic)
-        {
-            gameLogic.OmokBoard.OnOnGridClickedDelegate = (row, col) =>
-            {
-                HandleMove(gameLogic, row, col);
-            };
-        }
-
-        // 상태 종료 시 실행 (이벤트 핸들러 해제)
-        public override void OnExit(GameLogic gameLogic)
-        {
-            gameLogic.OmokBoard.OnOnGridClickedDelegate = null;
-        }
-
-        // 돌을 놓는 동작 처리
-        public override void HandleMove(GameLogic gameLogic, int row, int col)
-        {
-            ProcessMove(gameLogic, _playerType, row, col);
-            
-            /* TODO : 멀티 플레이시 구현
-            멀티플레이 상태라면 서버에 착수 정보를 전송
-            if (_isMultiplay)
-            {
-                _multiplayManager.SendPlayerMove(_roomId, row * 3 + col);
-            }
-            */
-        }
-
-        // 다음 턴으로 전환
-        protected override void HandleNextTurn(GameLogic gameLogic)
-        {
-            if (_isFirstPlayer)
-            {
-                gameLogic.SetState(gameLogic.secondPlayerState); // 두 번째 플레이어로 전환
+                HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
             }
             else
             {
-                gameLogic.SetState(gameLogic.firstPlayerState); // 첫 번째 플레이어로 전환
+                gameLogic.EndGame(gameResult); // 게임이 끝났다면 종료 처리
             }
         }
     }
+}
 
-    //AI 플레이 상태
-    public class AIState : BasePlayerState
-    {
-        // AI가 자동으로 착수하는 로직
-        public override void OnEnter(GameLogic gameLogic)
-        {
-            HamAI hamAI = new HamAI(gameLogic.GetBoard());
+//직접 플레이하는 상태 (싱글 또는 멀티플레이)
+public class PlayerState : BasePlayerState
+{
+    public Constants.PlayerType _playerType; // 플레이어 타입 (A 또는 B)
+    private bool _isFirstPlayer; // 첫 번째 플레이어 여부
 
-            hamAI.maxDepth = 4;
-            
-            // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
-            var move = hamAI.GetBestMove();
-
-            if (move.Item1 >= 0 && move.Item2 >= 0)
-            {
-                HandleMove(gameLogic, move.Item1, move.Item2);
-            }
-            else
-            {
-                Debug.Log($"{move.Item1},{move.Item2}");
-                Debug.Log("둘 수 있는 수가 없음");
-                gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
-            }
-        }
-
-        public override void OnExit(GameLogic gameLogic) { }
-
-        public override void HandleMove(GameLogic gameLogic, int row, int col)
-        {
-            ProcessMove(gameLogic, Constants.PlayerType.PlayerB, row, col);
-        }
-
-        protected override void HandleNextTurn(GameLogic gameLogic)
-        {
-            gameLogic.SetState(gameLogic.firstPlayerState); // AI 턴 후 플레이어로 변경
-        }
-    }
+    public Constants.PlayerType CurrentPlayerType => _playerType;
 
     /* TODO: 멀티시 구현
-    //네트워크 플레이
-    public class MultiplayState : BasePlayerState
-    {
-        private Constants.PlayerType _playerType;
-        private bool _isFirstPlayer;
-    
-        private MultiplayManager _multiplayManager;
+    private MultiplayManager _multiplayManager; // 네트워크 멀티플레이어 관리
+    private string _roomId; // 멀티플레이 방 ID
+    private bool _isMultiplay; // 멀티플레이 여부
+    */
 
-        public MultiplayState(bool isFirstPlayer, MultiplayManager multiplayManager)
+    //싱글 플레이어 생성자
+    public PlayerState(bool isFirstPlayer)
+    {
+        _isFirstPlayer = isFirstPlayer;
+        _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+
+        //TODO: 멀티시 구현
+        //_isMultiplay = false;
+    }
+
+    /* TODO : 멀티 플레이시 구현
+    멀티 플레이어 생성자
+    public PlayerState(bool isFirstPlayer, MultiplayManager multiplayManager, string roomId)
+        : this(isFirstPlayer)
+    {
+        _multiplayManager = multiplayManager;
+        _roomId = roomId;
+        _isMultiplay = true;
+    }
+    */
+
+    // 상태 진입 시 실행 (플레이어 입력을 처리할 수 있도록 설정)
+    public override void OnEnter(GameLogic gameLogic)
+    {
+        gameLogic.OmokBoard.OnOnGridClickedDelegate = (row, col) => { HandleMove(gameLogic, row, col); };
+    }
+
+    // 상태 종료 시 실행 (이벤트 핸들러 해제)
+    public override void OnExit(GameLogic gameLogic)
+    {
+        gameLogic.OmokBoard.OnOnGridClickedDelegate = null;
+    }
+
+    // 돌을 놓는 동작 처리
+    public override void HandleMove(GameLogic gameLogic, int row, int col)
+    {
+        ProcessMove(gameLogic, _playerType, row, col);
+
+        /* TODO : 멀티 플레이시 구현
+        멀티플레이 상태라면 서버에 착수 정보를 전송
+        if (_isMultiplay)
         {
-            _isFirstPlayer = isFirstPlayer;
-            _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
-            _multiplayManager = multiplayManager;
-        }
-    
-        public override void OnEnter(GameLogic gameLogic)
-        {
-            _multiplayManager.OnOpponentMove = moveData =>
-            {
-                var row = moveData.position / 3;
-                var col = moveData.position % 3;
-                UnityThread.executeInUpdate(() =>
-                {
-                    HandleMove(gameLogic, row, col);                
-                });
-            };
+            _multiplayManager.SendPlayerMove(_roomId, row * 3 + col);
         }
         */
+    }
 
-    public class GameLogic : IDisposable
+    // 다음 턴으로 전환
+    protected override void HandleNextTurn(GameLogic gameLogic)
     {
+        if (_isFirstPlayer)
+        {
+            gameLogic.SetState(gameLogic.secondPlayerState); // 두 번째 플레이어로 전환
+        }
+        else
+        {
+            gameLogic.SetState(gameLogic.firstPlayerState); // 첫 번째 플레이어로 전환
+        }
+    }
+}
+
+//AI 플레이 상태
+public class AIState : BasePlayerState
+{
+    // AI가 자동으로 착수하는 로직
+    public override void OnEnter(GameLogic gameLogic)
+    {
+        HamAI hamAI = new HamAI(gameLogic.GetBoard());
+
+        hamAI.maxDepth = 4;
+
+        // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
+        var move = hamAI.GetBestMove();
+
+        if (move.Item1 >= 0 && move.Item2 >= 0)
+        {
+            HandleMove(gameLogic, move.Item1, move.Item2);
+        }
+        else
+        {
+            Debug.Log($"{move.Item1},{move.Item2}");
+            Debug.Log("둘 수 있는 수가 없음");
+            gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
+        }
+    }
+
+    public override void OnExit(GameLogic gameLogic)
+    {
+    }
+
+    public override void HandleMove(GameLogic gameLogic, int row, int col)
+    {
+        ProcessMove(gameLogic, Constants.PlayerType.PlayerB, row, col);
+    }
+
+    protected override void HandleNextTurn(GameLogic gameLogic)
+    {
+        gameLogic.SetState(gameLogic.firstPlayerState); // AI 턴 후 플레이어로 변경
+    }
+}
+
+/* TODO: 멀티시 구현
+//네트워크 플레이
+public class MultiplayState : BasePlayerState
+{
+    private Constants.PlayerType _playerType;
+    private bool _isFirstPlayer;
+
+    private MultiplayManager _multiplayManager;
+
+    public MultiplayState(bool isFirstPlayer, MultiplayManager multiplayManager)
+    {
+        _isFirstPlayer = isFirstPlayer;
+        _playerType = _isFirstPlayer ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB;
+        _multiplayManager = multiplayManager;
+    }
+
+    public override void OnEnter(GameLogic gameLogic)
+    {
+        _multiplayManager.OnOpponentMove = moveData =>
+        {
+            var row = moveData.position / 3;
+            var col = moveData.position % 3;
+            UnityThread.executeInUpdate(() =>
+            {
+                HandleMove(gameLogic, row, col);
+            });
+        };
+    }
+    */
+
+public class GameLogic : IDisposable
+{
     public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
-    
+
     //기보확인을 위한 리스트
     public List<(Constants.PlayerType player, int x, int y)> moveList = new List<(Constants.PlayerType, int, int)>();
 
@@ -224,7 +222,7 @@ public abstract class BasePlayerState
 
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
-        
+
         switch (gameType)
         {
             case Constants.GameType.SinglePlayer:
@@ -241,11 +239,11 @@ public abstract class BasePlayerState
                 firstPlayerState = new PlayerState(true);
                 secondPlayerState = new PlayerState(false);
                 // 게임 시작
-                
+
                 SetState(firstPlayerState);
                 break;
             }
-            
+
             /*TODO: 멀티플레이시 구현
             case Constants.GameType.MultiPlayer:
             {
@@ -286,31 +284,46 @@ public abstract class BasePlayerState
             */
         }
     }
-    
+
     //현재 상태 변경 (턴 전환 시 사용)
     public void SetState(BasePlayerState state)
     {
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
+        
+        if (Constants.PlayerType.PlayerB == GetCurrentPlayerType())
+        {
+            OmokBoard.ShowXMarker();
+        }
+        
+        if (Constants.PlayerType.PlayerA == GetCurrentPlayerType())
+        {
+            OmokBoard.RemoveXmarker();
+        }
+        
         _currentPlayerState = state;
+        
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
+        
+        
     }
-    
+
     public Constants.PlayerType GetCurrentPlayerType()
     {
         if (_currentPlayerState is PlayerState playerState)
         {
             return playerState.CurrentPlayerType;
         }
+
         // AIState나 다른 상태인 경우 별도의 처리 필요하다면 여기서 처리
         return Constants.PlayerType.None;
     }
-    
+
     //보드가 비워져잇는지 체크하는 함수
     public bool IsCellEmpty(int row, int col)
     {
         return _board[row, col] == Constants.PlayerType.None;
     }
-    
+
     //보드에 새로운 값을 할당하는 함수
     public bool SetNewBoardValue(Constants.PlayerType playerType, int row, int col)
     {
@@ -321,12 +334,11 @@ public abstract class BasePlayerState
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
-            
-            Debug.Log($"{row},{col}에 보드상에 흑돌 기입");
+            //Debug.Log($"{row},{col}에 보드상에 흑돌 기입");
             //기보저장
             moveList.Add((playerType, row, col));
-            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
-            
+            OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
+
             OmokBoard.ShowLastStone(); // 마지막 돌 표시
 
             return true;
@@ -335,27 +347,37 @@ public abstract class BasePlayerState
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             _board[row, col] = playerType;
-            
-            Debug.Log($"{row},{col}에 보드상에 백돌 기입");
+
+            //Debug.Log($"{row},{col}에 보드상에 백돌 기입");
             //기보저장
             moveList.Add((playerType, row, col));
-            OmokBoard.PlaceStone(playerType,Constants.StoneType.Normal, row, col); // UI에 마커 추가
-            
+            OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
+
             OmokBoard.ShowLastStone(); // 마지막 돌 표시
 
             return true;
         }
+
         return false;
     }
 
     //게임 결과 확인 함수
     public GameResult CheckGameResult()
     {
-        if (CheckGameWin(Constants.PlayerType.PlayerA)) { Debug.Log($"{Constants.PlayerType.PlayerA}승리"); return GameResult.Win; }
-        if (CheckGameWin(Constants.PlayerType.PlayerB)) { Debug.Log($"{Constants.PlayerType.PlayerB}승리"); return GameResult.Lose; }
+        if (CheckGameWin(Constants.PlayerType.PlayerA))
+        {
+            Debug.Log($"{Constants.PlayerType.PlayerA}승리");
+            return GameResult.Win;
+        }
+
+        if (CheckGameWin(Constants.PlayerType.PlayerB))
+        {
+            Debug.Log($"{Constants.PlayerType.PlayerB}승리");
+            return GameResult.Lose;
+        }
         //TODO: 무승부 조건
         //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
-        
+
         return GameResult.None; // 게임 계속 진행
     }
 
@@ -404,32 +426,10 @@ public abstract class BasePlayerState
                 }
             }
         }
-
-        /*int[][] directions = new int[][] {
-            new int[] { 1, 0 }, // 수직
-            new int[] { 0, 1 }, // 수평
-            new int[] { 1, 1 }, // 대각선 ↘
-            new int[] { 1, -1 } // 대각선 ↙
-        };
-
-        int x = lastPlace.Item1, y = lastPlace.Item2;
-
-        foreach (var dir in directions) {
-            int count = 1;
-            for (int d = -1; d <= 1; d += 2) {
-                int nx = x + dir[0] * d, ny = y + dir[1] * d;
-                while (nx >= 0 && nx < OmokBoard.gridSize && ny >= 0 && ny < OmokBoard.gridSize && _board[nx, ny] == playerType) {
-                    count++;
-                    nx += dir[0] * d;
-                    ny += dir[1] * d;
-                }
-            }
-            if (count >= 5) return true;
-        }*/
-
+        
         return false;
     }
-    
+
     //게임 종료 시 호출
     public void EndGame(GameResult gameResult)
     {
@@ -442,7 +442,7 @@ public abstract class BasePlayerState
         //TODO: UI활성화
         //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }
-    
+
     //현재 게임판 반환
     public Constants.PlayerType[,] GetBoard()
     {
