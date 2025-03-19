@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using workspace.Ham6._03_Sctipts;
 using workspace.Ham6._03_Sctipts.Game;
 
 public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
@@ -17,6 +18,24 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     [SerializeField] private GameObject MarkerLastPrefab; // 마지막수 프리팹
     [SerializeField] private GameObject MarkerXPrefab; // 금지 프리팹
     [SerializeField] private GameObject MarkerPositionSelecorPrefab; // 착수예정 프리팹
+    
+    private GameObject MarkerBlackHint; // 흑바둑알 게임 오브젝트
+    private GameObject MarkerWhiteHint; // 백바둑알 게임 오브젝트
+    private GameObject MarkerLast; // 마지막수 게임 오브젝트
+    private GameObject MarkerX; // 금지 게임 오브젝트
+    private GameObject MarkerPosition; // 착수예정 게임 오브젝트
+
+    private RectTransform MarkerBlackHintRt; // 흑바둑알 게임 오브젝트의 RectTransform
+    private RectTransform MarkerWhiteHintRt; // 백바둑알 게임 오브젝트의 RectTransform
+    private RectTransform MarkerLastRt; // 마지막수 게임 오브젝트의 RectTransform
+    private RectTransform MarkerXRt; // 금지 게임 오브젝트의 RectTransform
+    private RectTransform MarkerPositionRt; // 착수예정 게임 오브젝트의 RectTransform
+    
+    
+    List<Vector2Int> xMarkerCoords = new();
+    [SerializeField]private List<(GameObject marker, RectTransform rectTransform)> markerList = new List<(GameObject marker, RectTransform rectTransform)>();
+    private int nextMarkerIndex = 0;
+    
     private GameObject hintStone; // 투명알 프리팹
     public int gridSize = 15; // 격자 수 (15x15)
 
@@ -32,7 +51,6 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     private Vector2Int boardCoord;  //UI좌표를 배열로 바꾼 값
     
     private Vector2Int selectedBoardCoord;  //마우스를 땟을 때 UI좌표를 배열로 바꾼 값
-
     
     bool ismarker_Last = false;
     GameObject marker_Last = null;
@@ -57,62 +75,203 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     void Start()
     {
         CalculateSizes();
+        InitializeGameObjects();
+    }
+    
+    //마크 오브젝트를 할당하는 함수
+    void InitializeGameObjects()
+    {
+        MarkerBlackHint = CreateDisabledInstance(MarkerBlackPrefab); // 흑바둑알 게임 오브젝트
+        
+        MarkerWhiteHint = CreateDisabledInstance(MarkerWhitePrefab); // 백바둑알 게임 오브젝트
+
+        MarkerLast = CreateDisabledInstance(MarkerLastPrefab); // 마지막수마크 게임 오브젝트
+
+        MarkerX = CreateDisabledInstance(MarkerXPrefab); // 금지마크 게임 오브젝트
+
+        MarkerPosition = CreateDisabledInstance(MarkerPositionSelecorPrefab); // 착수예정마크 게임 오브젝트
+    }
+    
+    //바둑판에 사용될 마크 오브젝트를 생성하는 함수
+    private GameObject CreateDisabledInstance(GameObject prefab)
+    {
+        // boardImage의 자식으로 prefab을 생성하고 비활성화
+        GameObject instance = Instantiate(prefab, boardImage);
+        instance.SetActive(false);
+
+        // 인스턴스의 RectTransform을 미리 캐싱
+        RectTransform rt = instance.GetComponent<RectTransform>();
+
+        // 기본 돌 크기를 계산 (cellSize는 클래스 멤버 변수)
+        float stoneSize = cellSize * 0.85f;
+
+        // prefab 종류에 따라 추가 설정 진행
+        if (prefab == MarkerBlackPrefab || prefab == MarkerWhitePrefab)
+        {
+            // 흑 또는 백 프리팹인 경우, Image 컴포넌트를 찾아 반투명 색상 적용
+            Image stoneImage = instance.GetComponent<Image>();
+            if (stoneImage != null)
+            {
+                stoneImage.color = new Color(1f, 1f, 1f, 0.6f);
+            }
+            // 각 프리팹에 해당하는 전역 RectTransform 변수에 캐싱
+            if (prefab == MarkerBlackPrefab)
+            {
+                MarkerBlackHintRt = rt;
+            }
+            else // MarkerWhitePrefab
+            {
+                MarkerWhiteHintRt = rt;
+            }
+        }
+        else if (prefab == MarkerLastPrefab)
+        {
+            // 마지막 수 프리팹: 돌 크기를 1/3로 줄임
+            stoneSize /= 3f;
+            MarkerLastRt = rt;
+        }
+        else if (prefab == MarkerXPrefab)
+        {
+            // 금지 마크 프리팹: 돌 크기를 0.5배로 조정
+            stoneSize *= 0.7f;
+            MarkerXRt = rt;
+        }
+        else if (prefab == MarkerPositionSelecorPrefab)
+        {
+            // 착수 예정 마크 프리팹: 별도 처리 없이 캐싱
+            MarkerPositionRt = rt;
+        }
+        else
+        {
+            Debug.LogWarning("알 수 없는 prefab이 전달되었습니다.");
+        }
+
+        // 캐싱된 RectTransform을 통해 돌의 크기를 설정
+        rt.sizeDelta = new Vector2(stoneSize, stoneSize);
+
+        return instance;
     }
 
     void Update()
     {
-        // 만약 포인터가 보드 내에 있고, 현재 좌표에 돌이 아직 배치되지 않았다면
-        if (inBoard)
-        {
-            // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
-            ShowHintStone(boardCoord);
-        }
+        // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
+        ShowHintStone(boardCoord);
     }
     
-    //미리보기 돌 생성함수
+    //미리보기 마커 생성함수
     private void ShowHintStone(Vector2Int coord)
     {
-        Constants.PlayerType currentPlayer = GameManager.Instance.GameLogicInstance.GetCurrentPlayerType();
-        
-        // 미리보기용 투명한 돌 표시 (기존 미리보기용 오브젝트를 지우고 다시 생성)
-        hintStone = GameObject.Find("HintStone");
-        if (hintStone) Destroy(hintStone);
-        
-        if (!GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y))
+        if (!GameManager.Instance || GameManager.Instance.GameLogicInstance == null)
         {
-            // 돌을 놓을 수 없는 자리이면 힌트 돌 표시하지 않음
-            Destroy(hintStone);
             return;
         }
         
-        PlaceStone(currentPlayer, Constants.StoneType.Hint, coord.x ,coord.y);
+        Constants.PlayerType currentPlayer = GameManager.Instance.GameLogicInstance.GetCurrentPlayerType();
+        GameObject hintMarker = MarkerBlackHint;
+        RectTransform rt = MarkerBlackHintRt;
+            
+        if (currentPlayer == Constants.PlayerType.PlayerA)
+        {
+            hintMarker = MarkerBlackHint;
+            rt = MarkerBlackHintRt;
+        }
+        else
+        {
+            hintMarker = MarkerWhiteHint;
+            rt = MarkerWhiteHintRt;
+        }
+        
+        //돌이 비워있고, 마우스가 보드안에 있으면
+        if (GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y) && inBoard)
+        {
+            ShowMarker(hintMarker,rt, coord);
+        }
+        else
+        {
+            hintMarker.SetActive(false);
+        }
     }
     
+    //마지막에 착수된 마커 표시하기 위한 함수
     public void ShowLastStone()
     {
         var lastMove = GameManager.Instance.GameLogicInstance.moveList.Last();
-        Vector2 localPos = GetLocalPosition(lastMove.x, lastMove.y);
+        Vector2Int localPos = new Vector2Int(lastMove.x, lastMove.y);
         
-        if (ismarker_Last == false)
+        ShowMarker(MarkerLast,MarkerLastRt, localPos);
+        MarkerLast.transform.SetAsLastSibling();
+        //Debug.Log($"{lastMove.x},{lastMove.y}에 라스트 마크 생성");
+    }
+
+    public void ShowXMarker()
+    {
+        RuleCheckers ruleCheckers = new RuleCheckers();
+        ruleCheckers.Initialize(GameManager.Instance.GameLogicInstance.GetBoard());
+
+        xMarkerCoords = ruleCheckers.CheckAllBoard();
+        
+        for (int i = 0; i < xMarkerCoords.Count; i++)
         {
-            PlaceStone(Constants.PlayerType.PlayerA, Constants.StoneType.Last,
-                GameManager.Instance.GameLogicInstance.moveList.Last().x,
-                GameManager.Instance.GameLogicInstance.moveList.Last().y);
-            Debug.Log(
-                $"{GameManager.Instance.GameLogicInstance.moveList.Last().x},{GameManager.Instance.GameLogicInstance.moveList.Last().y}에 라스트 마크 생성");
+            Vector2Int coord = xMarkerCoords[i];
+            Vector2 localPos  = GetLocalPosition(coord.x, coord.y);
             
-            ismarker_Last = true;
+            GameObject marker;
+            RectTransform rt;
 
-            marker_Last = GameObject.Find("marker_Last");
+            // 재사용 가능한 마커가 있으면 사용
+            if (i < markerList.Count)
+            {
+                marker = markerList[i].marker;
+                rt = markerList[i].rectTransform;
+            }
+            // 없으면 새로 생성 후 리스트에 추가
+            else
+            {
+                marker = Instantiate(MarkerX, boardImage);
+                rt = marker.GetComponent<RectTransform>();
+                if (rt == null)
+                {
+                    Debug.LogError("생성된 마커에 RectTransform 컴포넌트가 없습니다.");
+                    continue;
+                }
+                markerList.Add((marker, rt));
+            }
+
+            // 마커 활성화 및 anchoredPosition 업데이트
+            GameManager.Instance.GameLogicInstance.GetBoard()[coord.x,coord.y] = Constants.PlayerType.PlayerX;
+            
+            marker.SetActive(true);
+            rt.anchoredPosition = new Vector2(localPos.x, localPos.y);
         }
-
-        if(ismarker_Last)
+    }
+    
+    public void RemoveXmarker()
+    {
+        foreach (var markerData in markerList)
         {
-            RectTransform markerRect = marker_Last.GetComponent<RectTransform>();
-            markerRect.anchoredPosition = localPos;
-            markerRect.transform.SetAsLastSibling();
-            Debug.Log($"{localPos}로 마지막 돌을 옮김");
+            if (markerData.marker != null)
+            {
+                markerData.marker.SetActive(false);
+            }
         }
+        // 재활성화를 위한 인덱스 초기화
+        nextMarkerIndex = 0;
+        
+        for (int i = 0; i < xMarkerCoords.Count; i++)
+        {
+            Vector2Int coord = xMarkerCoords[i];
+            GameManager.Instance.GameLogicInstance.GetBoard()[coord.x,coord.y] = Constants.PlayerType.None;
+        }
+    }
+
+    //바둑판 위의 마커들을 활성화 하고 위치를 바꿔주는 함수
+    public void ShowMarker(GameObject mark,RectTransform rt, Vector2Int coord)
+    {
+        Vector2 localPos  = GetLocalPosition(coord.x, coord.y);
+        
+        mark.SetActive(true);
+        
+        rt.anchoredPosition = localPos;
     }
 
     //바둑판 크기의 비례한 공백과 시작위치 계산
@@ -146,74 +305,18 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     }
     
     //바둑알을 바둑판로컬위치에 착수하는 함수
-    public void PlaceStone(Constants.PlayerType playerType,Constants.StoneType stoneType, int x, int y)
+    public void PlaceStone(Constants.PlayerType playerType, int x, int y)
     {
         Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 바둑판로컬위치로 바꿔줌
 
-        GameObject stone = null;
+        GameObject stone = Instantiate(playerType == Constants.PlayerType.PlayerA ? MarkerBlackPrefab : MarkerWhitePrefab, boardImage);
         
+        // 3. 생성된 돌의 위치와 크기 설정
         float stoneSize = cellSize * 0.85f;
-        
-        // 2. StoneType에 따라 적절한 프리팹 생성
-        switch (stoneType)
-        {
-            case Constants.StoneType.Normal:
-            case Constants.StoneType.Hint:
-            {
-                // 플레이어에 따라 검은 돌, 흰 돌 프리팹 선택
-                GameObject prefab = (playerType == Constants.PlayerType.PlayerA) ? MarkerBlackPrefab : MarkerWhitePrefab;
-                stone = Instantiate(prefab, boardImage);
-
-                if (stoneType == Constants.StoneType.Hint)
-                {
-                    // 힌트 돌의 이름 지정 및 반투명 처리
-                    stone.name = "HintStone";
-                    Image stoneImage = stone.GetComponent<Image>();
-                    if (stoneImage)
-                    {
-                        stoneImage.color = new Color(1f, 1f, 1f, 0.6f);
-                    }
-                }
-                else
-                {
-                    // 일반 돌인 경우 로그 출력
-                    Debug.Log($"{x}, {y}에 착수");
-                }
-                break;
-            }
-            
-            case Constants.StoneType.Last:
-                stone = Instantiate(MarkerLastPrefab, boardImage);
-                stoneSize /= 3;
-                stone.name = "marker_Last";
-                break;
-            
-            case Constants.StoneType.XMark:
-                stone = Instantiate(MarkerXPrefab, boardImage);
-                stone.name = "marker_X";
-                break;
-            
-            case Constants.StoneType.PositionSelecor:
-                stone = Instantiate(MarkerPositionSelecorPrefab, boardImage);
-                stone.name = "marker_PositionSelecor";
-                break;
-            
-            default:
-                Debug.LogError($"알 수 없는 StoneType: {stoneType}");
-                return;
-        }
 
         RectTransform stoneRect = stone.GetComponent<RectTransform>();
-        // 3. 생성된 돌의 위치와 크기 설정
-        if (stoneRect)
-        {
-            stoneRect.anchoredPosition = localPos;
-            stoneRect.sizeDelta = new Vector2(stoneSize, stoneSize);
-        }
-        else
-        {
-            Debug.LogWarning("생성된 돌에 RectTransform 컴포넌트가 없습니다.");
-        }
+        stoneRect.anchoredPosition = localPos;
+        stoneRect.sizeDelta = new Vector2(stoneSize, stoneSize);
     }
     
     //바둑알의 배열을 읽고 지정된 로컬좌표로 바꿔주는 함수
@@ -230,8 +333,6 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     {
         inBoard = false;
         localPoint = Vector2.zero;
-        hintStone = GameObject.Find("HintStone");
-        Destroy(hintStone);
     }
     
     // 보드에서 포인터가 움직이고 있을 때 실행
@@ -263,13 +364,15 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     // UI에 마우스를 땟을 때 실행
     public void OnPointerUp(PointerEventData eventData)
     {
-        selectedBoardCoord = boardCoord;
-        GameObject marker_PositionSelecor = GameObject.Find("marker_PositionSelecor");
-        if (marker_PositionSelecor) Destroy(marker_PositionSelecor);
-        
-        PlaceStone(Constants.PlayerType.None, Constants.StoneType.PositionSelecor, selectedBoardCoord.x, selectedBoardCoord.y);
+        if (GameManager.Instance.GameLogicInstance.IsCellEmpty(boardCoord.x, boardCoord.y))
+        {
+            selectedBoardCoord = boardCoord;
+            //선택 마크를 출력
+            ShowMarker(MarkerPosition, MarkerPositionRt, selectedBoardCoord);
+        }
     }
     
+    //착수 버튼에 할당할 함수
     public void OnPointerUpMarkerPositionSelecor()
     {
         if (OnOnGridClickedDelegate != null)
