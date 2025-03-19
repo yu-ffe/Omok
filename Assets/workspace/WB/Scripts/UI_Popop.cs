@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -129,12 +130,41 @@ namespace WB
             SceneManager.Instance.LoadScene("Main");
         }
 
-        void HidePopup()
+        public void HidePopup()
         {
             objPopup.SetActive(false);
         }
 
 
+        /// <summary>
+        /// 확인 버튼을 누르면 특정 함수를 실행하는 팝업을 띄운다.
+        /// </summary>
+        public void Show(string message, Action onConfirm)
+        {
+            textMsg.text = message;
+            gameObject.SetActive(true);
+
+            btnOk.onClick.RemoveAllListeners();
+            btnOk.onClick.AddListener(() =>
+            {
+                Hide(); // 팝업 닫기
+                onConfirm?.Invoke(); // 확인 버튼을 누르면 지정된 함수 실행
+            });
+
+            if (btnCancel != null)
+            {
+                btnCancel.onClick.RemoveAllListeners();
+                btnCancel.onClick.AddListener(Hide);
+            }
+        }
+        
+        /// <summary>
+        /// 팝업을 숨긴다.
+        /// </summary>
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
 

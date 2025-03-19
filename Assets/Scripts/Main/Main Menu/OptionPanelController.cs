@@ -6,7 +6,7 @@ using WB;
 
 public class OptionPanelController : UI_Panel
 {
-    public static OptionPanelController Instance { get; private set; } // 🔥 싱글턴 추가
+    public static OptionPanelController Instance { get; private set; }
     
     [Header("슬라이더 연결")]
     public Slider bgmSlider;
@@ -96,13 +96,13 @@ public class OptionPanelController : UI_Panel
     // ========= 설정 패널 열기 ==========
     public void OpenOptionPanel()
     {
-        UI_Manager.Instance.Show(UI_Manager.PanelType.Option);
+        Show(); // 옵션 패널만 활성화
     }
     
     // ========= 설정 패널 닫기 ==========
     public void CloseSettingPanel()
     {
-        UI_Manager.Instance.Hide(UI_Manager.PanelType.Option);
+        Hide();
         _currentSettingPanel = null;
     }
     
@@ -124,7 +124,11 @@ public class OptionPanelController : UI_Panel
         return _currentSettingPanel != null;
     }
 
-    public override void Show() => gameObject.SetActive(true);
+    public override void Show()
+    {
+        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        gameObject.SetActive(true);
+    } 
     public override void Hide()
     {
         gameObject.SetActive(false);

@@ -142,6 +142,7 @@ public class RankingManager : UI_Panel
     
     public override void Show()
     {
+        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
         gameObject.SetActive(true);
         LoadRankingData();
     }
