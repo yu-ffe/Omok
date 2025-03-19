@@ -40,7 +40,7 @@ namespace workspace.Ham6._03_Sctipts
                     {
                         InvalidPlaces.Add(new(x, y));
                         
-                        // Debug.Log($"<color=#ff0000>{x},{y} is violation</color>");
+                        Debug.Log($"<color=#ff0000>{x},{y} is violation</color>");
                         // Debug.Log($"금수 위치: {x},{y} ( 3x3:{v3} / 4x4:{v4} / 6x:{v6} / s3:{sc3} / sbv3:{sbv3} )");
                         // GameManager.Instance.Logic.OmokBoard.PlaceX(x, y);
                     }
