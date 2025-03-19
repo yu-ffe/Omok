@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using workspace.YU__FFE.Scripts;
 
 public class MainPanel : UI_Panel {
     public TextMeshProUGUI txtCoin;
@@ -11,17 +10,28 @@ public class MainPanel : UI_Panel {
     public TextMeshProUGUI txtUserName;
 
     // PlayerData playerData => SessionManager.GetSession(SessionManager.currentUserId);
-    // TODO: 데이터베이스에서 불러오기
-    private PlayerData playerData = null;
+    // 데이터 요청 후 가져오기
+
+    private PlayerData playerData;
+    
     bool isConnctedCompoenets = false;
 
     void Start() {
         if (!isConnctedCompoenets)
             FindComponents();
+        
+        // 유저 정보를 서버에서 가져온 후 UI 생성, 비동기로 실행
+        StartCoroutine(LoadPlayerDataAndInitializeUI());
+    }
+
+    private IEnumerator LoadPlayerDataAndInitializeUI() {
+        yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
+        playerData = PlayerManager.Instance.playerData;
 
         UI_Manager.Instance.AddPanel(panelType, this);
         gameObject.SetActive(false);
     }
+    
     public override void Show() {
         ResfreshUserInfo();
         gameObject.SetActive(true);

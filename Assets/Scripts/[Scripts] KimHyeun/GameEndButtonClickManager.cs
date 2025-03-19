@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
 {
 
-    // TODO 각 버튼 기능 추가
+    // TODO: 각 버튼 기능 추가
     public void OnClick_OkButton()
     {
         Debug.Log("게임 종료 후 확인 버튼 클릭");

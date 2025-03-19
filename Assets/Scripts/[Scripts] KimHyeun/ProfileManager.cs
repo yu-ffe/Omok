@@ -33,7 +33,11 @@ public class ProfileManager : Singleton<ProfileManager>
 
     public void UserInfoShow()
     {
-        UserInfoSet();
+        /**
+         * 1. 서버에서 유저 정보를 가져오고
+         * 2. 유저에게 정보 보여줄꺼라서 비동기로 진행
+         */
+        StartCoroutine(UserInfoSet());
     }
 
     public void ButtonInfoShow()
@@ -48,16 +52,16 @@ public class ProfileManager : Singleton<ProfileManager>
 
 
 
-    void UserInfoSet()
+    private IEnumerator UserInfoSet()
     {
-        // PlayerData userSession = SessionManager.GetSession(SessionManager.id);
-        // TODO: 서버에서 플레이어 데이터 가져오기
-        PlayerData playerData = null;
+        yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
+
+        PlayerData   playerData = PlayerManager.Instance.playerData;
 
         if (playerData != null)
         {
             coinText.text = playerData.coins.ToString() + " 코인";
-            // TODO: 이거는 서버필요없음. UI관련 메니저라던가 하나 있으면 좋을듯
+            // TODO: 이거는 서버필요없음. UI관련 메니저라던가 하나 있으면 좋을듯 
             // profile_Image.sprite = SessionManager.GetUserProfileSprite(playerData.profileNum);
             profile_Image.sprite = null;
             winText.text = playerData.winCount.ToString() + " 승";

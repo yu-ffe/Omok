@@ -1,16 +1,21 @@
+using System.Collections;
 using UnityEngine.Serialization;
 
 public class PlayerManager : Singleton<PlayerManager> {
     public PlayerData playerData = new PlayerData();
 
-    public void UpdateUserData(int coins = 1000, int grade = 8, int rankPoint = 0, int winCount = 0, int loseCount = 0) {
-        
-        NetworkManager.GetUserInfoRequest(response => {
-            playerData.coins = coins;
-            playerData.grade = grade;
-            playerData.rankPoint = rankPoint;
-            playerData.winCount = winCount;
-            playerData.loseCount = loseCount;
-        });
+    // 지금은 비동기지만 필요 없을 가능성이 높음.
+    // 임시 변경
+    public IEnumerator UpdateUserData() {
+
+        StartCoroutine(NetworkManager.GetUserInfoRequest(response => {
+            playerData.coins = response.Coins;
+            playerData.grade = response.Grade;
+            playerData.rankPoint = response.RankPoint;
+            playerData.winCount = response.WinCount;
+            playerData.loseCount = response.LoseCount;
+        }));
+        yield break;
     }
+    
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class WBTest : MonoBehaviour
 {
 
+    // 테스트 코드여서 별도의 서버 연결 코드는 X 필요시 그때
     public void AppStart()
     {
         // Todo: 서버에서 로드로 변경

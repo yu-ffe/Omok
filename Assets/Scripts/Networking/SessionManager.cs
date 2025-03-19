@@ -1,4 +1,5 @@
 using Commons;
+using Commons.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -54,50 +55,22 @@ public class SessionManager : Singleton<SessionManager> {
     //                     유저 토큰 검증
     // ======================================================
 
+    // 일단 사용 X
     private IEnumerator VerifyServerSession(Action<bool> callback) {
         string url = Constants.ServerURL + "verifySession";
         WWWForm form = new WWWForm();
-        form.AddField("sessionToken", _accessToken);
+        form.AddField("accessToken", _accessToken);
 
         UnityWebRequest request = UnityWebRequest.Post(url, form);
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success) {
-            var response = JsonUtility.FromJson<Constants.CheckResponse>(request.downloadHandler.text);
-            callback(response.success);
+            var response = JsonUtility.FromJson<CheckResponse>(request.downloadHandler.text);
+            callback(response.Success);
         }
         else {
             Debug.LogError("[SessionManager] 서버와 연결 실패.");
             callback(false);
-        }
-    }
-
-    // ======================================================
-    //                 유저 아이디 토큰 발행
-    // ======================================================
-
-    public IEnumerator RequestNewToken(string id) {
-        string url = Constants.ServerURL + "createSession";
-        WWWForm form = new WWWForm();
-        form.AddField("id", id);
-
-        UnityWebRequest request = UnityWebRequest.Post(url, form);
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success) {
-            var response = JsonUtility.FromJson<Constants.TokenResponse>(request.downloadHandler.text);
-
-            if (response is not null) {
-                UpdateAccessToken(response.accessToken);
-                UpdateRefreshToken(response.refreshToken); // 리프레시 토큰도 저장
-                Debug.Log("[SessionManager] 새로운 세션을 생성했습니다.");
-            }
-            else {
-                Debug.LogWarning($"[SessionManager] 세션 생성 실패: {response.message}");
-            }
-        }
-        else {
-            Debug.LogError("[SessionManager] 서버 연결 실패.");
         }
     }
 
@@ -122,9 +95,9 @@ public class SessionManager : Singleton<SessionManager> {
 
             if (request.result == UnityWebRequest.Result.Success) {
                 string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<Constants.TokenResponse>(jsonResponse);
-                if (response != null && !string.IsNullOrEmpty(response.accessToken)) {
-                    UpdateAccessToken(response.accessToken);
+                var response = JsonConvert.DeserializeObject<TokenResponse>(jsonResponse);
+                if (response != null && !string.IsNullOrEmpty(response.AccessToken)) {
+                    UpdateAccessToken(response.AccessToken);
                     callback?.Invoke(true); // 새로운 accessToken 반환
                 }
                 else {
