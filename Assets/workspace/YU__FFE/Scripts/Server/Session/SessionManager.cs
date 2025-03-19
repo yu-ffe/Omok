@@ -102,6 +102,10 @@ namespace workspace.YU__FFE.Scripts.Server.Session {
                 Debug.LogError("[SessionManager] 서버 연결 실패.");
             }
         }
+        
+        // ======================================================
+        //                    유저 토큰 재발행
+        // ======================================================
 
         public IEnumerator RefreshAccessTokenRequest(Action<bool> callback) {
             string url = $"{Constants.ServerURL}/auth/refresh";

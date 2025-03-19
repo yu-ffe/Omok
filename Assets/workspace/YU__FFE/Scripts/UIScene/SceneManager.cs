@@ -14,5 +14,18 @@ namespace workspace.YU__FFE.Scripts {
             string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             UnityEngine.SceneManagement.SceneManager.LoadScene(currentScene);
         }
+
+        private string scene1 = "DataTestScene";
+        private string scene2 = "ServerTestScene";
+        private bool isScene1 = true;
+        public void RepeatScene() {
+
+            if (isScene1) {
+                LoadScene(scene1);
+            } else {
+                LoadScene(scene2);
+            }
+            isScene1 = !isScene1;
+        }
     }
 }

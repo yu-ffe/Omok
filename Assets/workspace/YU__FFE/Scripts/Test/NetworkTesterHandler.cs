@@ -1,10 +1,9 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using workspace.YU__FFE.Scripts.User;
 
-namespace workspace.YU__FFE.Scripts.Server {
+namespace workspace.YU__FFE.Scripts.Test {
     public class NetworkTesterHandler : MonoBehaviour {
         
         public TextMeshProUGUI coinText; // coins 값 출력: 서버 연결 테스트 확인용
@@ -18,6 +17,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         
         public Button registerButton;
         public Button loginButton;
+        public Button autoLoginButton;
         public Button updateToken;
         
         public TextMeshProUGUI statusText; // 로그인 상태 표시
@@ -25,6 +25,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         public void Start() {
             registerButton.onClick.AddListener(SignUp);
             loginButton.onClick.AddListener(SignIn);
+            autoLoginButton.onClick.AddListener(AutoSignIn);
             updateToken.onClick.AddListener(UpdateToken);
         }
         
@@ -41,11 +42,18 @@ namespace workspace.YU__FFE.Scripts.Server {
                 statusText.text = s;
             });
         }
+
+        public void AutoSignIn() {
+            SignInHandler.Instance.SetAutoLoginEnabled(true);
+            StartCoroutine(SignInHandler.Instance.AttemptAutoLogin((b, s) => {
+                statusText.text = s;
+            }));
+        }
         
         public void UpdateToken() {
             coinText.text = PlayerManager.Instance.playerData.coins.ToString();
-            sessionToken.text = Session.SessionManager.Instance.GetAccessToken();
-            freshToken.text = Session.SessionManager.Instance.GetRefreshToken();
+            sessionToken.text = Server.Session.SessionManager.Instance.GetAccessToken();
+            freshToken.text = Server.Session.SessionManager.Instance.GetRefreshToken();
             statusText.text = "토큰 갱신 완료";
         }
         

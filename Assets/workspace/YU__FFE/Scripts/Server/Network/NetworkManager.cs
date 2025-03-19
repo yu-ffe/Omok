@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using workspace.YU__FFE.Scripts.Common;
@@ -116,7 +117,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         }
 
         // ======================================================
-        //                    유저 정보 가져오기
+        //                     유저 데이터
         // ======================================================
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -126,6 +127,8 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             int retryCount = 0;
 
             while (retryCount < MaxRetryCount) {
+                retryCount++;
+                Debug.Log(retryCount + "회 재시도"); 
                 using (UnityWebRequest request = UnityWebRequest.Get(url)) {
                     request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
                     yield return request.SendWebRequest();
@@ -145,11 +148,62 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                             // TODO: 실패 로직 처리 가능성 있음
                         }
                     });
-                    retryCount++;
                 }
+                Debug.LogError("GetUserInfoRequest failed");
             }
             callback?.Invoke(null);
         }
+        
+        public static IEnumerator GetRanksRequest(Action<object> action) {
+            throw new NotImplementedException();
+        }
+
+        // =========================Send=========================
+        
+        // ReSharper disable Unity.PerformanceAnalysis
+        public static IEnumerator SendGameResult(bool isWin) {
+            string url = $"{Constants.ServerURL}/game/result"; // 서버 URL에 맞게 수정
+            string accessToken = Session.SessionManager.Instance.GetAccessToken(); // 액세스 토큰 가져오기
+            int retryCount = 0;
+
+            while (retryCount < MaxRetryCount) {
+                using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
+                    // 승/패를 서버에 전송하기 위해 JSON 형식으로 데이터 추가
+                    string jsonData = JsonConvert.SerializeObject(new { result = isWin }); // result: true(승리) or false(패배)
+                    byte[] jsonToSend = new UTF8Encoding().GetBytes(jsonData);
+
+                    request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+                    request.downloadHandler = new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+                    request.SetRequestHeader("Content-Type", "application/json");
+
+                    yield return request.SendWebRequest();
+
+                    if (request.result == UnityWebRequest.Result.Success) {
+                        // 응답 처리 (게임 결과에 대한 응답을 필요에 따라 처리)
+                        string jsonResponse = request.downloadHandler.text;
+                        // 서버에서 추가적인 응답이 있다면 처리할 코드 추가
+                        yield break;
+                    }
+
+                    if (request.responseCode != 401)
+                        continue;
+
+                    // 액세스 토큰이 만료되었을 경우, 새로 고침 후 재시도
+                    yield return Session.SessionManager.Instance.RefreshAccessTokenRequest((success) => {
+                        if (!success) {
+                            // 토큰 갱신 실패 시 적절한 처리 필요
+                            // 예: 콜백 호출 또는 실패 처리
+                        }
+                    });
+                    retryCount++;
+                }
+            }
+
+            // 실패 처리 (retryCount 초과 시)
+            // 예: 콜백 호출 또는 실패 처리
+        }
+
 
         // ======================================================
         //                        그 외
@@ -194,5 +248,6 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                 this.refreshToken = refreshToken;
             }
         }
+
     }
 }

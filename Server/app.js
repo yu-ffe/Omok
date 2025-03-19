@@ -59,14 +59,18 @@ var authRouter = require("./routes/auth");
 var signupRouter = require("./routes/auth/signup");
 var signinRouter = require("./routes/auth/signin");
 var signoutRouter = require("./routes/auth/signout");
+var gameResultRouter = require("./routes/game/result");
+var userInfoRouter = require("./routes/user/info");
 
 // 📌 라우트 설정
 app.use("/", indexRouter);
 app.use("/user", userRouter);
-app.use("/auth", authRouter); // 회원가입 라우터 등록
-app.use("/auth/signup", signupRouter); // 회원가입 라우터 등록
-app.use("/auth/signin", signinRouter); // 회원가입 라우터 등록
-app.use("/auth/signout", signoutRouter); // 회원가입 라우터 등록
+app.use("/auth", authRouter); 
+app.use("/auth/signup", signupRouter);
+app.use("/auth/signin", signinRouter); 
+app.use("/auth/signout", signoutRouter); 
+app.use("/game/result", gameResultRouter); 
+app.use("/user/info", userInfoRouter); 
 
 
 
