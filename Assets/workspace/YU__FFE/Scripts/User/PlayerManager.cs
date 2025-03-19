@@ -12,4 +12,5 @@ namespace workspace.YU__FFE.Scripts.User {
             playerData.loseCount = loseCount;
         }
     }
+    //test2
 }
