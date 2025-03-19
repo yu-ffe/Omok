@@ -1,4 +1,5 @@
 using Commons;
+using Commons.Models;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -37,20 +38,20 @@ public class SignInHandler : Singleton<SignInHandler> {
 
         StartCoroutine(NetworkManager.SignInRequest(response => {
             if (response != null) {
-                SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
+                SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
                 NetworkManager.GetUserInfoRequest(data => {
                     if (data != null) {
                         UpdateUserData(data);
                     }
                 });
             }
-            callback(response != null, response?.message);
+            callback(response != null, response?.Message);
         }));
 
         PlayerManager.Instance.playerData.ClearPrivateData();
     }
 
-    private void UpdateUserData(Constants.UserDataResponse dataResponse) {
+    private void UpdateUserData(UserDataResponse dataResponse) {
         PlayerManager.Instance.playerData.nickname = dataResponse.Nickname;
         PlayerManager.Instance.playerData.profileNum = dataResponse.ProfileNum;
         PlayerManager.Instance.playerData.coins = dataResponse.Coins;
@@ -76,28 +77,33 @@ public class SignInHandler : Singleton<SignInHandler> {
     }
 
     private IEnumerator RefreshSessionForAutoLogin(Action<bool, string> callback) {
-        string storedRefreshToken = SessionManager.Instance.GetRefreshToken();
+        // 현재 저장된 refreshToken 가져오기
+        string refreshToken = SessionManager.Instance.GetRefreshToken();
 
-        if (string.IsNullOrEmpty(storedRefreshToken)) {
-            Debug.Log("리프레시 토큰이 없습니다.");
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
-            callback(false, "리프레시 토큰이 없습니다.");
-            yield break;
+        if (!string.IsNullOrEmpty(refreshToken)) {
+            // 토큰을 이용하여 자동 로그인 시도
+            yield return StartCoroutine(NetworkManager.TryAutoLoginRequest(success => {
+                if (success is not null) {
+                    // 토큰 갱신 성공시 사용자 정보를 요청
+                    NetworkManager.TryAutoLoginRequest(data => {
+                        if (data is not null) {
+                            // 사용자 데이터 업데이트
+                            SessionManager.Instance.UpdateTokens(success.RefreshToken, success.AccessToken);
+                            // TODO: 자동로그인하면 서버에서 데이터 가져오는 로직도 추가
+                            callback?.Invoke(true, "자동 로그인 성공");
+                        }
+                        else {
+                            callback?.Invoke(false, "사용자 정보 요청 실패");
+                        }
+                    });
+                }
+                else {
+                    callback?.Invoke(false, "토큰 갱신 실패");
+                }
+            }));
+        } else {
+            callback?.Invoke(false, "로그인 정보 없음");
         }
-
-        yield return SessionManager.Instance.RefreshAccessTokenRequest(success => {
-            if (success) {
-                Debug.Log("자동 로그인 성공");
-                // 임시 제거: 개인 테스트용으로 사용중이므로.
-                // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
-                callback(true, "자동 로그인 성공");
-            }
-            else {
-                Debug.Log("자동 로그인 실패");
-                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
-                callback(false, "자동 로그인 실패");
-            }
-        });
     }
 
     public static bool GetAutoLoginEnabled() {

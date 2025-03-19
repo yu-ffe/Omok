@@ -26,7 +26,7 @@ public class LoginPanel : UI_Panel {
     public TextMeshProUGUI txtButtonLower;
 
     
-    // TODO: 아마도 로그인 여부 판별같은데 SignInHandler로 가져올 수 있음. 일단 주석 처리
+    // TODO: 아직 사용하지 않으므로 추가적인 기능 X
     // bool IsSignedIn => !string.IsNullOrEmpty(SessionManager.currentUserId);
 
 

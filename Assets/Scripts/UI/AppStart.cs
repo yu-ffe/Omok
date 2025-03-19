@@ -5,10 +5,7 @@ using UnityEngine;
 public class AppStart : MonoBehaviour {
 
     void Awake() {
-        
         PlayerManager.Instance.UpdateUserData();
-        // TODO: NetworkManager로 동작 변경
-        // SessionManager.LoadAllSessions();
     }
     void Start() {
         //앱 초기 세팅
@@ -18,13 +15,15 @@ public class AppStart : MonoBehaviour {
 
         //TODO: AutoLogin 기능 추가
 
-        if (true) {
-            // if (AutoLogin.GetAutoLogin()) {
-            // AutoLogin.LastLoginUserCall();
-        }
-        else {
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
-        }
+        SignInHandler.Instance.AttemptAutoLogin((success, message) => {
+            if(success){
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+            }
+            else{
+                Debug.Log("자동 로그인 실패: " + message);
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+            }
+        });
         gameObject.SetActive(false);
     }
 

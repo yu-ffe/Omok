@@ -122,12 +122,12 @@ public class SignUpHandler : Singleton<SignUpHandler> {
 
     private void CheckIdAvailability(string id, Action<bool, string> callback) {
         StartCoroutine(NetworkManager.CheckIdRequest(id,
-            (checkResponse) => { callback(checkResponse.success, checkResponse.message); }));
+            (checkResponse) => { callback(checkResponse.Success, checkResponse.Message); }));
     }
 
     private void CheckNicknameAvailability(string nickname, Action<bool, string> callback) {
         StartCoroutine(NetworkManager.CheckNicknameRequest(nickname,
-            (checkResponse) => { callback(checkResponse.success, checkResponse.message); }));
+            (checkResponse) => { callback(checkResponse.Success, checkResponse.Message); }));
     }
 
     /// <summary>
@@ -143,10 +143,10 @@ public class SignUpHandler : Singleton<SignUpHandler> {
         StartCoroutine(NetworkManager.SignUpRequest((response) => {
             if (response is not null) {
                 // TODO: Auto SignIn하고 아래 코드 실행
-                SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
+                SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
                 SaveNewUserData();
             }
-            callback(response != null, response?.message);
+            callback(response != null, response?.Message);
         }));
 
         PlayerManager.Instance.playerData.ClearPrivateData();

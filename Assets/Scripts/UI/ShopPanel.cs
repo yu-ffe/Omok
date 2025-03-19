@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KimHyeun;
 using UnityEngine;
 
-public class ShopPanel : UI_Panel {
+public class  ShopPanel : UI_Panel {
     public ScrollViewSet scrollView;
 
     void Start() {

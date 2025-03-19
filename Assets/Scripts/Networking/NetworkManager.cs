@@ -1,4 +1,5 @@
 using Commons;
+using Commons.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -15,7 +16,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator SignUpRequest(Action<Commons.Constants.TokenResponse> callback) {
+    public static IEnumerator SignUpRequest(Action<TokenResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signup";
         PlayerData playerData = PlayerManager.Instance.playerData;
 
@@ -31,12 +32,12 @@ public class NetworkManager : Singleton<NetworkManager> {
             bool success = request.result == UnityWebRequest.Result.Success;
             string responseText = request.downloadHandler.text;
 
-            callback?.Invoke(success ? JsonConvert.DeserializeObject<Commons.Constants.TokenResponse>(responseText) : null);
+            callback?.Invoke(success ? JsonConvert.DeserializeObject<TokenResponse>(responseText) : null);
         }
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private static IEnumerator CheckDuplicateRequest(string type, string value, Action<Commons.Constants.CheckResponse> callback) {
+    private static IEnumerator CheckDuplicateRequest(string type, string value, Action<CheckResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
         form.AddField("type", type); // 'nickname' or 'id' as type
@@ -45,15 +46,15 @@ public class NetworkManager : Singleton<NetworkManager> {
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
 
-            callback?.Invoke(JsonConvert.DeserializeObject<Commons.Constants.CheckResponse>(request.downloadHandler.text));
+            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
         }
     }
 
-    public static IEnumerator CheckIdRequest(string id, Action<Commons.Constants.CheckResponse> callback) {
+    public static IEnumerator CheckIdRequest(string id, Action<CheckResponse> callback) {
         yield return CheckDuplicateRequest("id", id, callback);
     }
 
-    public static IEnumerator CheckNicknameRequest(string nickname, Action<Commons.Constants.CheckResponse> callback) {
+    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback) {
         yield return CheckDuplicateRequest("nickname", nickname, callback);
     }
 
@@ -62,7 +63,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator SignInRequest(Action<Commons.Constants.TokenResponse> callback) {
+    public static IEnumerator SignInRequest(Action<TokenResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signin";
         PlayerData playerData = PlayerManager.Instance.playerData;
 
@@ -74,11 +75,11 @@ public class NetworkManager : Singleton<NetworkManager> {
             yield return request.SendWebRequest();
 
             string responseText = request.downloadHandler.text;
-            callback?.Invoke(JsonConvert.DeserializeObject<Commons.Constants.TokenResponse>(responseText));
+            callback?.Invoke(JsonConvert.DeserializeObject<TokenResponse>(responseText));
         }
     }
 
-    public static IEnumerator TryAutoLogin(Action<Commons.Constants.TokenResponse> callback) {
+    public static IEnumerator TryAutoLoginRequest(Action<TokenResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signin/refresh";
         string refreshToken = SessionManager.Instance.GetRefreshToken();
         // TODO: refresh token 만료 처리 필요할 수 있음
@@ -88,7 +89,7 @@ public class NetworkManager : Singleton<NetworkManager> {
             yield return request.SendWebRequest();
 
             string jsonResponse = request.downloadHandler.text;
-            callback?.Invoke(JsonConvert.DeserializeObject<Commons.Constants.TokenResponse>(jsonResponse));
+            callback?.Invoke(JsonConvert.DeserializeObject<TokenResponse>(jsonResponse));
         }
     }
 
@@ -118,7 +119,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator GetUserInfoRequest(Action<Constants.UserDataResponse> callback) {
+    public static IEnumerator GetUserInfoRequest(Action<UserDataResponse> callback) {
         string url = $"{Constants.ServerURL}/user/info";
         string accessToken = SessionManager.Instance.GetAccessToken();
         int retryCount = 0;
@@ -132,7 +133,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 
                 if (request.result == UnityWebRequest.Result.Success) {
                     string jsonResponse = request.downloadHandler.text;
-                    Commons.Constants.UserDataResponse userDataResponse = JsonConvert.DeserializeObject<Commons.Constants.UserDataResponse>(jsonResponse);
+                    UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(jsonResponse);
                     callback?.Invoke(userDataResponse);
                     yield break;
                 }
