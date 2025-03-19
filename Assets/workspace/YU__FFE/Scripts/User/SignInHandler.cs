@@ -5,7 +5,7 @@ using TMPro;
 using workspace.YU__FFE.Scripts.Server.Network;
 
 namespace workspace.YU__FFE.Scripts.User {
-    public class SignInManager : Singleton<SignInManager> {
+    public class SignInHandler : Singleton<SignInHandler> {
 
         public void TrySignIn(string id, string password, Action<bool, string> callback) {
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
@@ -29,7 +29,7 @@ namespace workspace.YU__FFE.Scripts.User {
             StartCoroutine(NetworkManager.SignInRequest((response) => {
                 if (response is not null) {
                     Server.Session.SessionManager.Instance.UpdateTokens(response.refreshToken, response.accessToken);
-                    NetworkManager.Instance.GetUserInfoRequest((data) => {
+                    NetworkManager.GetUserInfoRequest((data) => {
                         if (data is not null) {
                             UpdateUserData(data);
                         }

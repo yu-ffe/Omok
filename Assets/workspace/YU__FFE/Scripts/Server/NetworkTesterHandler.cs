@@ -29,7 +29,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         }
         
         public void SignUp() {
-            User.SignUpManager.Instance.TrySignUp(id_email.text, password.text, password.text, nickname.text,  int.Parse(imageNum.text),
+            User.SignUpHandler.Instance.TrySignUp(id_email.text, password.text, password.text, nickname.text,  int.Parse(imageNum.text),
                 (b, s) => {
                     Debug.Log(s);
                     statusText.text = s;
@@ -37,7 +37,7 @@ namespace workspace.YU__FFE.Scripts.Server {
         }
         
         public void SignIn() {
-            User.SignInManager.Instance.TrySignIn(id_email.text, password.text, (b, s) => {
+            User.SignInHandler.Instance.TrySignIn(id_email.text, password.text, (b, s) => {
                 statusText.text = s;
             });
         }

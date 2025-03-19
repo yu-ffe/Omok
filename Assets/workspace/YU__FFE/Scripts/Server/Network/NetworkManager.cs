@@ -80,7 +80,19 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             }
         }
 
+        public static IEnumerator TryAutoLogin(Action<TokenResponse> callback) {
+            string url = $"{Constants.ServerURL}/auth/signin/refresh";
+            string refreshToken = Session.SessionManager.Instance.GetRefreshToken();
+            // TODO: refresh token 만료 처리 필요할 수 있음
 
+            using (UnityWebRequest request = UnityWebRequest.Post(url, "")) {
+                request.SetRequestHeader("Authorization", "Bearer " + refreshToken);
+                yield return request.SendWebRequest();
+
+                string jsonResponse = request.downloadHandler.text;
+                callback?.Invoke(JsonConvert.DeserializeObject<TokenResponse>(jsonResponse));
+            }
+        }
 
         // ======================================================
         //                        로그아웃
@@ -108,11 +120,10 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
         // ======================================================
 
         // ReSharper disable Unity.PerformanceAnalysis
-        public IEnumerator GetUserInfoRequest(Action<UserDataResponse> callback) {
+        public static IEnumerator GetUserInfoRequest(Action<UserDataResponse> callback) {
             string url = $"{Constants.ServerURL}/user/info";
             string accessToken = Session.SessionManager.Instance.GetAccessToken();
             int retryCount = 0;
-            Debug.Log("GetUserInfoRequest: " + accessToken);
 
             while (retryCount < MaxRetryCount) {
                 using (UnityWebRequest request = UnityWebRequest.Get(url)) {
@@ -128,13 +139,10 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
 
                     if (request.responseCode != 401)
                         continue;
-                    yield return RefreshAccessTokenRequest((success, newAccessToken) => {
-                        if (success && !string.IsNullOrEmpty(newAccessToken)) {
-                            Session.SessionManager.Instance.UpdateAccessToken(newAccessToken);
-                            accessToken = newAccessToken;
-                        }
-                        else {
+                    yield return Session.SessionManager.Instance.RefreshAccessTokenRequest((success) => {
+                        if (!success) {
                             callback?.Invoke(null);
+                            // TODO: 실패 로직 처리 가능성 있음
                         }
                     });
                     retryCount++;
@@ -142,247 +150,49 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             }
             callback?.Invoke(null);
         }
+
         // ======================================================
         //                        그 외
         // ======================================================
+
+        // 유저 정보 업데이트
+        public class UserDataResponse {
+            public string Nickname;
+            public int ProfileNum;
+            public int Coins;
+            public int Grade;
+            public int RankPoint;
+            public int WinCount;
+            public int LoseCount;
+
+            public UserDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount,
+                                    int loseCount) {
+                this.Nickname = nickname;
+                this.ProfileNum = profileNum;
+                this.Coins = coins;
+                this.Grade = grade;
+                this.RankPoint = rankPoint;
+                this.WinCount = winCount;
+                this.LoseCount = loseCount;
+            }
+        }
         
-        private static IEnumerator RefreshAccessTokenRequest(Action<bool, string> callback) {
-            string url = $"{Constants.ServerURL}/auth/refresh";
-            string refreshToken = Session.SessionManager.Instance.GetRefreshToken();
-
-            if (string.IsNullOrEmpty(refreshToken)) {
-                callback?.Invoke(false, null);
-                yield break;
-            }
-
-            using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
-                request.SetRequestHeader("Authorization", $"Bearer {refreshToken}");
-                yield return request.SendWebRequest();
-
-                if (request.result == UnityWebRequest.Result.Success) {
-                    string jsonResponse = request.downloadHandler.text;
-                    var response = JsonConvert.DeserializeObject<TokenResponse>(jsonResponse);
-                    if (response != null && !string.IsNullOrEmpty(response.accessToken)) {
-                        callback?.Invoke(true, response.accessToken); // 새로운 accessToken 반환
-                    }
-                    else {
-                        callback?.Invoke(false, null);
-                    }
-                }
-                else {
-                    callback?.Invoke(false, null);
-                    Debug.LogError("RefreshAccessTokenRequest failed: " + request.error);
-                }
+        // 단순 응답
+        public class CheckResponse {
+            public bool success;
+            public string message;
+        }
+        
+        // 토큰 응답
+        public class TokenResponse {
+            public string message;
+            public string accessToken;
+            public string refreshToken;
+            public TokenResponse(string message, string accessToken, string refreshToken) {
+                this.message = message;
+                this.accessToken = accessToken;
+                this.refreshToken = refreshToken;
             }
         }
-
-
-
-        // <================ 수정지점 (개인확인용)
-
-
-        public IEnumerator UserDataRequest() {
-            string url = $"{Constants.ServerURL}/userdata"; // 유저 데이터 API 엔드포인트
-            UnityWebRequest request = UnityWebRequest.Get(url);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var userData = JsonConvert.DeserializeObject<UserDataResponse>(jsonResponse);
-
-                // 유저 데이터 처리 (예: 저장 또는 UI 갱신)
-                // PlayerManager.Instance.UpdateUserData(userData);
-            }
-            else {
-                // 서버와 연결 실패 시 처리
-                Debug.LogError("UserDataRequest failed: " + request.error);
-            }
-        }
-
-
-
-        // 자동 로그인 시도
-        public static IEnumerator TryAutoLogin(System.Action<TokenResponse, UserDataResponse> callback) {
-            string url = $"{Constants.ServerURL}/autoLogin"; // 자동 로그인 API 엔드포인트
-            string sessionToken = PlayerPrefs.GetString("SessionToken", "");
-
-            if (string.IsNullOrEmpty(sessionToken)) {
-                callback(null, null);
-                yield break;
-            }
-
-            WWWForm form = new WWWForm();
-            form.AddField("userId", sessionToken);
-
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<SignInResponse>(jsonResponse);
-
-                // if (response.login.) {
-                //     // 자동 로그인 성공 시 콜백 호출
-                //     callback(response.login, response.data);
-                // }
-                // else {
-                //     // 자동 로그인 실패 시 콜백 호출
-                //     callback(null, null);
-                // }
-            }
-            else {
-                callback(null, null);
-            }
-        }
-
-        // UserData 저장 요청 함수
-        public IEnumerator SaveNewUserDataRequest(Action<bool, string> callback) {
-            string url = $"{Constants.ServerURL}saveUserData"; // UserData 저장 API 엔드포인트
-            string token = Session.SessionManager.Instance.GetAccessToken();
-
-            // 세션 검증을 위한 헤더 추가
-            if (string.IsNullOrEmpty(token)) {
-                callback(false, "세션 토큰이 유효하지 않습니다.");
-                yield break;
-            }
-
-            PlayerData playerData = PlayerManager.Instance.playerData;
-
-            WWWForm form = new WWWForm();
-            // TODO: 기본값으로 모두 변경
-            form.AddField("userId", playerData.id);
-            form.AddField("nickname", playerData.nickname);
-            form.AddField("password", playerData.password);
-            form.AddField("profileNum", playerData.profileNum);
-            form.AddField("coins", playerData.coins);
-            form.AddField("grade", playerData.grade);
-            form.AddField("rankPoint", playerData.rankPoint);
-            form.AddField("winCount", playerData.winCount);
-            form.AddField("loseCount", playerData.loseCount);
-
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            request.SetRequestHeader("Authorization", "Bearer " + token); // 세션 토큰을 헤더에 추가
-
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<BaseResponse>(jsonResponse);
-
-                if (response.success) {
-                    callback(true, response.message);
-                }
-                else {
-                    callback(false, response.message);
-                }
-            }
-            else {
-                callback(false, "서버와의 연결이 실패했습니다.");
-            }
-        }
-
-        // UserData 가져오기 요청 함수
-        public static IEnumerator GetUserDataRequest(System.Action<bool, PlayerData, string> callback) {
-            string url = $"{Constants.ServerURL}getUserData"; // UserData 가져오기 API 엔드포인트
-            WWWForm form = new WWWForm();
-            
-            UnityWebRequest request = UnityWebRequest.Post(url, form);
-            yield return request.SendWebRequest();
-
-            if (request.result == UnityWebRequest.Result.Success) {
-                // 서버로부터 응답 받은 JSON 처리
-                string jsonResponse = request.downloadHandler.text;
-                var response = JsonConvert.DeserializeObject<GetUserDataResponse>(jsonResponse);
-
-                if (response.success) {
-                    // 서버에서 가져온 UserData를 전달
-                    PlayerData playerData = new PlayerData(
-                        response.nickname,
-                        response.profileNum,
-                        response.coins,
-                        response.grade,
-                        response.rankPoint,
-                        response.winCount,
-                        response.loseCount
-                    );
-
-                    callback(true, playerData, response.message);
-                }
-                else {
-                    callback(false, null, response.message);
-                }
-            }
-            else {
-                callback(false, null, "서버와의 연결이 실패했습니다.");
-            }
-        }
-    }
-
-    public class SignInResponse {
-        public TokenResponse login;
-        public UserDataResponse DataResponse;
-
-        public SignInResponse(TokenResponse login, UserDataResponse dataResponse) {
-            this.login = login;
-            this.DataResponse = dataResponse;
-        }
-    }
-
-
-
-    public class UserDataResponse {
-        public string nickname;
-        public int profileNum;
-        public int coins;
-        public int grade;
-        public int rankPoint;
-        public int winCount;
-        public int loseCount;
-
-        public UserDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount,
-                                int loseCount) {
-            this.nickname = nickname;
-            this.profileNum = profileNum;
-            this.coins = coins;
-            this.grade = grade;
-            this.rankPoint = rankPoint;
-            this.winCount = winCount;
-            this.loseCount = loseCount;
-        }
-    }
-
-
-    public class BaseResponse {
-        public bool success;
-        public string message;
-    }
-
-    public class CheckResponse {
-        public bool success;
-        public string message;
-    }
-
-
-    public class TokenResponse {
-        public string message;
-        public string accessToken;
-        public string refreshToken;
-        public TokenResponse(string message, string accessToken, string refreshToken) {
-            this.message = message;
-            this.accessToken = accessToken;
-            this.refreshToken = refreshToken;
-        }
-    }
-
-    public class GetUserDataResponse : BaseResponse {
-        public string nickname;
-        public int profileNum;
-        public int coins;
-        public int grade;
-        public int rankPoint;
-        public int winCount;
-        public int loseCount;
     }
 }

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using workspace.YU__FFE.Scripts.Server.Network;
 
 namespace workspace.YU__FFE.Scripts.User {
-    public class SignUpManager : Singleton<SignUpManager> {
+    public class SignUpHandler : Singleton<SignUpHandler> {
 
         public void TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
             if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
@@ -100,7 +100,7 @@ namespace workspace.YU__FFE.Scripts.User {
 
         // 유저 데이터 저장 요청
         private void SaveNewUserData() {
-            NetworkManager.Instance.SaveNewUserDataRequest((saveSuccess, saveMessage) => { });
+            NetworkManager.GetUserInfoRequest((response) => { });
         }
 
         // 이메일 형식 체크
