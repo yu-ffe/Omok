@@ -1,11 +1,25 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');  // JWT 토큰을 처리하기 위한 라이브러리
+const User = require('../../models/User'); // User 모델
 var router = express.Router();
+
+// JSON 바디를 파싱하기 위해 express의 미들웨어 추가
+router.use(express.json());
 
 // 승/패 결과 저장 API
 router.post('/', async (req, res) => {
     try {
-        // 로그인된 유저 정보 가져오기 (JWT 또는 세션을 통해 인증된 유저 정보)
-        const userId = req.user.id;  // 예시: JWT로 인증된 유저 ID (세션에서 가져올 수 있음)
+        // Authorization 헤더에서 Bearer 토큰 추출
+        const token = req.headers['authorization']?.split(' ')[1]; // 'Bearer <token>' 형태로 전달됨
+
+        if (!token) {
+            return res.status(400).json({ message: "토큰이 제공되지 않았습니다." });
+        }
+
+        // 토큰 검증 (JWT 토큰을 디코딩하여 userId 추출)
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);  // 환경변수에서 JWT 비밀 키를 사용하여 디코딩
+
+        const userId = decoded.userId;  // 토큰에서 유저 ID 추출
 
         // 클라이언트에서 받은 게임 결과 (승리 여부)
         const { result } = req.body;  // { result: true } or { result: false }
@@ -15,7 +29,7 @@ router.post('/', async (req, res) => {
         }
 
         // 해당 유저의 정보 조회
-        const user = await User.findOne({ id: userId });
+        const user = await User.findById(userId);  // userId로 User 찾기
 
         if (!user) {
             return res.status(404).json({ message: "유저를 찾을 수 없습니다." });

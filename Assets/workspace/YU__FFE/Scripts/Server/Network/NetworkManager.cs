@@ -127,6 +127,8 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             int retryCount = 0;
 
             while (retryCount < MaxRetryCount) {
+                retryCount++;
+                Debug.Log(retryCount + "회 재시도"); 
                 using (UnityWebRequest request = UnityWebRequest.Get(url)) {
                     request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
                     yield return request.SendWebRequest();
@@ -146,13 +148,13 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
                             // TODO: 실패 로직 처리 가능성 있음
                         }
                     });
-                    retryCount++;
                 }
+                Debug.LogError("GetUserInfoRequest failed");
             }
             callback?.Invoke(null);
         }
         
-        public static void GetRanksRequest(Action<object> action) {
+        public static IEnumerator GetRanksRequest(Action<object> action) {
             throw new NotImplementedException();
         }
 

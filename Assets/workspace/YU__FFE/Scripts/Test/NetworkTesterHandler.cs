@@ -17,6 +17,7 @@ namespace workspace.YU__FFE.Scripts.Test {
         
         public Button registerButton;
         public Button loginButton;
+        public Button autoLoginButton;
         public Button updateToken;
         
         public TextMeshProUGUI statusText; // 로그인 상태 표시
@@ -24,6 +25,7 @@ namespace workspace.YU__FFE.Scripts.Test {
         public void Start() {
             registerButton.onClick.AddListener(SignUp);
             loginButton.onClick.AddListener(SignIn);
+            autoLoginButton.onClick.AddListener(AutoSignIn);
             updateToken.onClick.AddListener(UpdateToken);
         }
         
@@ -39,6 +41,13 @@ namespace workspace.YU__FFE.Scripts.Test {
             User.SignInHandler.Instance.TrySignIn(id_email.text, password.text, (b, s) => {
                 statusText.text = s;
             });
+        }
+
+        public void AutoSignIn() {
+            SignInHandler.Instance.SetAutoLoginEnabled(true);
+            StartCoroutine(SignInHandler.Instance.AttemptAutoLogin((b, s) => {
+                statusText.text = s;
+            }));
         }
         
         public void UpdateToken() {

@@ -52,7 +52,7 @@ namespace workspace.YU__FFE.Scripts.User {
             return Convert.ToBase64String(plainTextBytes);
         }
 
-        public IEnumerator AttemptAutoLogin(System.Action<bool, string> callback) {
+        public IEnumerator AttemptAutoLogin(Action<bool, string> callback) {
             if (!GetAutoLoginEnabled()) {
                 Debug.Log("자동 로그인 비활성화됨");
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
@@ -62,7 +62,7 @@ namespace workspace.YU__FFE.Scripts.User {
             yield return RefreshSessionForAutoLogin(callback);
         }
 
-        private IEnumerator RefreshSessionForAutoLogin(System.Action<bool, string> callback) {
+        private IEnumerator RefreshSessionForAutoLogin(Action<bool, string> callback) {
             string storedRefreshToken = Server.Session.SessionManager.Instance.GetRefreshToken();
             
             if (string.IsNullOrEmpty(storedRefreshToken)) {
@@ -75,7 +75,8 @@ namespace workspace.YU__FFE.Scripts.User {
             yield return Server.Session.SessionManager.Instance.RefreshAccessTokenRequest(success => {
                 if (success) {
                     Debug.Log("자동 로그인 성공");
-                    UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+                    // 임시 제거: 개인 테스트용으로 사용중이므로.
+                    // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
                     callback(true, "자동 로그인 성공");
                 } else {
                     Debug.Log("자동 로그인 실패");
