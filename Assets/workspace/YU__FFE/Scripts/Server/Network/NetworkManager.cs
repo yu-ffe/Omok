@@ -85,7 +85,7 @@ namespace workspace.YU__FFE.Scripts.Server.Network {
             string refreshToken = Session.SessionManager.Instance.GetRefreshToken();
             // TODO: refresh token 만료 처리 필요할 수 있음
 
-            using (UnityWebRequest request = UnityWebRequest.Post(url, "")) {
+            using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "")) {
                 request.SetRequestHeader("Authorization", "Bearer " + refreshToken);
                 yield return request.SendWebRequest();
 

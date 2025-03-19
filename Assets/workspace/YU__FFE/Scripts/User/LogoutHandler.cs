@@ -2,7 +2,7 @@ using WB;
 
 namespace workspace.YU__FFE.Scripts.User {
 
-    public class LogoutManager : Singleton<LogoutManager> {
+    public class LogoutHandler : Singleton<LogoutHandler> {
         /// <summary>
         /// 1. Refresh Token 제거 - 클라이언트 내
         /// 2. Session Token 지우기
