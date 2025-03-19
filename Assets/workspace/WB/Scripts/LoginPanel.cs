@@ -1,3 +1,4 @@
+using Wb;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -31,7 +32,7 @@ namespace WB
         public TextMeshProUGUI txtButtonUpper;
         public TextMeshProUGUI txtButtonLower;
 
-        bool IsSignedIn => !string.IsNullOrEmpty(SessionManager.currentUserId);
+        bool IsSignedIn => !string.IsNullOrEmpty(Wb.SessionManager.currentUserId);
 
 
 
@@ -48,11 +49,11 @@ namespace WB
             //Login 여부 확인
 
             // 프로필 스프라이트 초기화
-            SessionManager.ProfileSprites = profileSprites;
+            Wb.SessionManager.ProfileSprites = profileSprites;
             Debug.Log("프로필 스프라이트 초기화 완료");
 
             // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
-            SessionManager.ProfileButtonImages = profileImages;
+            Wb.SessionManager.ProfileButtonImages = profileImages;
             Debug.Log("프로필 버튼 이미지 초기화 완료");
 
 

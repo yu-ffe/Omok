@@ -46,8 +46,11 @@ public class RankingManager : UI_Panel
 
         // 모든 유저 id 찾기, 해당 유저들의 정보(딕셔너리 형식) 접근
         // 유저 데이터 불러오기 - 회원가입, 프로필 연동 (닉네임, 프로필 이미지, 급수, 승, 패)
-        List<string> userIdList = SessionManager.GetAllUserIds();
-
+        // TODO: 서버에서 모든 유저 랭킹 가져오기 -> 이건 아직 안만들꺼임
+        // TODO: 서버에서 랭킹 업데이트 -> 랭킹만 가져오기로 동작 예정
+        // List<string> userIdList = SessionManager.GetAllUserIds();
+        List<string> userIdList = null;
+        
         SortingAndSave(userIdList); // 모든 아이디를 전달
 
         scrollViewSet.StageSelectPopSet(GetMaxCellNum());
@@ -60,15 +63,16 @@ public class RankingManager : UI_Panel
 
         for (int i = 0; i < userIdList.Count; i++)
         {
-            UserSession userSession = SessionManager.GetSession(userIdList[i]);
-
-            userDataList.Add((
-                SessionManager.GetUserProfileSprite(userSession.ProfileNum),
-                userSession.Nickname,
-                userSession.Grade,
-                userSession.WinCount,
-                userSession.LoseCount
-            ));
+            // TODO: 해당 유저에 대한 데이터를 서버에서 가져오기
+            // PlayerData userSession = SessionManager.GetSession(userIdList[i]);
+            //
+            // userDataList.Add((
+            //     SessionManager.GetUserProfileSprite(userSession.ProfileNum),
+            //     userSession.Nickname,
+            //     userSession.Grade,
+            //     userSession.WinCount,
+            //     userSession.LoseCount
+            // ));
         }
 
 
@@ -135,7 +139,9 @@ public class RankingManager : UI_Panel
     public void LoadRankingData()
     {
         ResetData();
-        List<string> userIdList = SessionManager.GetAllUserIds();
+        // TODO: 서버 연동 필요
+        // List<string> userIdList = SessionManager.GetAllUserIds();
+        List<string> userIdList = null;
         SortingAndSave(userIdList);
         scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }

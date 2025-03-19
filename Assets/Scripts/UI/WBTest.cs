@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WB;
 
-namespace Wb {
-    
 public class WBTest : MonoBehaviour
 {
 
     public void AppStart()
     {
-        SessionManager.LoadAllSessions();
+        // Todo: 서버에서 로드로 변경
+        // SessionManager.LoadAllSessions();
 
         UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
 
@@ -37,6 +35,4 @@ public class WBTest : MonoBehaviour
     {
         UI_Manager.Instance.Show(panelType);
     }
-}
-
 }

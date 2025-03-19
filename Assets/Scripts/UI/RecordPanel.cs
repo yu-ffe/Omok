@@ -2,41 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using KimHyeun;
 using UnityEngine;
-using WB;
 
-namespace Wb {
-    
-public class RecordPanel : UI_Panel
-{
+public class RecordPanel : UI_Panel {
     public ScrollViewSet scrollView;
 
-    void Start()
-    {
-        // WB.UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Record, this);
+    void Start() {
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Record, this);
         gameObject.SetActive(false);
     }
 
-    public override void Show()
-    {
+    public override void Show() {
         // 매니저 스크롤 뷰에 해당 스크롤 뷰 할당
         RecordManager.Instance.SetScrollView(scrollView);
         RecordManager.Instance.LoadRecordData();
         gameObject.SetActive(true);
     }
 
-    public override void Hide()
-    {
+    public override void Hide() {
         gameObject.SetActive(false);
     }
 
-    public override void OnDisable()
-    {
+    public override void OnDisable() {
     }
 
-    public override void OnEnable()
-    {
+    public override void OnEnable() {
     }
     public void OnClick_Back() => UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
 
-}
 }

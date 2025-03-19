@@ -4,8 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Wb {
-    
 public class UserScorePopup : MonoBehaviour
 {
     public Image[] imgScore;
@@ -22,6 +20,4 @@ public class UserScorePopup : MonoBehaviour
         txtMsgGradeUp.text = reqUp + MSG;
         gameObject.SetActive(true);
     }
-}
-
 }

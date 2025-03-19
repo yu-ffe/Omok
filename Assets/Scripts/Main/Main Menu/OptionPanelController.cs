@@ -44,7 +44,7 @@ public class OptionPanelController : UI_Panel
         LoadSoundSettings();
 
         // 자동 로그인 토클 초기화 (저장된 상태 불러오기)
-        bool isAutoLoginEnabled = AutoLogin.GetAutoLogin();
+        bool isAutoLoginEnabled = SignInHandler.GetAutoLoginEnabled();
         autoLoginToggle.isOn = isAutoLoginEnabled;
         
         // 토글 변경 시 자동 로그인 설정 저장
@@ -54,7 +54,7 @@ public class OptionPanelController : UI_Panel
     // 자동 로그인 토글 콜백
     private void OnAutoLoginToggleChanged(bool isOn)
     {
-        AutoLogin.SetAutoLogin(isOn);
+        SignInHandler.Instance.SetAutoLoginEnabled(isOn);
     }
     
     // ========= 사운드 설정 로드 ========== 

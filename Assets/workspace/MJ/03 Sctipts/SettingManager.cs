@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Wb;
+using WB;
 using workspace.YU__FFE.Scripts;
 
 namespace MJ
@@ -76,7 +78,7 @@ namespace MJ
         // ========= 설정 패널 닫기 ==========
         public void CloseSettingPanel()
         {
-            UIManager.Instance.HideUI(SETTING_VOLUME_KEY);
+            // UI_Manager.Instance.HideUI(SETTING_VOLUME_KEY);
             _currentSettingPanel = null;
         }
         
