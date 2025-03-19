@@ -15,6 +15,8 @@ namespace workspace.YU__FFE.Scripts.User {
         public int winCount; // 승리 횟수
         public int loseCount; // 패배 횟수
 
+        public PlayerData() { }
+        
         // 생성자
         public PlayerData(string id, string nickname, string password, int profileNum, int coins, int grade,
                           int rankPoint, int winCount, int loseCount) {
@@ -43,6 +45,11 @@ namespace workspace.YU__FFE.Scripts.User {
             this.id = id;
             this.password = password;
         }
+        
+        public void ClearPrivateData() {
+            this.id = null;
+            this.password = null;
+        }
 
         public void SetPrivateData(string id, string nickname, string password, int profile) {
             this.id = id;
@@ -50,6 +57,7 @@ namespace workspace.YU__FFE.Scripts.User {
             this.password = password;
             this.profileNum = profile;
         }
+        
     }
 
 }
