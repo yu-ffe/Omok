@@ -93,14 +93,33 @@ public class MainPanel : UI_Panel {
         // imgUserPortrait.sprite = SessionManager.ProfileSprites[playerData.profileNum];
     }
 
+    
+    private void StartSinglePlay()
+    {
+        UI_Manager.Instance.popup.Show(
+            "싱글플레이를 시작하시겠습니까?",
+            "시작", "취소",
+            okAction: () => SceneManager.Instance.LoadScene("SingleGame"),
+            cancelAction: () => UI_Manager.Instance.popup.Show("싱글플레이를 취소하였습니다.", "확인")
+        );
+    }
+
+    private void StartMultiPlay()
+    {
+        UI_Manager.Instance.popup.Show(
+            "멀티플레이를 시작하시겠습니까?",
+            "시작", "취소",
+            okAction: () => SceneManager.Instance.LoadScene("MultiGame"),
+            cancelAction: () => UI_Manager.Instance.popup.Show("멀티플레이를 취소하였습니다.", "확인")
+        );
+    }
 
 
     public void OnClick_Menu(int idx) {
         switch (idx) {
             case 0:
-                Debug.Log("대국 시작");
-                // UI_Manager.Instance.Show(UI_Manager.PanelType.Game);
-                SceneManager.Instance.LoadScene("Game");
+                Debug.Log("대국 시작"); // 싱글플레이인지 멀티플레이인지 선택하는 팝업뜸
+                UI_Manager.Instance.Show(UI_Manager.PanelType.GameSelect);
                 break;
             case 1:
                 Debug.Log("내 기보");

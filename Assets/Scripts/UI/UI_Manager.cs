@@ -12,7 +12,7 @@ public class UI_Manager : Singleton<UI_Manager>
         public UI_Panel panel;
     }
     // 공통 Popup창
-    public enum PanelType { None, Login, Main, Game, Record, Shop, Ranking, Option, Loading }
+    public enum PanelType { None, Login, Main, Game, Record, Shop, Ranking, Option, Loading,  GameSelect}
 
     public List<PanelData> panelList = new List<PanelData>();
     public Dictionary<PanelType, UI_Panel> Panels { get; private set; } = new();
