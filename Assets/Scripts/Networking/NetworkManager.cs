@@ -89,7 +89,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         PlayerData playerData = PlayerManager.Instance.playerData;
 
         WWWForm form = new WWWForm();
-        form.AddField("Id", playerData.id);
+        form.AddField("id", playerData.id);
         form.AddField("password", playerData.password);
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
