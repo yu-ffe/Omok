@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/workspace/YU__FFE/Scenes/DataTestScene.unity
     guid: 59b3d892d6f32384b8b8ac18727d41c6
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: b7302d92e3a6b40ae82808735ea53f4b
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 5bf17aec6ca3b4b0cb296f91c0112982
   m_configObjects: {}

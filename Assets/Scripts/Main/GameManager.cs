@@ -4,8 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using workspace.Ham6._03_Sctipts.Game;
 
-namespace MyNamespace {
-    
 public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
 {
     public Text timerText; // UI 타이머 텍스트
@@ -67,5 +65,4 @@ public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
         _gameLogic?.Dispose();
         _gameLogic = null;
     }
-}
 }

@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using workspace.Ham6._03_Sctipts.Game;
 
 public class GameSelectPanelController : UI_Panel {
     public Button btnSinglePlay;
+    public Button btnDualPlay;
     public Button btnMultiPlay;
     public Button btnCancel;
 
     void Start() {
         UI_Manager.Instance.AddPanel(UI_Manager.PanelType.GameSelect, this);
         btnSinglePlay.onClick.AddListener(StartSinglePlay);
+        btnDualPlay.onClick.AddListener(StartDualPlay);
         btnMultiPlay.onClick.AddListener(StartMultiPlay);
         btnCancel.onClick.AddListener(Hide);
         gameObject.SetActive(false);
@@ -18,17 +21,20 @@ public class GameSelectPanelController : UI_Panel {
 
     private void StartSinglePlay() {
         Hide();
-        SceneManager.Instance.LoadScene("Game");
-        // 게임 매니저 관련 싱글, 멀티 플레이 설정은 여기서 하면 됩니다.
-        // GameManager.Instance.GameLogicInstance.SetState(new AIState());
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
         // Todo: 스타트 싱글 플레이
+
+    }
+    private void StartDualPlay() {
+        Hide();
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+        
 
     }
 
     private void StartMultiPlay() {
         Hide();
-        // 게임 매니저 관련 싱글, 멀티 플레이 설정은 여기서 하면 됩니다.
-        SceneManager.Instance.LoadScene("Game");
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
 
         // Todo: 스타트 멀티 플레이
 
