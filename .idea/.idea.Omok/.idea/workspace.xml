@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/Fonts/Cafe24Ssurround-v2.0/Cafe24Ssurround-v2.0 SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Fonts/Cafe24Ssurround-v2.0/Cafe24Ssurround-v2.0 SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/02 Scenes/Game Scene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +56,6 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;feature/game-manager/logic&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -123,7 +120,6 @@
       <workItem from="1742094453598" duration="686000" />
       <workItem from="1742256876497" duration="27234000" />
       <workItem from="1742343181380" duration="43047000" />
-      <workItem from="1742429025066" duration="10684000" />
     </task>
     <servers />
   </component>

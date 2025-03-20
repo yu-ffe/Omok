@@ -97,4 +97,4 @@ MonoBehaviour:
   MarkerXPrefab: {fileID: 7722446656633791298, guid: 867595d137c558345b8e4f4e8d14ccff, type: 3}
   MarkerPositionSelecorPrefab: {fileID: 6218907579910159926, guid: 7090b2ca55c9e1945bef92b71f63bc78, type: 3}
   gridSize: 15
-  rectTransform: {fileID: 5061058459279068122}
+  rectTransform: {fileID: 0}
