@@ -62,6 +62,8 @@ var signoutRouter = require("./routes/auth/signout");
 var gameResultRouter = require("./routes/game/result");
 var userInfoRouter = require("./routes/user/info");
 var userProfileRouter = require("./routes/user/profile");
+var uploadProfileRouter = require("./routes/user/uploadProfile");
+console.log("uploadProfileRouter:", uploadProfileRouter); // 🚨 올바른 Router 객체인지 확인
 
 // 📌 라우트 설정
 app.use("/", indexRouter);
@@ -73,6 +75,7 @@ app.use("/auth/signout", signoutRouter);
 app.use("/game/result", gameResultRouter); 
 app.use("/user/info", userInfoRouter); 
 app.use("/user/profile", userProfileRouter); 
+app.use("/api/upload_profile", uploadProfileRouter);
 
 
 

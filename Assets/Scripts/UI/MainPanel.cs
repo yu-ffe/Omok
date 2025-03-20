@@ -17,11 +17,27 @@ public class MainPanel : UI_Panel {
     bool isConnctedCompoenets = false;
 
     void Start() {
-        if (!isConnctedCompoenets)
-            FindComponents();
+        
+        StartCoroutine(EnsureUIManagerInitialized());
+    
+        
+        /*if (!isConnctedCompoenets)
+            FindComponents();*/
         
         // 유저 정보를 서버에서 가져온 후 UI 생성, 비동기로 실행
-        StartCoroutine(LoadPlayerDataAndInitializeUI());
+        //StartCoroutine(LoadPlayerDataAndInitializeUI());
+    }
+    
+    // ReSharper disable Unity.PerformanceAnalysis
+    private IEnumerator EnsureUIManagerInitialized()
+    {
+        while (!UI_Manager.Instance)
+        {
+            yield return null; // UI_Manager가 초기화될 때까지 대기
+        }
+
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Main, this);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator LoadPlayerDataAndInitializeUI() {

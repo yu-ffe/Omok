@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using WB;
-
 
 public class ShopManager : UI_Panel
 {
@@ -51,7 +49,7 @@ public class ShopManager : UI_Panel
     
     public override void Show()
     {
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
 
         gameObject.SetActive(true);
         //RefreshShopItems();
@@ -61,7 +59,7 @@ public class ShopManager : UI_Panel
     public override void Hide()
     {
         gameObject.SetActive(false);
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
     }
 
     public override void OnEnable() { }

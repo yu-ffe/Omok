@@ -28,7 +28,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
-
+            
             bool success = request.result == UnityWebRequest.Result.Success;
             string responseText = request.downloadHandler.text;
 
@@ -50,12 +50,32 @@ public class NetworkManager : Singleton<NetworkManager> {
         }
     }
 
-    public static IEnumerator CheckIdRequest(string id, Action<CheckResponse> callback) {
-        yield return CheckDuplicateRequest("id", id, callback);
+    public static IEnumerator CheckIdRequest(string id, Action<CheckResponse> callback)
+    {
+        string url = $"{Constants.ServerURL}/auth/signup/check";
+        WWWForm form = new WWWForm();
+        form.AddField("type", "id");
+        form.AddField("value", id);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url, form))
+        {
+            yield return request.SendWebRequest();
+            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
+        }
     }
 
-    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback) {
-        yield return CheckDuplicateRequest("nickname", nickname, callback);
+    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback)
+    {
+        string url = $"{Constants.ServerURL}/auth/signup/check";
+        WWWForm form = new WWWForm();
+        form.AddField("type", "nickname");
+        form.AddField("value", nickname);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(url, form))
+        {
+            yield return request.SendWebRequest();
+            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
+        }
     }
 
     // ======================================================
@@ -63,12 +83,13 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator SignInRequest(Action<TokenResponse> callback) {
+    public static IEnumerator SignInRequest(Action<TokenResponse> callback)
+    {
         string url = $"{Constants.ServerURL}/auth/signin";
         PlayerData playerData = PlayerManager.Instance.playerData;
 
         WWWForm form = new WWWForm();
-        form.AddField("id", playerData.id);
+        form.AddField("Id", playerData.id);
         form.AddField("password", playerData.password);
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {

@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using WB;
 
 public class RankingManager : UI_Panel
 {
@@ -28,7 +26,7 @@ public class RankingManager : UI_Panel
 
     void Start()
     {
-        UI_Manager.Instance.AddPanel(panelType, this);
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Ranking, this);
         btnClose.onClick.AddListener(Hide);
         gameObject.SetActive(false);
     }
@@ -148,7 +146,7 @@ public class RankingManager : UI_Panel
     
     public override void Show()
     {
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
         gameObject.SetActive(true);
         LoadRankingData();
     }
@@ -156,11 +154,13 @@ public class RankingManager : UI_Panel
     public override void Hide()
     {
         gameObject.SetActive(false);
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
     }
 
-    public override void OnEnable() { }
+    public override void OnEnable() {
+    }
 
-    public override void OnDisable() { }
+    public override  void OnDisable() {
+    }
 }
 

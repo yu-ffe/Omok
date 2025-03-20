@@ -2,6 +2,8 @@ var express = require("express");
 const bcrypt = require("bcrypt");
 const User = require("../../models/User");
 const jwt = require("jsonwebtoken");  // JWT 라이브러리 추가
+const mongoose = require("mongoose");
+
 var router = express.Router();
 // 📌 로그인 처리
 router.post("/", async (req, res) => {
@@ -49,6 +51,11 @@ router.post("/", async (req, res) => {
         console.error("로그인 오류:", err);
         res.status(500).json({ error: "로그인 중 오류 발생" });
     }
+});
+
+// 📌 추가: `/api/login` 엔드포인트
+router.post("/api/login", async (req, res) => {
+    return res.redirect("/auth/signin"); // 🔥 `/api/login`을 `/auth/signin`으로 리디렉션
 });
 
 

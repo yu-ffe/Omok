@@ -195,7 +195,7 @@ public class RecordManager : UI_Panel
     }*/
     public override void Show()
     {
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
 
         gameObject.SetActive(true);
         LoadRecordData();
@@ -204,7 +204,7 @@ public class RecordManager : UI_Panel
     public override void Hide()
     {
         gameObject.SetActive(false);
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true); // 메인 패널 다시 활성화
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true); // 메인 패널 다시 활성화
     }
 
     public override void OnEnable() { }
