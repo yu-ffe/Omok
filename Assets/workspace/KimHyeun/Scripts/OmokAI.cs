@@ -1,251 +1,598 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using System;
+using System.Diagnostics;
 using workspace.Ham6._03_Sctipts.Game;
 
 namespace KimHyeun {
-    public class OmokAI : MonoBehaviour
+
+
+
+    public class OmokAI
     {
-        // 현재 보드 상태를 읽어서 (board) None인 곳에 둘수있음, 각 플레이어의 돌 위치에 따라 오목룰에 따라 최적의 좌표값 찾기
-        // 띄워져 있는 곳도 체크 필요
-        
+        private const int BOARD_SIZE = 15;
+        private Constants.PlayerType[,] board;
+        const int maxDepth = 4;
 
-        const int BOARD_SIZE = 15;
+        // 이동 정렬을 위한 히스토리 테이블
+        private int[,] historyTable = new int[BOARD_SIZE, BOARD_SIZE];
 
-        Constants.PlayerType[,] board; // -> 배열 차체가 보드.ex) 플레이어A가 제일 좌하단에 두면 board[0, 0] 에 PlayerA 가 들어감
-                                       // PlayerType의 값 : None, PlayerA, PlayerB
+        // 트랜스포지션 테이블 최적화 (해시 충돌 감소를 위한 Zobrist 해싱 사용)
+        private Dictionary<long, TranspositionEntry> transpositionTable = new Dictionary<long, TranspositionEntry>();
+        private long[,,] zobristTable;
 
-        
-        int maxDepth = 4; // 최대 탐색 깊이
-        int simulationCount = 100; // MCTS 시뮬레이션 횟수
+        // 방향 배열을 클래스 멤버로 이동하여 반복 생성 방지
+        private readonly int[][] directions = new int[][] {
+        new int[] { 0, 1 }, new int[] { 1, 0 },
+        new int[] { 1, 1 }, new int[] { 1, -1 }
+        };
 
+        // 평가 가중치를 상수로 정의
+        private const int WIN_SCORE = 2000000;
+        private const int FOUR_SCORE = 200000;
+        private const int OPEN_THREE_SCORE = 50000;
+        private readonly int[] weights = new int[] { 0, 1, 10, 100, 1000, 100000 };
 
-        public OmokAI(Constants.PlayerType[,] board, int max)
+        public OmokAI(Constants.PlayerType[,] board)
         {
-            Debug.Log($"깊이 설정: {max}");
             this.board = board;
-            maxDepth = max;
+            InitializeZobristTable();
         }
 
-
-
-
-
-        public (int, int) GetBestMove()
+        // Zobrist 해싱을 위한 테이블 초기화 (NextInt64 대신 Next로 구현)
+        private void InitializeZobristTable()
         {
-            int bestScore = int.MinValue;
-            (int, int) bestMove = (-1, -1);
+            zobristTable = new long[BOARD_SIZE, BOARD_SIZE, 3]; // 3은 None, PlayerA, PlayerB
+            System.Random rand = new System.Random(42); // 고정된 시드로 일관성 유지
 
-            // 가능한 모든 수를 구하기
-            var possibleMoves = GetPotentialMoves(board);
-            List<MCTSNode> nodes = new List<MCTSNode>();
-
-            // 각 수에 대해 MCTS 노드 생성
-            foreach (var move in possibleMoves)
+            for (int i = 0; i < BOARD_SIZE; i++)
             {
-                MCTSNode node = new MCTSNode
+                for (int j = 0; j < BOARD_SIZE; j++)
                 {
-                    x = move.Item2,
-                    y = move.Item1,
-                    parent = null
-                };
-                nodes.Add(node);
-            }
-
-            // 시뮬레이션을 통해 가장 좋은 수 찾기
-            foreach (var node in nodes)
-            {
-                int localSimulationCount = Mathf.Min(simulationCount, 100); // 시뮬레이션 횟수 제한
-
-                for (int i = 0; i < localSimulationCount; i++)
-                {
-                    RunSimulation(node);
-                }
-
-                // 가장 많이 승리한 노드를 선택
-                if (node.winCount > bestScore)
-                {
-                    bestScore = node.winCount;
-                    bestMove = (node.x, node.y);
-                }
-            }
-
-            return bestMove;
-        }
-
-        private void RunSimulation(MCTSNode node)
-        {
-            Constants.PlayerType[,] simulationBoard = (Constants.PlayerType[,])board.Clone(); // 보드 복사
-            Constants.PlayerType currentPlayer = Constants.PlayerType.PlayerA;
-            simulationBoard[node.y, node.x] = currentPlayer;
-
-            currentPlayer = (currentPlayer == Constants.PlayerType.PlayerA) ? Constants.PlayerType.PlayerB : Constants.PlayerType.PlayerA;
-
-            // 무작위 시뮬레이션
-            while (!IsGameOver(simulationBoard, node.x, node.y))
-            {
-                var randomMoves = GetPotentialMoves(simulationBoard);
-                if (randomMoves.Count == 0) break;
-
-                var randomMove = randomMoves[Random.Range(0, randomMoves.Count)];
-                simulationBoard[randomMove.Item1, randomMove.Item2] = currentPlayer;
-
-                currentPlayer = (currentPlayer == Constants.PlayerType.PlayerA) ? Constants.PlayerType.PlayerB : Constants.PlayerType.PlayerA;
-            }
-
-            // 게임 종료 시 승리 기록
-            if (IsGameOver(simulationBoard, node.x, node.y))
-            {
-                if (currentPlayer == Constants.PlayerType.PlayerA)
-                    node.winCount++;
-            }
-        }
-
-        private List<(int, int)> GetPotentialMoves(Constants.PlayerType[,] board)
-        {
-            List<(int, int)> potentialMoves = new List<(int, int)>();
-
-            // 우선순위 높은 위치 먼저 탐색
-            for (int y = 0; y < BOARD_SIZE; y++)
-            {
-                for (int x = 0; x < BOARD_SIZE; x++)
-                {
-                    if (board[y, x] == Constants.PlayerType.None)
+                    for (int k = 0; k < 3; k++)
                     {
-                        if (IsNearEnemy(board, x, y)) // 상대 돌 근처를 우선 선택
+                        // 64비트 난수 생성 (NextInt64 대신 Next 메서드 두 번 사용)
+                        long r1 = rand.Next();
+                        long r2 = rand.Next();
+                        zobristTable[i, j, k] = (r1 << 32) | (uint)r2;
+                    }
+                }
+            }
+        }
+
+        // 현재 보드 상태의 Zobrist 해시 계산
+        private long ComputeZobristHash()
+        {
+            long hash = 0;
+            for (int i = 0; i < BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BOARD_SIZE; j++)
+                {
+                    if (board[i, j] != Constants.PlayerType.None)
+                    {
+                        int pieceIndex = board[i, j] == Constants.PlayerType.PlayerA ? 1 : 2;
+                        hash ^= zobristTable[i, j, pieceIndex];
+                    }
+                }
+            }
+            return hash;
+        }
+
+        // 트랜스포지션 테이블 항목
+        private struct TranspositionEntry
+        {
+            public int Score;
+            public int Depth;
+            public const int EXACT = 0, LOWERBOUND = 1, UPPERBOUND = 2;
+            public int Flag;
+        }
+
+
+
+
+
+
+        // 이기는 수인지 체크 - 훨씬 더 효율적인 구현
+        private bool IsWinningMove(int r, int c, Constants.PlayerType player)
+        {
+            board[r, c] = player;
+            bool isWinning = false;
+
+            foreach (var dir in directions)
+            {
+                int count = 1;
+
+                // 정방향 체크
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
+                {
+                    count++;
+                    nr += dir[0];
+                    nc += dir[1];
+                }
+
+                // 역방향 체크
+                nr = r - dir[0];
+                nc = c - dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
+                {
+                    count++;
+                    nr -= dir[0];
+                    nc -= dir[1];
+                }
+
+                if (count >= 5)
+                {
+                    isWinning = true;
+                    break;
+                }
+            }
+
+            board[r, c] = Constants.PlayerType.None;
+            return isWinning;
+        }
+
+        // 현재 보드 상태에서 승패가 결정되었는지 체크
+        private int CheckWinningPosition()
+        {
+            // 가로, 세로, 대각선 5목 체크 (효율성을 위해 통합됨)
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    Constants.PlayerType cell = board[r, c];
+                    if (cell == Constants.PlayerType.None) continue;
+
+                    foreach (var dir in directions)
+                    {
+                        // 연속된 5개의 돌만 체크 (이미 체크된 돌은 건너뜀)
+                        if (IsValidPosition(r - dir[0], c - dir[1]) &&
+                            board[r - dir[0], c - dir[1]] == cell) continue;
+
+                        int count = 1;
+                        int nr = r + dir[0];
+                        int nc = c + dir[1];
+
+                        while (IsValidPosition(nr, nc) && board[nr, nc] == cell)
                         {
-                            potentialMoves.Add((y, x));
+                            count++;
+                            nr += dir[0];
+                            nc += dir[1];
+                        }
+
+                        if (count >= 5)
+                        {
+                            return cell == Constants.PlayerType.PlayerB ? WIN_SCORE : -WIN_SCORE;
                         }
                     }
                 }
             }
 
-            // 우선순위 높은 곳 먼저 정렬
-            potentialMoves.Sort((a, b) => CalculateMovePriority(a).CompareTo(CalculateMovePriority(b)));
-
-            return potentialMoves;
+            return 0; // 승패 결정되지 않음
         }
 
-        private bool IsNearEnemy(Constants.PlayerType[,] board, int x, int y)
+        // 열린 3인지 체크 (양쪽이 열려있는 3목)
+        private bool HasOpenThree(int r, int c, Constants.PlayerType player)
         {
-            // 주어진 좌표 주변에 적이 있는지 확인
-            int[] directions = { -1, 0, 1 };
-            foreach (var dx in directions)
+            foreach (var dir in directions)
             {
-                foreach (var dy in directions)
+                int count = 1; // 현재 돌 포함
+                bool leftOpen = false;
+                bool rightOpen = false;
+
+                // 왼쪽 체크
+                int nr = r - dir[0];
+                int nc = c - dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
                 {
-                    if (dx == 0 && dy == 0) continue;
-                    int nx = x + dx, ny = y + dy;
-                    if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE)
-                    {
-                        if (board[ny, nx] != Constants.PlayerType.None)
-                            return true;
-                    }
+                    count++;
+                    nr -= dir[0];
+                    nc -= dir[1];
+                }
+
+                // 왼쪽 끝이 열려있는지 체크
+                if (IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None)
+                {
+                    leftOpen = true;
+                }
+
+                // 오른쪽 체크
+                nr = r + dir[0];
+                nc = c + dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
+                {
+                    count++;
+                    nr += dir[0];
+                    nc += dir[1];
+                }
+
+                // 오른쪽 끝이 열려있는지 체크
+                if (IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None)
+                {
+                    rightOpen = true;
+                }
+
+                // count가 3이고, 양쪽 끝이 열린 상태에서, 중간에 빈 칸이 있어도 열린 3목을 찾음
+                if (count == 3 && leftOpen && rightOpen)
+                {
+                    return true;
                 }
             }
+
             return false;
         }
 
-        private int CalculateMovePriority((int, int) move)
+        private bool IsValidPosition(int r, int c)
         {
-            // 위치 우선순위 계산 예시
-            return Mathf.Abs(move.Item1 - (BOARD_SIZE / 2)) + Mathf.Abs(move.Item2 - (BOARD_SIZE / 2));
+            return r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE;
         }
 
-        private bool IsGameOver(Constants.PlayerType[,] simulationBoard, int lastX, int lastY)
+        // 최적화된 평가 함수
+        private int EvaluateBoard()
         {
-            // 최근 두었거나 변경된 곳 주변만 확인
-            for (int i = -1; i <= 1; i++)
+            int score = 0;
+            bool[,] counted = new bool[BOARD_SIZE, BOARD_SIZE];
+
+            // 각 셀에서 시작하는 연속된 돌만 평가 (중복 카운트 방지)
+            for (int r = 0; r < BOARD_SIZE; r++)
             {
-                for (int j = -1; j <= 1; j++)
+                for (int c = 0; c < BOARD_SIZE; c++)
                 {
-                    if (CheckFiveInRow(simulationBoard, lastX + i, lastY + j))
+                    if (counted[r, c]) continue;
+
+                    Constants.PlayerType cell = board[r, c];
+                    if (cell == Constants.PlayerType.None) continue;
+
+                    foreach (var dir in directions)
+                    {
+                        // 이미 체크된 방향인지 확인
+                        if (IsValidPosition(r - dir[0], c - dir[1]) &&
+                            board[r - dir[0], c - dir[1]] == cell) continue;
+
+                        int count = 1;
+                        bool leftOpen = false, rightOpen = false;
+
+                        // 왼쪽이 비어있는지 체크
+                        if (IsValidPosition(r - dir[0], c - dir[1]) &&
+                            board[r - dir[0], c - dir[1]] == Constants.PlayerType.None)
+                        {
+                            leftOpen = true;
+                        }
+
+                        // 연속된 돌 카운트 및 표시
+                        int nr = r + dir[0];
+                        int nc = c + dir[1];
+                        while (IsValidPosition(nr, nc) && board[nr, nc] == cell)
+                        {
+                            counted[nr, nc] = true;
+                            count++;
+                            nr += dir[0];
+                            nc += dir[1];
+                        }
+
+                        // 오른쪽이 비어있는지 체크
+                        if (IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None)
+                        {
+                            rightOpen = true;
+                        }
+
+                        // 열린 상태에 따라 점수 부여
+                        int openFactor = (leftOpen ? 1 : 0) + (rightOpen ? 1 : 0);
+                        int weightFactor = weights[count] * (1 + openFactor);
+
+                        if (cell == Constants.PlayerType.PlayerB)
+                        {
+                            score += weightFactor;
+                            if (count == 4)
+                            {
+                                score += (openFactor > 0) ? FOUR_SCORE * openFactor : FOUR_SCORE / 10;
+                            }
+                            else if (count == 3 && openFactor == 2)
+                            {
+                                score += OPEN_THREE_SCORE;
+                            }
+                        }
+                        else
+                        {
+                            score -= weightFactor;
+                            if (count == 4)
+                            {
+                                score -= (openFactor > 0) ? FOUR_SCORE * openFactor : FOUR_SCORE / 10;
+                            }
+                            else if (count == 3 && openFactor == 2)
+                            {
+                                score -= OPEN_THREE_SCORE;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return score;
+        }
+
+        private bool HasNeighbor(int x, int y)
+        {
+            const int NEIGHBOR_DISTANCE = 2; // 2칸 이내에 돌이 있는지 확인
+
+            for (int dx = -NEIGHBOR_DISTANCE; dx <= NEIGHBOR_DISTANCE; dx++)
+            {
+                for (int dy = -NEIGHBOR_DISTANCE; dy <= NEIGHBOR_DISTANCE; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
+
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (IsValidPosition(nx, ny) && board[nx, ny] != Constants.PlayerType.None)
                         return true;
                 }
             }
             return false;
         }
 
-        private bool CheckFiveInRow(Constants.PlayerType[,] simulationBoard, int x, int y)
-        {
-            Constants.PlayerType player = simulationBoard[y, x];
-            if (player == Constants.PlayerType.None) return false;
 
-            int[][] directions = new int[][]
+        private (int, int) CheckForWinningMove(Constants.PlayerType player)
+        {
+            for (int r = 0; r < BOARD_SIZE; r++)
             {
-            new int[] {1, 0}, new int[] {0, 1}, new int[] {1, 1}, new int[] {1, -1}
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    if (board[r, c] != Constants.PlayerType.None) continue;
+                    if (!HasNeighbor(r, c)) continue; // 주변에 돌이 없으면 건너뛰기
+
+                    if (IsWinningMove(r, c, player))
+                    {
+                        return (r, c);
+                    }
+                }
+            }
+            return (-1, -1);
+        }
+
+
+
+
+
+
+
+
+
+        // 3000 노말 (최대 시간 3초)
+        public (int, int) GetBestMove(int timeLimit = 3000)
+        {
+            // Stopwatch를 사용하여 시간 추적
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            // 즉시 승리 가능한 수를 먼저 확인
+            (int, int) winningMove = CheckForWinningMove(Constants.PlayerType.PlayerB);
+            if (winningMove.Item1 != -1)
+                return winningMove;
+
+            // 즉시 패배를 막는 수를 확인
+            (int, int) blockingMove = CheckForWinningMove(Constants.PlayerType.PlayerA);
+            if (blockingMove.Item1 != -1)
+                return blockingMove;
+
+            // 트랜스포지션 테이블 초기화
+            transpositionTable.Clear();
+
+            // 유효한 이동 가져오기 (히스토리 테이블로 정렬)
+            List<(int, int)> validMoves = GetSortedValidMoves(true);
+
+            if (validMoves.Count == 0)
+            {
+                UnityEngine.Debug.LogError("착수 가능한 위치가 없습니다.");
+                return (-1, -1);
+            }
+
+            // 최선의 이동 계산
+            (int, int) bestMove = validMoves[0];
+            int bestScore = int.MinValue;
+
+            foreach (var move in validMoves)
+            {
+                board[move.Item1, move.Item2] = Constants.PlayerType.PlayerB;
+                int score = AlphaBetaPruningWithTimeLimit(1, int.MinValue, int.MaxValue, false, stopwatch, timeLimit);
+                board[move.Item1, move.Item2] = Constants.PlayerType.None;
+
+                // 히스토리 테이블 업데이트
+                historyTable[move.Item1, move.Item2] += score > 0 ? score : 0;
+
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestMove = move;
+                }
+
+                // 시간 체크
+                if (stopwatch.ElapsedMilliseconds >= timeLimit)
+                {
+                    break; // 시간이 초과되면 탐색 종료
+                }
+            }
+
+            stopwatch.Stop();
+            return bestMove;
+        }
+
+        private int AlphaBetaPruningWithTimeLimit(int depth, int alpha, int beta, bool isMaximizing, Stopwatch stopwatch, int timeLimit)
+        {
+            // 시간이 초과하면 즉시 반환
+            if (stopwatch.ElapsedMilliseconds >= timeLimit)
+            {
+                return EvaluateBoard(); // 평가 함수로 즉시 종료
+            }
+
+            int winCheck = CheckWinningPosition();
+            if (winCheck != 0)
+            {
+                return winCheck * (maxDepth - depth + 1);
+            }
+
+            if (depth >= 4) // 깊이는 고정 4
+            {
+                return EvaluateBoard();
+            }
+
+            long hash = ComputeZobristHash();
+            if (transpositionTable.TryGetValue(hash, out TranspositionEntry entry) && entry.Depth >= 4 - depth)
+            {
+                if (entry.Flag == TranspositionEntry.EXACT)
+                    return entry.Score;
+                else if (entry.Flag == TranspositionEntry.LOWERBOUND)
+                    alpha = Mathf.Max(alpha, entry.Score);
+                else if (entry.Flag == TranspositionEntry.UPPERBOUND)
+                    beta = Mathf.Min(beta, entry.Score);
+
+                if (alpha >= beta)
+                    return entry.Score;
+            }
+
+            List<(int, int)> validMoves = GetSortedValidMoves(isMaximizing);
+
+            int bestScore;
+            int flag = TranspositionEntry.UPPERBOUND;
+
+            if (isMaximizing)
+            {
+                bestScore = int.MinValue;
+
+                foreach (var move in validMoves)
+                {
+                    // 현재 상태 저장 (좌표, 기존 값)
+                    var prevState = board[move.Item1, move.Item2];
+                    board[move.Item1, move.Item2] = Constants.PlayerType.PlayerB;
+                    int score = AlphaBetaPruningWithTimeLimit(depth + 1, alpha, beta, false, stopwatch, timeLimit);
+
+                    board[move.Item1, move.Item2] = prevState;
+
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        if (depth == 0) historyTable[move.Item1, move.Item2] += 1 << (4 - depth);
+                    }
+
+                    alpha = Mathf.Max(alpha, bestScore);
+                    if (beta <= alpha)
+                    {
+                        historyTable[move.Item1, move.Item2] += 1 << (4 - depth + 2);
+                        break;
+                    }
+
+                    // 시간 체크
+                    if (stopwatch.ElapsedMilliseconds >= timeLimit)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                bestScore = int.MaxValue;
+
+                foreach (var move in validMoves)
+                {
+                    var prevState = board[move.Item1, move.Item2];
+                    board[move.Item1, move.Item2] = Constants.PlayerType.PlayerA;
+                    int score = AlphaBetaPruningWithTimeLimit(depth + 1, alpha, beta, true, stopwatch, timeLimit);
+
+                    board[move.Item1, move.Item2] = prevState;
+
+                    if (score < bestScore)
+                    {
+                        bestScore = score;
+                        if (depth == 0) historyTable[move.Item1, move.Item2] += 1 << (4 - depth);
+                    }
+
+                    beta = Mathf.Min(beta, bestScore);
+                    if (beta <= alpha)
+                    {
+                        historyTable[move.Item1, move.Item2] += 1 << (4 - depth + 2);
+                        break;
+                    }
+
+                    // 시간 체크
+                    if (stopwatch.ElapsedMilliseconds >= timeLimit)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (bestScore <= alpha)
+                flag = TranspositionEntry.UPPERBOUND;
+            else if (bestScore >= beta)
+                flag = TranspositionEntry.LOWERBOUND;
+            else
+                flag = TranspositionEntry.EXACT;
+
+            transpositionTable[hash] = new TranspositionEntry
+            {
+                Score = bestScore,
+                Depth = 4 - depth,
+                Flag = flag
             };
 
-            foreach (var dir in directions)
+            return bestScore;
+        }
+
+        // 이동을 히스토리 테이블 점수로 정렬 (좋은 이동부터 탐색)
+        private List<(int, int)> GetSortedValidMoves(bool isMaximizing)
+        {
+            List<(int, int, int)> scoredMoves = new List<(int, int, int)>();
+
+            for (int x = 0; x < BOARD_SIZE; x++)
             {
-                int count = 1;
-                for (int i = 1; i < 5; i++)
+                for (int y = 0; y < BOARD_SIZE; y++)
                 {
-                    int nx = x + dir[0] * i;
-                    int ny = y + dir[1] * i;
-                    if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE || simulationBoard[ny, nx] != player)
-                        break;
-                    count++;
+                    if (board[x, y] == Constants.PlayerType.None && HasNeighbor(x, y))
+                    {
+                        int score = historyTable[x, y];
+
+                        // 간단한 휴리스틱으로 좋은 이동 먼저 평가
+                        Constants.PlayerType player = isMaximizing ? Constants.PlayerType.PlayerB : Constants.PlayerType.PlayerA;
+                        if (IsWinningMove(x, y, player))
+                        {
+                            score += 10000000; // 이기는 수에 가장 높은 우선순위
+                        }
+                        else if (IsWinningMove(x, y, isMaximizing ? Constants.PlayerType.PlayerA : Constants.PlayerType.PlayerB))
+                        {
+                            score += 5000000;  // 방어 수에 다음 우선순위
+                        }
+                        else
+                        {
+                            // 열린 3 체크
+                            board[x, y] = player;
+                            if (HasOpenThree(x, y, player))
+                            {
+                                score += 1000000;
+                            }
+                            board[x, y] = Constants.PlayerType.None;
+                        }
+
+                        scoredMoves.Add((x, y, score));
+                    }
                 }
-                for (int i = 1; i < 5; i++)
-                {
-                    int nx = x - dir[0] * i;
-                    int ny = y - dir[1] * i;
-                    if (nx < 0 || ny < 0 || nx >= BOARD_SIZE || ny >= BOARD_SIZE || simulationBoard[ny, nx] != player)
-                        break;
-                    count++;
-                }
-                if (count >= 5) return true;
             }
-            return false;
+
+            // 점수 기준으로 내림차순 정렬
+            scoredMoves.Sort((a, b) => b.Item3.CompareTo(a.Item3));
+
+
+            List<(int, int)> result = new List<(int, int)>(scoredMoves.Count);
+            foreach (var move in scoredMoves)
+            {
+                result.Add((move.Item1, move.Item2));
+            }
+            return result;
         }
 
-
-
-        // 이하 보류
-
-        // bool enableForbiddenMoves = false; // 금수 적용 여부 (보류)
-
-        /*
-        private bool IsForbiddenMove(int x, int y)
-        {
-            if (!enableForbiddenMoves) return false;
-
-            return IsDoubleThree(x, y) || IsDoubleFour(x, y) || IsOverFive(x, y);
-        }
-
-        private bool IsDoubleThree(int x, int y)
-        {
-            // 삼삼(33) 체크 로직
-            return false;
-        }
-
-        private bool IsDoubleFour(int x, int y)
-        {
-            // 사사(44) 체크 로직
-            return false;
-        }
-
-        private bool IsOverFive(int x, int y)
-        {
-            // 6목 이상(장목) 체크 로직
-            return false;
-        }
-        */
-
-
-
-
-    }
-
-
-    public class MCTSNode
-    {
-        public int x;
-        public int y;
-        public MCTSNode parent;
-        public int winCount = 0;
-        public int visitCount = 0;
     }
 }
+
 
