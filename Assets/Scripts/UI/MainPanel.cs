@@ -81,8 +81,10 @@ public class MainPanel : UI_Panel {
         UI_Manager.Instance.RemoveCallback("UserInfo");
     }
 
+
     void ResfreshUserInfo() {
         //Coin
+        playerData = PlayerManager.Instance.playerData;
         txtCoin.text = playerData.coins.ToString();
         //유저정보 새로고침
         txtUserName.text = $"{playerData.grade}급 {playerData.nickname}";
