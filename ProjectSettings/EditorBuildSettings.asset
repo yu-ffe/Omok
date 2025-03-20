@@ -15,8 +15,6 @@ EditorBuildSettings:
     path: Assets/workspace/Ham6/02 Scenes/Game Scene.unity
     guid: c7db45f45b61bec4492a0785b30620ac
   - enabled: 1
-    path: Assets/workspace/Ham6/02 Scenes/Game Scene(1).unity
-    guid: 4a3d484d6bf53f34ba55ef5681a3670f
     path: Assets/workspace/YU__FFE/Scenes/ServerTestScene.unity
     guid: f91ca351b4d987c44a764e0a38d5adfe
   - enabled: 1
