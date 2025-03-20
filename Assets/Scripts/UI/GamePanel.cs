@@ -30,7 +30,7 @@ public class GamePanel : UI_Panel {
     void Start() {
         if (!isComponentsConnected)
             FindComponents();
-
+        
         UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Game, this);
         UI_Manager.Instance.AddCallback("turn", TurnStateRefresh);
         UI_Manager.Instance.AddCallback("time", TimeRefresh);
