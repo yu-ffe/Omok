@@ -21,8 +21,8 @@ public class MainPanel : UI_Panel {
         StartCoroutine(EnsureUIManagerInitialized());
     
         
-        /*if (!isConnctedCompoenets)
-            FindComponents();*/
+        if (!isConnctedCompoenets)
+            FindComponents();
         
         // 유저 정보를 서버에서 가져온 후 UI 생성, 비동기로 실행
         //StartCoroutine(LoadPlayerDataAndInitializeUI());

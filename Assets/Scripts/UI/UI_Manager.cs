@@ -99,7 +99,8 @@ public class UI_Manager : Singleton<UI_Manager>
 
         if (nowShowingPanelType != PanelType.None)
             Hide(nowShowingPanelType);
-
+        
+        //기존의 메인 패널을 숨기지 않고 새로운 패널 보여주기로 변경 (주석처리)
         Panels[panelKey].Show();
         nowShowingPanelType = panelKey;
     }
