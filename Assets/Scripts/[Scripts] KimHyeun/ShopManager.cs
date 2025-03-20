@@ -111,9 +111,13 @@ public class ShopManager : UI_Panel
         // 코인 아이템이면 코인 지급
         if (isCoinItem[index])
         {
-            int newBalance = PlayerPrefs.GetInt("PlayerCoins", 0) + nums[index];
-            PlayerPrefs.SetInt("PlayerCoins", newBalance);
-            PlayerPrefs.Save();
+            // 기존 코드: PlayerPrefs에만 저장
+            // int newBalance = PlayerPrefs.GetInt("PlayerCoins", 0) + nums[index];
+            // PlayerPrefs.SetInt("PlayerCoins", newBalance);
+            // PlayerPrefs.Save();
+
+            // 변경: PlayerManager를 통해 코인 추가
+            PlayerManager.Instance.AddCoins(nums[index]);
         }
     
         UI_Manager.Instance.popup.Show($"{itemNames[index]} 구매 완료!", "확인");
