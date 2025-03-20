@@ -9,9 +9,8 @@ using UnityEngine.UI;
         public GameObject objPopup;     //root
         public RectTransform rectWindow;//창 크기
         public TextMeshProUGUI textMsg; //child 0
-        public UserScorePopup scoreBoard; // child 1
-        public Button btnOk;            //child 2
-        public Button btnCancel;        //chidl 3
+        public Button btnOk;            //child 1
+        public Button btnCancel;        //chidl 2
         public TextMeshProUGUI textOk;  //child 2 - child 0
         public TextMeshProUGUI textCancel; //chidl 3 - child 0
 
@@ -19,12 +18,19 @@ using UnityEngine.UI;
 
         void Awake()
         {
-            UI_Manager.Instance.popup = this;
+            if (UI_Manager.Instance != null)
+            {
+                UI_Manager.Instance.popup = this;
+            }
+            else
+            {
+                Debug.LogError("UI_Manager가 초기화되지 않았습니다.");
+            }
 
         }
         void Start()
         {
-            UI_Manager.Instance.AddCallback("result", Show_WithScore);
+            //UI_Manager.Instance.AddCallback("result", Show_WithScore);
             gameObject.SetActive(false);
         }
 
@@ -48,15 +54,11 @@ using UnityEngine.UI;
             string msg,  // 메세지
             string okText = null, string cancelText = null, // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
                                                             // //// float width = 600, float height = 600, //창 크기 (삭제)
-            UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
+            UnityAction okAction = null, UnityAction cancelAction = null  )  // 확인,취소 각각 누를시 실행도리 이벤트,
         {
             ShowStartEvent();
 
-            scoreBoard.gameObject.SetActive(false);
-            //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
-
             objPopup.SetActive(true);
-
             textMsg.text = msg;
 
 
@@ -82,7 +84,7 @@ using UnityEngine.UI;
         }
 
 
-        public void Show_WithScore()
+        /*public void Show_WithScore()
         {
             //게임 결과 불러오기
             string result = "승리";// "패배"
@@ -100,7 +102,7 @@ using UnityEngine.UI;
 
             scoreBoard.ShowScore(value);//Next Score X
 
-        }
+        }*/
 
 
         void ShowAskRecord()

@@ -4,6 +4,7 @@ const UserSchema = new mongoose.Schema({
     id: {type: String, required: true, unique: true},
     nickname: { type: String, required: true, unique: true },
     profileNum: { type: Number, default: 1 },
+    profileUrl: { type: String },  // 프로필 이미지 URL 추가
     coins: { type: Number, default: 0 },
     grade: { type: Number, default: 1 },
     rankPoint: { type: Number, default: 0 },

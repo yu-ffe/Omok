@@ -22,7 +22,15 @@ namespace WB
 
         void Awake()
         {
-            UI_Manager.Instance.popup = this;
+            if (UI_Manager.Instance != null)
+            {
+                UI_Manager.Instance.popup = this;
+                Debug.Log("[UI_Popup] Popup이 UI_Manager에 정상적으로 등록됨");
+            }
+            else
+            {
+                Debug.LogError("[UI_Popup] UI_Manager가 초기화되지 않았습니다.");
+            }
 
         }
         void Start()

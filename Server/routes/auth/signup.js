@@ -5,29 +5,29 @@ var router = express.Router();
 
 // 📌 회원가입 처리
 router.post("/", async (req, res) => {
-    console.log("회원가입 요청:", req.body); // 요청 바디 로그
+    console.log("회원가입 요청:", req.body);
     const { id, password, nickname, profileNum } = req.body;
 
     try {
-        // 닉네임 중복 체크
-        const existingUser = await User.findOne({ nickname });
+        // ✅ 중복 아이디 확인
+        const existingUser = await User.findOne({ id });
         if (existingUser) {
-            console.log("이미 존재하는 닉네임:", nickname); // 닉네임 중복 로그
-            return res.status(400).json({ error: "이미 존재하는 닉네임입니다." });
+            return res.status(400).json({ error: "이미 존재하는 아이디입니다. 다른 이메일을 사용하세요." });
         }
 
-        // 새로운 사용자 생성
         let newUser = new User({ id, password, nickname, profileNum });
         await newUser.save();
-        console.log("새로운 사용자 생성됨:", newUser); // 생성된 사용자 정보 로그
+        console.log("새로운 사용자 생성됨:", newUser);
 
-        // 응답 전송
-        res.json({
-            success: true,
-            message: "회원가입 성공",
-        });
+        res.json({ success: true, message: "회원가입 성공" });
     } catch (err) {
-        console.error("회원가입 오류:", err); // 오류 발생 시 로그
+        console.error("회원가입 오류:", err);
+
+        // ✅ MongoDB 중복 키 오류 (E11000) 처리
+        if (err.code === 11000) {
+            return res.status(400).json({ error: "이미 존재하는 아이디입니다. 다른 이메일을 사용하세요." });
+        }
+
         res.status(500).json({ error: "회원가입 중 오류 발생" });
     }
 });

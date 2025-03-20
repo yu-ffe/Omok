@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using WB;
-
 
 public class ShopManager : UI_Panel
 {
@@ -51,17 +49,17 @@ public class ShopManager : UI_Panel
     
     public override void Show()
     {
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
 
         gameObject.SetActive(true);
-        //RefreshShopItems();
+        RefreshShopItems();
         UpdateShopItems();
     }
 
     public override void Hide()
     {
         gameObject.SetActive(false);
-        UI_Manager.Instance.panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
     }
 
     public override void OnEnable() { }
@@ -89,26 +87,38 @@ public class ShopManager : UI_Panel
 
     public bool BuyCoin(int index)
     {
-        bool paymentSuccess = ProcessPayment(prices[index]);
-
-        if (paymentSuccess)
+        if (!UI_Manager.Instance.popup)
         {
-            if (isCoinItem[index])
-            {
-                // TODO: 구매 관련은 서버에서 동작하는게 좋을듯.
-                // PlayerData playerData = SessionManager.GetSession(SessionManager.currentUserId);
-                // playerData.coins += nums[index];
-                // SessionManager.UpdateSession(SessionManager.currentUserId, userSession.Coins, userSession.Grade, userSession.RankPoint);
-            }
-            else
-            {
-                GrantSpecialItem(index);
-            }
-
-            return true; // 구매 성공
+            Debug.LogError("UI_Manager.Instance.popup이 null입니다. 팝업을 생성하거나 등록하세요.");
+            return false;
         }
 
-        return false; // 구매 실패
+        UI_Manager.Instance.popup.Show(
+            $"{itemNames[index]}을(를) 구매하시겠습니까?",
+            "구매", "취소",
+            okAction: () => ConfirmPurchase(index),
+            cancelAction: () => UI_Manager.Instance.popup.Show
+                ($"{itemNames[index]} 구매를 취소하였습니다.", "확인")
+        );
+
+        return true;
+    }
+    
+    // 구매 확정 처리
+    private void ConfirmPurchase(int index)
+    {
+        if (isCoinItem[index])
+        {
+            // 기존 코드: PlayerPrefs에만 저장
+            // int newBalance = PlayerPrefs.GetInt("PlayerCoins", 0) + nums[index];
+            // PlayerPrefs.SetInt("PlayerCoins", newBalance);
+            // PlayerPrefs.Save();
+
+            // 🔥 변경: PlayerManager를 통해 코인 추가
+            PlayerManager.Instance.AddCoins(nums[index]);
+        }
+    
+        UI_Manager.Instance.popup.Show($"{itemNames[index]} 구매 완료!", "확인");
     }
     
     /// <summary>
@@ -116,6 +126,12 @@ public class ShopManager : UI_Panel
     /// </summary>
     private void GrantSpecialItem(int index)
     {
+        if (!UI_Manager.Instance.popup)
+        {
+            Debug.LogError("UI_Manager.Instance.popup이 null입니다. 팝업을 생성하거나 등록하세요.");
+            return;
+        }
+        
         switch (index)
         {
             case 3:

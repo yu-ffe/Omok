@@ -8,47 +8,51 @@ using TMPro;
 public class SignInHandler : Singleton<SignInHandler> {
     private const string AutoLoginEnabledKey = "AutoLoginEnabledKey";
 
-    public (bool, string) TrySignIn(string id, string password) {
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
-            return (false, "아이디와 비밀번호를 모두 입력하세요.");
-        }
-
-        bool isSuccess = false;
-        string message = "로그인 실패";
-
-        SignIn(id, password, (b, s) => {
-            isSuccess = b;
-            message = s;
-        });
-
-        return (isSuccess, message);
-    }
-
     public void TrySignIn(string id, string password, Action<bool, string> callback) {
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
             callback(false, "아이디와 비밀번호를 모두 입력하세요.");
             return;
         }
+ 
         SignIn(id, password, callback);
     }
 
+
     private void SignIn(string id, string pwd, Action<bool, string> callback) {
-        string password = EncryptPassword(pwd);
+        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pwd)) {
+            Debug.LogError(" SignIn 실패: ID 또는 비밀번호가 비어 있음");
+            callback(false, "ID 또는 비밀번호가 올바르지 않습니다.");
+            return;
+        }
+        
+        // string password = EncryptPassword(pwd ?? "");
+        string password = pwd;
+        
         PlayerManager.Instance.playerData.SetPrivateData(id, password);
+        Debug.Log(id + " " + password);
 
         StartCoroutine(NetworkManager.SignInRequest(response => {
-            if (response != null) {
-                SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
-                NetworkManager.GetUserInfoRequest(data => {
-                    if (data != null) {
-                        UpdateUserData(data);
-                    }
-                });
+            Debug.Log("SignInRequest response: " + response);
+            if (response == null) {
+                callback(false, "서버 응답이 없습니다.");
+                return;
             }
-            callback(response != null, response?.Message);
-        }));
 
-        PlayerManager.Instance.playerData.ClearPrivateData();
+            SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
+            Debug.Log("SignInRequest response.RefreshToken: " + response.RefreshToken);
+            Debug.Log("SignInRequest response.AccessToken: " + response.AccessToken);
+
+            StartCoroutine(NetworkManager.GetUserInfoRequest(data => {
+                Debug.Log("GetUserInfoRequest data: " + data);
+                if (data != null) {
+                    UpdateUserData(data);
+                    callback(true, "로그인 성공");
+                }
+                else {
+                    callback(false, "유저 정보를 가져오지 못했습니다.");
+                }
+            }));
+        }));
     }
 
     private void UpdateUserData(PlayerDataResponse dataResponse) {
@@ -101,7 +105,8 @@ public class SignInHandler : Singleton<SignInHandler> {
                     callback?.Invoke(false, "토큰 갱신 실패");
                 }
             }));
-        } else {
+        }
+        else {
             callback?.Invoke(false, "로그인 정보 없음");
         }
     }

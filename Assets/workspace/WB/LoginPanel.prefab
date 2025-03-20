@@ -173,8 +173,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1806491716631091177}
-        m_TargetAssemblyTypeName: WB.LoginPanel, Assembly-CSharp
+      - m_Target: {fileID: 7238000350518474300}
+        m_TargetAssemblyTypeName: LoginPanel, Assembly-CSharp
         m_MethodName: OnClick_PrifileImage
         m_Mode: 3
         m_Arguments:
@@ -1751,8 +1751,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1806491716631091177}
-        m_TargetAssemblyTypeName: WB.LoginPanel, Assembly-CSharp
+      - m_Target: {fileID: 7238000350518474300}
+        m_TargetAssemblyTypeName: LoginPanel, Assembly-CSharp
         m_MethodName: OnClick_PrifileImage
         m_Mode: 3
         m_Arguments:
@@ -2093,8 +2093,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1806491716631091177}
-        m_TargetAssemblyTypeName: WB.LoginPanel, Assembly-CSharp
+      - m_Target: {fileID: 7238000350518474300}
+        m_TargetAssemblyTypeName: LoginPanel, Assembly-CSharp
         m_MethodName: OnClick_PrifileImage
         m_Mode: 3
         m_Arguments:
@@ -2532,7 +2532,7 @@ GameObject:
   - component: {fileID: 2305509465347757477}
   - component: {fileID: 8863101032253896344}
   - component: {fileID: 8284018229363473142}
-  - component: {fileID: 1806491716631091177}
+  - component: {fileID: 7238000350518474300}
   m_Layer: 5
   m_Name: LoginPanel
   m_TagString: Untagged
@@ -2598,7 +2598,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1806491716631091177
+--- !u!114 &7238000350518474300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2607,7 +2607,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6709342169407525412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d00e02daff81a4f2aaf056cccafb4a94, type: 3}
+  m_Script: {fileID: 11500000, guid: 5efbecd4760c3bc4bb0b78fa4e1bfe9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelType: 1
@@ -2623,15 +2623,15 @@ MonoBehaviour:
   txtButtonUpper: {fileID: 2208314719524783861}
   txtButtonLower: {fileID: 2140237948335618165}
   profileImages:
-  - {fileID: 5258586929300681126}
-  - {fileID: 8705592977134640394}
-  - {fileID: 3949859735345468216}
-  - {fileID: 7470855960302072177}
+  - {fileID: 1788480377504710508}
+  - {fileID: 2117596122697687027}
+  - {fileID: 2696561548805723250}
+  - {fileID: 4039061863235566907}
   profileSprites:
-  - {fileID: 21300000, guid: 7aa20ab9ca0005743ab1a6aba9d0786c, type: 3}
-  - {fileID: 21300000, guid: 0dc1f78827db36e46866721a9201068b, type: 3}
-  - {fileID: 21300000, guid: f7c43e111f051f244ba06ecdc03bdac8, type: 3}
-  - {fileID: 21300000, guid: 9ba8231f789e09a48a714fa9afe41ad0, type: 3}
+  - {fileID: 21300000, guid: 8377019360d319a49b0380eb1785a62f, type: 3}
+  - {fileID: 21300000, guid: 1465a0f8fab307e47b0eac3ef5b8ebf9, type: 3}
+  - {fileID: 21300000, guid: f447cc359f2060f45bb6f89190feabfb, type: 3}
+  - {fileID: 21300000, guid: d473712dfae66294984433c697fe7363, type: 3}
 --- !u!1 &7058183538081440504
 GameObject:
   m_ObjectHideFlags: 0
@@ -2887,8 +2887,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1806491716631091177}
-        m_TargetAssemblyTypeName: WB.LoginPanel, Assembly-CSharp
+      - m_Target: {fileID: 7238000350518474300}
+        m_TargetAssemblyTypeName: LoginPanel, Assembly-CSharp
         m_MethodName: OnClick_PrifileImage
         m_Mode: 3
         m_Arguments:

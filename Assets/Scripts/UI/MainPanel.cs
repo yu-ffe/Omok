@@ -17,11 +17,27 @@ public class MainPanel : UI_Panel {
     bool isConnctedCompoenets = false;
 
     void Start() {
+        
+        StartCoroutine(EnsureUIManagerInitialized());
+    
+        
         if (!isConnctedCompoenets)
             FindComponents();
         
         // 유저 정보를 서버에서 가져온 후 UI 생성, 비동기로 실행
-        StartCoroutine(LoadPlayerDataAndInitializeUI());
+        //StartCoroutine(LoadPlayerDataAndInitializeUI());
+    }
+    
+    // ReSharper disable Unity.PerformanceAnalysis
+    private IEnumerator EnsureUIManagerInitialized()
+    {
+        while (!UI_Manager.Instance)
+        {
+            yield return null; // UI_Manager가 초기화될 때까지 대기
+        }
+
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Main, this);
+        gameObject.SetActive(false);
     }
 
     private IEnumerator LoadPlayerDataAndInitializeUI() {
@@ -65,8 +81,10 @@ public class MainPanel : UI_Panel {
         UI_Manager.Instance.RemoveCallback("UserInfo");
     }
 
+
     void ResfreshUserInfo() {
         //Coin
+        playerData = PlayerManager.Instance.playerData;
         txtCoin.text = playerData.coins.ToString();
         //유저정보 새로고침
         txtUserName.text = $"{playerData.grade}급 {playerData.nickname}";
@@ -75,14 +93,33 @@ public class MainPanel : UI_Panel {
         // imgUserPortrait.sprite = SessionManager.ProfileSprites[playerData.profileNum];
     }
 
+    
+    private void StartSinglePlay()
+    {
+        UI_Manager.Instance.popup.Show(
+            "싱글플레이를 시작하시겠습니까?",
+            "시작", "취소",
+            okAction: () => SceneManager.Instance.LoadScene("SingleGame"),
+            cancelAction: () => UI_Manager.Instance.popup.Show("싱글플레이를 취소하였습니다.", "확인")
+        );
+    }
+
+    private void StartMultiPlay()
+    {
+        UI_Manager.Instance.popup.Show(
+            "멀티플레이를 시작하시겠습니까?",
+            "시작", "취소",
+            okAction: () => SceneManager.Instance.LoadScene("MultiGame"),
+            cancelAction: () => UI_Manager.Instance.popup.Show("멀티플레이를 취소하였습니다.", "확인")
+        );
+    }
 
 
     public void OnClick_Menu(int idx) {
         switch (idx) {
             case 0:
-                Debug.Log("대국 시작");
-                // UI_Manager.Instance.Show(UI_Manager.PanelType.Game);
-                SceneManager.Instance.LoadScene("Game");
+                Debug.Log("대국 시작"); // 싱글플레이인지 멀티플레이인지 선택하는 팝업뜸
+                UI_Manager.Instance.Show(UI_Manager.PanelType.GameSelect);
                 break;
             case 1:
                 Debug.Log("내 기보");
