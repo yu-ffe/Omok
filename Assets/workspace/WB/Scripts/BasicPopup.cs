@@ -9,6 +9,7 @@ namespace WB
     public class BasicPopup : UI_Popup
     {
         bool isComponentConnected;
+        
         public override void ShowStartEvent()
         {
             Debug.Log($"Show Start Event {gameObject.name} = Component Check");

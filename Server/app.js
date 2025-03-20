@@ -6,10 +6,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var session = require("express-session");
+var cors = require("cors"); // cors 모듈 추가
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-var authRouter = require("./routes/auth");
 
 var app = express();
 
@@ -30,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static("public")); // 정적 파일 제공
+
 
 // 📌 캐시 방지 설정 (브라우저가 항상 최신 HTML 요청) ✅ **위치 이동**
 app.use((req, res, next) => {
@@ -54,10 +53,31 @@ app.use((req, res, next) => {
   next();
 });
 
+var indexRouter = require("./routes/index");
+var userRouter = require("./routes/user");
+var authRouter = require("./routes/auth");
+var signupRouter = require("./routes/auth/signup");
+var signinRouter = require("./routes/auth/signin");
+var signoutRouter = require("./routes/auth/signout");
+var gameResultRouter = require("./routes/game/result");
+var userInfoRouter = require("./routes/user/info");
+var userProfileRouter = require("./routes/user/profile");
+var uploadProfileRouter = require("./routes/user/uploadProfile");
+console.log("uploadProfileRouter:", uploadProfileRouter); // 🚨 올바른 Router 객체인지 확인
+
 // 📌 라우트 설정
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/auth", authRouter);
+app.use("/user", userRouter);
+app.use("/auth", authRouter); 
+app.use("/auth/signup", signupRouter);
+app.use("/auth/signin", signinRouter); 
+app.use("/auth/signout", signoutRouter); 
+app.use("/game/result", gameResultRouter); 
+app.use("/user/info", userInfoRouter); 
+app.use("/user/profile", userProfileRouter); 
+app.use("/api/upload_profile", uploadProfileRouter);
+
+
 
 // 📌 404 에러 핸들링
 app.use(function (req, res, next) {

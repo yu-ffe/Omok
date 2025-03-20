@@ -4,13 +4,15 @@ using KimHyeun;
 using UnityEngine;
 using WB;
 
+namespace Wb {
+    
 public class ShopPanel : WB.UI_Panel
 {
     public ScrollViewSet scrollView;
 
     void Start()
     {
-        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Shop, this);
+        WB.UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Shop, this);
         gameObject.SetActive(false);
     }
     public override void Show()
@@ -34,5 +36,7 @@ public class ShopPanel : WB.UI_Panel
     {
     }
     public void OnClick_Back() => UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+
+}
 
 }

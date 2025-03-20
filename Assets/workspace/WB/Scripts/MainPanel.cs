@@ -14,7 +14,7 @@ namespace WB
         public Image imgUserPortrait;
         public TextMeshProUGUI txtUserName;
 
-        UserSession UserData => SessionManager.GetSession(SessionManager.currentUserId);
+        UserSession UserData => Wb.SessionManager.GetSession(Wb.SessionManager.currentUserId);
         bool isConnctedCompoenets = false;
 
         void Start()
@@ -71,7 +71,7 @@ namespace WB
             //유저정보 새로고침
             txtUserName.text = $"{UserData.Grade}급 {UserData.Nickname}";
 
-            imgUserPortrait.sprite = SessionManager.ProfileSprites[UserData.ProfileNum];
+            imgUserPortrait.sprite = Wb.SessionManager.ProfileSprites[UserData.ProfileNum];
         }
 
 

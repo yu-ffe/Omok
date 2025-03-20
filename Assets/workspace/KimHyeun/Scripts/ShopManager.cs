@@ -36,13 +36,6 @@ namespace KimHyeun {
             userSession.Coins = userSession.Coins + nums[index];
 
             SessionManager.UpdateSession(SessionManager.currentUserId, userSession.Coins, userSession.Grade, userSession.RankPoint);
-
-
-            /* // 테스트 코드
-            UserSession userSession = SessionManager.GetSession(SessionManager.GetAllUserIds()[0]);    
-            userSession.Coins = userSession.Coins + nums[index];
-            SessionManager.UpdateSession(SessionManager.GetAllUserIds()[0], userSession.Coins, userSession.Grade, userSession.RankPoint);
-            */
         }
 
 
@@ -120,40 +113,6 @@ namespace KimHyeun {
 
 
 
-        /*
-
-        private static ShopManager _instance;
-
-        public static ShopManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = FindObjectOfType<ShopManager>();
-                    if (_instance == null)
-                    {
-                        GameObject obj = new GameObject();
-                        obj.name = typeof(ShopManager).Name;
-                        _instance = obj.AddComponent<ShopManager>();
-                    }
-                }
-                return _instance;
-            }
-        }
-
-        private void Awake()
-        {
-            if (_instance == null)
-            {
-                _instance = this as ShopManager;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
-        }*/
     }
 }
 

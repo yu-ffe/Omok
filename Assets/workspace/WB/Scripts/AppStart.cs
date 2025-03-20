@@ -1,3 +1,4 @@
+using Wb;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,23 @@ namespace WB
 
         void Awake()
         {
-            SessionManager.LoadAllSessions();
+            Wb.SessionManager.LoadAllSessions();
         }
         void Start()
         {
             //앱 초기 세팅
             Debug.Log("App Start");
-            AutoLogin.LastLoginUserCall();
+
+            PlayerPrefs.Save();
+            
+            if (AutoLogin.GetAutoLogin())
+            {
+                AutoLogin.LastLoginUserCall();
+            }
+            else
+            {
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+            }
             gameObject.SetActive(false);
         }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using WB;
 
+namespace Wb {
+    
 public class WBTest : MonoBehaviour
 {
 
@@ -35,4 +37,6 @@ public class WBTest : MonoBehaviour
     {
         UI_Manager.Instance.Show(panelType);
     }
+}
+
 }

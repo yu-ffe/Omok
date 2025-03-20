@@ -5,6 +5,7 @@ using UnityEngine;
 using WB;
 using workspace.YU__FFE.Scripts;
 
+namespace Wb {
 public class RankingPanel : WB.UI_Panel
 {
     public ScrollViewSet scrollView;
@@ -12,7 +13,7 @@ public class RankingPanel : WB.UI_Panel
 
     void Start()
     {
-        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Ranking, this);
+        WB.UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Ranking, this);
         gameObject.SetActive(false);
     }
 
@@ -38,4 +39,7 @@ public class RankingPanel : WB.UI_Panel
 
     public void OnClick_Back() => UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
 
+}
+
+    
 }
