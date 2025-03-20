@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
 <<<<<<< Updated upstream
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Omok/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/LastPositionMarker.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/PositionSelecor.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/01 Prefabs/XMark.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/Constants.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/GameLogic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/Game/OmokBoard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/workspace/Ham6/03 Sctipts/RuleCheckers.cs" afterDir="false" />
     </list>
 =======
     <list default="true" id="ae931ea7-c2c7-40d0-bea2-f8348e1e695b" name="변경" comment="" />
@@ -131,7 +123,7 @@
       <workItem from="1741934865966" duration="301000" />
       <workItem from="1742094453598" duration="686000" />
       <workItem from="1742256876497" duration="27234000" />
-      <workItem from="1742343181380" duration="37839000" />
+      <workItem from="1742343181380" duration="43047000" />
     </task>
     <servers />
   </component>

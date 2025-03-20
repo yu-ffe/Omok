@@ -89,6 +89,15 @@ public class PlayerState : BasePlayerState
     public override void OnExit(GameLogic gameLogic)
     {
         gameLogic.OmokBoard.OnOnGridClickedDelegate = null;
+        if (Constants.PlayerType.PlayerB == gameLogic.GetCurrentPlayerType())
+        {
+            gameLogic.OmokBoard.ShowXMarker();
+        }
+        
+        if (Constants.PlayerType.PlayerA == gameLogic.GetCurrentPlayerType())
+        {
+            gameLogic.OmokBoard.RemoveXmarker();
+        }
     }
 
     // 돌을 놓는 동작 처리
@@ -127,7 +136,7 @@ public class AIState : BasePlayerState
     {
         HamAI hamAI = new HamAI(gameLogic.GetBoard());
 
-        hamAI.maxDepth = 4;
+        hamAI.maxDepth = 1;
 
         // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
         var move = hamAI.GetBestMove();
@@ -146,6 +155,7 @@ public class AIState : BasePlayerState
 
     public override void OnExit(GameLogic gameLogic)
     {
+        gameLogic.OmokBoard.ShowXMarker();
     }
 
     public override void HandleMove(GameLogic gameLogic, int row, int col)
@@ -289,22 +299,8 @@ public class GameLogic : IDisposable
     public void SetState(BasePlayerState state)
     {
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
-        
-        if (Constants.PlayerType.PlayerB == GetCurrentPlayerType())
-        {
-            OmokBoard.ShowXMarker();
-        }
-        
-        if (Constants.PlayerType.PlayerA == GetCurrentPlayerType())
-        {
-            OmokBoard.RemoveXmarker();
-        }
-        
         _currentPlayerState = state;
-        
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
-        
-        
     }
 
     public Constants.PlayerType GetCurrentPlayerType()
