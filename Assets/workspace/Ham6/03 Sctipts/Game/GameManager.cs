@@ -5,67 +5,60 @@ using UnityEngine.SceneManagement;
 using workspace.Ham6._03_Sctipts.Game;
 
 namespace MyNamespace {
-    
-public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
-{
-    public Text timerText; // UI 타이머 텍스트
-    public float timer = 30.0f; // 기본 타이머 값 
-    public float currentTime = 30.0f; // 현재 남은 시간
-    
-    private Canvas _canvas;
-    private Constants.GameType _gameType;
-    private GameLogic _gameLogic;
 
-    public GameLogic GameLogicInstance => _gameLogic;
-    
-    // UI 타이머 업데이트 함수
-    public void UpdateTimerUI()
-    {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
-        timerText.text = string.Format("{0:00} : {1:000}", timeSpan.Seconds, timeSpan.Milliseconds);
-    }
-    
-    public void ChangeToGameScene(Constants.GameType gameType)
-    {
-        _gameType = gameType;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
-    }
-    
-    public void ChangeToMainScene()
-    {
-        _gameLogic?.Dispose();
-        _gameLogic = null;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Scene");
-    }
-    
-    protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == "Game Scene")
-        {
-            // 씬에 배치된 오브젝트 찾기 (BlockContorller, GameUIController)
-            var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
-            
-            //_gameUIController = GameObject.FindObjectOfType<GameUIController>();
-            
-            // TODO: 오목판 초기화
-            //blockController.InitBlocks();
-            
-            // Game UI 초기화
-           // _gameUIController.SetGameUIMode(GameUIController.GameUIMode.Init);
-            
-            // Game Logic 객체 생성
-            if (_gameLogic != null) _gameLogic.Dispose();
-            Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            _gameLogic = new GameLogic(omokBoard, _gameType);
+    public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager> {
+        public Text timerText; // UI 타이머 텍스트
+        public float timer = 30.0f; // 기본 타이머 값 
+        public float currentTime = 30.0f; // 현재 남은 시간
+
+        private Canvas _canvas;
+        private Constants.GameType _gameType;
+        private GameLogic _gameLogic;
+
+        public GameLogic GameLogicInstance => _gameLogic;
+
+        // UI 타이머 업데이트 함수
+        public void UpdateTimerUI() {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
+            timerText.text = string.Format("{0:00} : {1:000}", timeSpan.Seconds, timeSpan.Milliseconds);
         }
-        
-        _canvas = GameObject.FindObjectOfType<Canvas>();
-    }
 
-    private void OnApplicationQuit()
-    {
-        _gameLogic?.Dispose();
-        _gameLogic = null;
+        public void ChangeToGameScene(Constants.GameType gameType) {
+            _gameType = gameType;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
+        }
+
+        public void ChangeToMainScene() {
+            _gameLogic?.Dispose();
+            _gameLogic = null;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Main Scene");
+        }
+
+        protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            if (scene.name == "Game Scene") {
+                // 씬에 배치된 오브젝트 찾기 (BlockContorller, GameUIController)
+                var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
+
+                //_gameUIController = GameObject.FindObjectOfType<GameUIController>();
+
+                // TODO: 오목판 초기화
+                //blockController.InitBlocks();
+
+                // Game UI 초기화
+                // _gameUIController.SetGameUIMode(GameUIController.GameUIMode.Init);
+
+                // Game Logic 객체 생성
+                if (_gameLogic != null) _gameLogic.Dispose();
+                Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
+                _gameLogic = new GameLogic(omokBoard, _gameType);
+            }
+
+            _canvas = GameObject.FindObjectOfType<Canvas>();
+        }
+
+        private void OnApplicationQuit() {
+            _gameLogic?.Dispose();
+            _gameLogic = null;
+        }
     }
-}
 }

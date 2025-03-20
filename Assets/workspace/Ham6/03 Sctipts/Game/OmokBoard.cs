@@ -8,6 +8,8 @@ using UnityEngine.UI;
 using workspace.Ham6._03_Sctipts;
 using workspace.Ham6._03_Sctipts.Game;
 
+namespace MyNamespace {
+    
 public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private RectTransform boardImage; // 바둑판 UI 이미지 (현재 크기)
@@ -384,4 +386,6 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             Debug.Log($"델리게이트 없음");
         }
     }
+}
+
 }

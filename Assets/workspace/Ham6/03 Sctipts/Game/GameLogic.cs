@@ -10,6 +10,8 @@ using workspace.Ham6._03_Sctipts.Game;
 using workspace.Ham6.AI;
 using Update = Unity.VisualScripting.Update;
 
+namespace MyNamespace {
+    
 public abstract class BasePlayerState
 {
     // 상태에 진입할 때 실행
@@ -452,4 +454,5 @@ public class GameLogic : IDisposable
         _multiplayManager?.Dispose();
         */
     }
+}
 }
