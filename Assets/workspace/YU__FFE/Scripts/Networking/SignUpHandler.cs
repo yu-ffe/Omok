@@ -6,86 +6,19 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine.UI;
+using workspace.YU__FFE.Scripts.Commons;
 
 namespace YU_FFEE {
     public class SignUpHandler : Singleton<SignUpHandler> {
 
-        // 이 타입은 임시. 코드에 맞추기 위함.
-        public (bool, string) TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex) {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
-                string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname)) {
-                return (false, "모든 항목을 입력하세요.");
-            }
-
-            // 이메일 형식 검사는 주석 처리됨
-            // if (!IsEmailFormat(id)) {
-            //     return (false, "올바른 이메일 형식이 아닙니다.");
-            // }
-
-            // 비밀번호 유효성 검사는 주석 처리됨
-            // if (!IsPasswordValid(password)) {
-            //     return (false, "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
-            // }
-
-            bool isSuccess = false;
-            string message = "로그인 실패";
-
-            if (!CheckPasswordMatch(password, passwordCheck)) {
-                return (false, "비밀번호가 일치하지 않습니다.");
-            }
-
-            Debug.Log("아이디 중복 확인");
-            CheckIdAvailability(id,
-                (b, s) => {
-                    isSuccess = b;
-                    message = s;
-                });
-            if (!isSuccess) {
-                return (false, message);
-            }
-
-            CheckNicknameAvailability(nickname,
-                (b, s) => {
-                    isSuccess = b;
-                    message = s;
-                });
-            if (!isSuccess) {
-                return (false, message);
-            }
-
-            SignUp(id,
-                password,
-                nickname,
-                imgIndex,
-                (b, s) => {
-                    isSuccess = b;
-                    message = s;
-                });
-            return (isSuccess, message);
-        }
-
-
-
-        public void TrySignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password) ||
-                string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(nickname)) {
-                callback(false, "모든 항목을 입력하세요.");
-                return;
-            }
-
-            // 이메일 형식 제거 -> id 변수값에 맞춰서 다 만들어서 변수명 다 바꾸기 어려움 (서버포함)
-            // 나중에 가능할때 다시 수정
-            // 이메일 형식 확인
-            // if (!IsEmailFormat(id)) {
-            //     callback(false, "올바른 이메일 형식이 아닙니다.");
-            //     return;
-            // }
-
-            //이거는 테스트 후 사용
-            // if (!IsPasswordValid(password)) {
-            //     callback(false, "비밀번호는 8자 이상, 영문, 숫자, 특수문자를 포함해야 합니다.");
-            //     return;
-            // }
+        public void AttemptSignUp(string id, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
+           
+            if (!ValidationManager.Validate("email", id, callback)) return;
+            if (!ValidationManager.Validate("password", password, callback)) return;
+            if(!ValidationManager.ValidatePasswordMatch(password, passwordCheck, callback)) return;
+            if (!ValidationManager.Validate("nickname", nickname, callback)) return;
+            
+            UtilityManager.EncryptPassword(ref password);
 
             if (!CheckPasswordMatch(password, passwordCheck)) {
                 callback(false, "비밀번호가 일치하지 않습니다.");

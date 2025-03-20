@@ -1,5 +1,5 @@
 namespace Commons.Models {
-    public class UserDataResponse {
+    public class PlayerDataResponse {
         public string Nickname;
         public int ProfileNum;
         public int Coins;
@@ -8,7 +8,7 @@ namespace Commons.Models {
         public int WinCount;
         public int LoseCount;
 
-        public UserDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount, int loseCount) {
+        public PlayerDataResponse(string nickname, int profileNum, int coins, int grade, int rankPoint, int winCount, int loseCount) {
             this.Nickname = nickname;
             this.ProfileNum = profileNum;
             this.Coins = coins;
