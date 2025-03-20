@@ -19,7 +19,14 @@ using UnityEngine.UI;
 
         void Awake()
         {
-            UI_Manager.Instance.popup = this;
+            if (UI_Manager.Instance != null)
+            {
+                UI_Manager.Instance.popup = this;
+            }
+            else
+            {
+                Debug.LogError("UI_Manager가 초기화되지 않았습니다.");
+            }
 
         }
         void Start()
@@ -48,15 +55,18 @@ using UnityEngine.UI;
             string msg,  // 메세지
             string okText = null, string cancelText = null, // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
                                                             // //// float width = 600, float height = 600, //창 크기 (삭제)
-            UnityAction okAction = null, UnityAction cancelAction = null)   // 확인,취소 각각 누를시 실행도리 이벤트,
+            UnityAction okAction = null, UnityAction cancelAction = null    // 확인,취소 각각 누를시 실행도리 이벤트,
+            ,bool useScoreBoard = false)  // scoreBoard 사용 여부 추가
         {
             ShowStartEvent();
 
-            scoreBoard.gameObject.SetActive(false);
+            if (scoreBoard)
+            {
+                scoreBoard.gameObject.SetActive(false);
+            }
             //상속받은 컴포넌트에서 추가적인 코드 필요시 실행
 
             objPopup.SetActive(true);
-
             textMsg.text = msg;
 
 

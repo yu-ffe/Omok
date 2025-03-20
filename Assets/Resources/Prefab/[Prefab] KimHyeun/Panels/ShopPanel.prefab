@@ -121,7 +121,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5655749105322141456}
   m_Direction: 0
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6546030818664446814}
   m_HandleRect: {fileID: 6729874233499381040}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -664,7 +664,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00011265695}
+  m_AnchoredPosition: {x: 0, y: -0.0000082600045}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &4024578836779456945
@@ -1000,16 +1000,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelType: 5
   scrollViewSet: {fileID: 0}
-  itemSprites: []
+  itemSprites:
+  - {fileID: 21300000, guid: 88a96c5a97780c04aafdf4feae4e9e77, type: 3}
+  - {fileID: 21300000, guid: 88a96c5a97780c04aafdf4feae4e9e77, type: 3}
+  - {fileID: 21300000, guid: 88a96c5a97780c04aafdf4feae4e9e77, type: 3}
+  - {fileID: 21300000, guid: 8b3f63648a9f4a34c8a326b14d3d82a3, type: 3}
+  - {fileID: 21300000, guid: 6e9be0898467fd243854fea28501f930, type: 3}
+  - {fileID: 21300000, guid: 1b55e3ce86df4bf47a8126c6c77d4714, type: 3}
+  - {fileID: 21300000, guid: 477ebb97d46af6648a9b17a8983e076f, type: 3}
+  - {fileID: 21300000, guid: 38e177e762b6ce04f90797f0912702ab, type: 3}
   itemNames:
-  - Small Coin Pack
-  - Medium Coin Pack
-  - Large Coin Pack
-  - Match Win Rate Analysis Ticket
-  - Ranking Score Protection Ticket
-  - Premium Profile Icon
-  - Exclusive Chat Theme
-  - Special Event Entry Ticket
+  - "\uC18C\uD615 \uCF54\uC778 \uD329"
+  - "\uC911\uD615 \uCF54\uC778 \uD329"
+  - "\uB300\uD615 \uCF54\uC778 \uBC31"
+  - "\uACBD\uAE30 \uC2B9\uB960 \uBD84\uC11D\uAD8C"
+  - "\uB7AD\uD0B9 \uC810\uC218 \uBCF4\uD638\uAD8C"
+  - "\uD504\uB9AC\uBBF8\uC5C4 \uD504\uB85C\uD544 \uC544\uC774\uCF58"
+  - "\uD2B9\uBCC4\uD55C \uCC44\uD305 \uD14C\uB9C8"
+  - "\uD2B9\uBCC4 \uC774\uBCA4\uD2B8 \uCC38\uAC00"
   nums: 64000000f4010000e80300000000000000000000000000000000000000000000
   prices: e80300009411000034210000b80b000088130000d00700009411000070170000
   isCoinItem: 0101010000000000
