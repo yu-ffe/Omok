@@ -20,7 +20,8 @@ namespace workspace.YU__FFE.Scripts.Networking {
             StartCoroutine(SignIn(id, password, callback));
         }
 
-        private IEnumerator SignIn(string id, string password, Action<bool, string> callback) {
+        // ReSharper disable Unity.PerformanceAnalysis
+        private static IEnumerator SignIn(string id, string password, Action<bool, string> callback) {
 
             PlayerManager.Instance.playerData.SetPrivateData(id, password);
 
@@ -41,7 +42,6 @@ namespace workspace.YU__FFE.Scripts.Networking {
         public IEnumerator AttemptAutoLogin(Action<bool, string> callback) {
             
             if (!GetAutoLoginEnabled()) {
-                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
                 callback(false, "자동 로그인 비활성화");
                 yield break;
             }
@@ -52,7 +52,6 @@ namespace workspace.YU__FFE.Scripts.Networking {
             });
             if (tokenResponse is null) {
                 callback(false, "자동 로그인 실패");
-                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
                 yield break;
             }
             SessionManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
@@ -61,7 +60,7 @@ namespace workspace.YU__FFE.Scripts.Networking {
             yield return LoadPlayerData(callback);
         }
         
-        private IEnumerator LoadPlayerData(Action<bool, string> callback) {
+        private static IEnumerator LoadPlayerData(Action<bool, string> callback) {
             PlayerDataResponse playerInfoResponse = null;
             yield return NetworkManager.GetUserInfoRequest(response => { playerInfoResponse = response; });
             if (playerInfoResponse is null) {
@@ -72,8 +71,8 @@ namespace workspace.YU__FFE.Scripts.Networking {
             PlayerManager.Instance.SetPlayerData(playerInfoResponse);
             callback(true, "로그인 성공");
         }
-        
-        public static bool GetAutoLoginEnabled() {
+
+        private static bool GetAutoLoginEnabled() {
             return PlayerPrefs.GetInt(AutoLoginEnabled, 1) == 1;
         }
 
