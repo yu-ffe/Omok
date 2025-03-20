@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using WB;
 using workspace.Ham6._03_Sctipts;
 using workspace.Ham6._03_Sctipts.Game;
 using workspace.Ham6.AI;
@@ -297,10 +298,18 @@ public class GameLogic : IDisposable
 
     //현재 상태 변경 (턴 전환 시 사용)
     public void SetState(BasePlayerState state)
-    {
+    {        
+        
+        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
+        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
+
         _currentPlayerState = state;
+        
+        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작1");
+        //TODO: 여기에 턴이 바뀔때 쓸 함수입력
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
+        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작2");
     }
 
     public Constants.PlayerType GetCurrentPlayerType()
@@ -309,7 +318,6 @@ public class GameLogic : IDisposable
         {
             return playerState.CurrentPlayerType;
         }
-
         // AIState나 다른 상태인 경우 별도의 처리 필요하다면 여기서 처리
         return Constants.PlayerType.None;
     }
@@ -330,7 +338,7 @@ public class GameLogic : IDisposable
         if (playerType == Constants.PlayerType.PlayerA)
         {
             _board[row, col] = playerType;
-            //Debug.Log($"{row},{col}에 보드상에 흑돌 기입");
+            Debug.Log($"{GetCurrentPlayerType()}의 턴{row},{col}에 보드상에 흑돌{playerType} 기입");
             //기보저장
             moveList.Add((playerType, row, col));
             OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
@@ -344,7 +352,7 @@ public class GameLogic : IDisposable
         {
             _board[row, col] = playerType;
 
-            //Debug.Log($"{row},{col}에 보드상에 백돌 기입");
+            Debug.Log($"{GetCurrentPlayerType()}의 턴 {row},{col}에 보드상에 백돌{playerType} 기입");
             //기보저장
             moveList.Add((playerType, row, col));
             OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
@@ -407,7 +415,7 @@ public class GameLogic : IDisposable
                     int count = 1; // 현재 셀 포함
                     int nr = r + dir[0];
                     int nc = c + dir[1];
-                    while (nr >= 0 && nr < OmokBoard.gridSize && nc >= 0 && nc < OmokBoard.gridSize && _board[nr, nc] == cell)
+                    while (nr >= 0 && nr < OmokBoard.gridSize && nc >= 0 && nc < OmokBoard.gridSize && _board[nr, nc] == cell && cell == playerType)
                     {
                         count++;
                         nr += dir[0];
@@ -425,14 +433,32 @@ public class GameLogic : IDisposable
         
         return false;
     }
+    
+    //현재 플레이어를 패배하게 하는 함수
+    public void HandleCurrentPlayerDefeat(Constants.PlayerType playerType)
+    {
+        //TODO:멀티면 바뀌어야 될 코드
+        if (playerType == Constants.PlayerType.PlayerA)
+        {
+            Debug.Log($"{Constants.PlayerType.PlayerA}패배");
+            EndGame(GameResult.Lose); // 게임이 끝났다면 종료 처리
+
+        }
+        else if (playerType == Constants.PlayerType.PlayerB)
+        {
+            Debug.Log($"{Constants.PlayerType.PlayerB}패배");
+            EndGame(GameResult.Win); // 게임이 끝났다면 종료 처리
+        }
+    }
 
     //게임 종료 시 호출
     public void EndGame(GameResult gameResult)
     {
+        Debug.Log($"게임끝 게임결과 : {gameResult}");
+
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
-        Debug.Log("게임끝");
         GameManager.Instance.ChangeToMainScene();
 
         //TODO: UI활성화
