@@ -26,19 +26,19 @@ public class GameManager : workspace.Ham6._03_Sctipts.Singleton<GameManager>
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Game Scene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
     
     public void ChangeToMainScene()
     {
         _gameLogic?.Dispose();
         _gameLogic = null;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Main Scene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
     }
     
     protected override void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "Game Scene")
+        if (scene.name == "Game")
         {
             // 씬에 배치된 오브젝트 찾기 (BlockContorller, GameUIController)
             var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
