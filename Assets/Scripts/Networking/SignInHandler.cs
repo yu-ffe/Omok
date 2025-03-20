@@ -51,7 +51,7 @@ public class SignInHandler : Singleton<SignInHandler> {
         PlayerManager.Instance.playerData.ClearPrivateData();
     }
 
-    private void UpdateUserData(UserDataResponse dataResponse) {
+    private void UpdateUserData(PlayerDataResponse dataResponse) {
         PlayerManager.Instance.playerData.nickname = dataResponse.Nickname;
         PlayerManager.Instance.playerData.profileNum = dataResponse.ProfileNum;
         PlayerManager.Instance.playerData.coins = dataResponse.Coins;

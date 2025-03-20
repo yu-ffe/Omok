@@ -119,7 +119,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator GetUserInfoRequest(Action<UserDataResponse> callback) {
+    public static IEnumerator GetUserInfoRequest(Action<PlayerDataResponse> callback) {
         string url = $"{Constants.ServerURL}/user/info";
         string accessToken = SessionManager.Instance.GetAccessToken();
         int retryCount = 0;
@@ -133,8 +133,8 @@ public class NetworkManager : Singleton<NetworkManager> {
 
                 if (request.result == UnityWebRequest.Result.Success) {
                     string jsonResponse = request.downloadHandler.text;
-                    UserDataResponse userDataResponse = JsonConvert.DeserializeObject<UserDataResponse>(jsonResponse);
-                    callback?.Invoke(userDataResponse);
+                    PlayerDataResponse playerDataResponse = JsonConvert.DeserializeObject<PlayerDataResponse>(jsonResponse);
+                    callback?.Invoke(playerDataResponse);
                     yield break;
                 }
 
