@@ -7,7 +7,7 @@ namespace workspace.YU__FFE.Scripts.Networking {
         // ======================================================
 
         public void SignOut() {
-            SessionManager.Instance.ClearTokens();
+            TokenManager.Instance.ClearTokens();
             UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
         }
     }

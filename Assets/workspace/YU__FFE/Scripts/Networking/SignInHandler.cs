@@ -34,7 +34,7 @@ namespace workspace.YU__FFE.Scripts.Networking {
                 callback(false, "로그인 실패");
                 yield break;
             }
-            SessionManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+            TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
 
             yield return LoadPlayerData(callback);
         }
@@ -54,7 +54,7 @@ namespace workspace.YU__FFE.Scripts.Networking {
                 callback(false, "자동 로그인 실패");
                 yield break;
             }
-            SessionManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+            TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
             callback(true, "자동 로그인 성공");
             
             yield return LoadPlayerData(callback);

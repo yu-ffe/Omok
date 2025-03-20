@@ -64,7 +64,7 @@ namespace workspace.YU__FFE.Scripts.Networking {
                 yield break;
             }
 
-            workspace.YU__FFE.Scripts.Networking.SessionManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+            workspace.YU__FFE.Scripts.Networking.TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
             callback(tokenResponse != null, tokenResponse?.Message);
 
         }

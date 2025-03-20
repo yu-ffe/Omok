@@ -15,7 +15,7 @@ namespace YU_FFEE
 public class UserProfileManager : Singleton<UserProfileManager> {
     public IEnumerator GetProfileImage(string userId, Action<Sprite> callback) {
         string url = $"{Constants.ServerURL}/uer/profile?userId={userId}";
-        string accessToken = workspace.YU__FFE.Scripts.Networking.SessionManager.Instance.GetAccessToken();
+        string accessToken = workspace.YU__FFE.Scripts.Networking.TokenManager.Instance.GetAccessToken();
 
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url)) {
             request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
