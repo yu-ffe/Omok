@@ -384,4 +384,9 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             Debug.Log($"델리게이트 없음");
         }
     }
+    
+    public void OnPointerUpCurrentPlayerDefeat()
+    {
+        GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
+    }
 }
