@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerManager : Singleton<PlayerManager> {
@@ -17,16 +16,6 @@ public class PlayerManager : Singleton<PlayerManager> {
             playerData.loseCount = response.LoseCount;
         }));
         yield break;
-    }
-    
-    public void AddCoins(int amount)
-    {
-        playerData.coins += amount;
-        Debug.Log($"[PlayerManager] 현재 코인: {playerData.coins}");
-
-        // (선택 사항) PlayerPrefs에도 저장하여 로컬에서도 반영
-        PlayerPrefs.SetInt("PlayerCoins", playerData.coins);
-        PlayerPrefs.Save();
     }
     
 }

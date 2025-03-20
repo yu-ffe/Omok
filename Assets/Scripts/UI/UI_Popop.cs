@@ -53,9 +53,9 @@ using UnityEngine.UI;
         /// <param name="cancelAction">취소 버튼 누를시 실행될 함수</param>
         public void Show(
             string msg,  // 메세지
-            string okText = null, string cancelText = null,  // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
+            string okText = null, string cancelText = null, // 확인(위쪽) 버튼 메세지, 취소(아래쪽) 버튼 메세지
                                                             // //// float width = 600, float height = 600, //창 크기 (삭제)
-            UnityAction okAction = null, UnityAction cancelAction = null     // 확인,취소 각각 누를시 실행도리 이벤트,
+            UnityAction okAction = null, UnityAction cancelAction = null    // 확인,취소 각각 누를시 실행도리 이벤트,
             ,bool useScoreBoard = false)  // scoreBoard 사용 여부 추가
         {
             ShowStartEvent();
@@ -75,8 +75,6 @@ using UnityEngine.UI;
             btnCancel.onClick.RemoveAllListeners();
             btnOk.onClick.AddListener(HidePopup);
             btnCancel.onClick.AddListener(HidePopup);
-
-
             // //창 크기, 메시지 설정
             //// rectWindow.sizeDelta = new Vector2(width, height);
             //// textMsg.text = msg;
@@ -85,11 +83,9 @@ using UnityEngine.UI;
                 btnOk.onClick.AddListener(okAction);
             if (cancelAction != null)
                 btnCancel.onClick.AddListener(cancelAction);
-            
             //버튼 메세지 변경 
             textOk.text = string.IsNullOrEmpty(okText) ? "확인" : okText;
             textCancel.text = string.IsNullOrEmpty(cancelText) ? "취소" : cancelText;
-
 
             // 연결된 이벤트가 둘 다 없으면 확인 버튼만 활성화
             btnCancel.gameObject.SetActive(okAction != null || cancelAction != null);

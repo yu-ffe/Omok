@@ -99,7 +99,8 @@ public class MainPanel : UI_Panel {
         switch (idx) {
             case 0:
                 Debug.Log("대국 시작");
-                UI_Manager.Instance.Show(UI_Manager.PanelType.GameSelect);
+                // UI_Manager.Instance.Show(UI_Manager.PanelType.Game);
+                SceneManager.Instance.LoadScene("Game");
                 break;
             case 1:
                 Debug.Log("내 기보");
@@ -120,14 +121,5 @@ public class MainPanel : UI_Panel {
             default: Debug.Log("???"); break;
         }
     }
-    private void StartSinglePlay()
-    {
-        SceneManager.Instance.LoadScene("SingleGame"); // 싱글플레이 씬으로 이동
-    }
 
-    private void StartMultiPlay()
-    {
-        SceneManager.Instance.LoadScene("MultiGame"); // 멀티플레이 씬으로 이동
-    }
 }
-
