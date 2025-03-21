@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WB;
 using workspace.YU__FFE.Scripts;
@@ -83,7 +84,7 @@ namespace WB
                 case 0:
                     Debug.Log("대국 시작");
                     // UI_Manager.Instance.Show(UI_Manager.PanelType.Game);
-                    SceneManager.Instance.LoadScene("Game");
+                    SceneManager.LoadScene("Game");
                     break;
                 case 1:
                     Debug.Log("내 기보");

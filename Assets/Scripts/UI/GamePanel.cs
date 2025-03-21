@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using KimHyeun;
 using MJ;
+using UnityEngine.SceneManagement;
 using workspace.YU__FFE.Scripts;
 
 public class GamePanel : UI_Panel {
@@ -156,7 +157,7 @@ public class GamePanel : UI_Panel {
             msg: "기권 하시겠습니까?",
             "기권",
             "취소",
-            okAction: () => { SceneManager.Instance.LoadSceneAsync("Main"); },
+            okAction: () => { SceneManager.LoadSceneAsync("Main"); },
             cancelAction: () => { }
         );
     }

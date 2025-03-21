@@ -44,33 +44,16 @@ public abstract class Singleton<T> :MonoBehaviour where T : Singleton<T>
     /// <summary>
     /// 오버라이드 가능한 초기화 (자식에서 필요 시 사용)
     /// </summary>
-    protected virtual void Awake()
-    {
+    protected virtual void Awake() {
         if (instance == null)
         {
             instance = this as T;
             DontDestroyOnLoad(gameObject);
         }
-        else if(instance != this)
-        {
-            //중복 방지
+        else if(instance != this) {
+            return;
             Destroy(gameObject);
         }
     }
 
-    /// <summary>
-    /// 앱 종료시 해제
-    /// </summary>
-    protected virtual void OnApplicationQuit()
-    {
-        isShuttingDown = true;
-    }
-
-    /// <summary>
-    /// 수동 해제 시
-    /// </summary>
-    protected void OnDestroy()
-    {
-        isShuttingDown = true;
-    }
 }

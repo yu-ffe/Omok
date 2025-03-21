@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainPanel : UI_Panel {
@@ -99,7 +100,7 @@ public class MainPanel : UI_Panel {
         UI_Manager.Instance.popup.Show(
             "싱글플레이를 시작하시겠습니까?",
             "시작", "취소",
-            okAction: () => SceneManager.Instance.LoadScene("SingleGame"),
+            okAction: () => SceneManager.LoadScene("SingleGame"),
             cancelAction: () => UI_Manager.Instance.popup.Show("싱글플레이를 취소하였습니다.", "확인")
         );
     }
@@ -109,7 +110,7 @@ public class MainPanel : UI_Panel {
         UI_Manager.Instance.popup.Show(
             "멀티플레이를 시작하시겠습니까?",
             "시작", "취소",
-            okAction: () => SceneManager.Instance.LoadScene("MultiGame"),
+            okAction: () => SceneManager.LoadScene("MultiGame"),
             cancelAction: () => UI_Manager.Instance.popup.Show("멀티플레이를 취소하였습니다.", "확인")
         );
     }

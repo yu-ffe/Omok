@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 using KimHyeun;
 using MJ;
+using UnityEngine.SceneManagement;
 using workspace.YU__FFE.Scripts;
 
 namespace WB
@@ -177,7 +178,7 @@ namespace WB
             "기권", "취소",
             okAction: () =>
             {
-                SceneManager.Instance.LoadSceneAsync("Main");
+                SceneManager.LoadSceneAsync("Main");
             },
             cancelAction: () =>
             {

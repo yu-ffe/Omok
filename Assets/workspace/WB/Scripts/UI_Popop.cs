@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using workspace.YU__FFE.Scripts;
 
@@ -135,7 +136,7 @@ namespace WB
         void ExitToMain()
         {
             // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
-            SceneManager.Instance.LoadScene("Main");
+            SceneManager.LoadScene("Main");
         }
 
         public void HidePopup()
