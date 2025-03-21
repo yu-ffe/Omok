@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commons;
 using UnityEngine;
 using UnityEngine.UI;
-using workspace.Ham6._03_Sctipts.Game;
 
 public class GameSelectPanelController : UI_Panel {
     public Button btnSinglePlay;
@@ -21,20 +21,20 @@ public class GameSelectPanelController : UI_Panel {
 
     private void StartSinglePlay() {
         Hide();
-        // GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
         // Todo: 스타트 싱글 플레이
 
     }
     private void StartDualPlay() {
         Hide();
-        // GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
         
 
     }
 
     private void StartMultiPlay() {
         Hide();
-        // GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
 
         // Todo: 스타트 멀티 플레이
 

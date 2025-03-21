@@ -14,8 +14,6 @@ using UnityEngine.UI;
         public TextMeshProUGUI textOk;  //child 2 - child 0
         public TextMeshProUGUI textCancel; //chidl 3 - child 0
 
-
-
         void Awake()
         {
             if (UI_Manager.Instance != null)
