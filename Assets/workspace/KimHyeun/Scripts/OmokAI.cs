@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
-using System.Diagnostics;
+using System.Text;
 using workspace.Ham6._03_Sctipts.Game;
 
 namespace KimHyeun {
@@ -361,11 +360,11 @@ namespace KimHyeun {
 
 
 
-        // 3000 노말 (최대 시간 3초)
+        // 2000 이지? 3000 노말 4000 하드? (최대 시간 n/1000초) 
         public (int, int) GetBestMove(int timeLimit = 3000)
         {
             // Stopwatch를 사용하여 시간 추적
-            Stopwatch stopwatch = new Stopwatch();
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
             stopwatch.Start();
 
             // 즉시 승리 가능한 수를 먼저 확인
@@ -393,20 +392,41 @@ namespace KimHyeun {
             // 최선의 이동 계산
             (int, int) bestMove = validMoves[0];
             int bestScore = int.MinValue;
+            List<((int, int) move, int score)> bestMoves = new List<((int, int), int)>();
+            System.Random random = new System.Random();
+            bool allMovesLosing = true; // 모든 수가 지는 수인지 체크
 
             foreach (var move in validMoves)
             {
                 board[move.Item1, move.Item2] = Constants.PlayerType.PlayerB;
                 int score = AlphaBetaPruningWithTimeLimit(1, int.MinValue, int.MaxValue, false, stopwatch, timeLimit);
+
+                // 지는 수가 아닌 것이 있는지 확인
+                if (score > -WIN_SCORE)
+                    allMovesLosing = false;
+
                 board[move.Item1, move.Item2] = Constants.PlayerType.None;
 
                 // 히스토리 테이블 업데이트
                 historyTable[move.Item1, move.Item2] += score > 0 ? score : 0;
 
+                // 모든 수가 지는 수라면 방어 점수를 계산
+                int defensiveScore = 0;
+                if (score <= -WIN_SCORE)
+                {
+                    defensiveScore = EvaluateDefensiveMove(move.Item1, move.Item2);
+                }
+
+
                 if (score > bestScore)
                 {
                     bestScore = score;
-                    bestMove = move;
+                    bestMoves.Clear();
+                    bestMoves.Add((move, score)); // 점수도 함께 저장
+                }
+                else if (score == bestScore)
+                {
+                    bestMoves.Add((move, score));
                 }
 
                 // 시간 체크
@@ -416,15 +436,60 @@ namespace KimHyeun {
                 }
             }
 
+            // 모든 수가 지는 수라면 방어 점수에 따라 선택
+            if (allMovesLosing && validMoves.Count > 0)
+            {
+                // 각 수에 대한 방어 점수 계산 및 저장
+                bestMoves.Clear();
+                foreach (var move in validMoves)
+                {
+                    int defensiveScore = EvaluateDefensiveMove(move.Item1, move.Item2);
+                    bestMoves.Add((move, defensiveScore));
+                }
+
+                // 방어 점수 기준으로 내림차순 정렬
+                bestMoves = bestMoves.OrderByDescending(m => m.score).ToList();
+
+                // 동일한 최고 방어 점수를 가진 수들 목록
+                if (bestMoves.Count > 0)
+                {
+                    int highestDefScore = bestMoves[0].score;
+                    List<(int, int)> bestDefensiveMoves = new List<(int, int)>();
+
+                    foreach (var item in bestMoves)
+                    {
+                        if (item.score == highestDefScore)
+                            bestDefensiveMoves.Add(item.move);
+                        else
+                            break;
+                    }
+
+                    // 최고 방어 점수를 가진 수들 중 랜덤 선택
+                    bestMove = bestDefensiveMoves[random.Next(bestDefensiveMoves.Count)];
+                }
+                else
+                {
+                    // 방어 점수가 계산되지 않은 경우 (예외 상황)
+                    bestMove = validMoves[random.Next(validMoves.Count)];
+                }
+            }
+
+            else
+            {
+                // 최고 점수를 가진 좌표들 중 랜덤하게 선택
+                bestMove = bestMoves[random.Next(bestMoves.Count)].move;
+            }
+
             stopwatch.Stop();
             return bestMove;
         }
 
-        private int AlphaBetaPruningWithTimeLimit(int depth, int alpha, int beta, bool isMaximizing, Stopwatch stopwatch, int timeLimit)
+        private int AlphaBetaPruningWithTimeLimit(int depth, int alpha, int beta, bool isMaximizing, System.Diagnostics.Stopwatch stopwatch, int timeLimit)
         {
             // 시간이 초과하면 즉시 반환
             if (stopwatch.ElapsedMilliseconds >= timeLimit)
             {
+                Debug.LogWarning("시간 초과! 평가 함수로 즉시 종료");
                 return EvaluateBoard(); // 평가 함수로 즉시 종료
             }
 
@@ -471,6 +536,7 @@ namespace KimHyeun {
 
                     board[move.Item1, move.Item2] = prevState;
 
+                    
                     if (score > bestScore)
                     {
                         bestScore = score;
@@ -592,6 +658,310 @@ namespace KimHyeun {
             return result;
         }
 
+
+
+
+
+        // 방어 점수 계산 함수 수정
+        private int EvaluateDefensiveMove(int r, int c)
+        {
+            int defensiveScore = 0;
+
+            // 임시로 우리 돌 놓기
+            board[r, c] = Constants.PlayerType.PlayerB;
+
+            // 방어 점수 계산 - 이 위치에 돌을 놓음으로써 상대의 공격을 얼마나 방해하는지 평가
+
+            // 1. 상대방의 열린 4 막기 (가장 높은 우선순위)
+            int openFoursBlocked = CountBlockedOpenFours(r, c);
+            int openFoursScore = openFoursBlocked * 10000;
+
+            // 2. 상대방의 열린 3 막기 (높은 우선순위)
+            int openThreesBlocked = CountBlockedOpenThrees(r, c);
+            int openThreesScore = openThreesBlocked * 5000;
+
+            // 3. 자신의 연결된 돌 수에 따른 점수
+            int connectedStones = CountOwnConnectedStones(r, c);
+            int connectedScore = connectedStones * 100;
+
+            // 4. 보드 중앙 근처에 두는 것이 일반적으로 유리함
+            int positionValue = EvaluatePositionValue(r, c);
+
+            // 5. 이 위치가 향후 좋은 수를 만들 수 있는지 평가
+            int futureValue = EvaluateFutureValue(r, c);
+
+            // 방어 점수 합산
+            defensiveScore += openFoursScore;
+            defensiveScore += openThreesScore;
+            defensiveScore += connectedScore;
+            defensiveScore += positionValue;
+            defensiveScore += futureValue;
+
+            // 원래 상태로 복구
+            board[r, c] = Constants.PlayerType.None;
+
+            return defensiveScore;
+        }
+
+            
+        // 상대방의 열린 4와 열린 3을 막는 수의 개수 계산 함수 수정
+        private int CountBlockedOpenFours(int r, int c)
+        {
+            int count = 0;
+            Constants.PlayerType opponent = Constants.PlayerType.PlayerA;
+
+            // 원래 상태 저장
+            Constants.PlayerType original = board[r, c];
+
+            // 이 위치에 돌이 없다고 가정
+            board[r, c] = Constants.PlayerType.None;
+
+            // 방향별 체크
+            foreach (var dir in directions)
+            {
+                // 이 위치에 상대방 돌 놓기
+                board[r, c] = opponent;
+
+                // 이 방향으로 돌 세기
+                int stoneCount = 1; // 현재 위치 포함
+                bool openEnd1 = false;
+                bool openEnd2 = false;
+
+                // 정방향 확인
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                int dirStones = 0;
+                while (IsValidPosition(nr, nc) && board[nr, nc] == opponent)
+                {
+                    stoneCount++;
+                    dirStones++;
+                    nr += dir[0];
+                    nc += dir[1];
+                }
+                openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None;
+
+                // 역방향 확인
+                nr = r - dir[0];
+                nc = c - dir[1];
+                int revDirStones = 0;
+                while (IsValidPosition(nr, nc) && board[nr, nc] == opponent)
+                {
+                    stoneCount++;
+                    revDirStones++;
+                    nr -= dir[0];
+                    nc -= dir[1];
+                }
+                openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None;
+
+                // 디버그 로그 추가
+                if (stoneCount >= 3)
+                {
+                    // Debug.Log($"위치 ({r},{c}) - 방향 [{dir[0]},{dir[1]}]: 돌 수={stoneCount}, 정방향={dirStones}, " +
+                    //           $"역방향={revDirStones}, 정방향열림={openEnd1}, 역방향열림={openEnd2}");
+                }
+
+                // 양쪽이 열린 4 (매우 중요)
+                if (stoneCount == 4 && openEnd1 && openEnd2)
+                {
+                    count += 3;
+                    // Debug.Log($"위치 ({r},{c}) - 양쪽 열린 4 감지!");
+                }
+                // 한쪽만 열린 4
+                else if (stoneCount == 4 && (openEnd1 || openEnd2))
+                {
+                    count += 1;
+                    //  Debug.Log($"위치 ({r},{c}) - 한쪽 열린 4 감지!");
+                }
+                // 이 위치가 5목을 만드는 경우 (최우선)
+                else if (stoneCount >= 5)
+                {
+                    count += 5; // 가장 높은 가중치
+                                // Debug.Log($"위치 ({r},{c}) - 5목 방지 위치!");
+                }
+
+                // 상태 원복
+                board[r, c] = Constants.PlayerType.None;
+            }
+
+            // 원래 상태로 복구
+            board[r, c] = original;
+
+            return count;
+        }
+
+        // 상대방의 열린 3을 막는 수의 개수 계산 수정
+        private int CountBlockedOpenThrees(int r, int c)
+        {
+            int count = 0;
+            Constants.PlayerType opponent = Constants.PlayerType.PlayerA;
+
+            // 원래 상태 저장
+            Constants.PlayerType original = board[r, c];
+
+            // 이 위치에 돌이 없다고 가정
+            board[r, c] = Constants.PlayerType.None;
+
+            // 방향별 체크
+            foreach (var dir in directions)
+            {
+                // 이 위치에 상대방 돌 놓기
+                board[r, c] = opponent;
+
+                // 이 방향으로 돌 세기
+                int stoneCount = 1; // 현재 위치 포함
+                bool openEnd1 = false;
+                bool openEnd2 = false;
+
+                // 정방향 확인
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                int dirStones = 0;
+                while (IsValidPosition(nr, nc) && board[nr, nc] == opponent)
+                {
+                    stoneCount++;
+                    dirStones++;
+                    nr += dir[0];
+                    nc += dir[1];
+                }
+                openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None;
+
+                // 역방향 확인
+                nr = r - dir[0];
+                nc = c - dir[1];
+                int revDirStones = 0;
+                while (IsValidPosition(nr, nc) && board[nr, nc] == opponent)
+                {
+                    stoneCount++;
+                    revDirStones++;
+                    nr -= dir[0];
+                    nc -= dir[1];
+                }
+                openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None;
+
+                // 디버그 로그 추가
+                if (stoneCount >= 2 && openEnd1 && openEnd2)
+                {
+                    //  Debug.Log($"위치 ({r},{c}) - 3 체크 방향 [{dir[0]},{dir[1]}]: 돌 수={stoneCount}, " +
+                    //           $"정방향열림={openEnd1}, 역방향열림={openEnd2}");
+                }
+
+                // 양쪽이 열린 3 체크 (양쪽이 모두 열려있고 돌이 3개인 경우)
+                if (stoneCount == 3 && openEnd1 && openEnd2)
+                {
+                    count += 2;
+                    //   Debug.Log($"위치 ({r},{c}) - 양쪽 열린 3 감지!");
+                }
+                // 한쪽만 열린 3은 낮은 가중치
+                else if (stoneCount == 3 && (openEnd1 || openEnd2))
+                {
+                    count += 1;
+                    //  Debug.Log($"위치 ({r},{c}) - 한쪽 열린 3 감지!");
+                }
+
+                // 상태 원복
+                board[r, c] = Constants.PlayerType.None;
+            }
+
+            // 원래 상태로 복구
+            board[r, c] = original;
+
+            return count;
+        }
+
+        
+        // 자신의 연결된 돌 수 계산
+        private int CountOwnConnectedStones(int r, int c)
+        {
+            int maxCount = 0;
+            Constants.PlayerType player = Constants.PlayerType.PlayerB;
+
+            foreach (var dir in directions)
+            {
+                int count = 1; // 현재 위치 포함
+
+                // 정방향 확인
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
+                {
+                    count++;
+                    nr += dir[0];
+                    nc += dir[1];
+                }
+
+                // 역방향 확인
+                nr = r - dir[0];
+                nc = c - dir[1];
+                while (IsValidPosition(nr, nc) && board[nr, nc] == player)
+                {
+                    count++;
+                    nr -= dir[0];
+                    nc -= dir[1];
+                }
+
+                maxCount = Mathf.Max(maxCount, count);
+            }
+
+            return maxCount;
+        }
+
+        // 위치 가치 평가 (보드 중앙에 가까울수록 높은 점수)
+        private int EvaluatePositionValue(int r, int c)
+        {
+            int centerR = BOARD_SIZE / 2;
+            int centerC = BOARD_SIZE / 2;
+
+            // 중앙에서의 거리 계산 (맨해튼 거리)
+            int distanceToCenter = Mathf.Abs(r - centerR) + Mathf.Abs(c - centerC);
+
+            // 중앙에 가까울수록 높은 점수 (최대 100점)
+            return Mathf.Max(0, 100 - distanceToCenter * 10);
+        }
+
+        // 미래 가치 평가 (이 자리가 미래에 좋은 수를 만들 수 있는지)
+        private int EvaluateFutureValue(int r, int c)
+        {
+            int score = 0;
+            Constants.PlayerType player = Constants.PlayerType.PlayerB;
+
+            // 이 자리에 두었을 때 다음 수에서 어떤 효과가 있는지 평가
+            foreach (var dir in directions)
+            {
+                // 각 방향에서 1칸, 2칸 떨어진 곳에 빈 공간이 있고 유리한 형태를 만들 수 있는지 체크
+                for (int dist = 1; dist <= 2; dist++)
+                {
+                    int nr = r + dir[0] * dist;
+                    int nc = c + dir[1] * dist;
+
+                    if (IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None)
+                    {
+                        // 이 위치에 돌을 놓아보고 효과 평가
+                        board[nr, nc] = player;
+                        if (HasOpenThree(nr, nc, player))
+                        {
+                            score += 50;
+                        }
+                        board[nr, nc] = Constants.PlayerType.None;
+                    }
+
+                    // 반대 방향도 체크
+                    nr = r - dir[0] * dist;
+                    nc = c - dir[1] * dist;
+
+                    if (IsValidPosition(nr, nc) && board[nr, nc] == Constants.PlayerType.None)
+                    {
+                        board[nr, nc] = player;
+                        if (HasOpenThree(nr, nc, player))
+                        {
+                            score += 50;
+                        }
+                        board[nr, nc] = Constants.PlayerType.None;
+                    }
+                }
+            }
+
+            return score;
+        }
     }
 }
 
