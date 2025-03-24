@@ -6,16 +6,16 @@ var router = express.Router();
 // 📌 회원가입 처리
 router.post("/", async (req, res) => {
     console.log("회원가입 요청:", req.body);
-    const { id, password, nickname, profileNum } = req.body;
+    const { email, password, nickname, profileNum } = req.body;
 
     try {
         // ✅ 중복 아이디 확인
-        const existingUser = await User.findOne({ id });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ error: "이미 존재하는 아이디입니다. 다른 이메일을 사용하세요." });
         }
 
-        let newUser = new User({ id, password, nickname, profileNum });
+        let newUser = new User({ email, password, nickname, profileNum });
         await newUser.save();
         console.log("새로운 사용자 생성됨:", newUser);
 
@@ -51,8 +51,8 @@ router.post("/check", async (req, res) => {
             return res.json({ success: true, message: "사용 가능한 닉네임입니다." });
 
         // 아이디 중복 체크
-        } else if (type === "id") {
-            existingUser = await User.findOne({ id: value });
+        } else if (type === "email") {
+            existingUser = await User.findOne({ email: value });
             if (existingUser) {
                 return res.status(400).json({ success: false, message: "이미 존재하는 아이디입니다." });
             }

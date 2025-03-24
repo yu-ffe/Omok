@@ -1,6 +1,5 @@
 using System;
 using Commons;
-using MyNamespace;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
