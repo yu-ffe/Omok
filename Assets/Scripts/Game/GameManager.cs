@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    public Constants.GameType lastGameType { get; private set; }
+
     public Text timerText; // UI 타이머 텍스트
     public float timer = 30.0f; // 기본 타이머 값 
     public float currentTime = 30.0f; // 현재 남은 시간
@@ -16,7 +18,19 @@ public class GameManager : Singleton<GameManager>
     private GameLogic _gameLogic;
 
     public GameLogic GameLogicInstance => _gameLogic;
+    
+    public void StartGame(Constants.GameType gameType)
+    {
+        _gameType = gameType;
+        SceneManager.LoadScene("Game"); 
+    }
 
+    public void RestartCurrentGame()
+    {
+        Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
+        StartGame(lastGameType);
+    }
+    
     // UI 타이머 업데이트 함수
     public void UpdateTimerUI()
     {

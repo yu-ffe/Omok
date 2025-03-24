@@ -12,7 +12,7 @@ public class UI_Manager : Singleton<UI_Manager>
         public UI_Panel panel;
     }
     // 공통 Popup창
-    public enum PanelType { None, Login, Main, Game, Record, Shop, Ranking, Option, Loading,  GameSelect}
+    public enum PanelType { None, Login, Main, Game, Record, Shop, Ranking, Option, Loading,  GameSelect, GameEnd}
 
     public List<PanelData> panelList = new List<PanelData>();
     public Dictionary<PanelType, UI_Panel> Panels { get; private set; } = new();
@@ -23,14 +23,19 @@ public class UI_Manager : Singleton<UI_Manager>
     
     public event Action<PanelType> OnPanelRegistered; // 패널이 등록될 때 발생하는 이벤트
 
-    private void Awake()
+    protected override void Awake()
     {
+        Debug.Log("[UI_Manager] Awake 시작");
+        
+        Instance = null;
         base.Awake();
         InitializePanels(); // 패널을 한 번에 등록
     }
     
     private void InitializePanels()
     {
+        Debug.Log("[UI_Manager] InitializePanels 호출");
+        
         Panels.Clear();  // 혹시 남아있는 데이터 제거
         foreach (var panelData in panelList)
         {
@@ -98,18 +103,39 @@ public class UI_Manager : Singleton<UI_Manager>
             return;
         }
 
+        // 같은 패널이면 굳이 Hide/Show 안 함
+        if (nowShowingPanelType == panelKey)
+        {
+            Debug.Log($"[UI_Manager] Show(): {panelKey} (이미 활성화된 패널입니다)");
+            return;
+        }
+
         if (nowShowingPanelType != PanelType.None)
             Hide(nowShowingPanelType);
-        
-        //기존의 메인 패널을 숨기지 않고 새로운 패널 보여주기로 변경 (주석처리)
+
         Panels[panelKey].Show();
         nowShowingPanelType = panelKey;
+
+        Debug.Log($"[UI_Manager] Show(): {panelKey} 패널 활성화 완료");
     }
+
 
     public void Hide(PanelType panelKey)
     {
         if (Panels.ContainsKey(panelKey))
-            Panels[panelKey].Hide();
+        {
+            var panel = Panels[panelKey];
+        
+            // 이미 파괴된 경우 제거
+            if (panel == null)
+            {
+                Debug.LogWarning($"패널 {panelKey}는 이미 Destroy됨. 패널 리스트에서 제거함.");
+                Panels.Remove(panelKey);
+                return;
+            }
+
+            panel.Hide();
+        }
     }
     
     public bool HasPanel(PanelType panelKey)

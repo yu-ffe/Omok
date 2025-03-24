@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Update = Unity.VisualScripting.Update;
+using Commons;
 
 public abstract class BasePlayerState
 {
@@ -447,6 +448,7 @@ public class GameLogic : IDisposable
             EndGame(GameResult.Win); // 게임이 끝났다면 종료 처리
         }
     }
+    
 
     //게임 종료 시 호출
     public void EndGame(GameResult gameResult)
@@ -456,10 +458,38 @@ public class GameLogic : IDisposable
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
-        GameManager.Instance.ChangeToMainScene();
 
-        //TODO: UI활성화
-        //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
+        var panelKey = UI_Manager.PanelType.GameEnd;
+        if (UI_Manager.Instance.HasPanel(panelKey))
+        {
+            UI_Manager.Instance.Show(panelKey); // 1. 먼저 활성화
+            var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
+            panel?.SetEndGameInfo(ConvertToUIResult(gameResult)); // 2. 정보 설정 (Coroutine 가능)
+        }
+        else
+        {
+            // 만약 패널이 늦게 등록되면 → 등록될 때 Show + 설정
+            UI_Manager.Instance.OnPanelRegistered += (registeredKey) =>
+            {
+                if (registeredKey == panelKey)
+                {
+                    UI_Manager.Instance.Show(panelKey);
+                    var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
+                    panel?.SetEndGameInfo(ConvertToUIResult(gameResult));
+                }
+            };
+        }
+    }
+    
+    private global::GameResult ConvertToUIResult(GameLogic.GameResult result)
+    {
+        return result switch
+        {
+            GameLogic.GameResult.Win => (global::GameResult)GameResult.Win,
+            GameLogic.GameResult.Lose => (global::GameResult)GameResult.Lose,
+            GameLogic.GameResult.Draw => (global::GameResult)GameResult.Draw,
+            _ => (global::GameResult)GameResult.None
+        };
     }
 
     //현재 게임판 반환

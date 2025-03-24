@@ -42,6 +42,7 @@ public class GameSelectPanelController : UI_Panel {
 
     public override void Show() {
         gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(false);
     }
 
     public override void Hide() {

@@ -13,8 +13,10 @@ public enum GameResult // TODO 게임 로직과 겹치면 제거
     Draw // 비김
 }
 
-public class GameEndManager : Singleton<GameEndManager>
+public class GameEndManager : UI_Panel
 {
+    public static GameEndManager Instance{get; private set;}
+
     [Header("필수 할당")]
     [SerializeField] TMP_Text resultText;
     [SerializeField] TMP_Text gradeResultText;
@@ -30,14 +32,37 @@ public class GameEndManager : Singleton<GameEndManager>
     RectTransform[] gradeMinusCells = new RectTransform[3];
 
     [Header("필수 할당 - 버튼 역할 오브젝트,텍스트")]
-    [SerializeField] GameObject okButton;
+    [SerializeField] Button okButton;
     [SerializeField] TMP_Text okButtonText;
-    [SerializeField] GameObject restartButton;
+    [SerializeField] Button restartButton;
     [SerializeField] TMP_Text restartButtonText;
-    [SerializeField] GameObject recordButton;
+    [SerializeField] Button recordButton;
     [SerializeField] TMP_Text recordButtonText;
 
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        TryAutoRegister();
+        gameObject.SetActive(false);
+        
+    }
+    
+    void Start()
+    {
+        if (!UI_Manager.Instance.HasPanel(panelType))
+        {
+            UI_Manager.Instance.AddPanel(panelType, this);
+        }
+        gameObject.SetActive(false); // 패널 비활성화
+    }
 
     public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
     {
@@ -49,6 +74,33 @@ public class GameEndManager : Singleton<GameEndManager>
         EndButtonInfoSet(); // 버튼 설정
 
         SetAfterGameEnd(gameResult);
+    }
+    
+    public void OnClick_OkButton()
+    {
+        GameManager.Instance.ChangeToMainScene();
+    }
+
+    public void OnClick_RestartButton()
+    {
+        Debug.Log("재대국 버튼 클릭");
+        GameManager.Instance.RestartCurrentGame();
+    }
+
+    public void OnClick_RecordButton()
+    {
+        UI_Manager.Instance.popup.Show(
+            "기보를 저장하시겠습니까?",
+            "저장", "취소",
+            okAction: () =>
+            {
+                Debug.Log("기보 저장 완료 (예정)");
+            },
+            cancelAction: () =>
+            {
+                Debug.Log("기보 저장 취소");
+            }
+        );
     }
 
     // 셀 위치 조정
@@ -155,11 +207,11 @@ public class GameEndManager : Singleton<GameEndManager>
 
     void EndButtonInfoSet()
     {
-        EndButtonClickListenerSet(); // 버튼 클릭 이벤트 할당
+        //EndButtonClickListenerSet(); // 버튼 클릭 이벤트 할당
         EndButtonTextSet(); // 버튼 텍스트 할당
     }
 
-    void EndButtonClickListenerSet()
+    /*void EndButtonClickListenerSet()
     {
         // 기존에 있는 Button 컴포넌트를 가져오고, 없으면 추가
         Button okBtn = okButton.GetComponent<Button>() ?? okButton.AddComponent<Button>();
@@ -175,7 +227,7 @@ public class GameEndManager : Singleton<GameEndManager>
         okBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_OkButton(); });
         restartBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.DORestart(); });
         recordBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_RecordButton(); });
-    }
+    }*/
 
     void EndButtonTextSet()
     {
@@ -316,9 +368,46 @@ public class GameEndManager : Singleton<GameEndManager>
     }
 
 
+    public override void Show()
+    {
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
 
+        Debug.Log($"[{name}] Show() → gameObject 활성화됨");
+        
+        okButton.onClick.RemoveAllListeners();
+        restartButton.onClick.RemoveAllListeners();
+        recordButton.onClick.RemoveAllListeners();
 
+        okButton.onClick.AddListener(OnClick_OkButton);
+        restartButton.onClick.AddListener(OnClick_RestartButton);
+        recordButton.onClick.AddListener(OnClick_RecordButton);
+    }
+    
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 
+    public override void OnEnable()
+    {
+        TryAutoRegister();
+    }
 
+    public override void OnDisable()
+    {
+    }
+
+    private void TryAutoRegister()
+    {
+        if (UI_Manager.Instance == null) return;
+        if (panelType == UI_Manager.PanelType.None) return;
+
+        if (!UI_Manager.Instance.HasPanel(panelType))
+        {
+            UI_Manager.Instance.AddPanel(panelType, this);
+            Debug.Log($"[UI_Panel] {panelType} 패널이 자동 등록됨");
+        }
+    }
 
 }
