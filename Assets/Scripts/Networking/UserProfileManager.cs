@@ -14,7 +14,7 @@ using UnityEditor.PackageManager.Requests;
 public class UserProfileManager : Singleton<UserProfileManager> {
     public IEnumerator GetProfileImage(string userId, Action<Sprite> callback) {
         string url = $"{Constants.ServerURL}/uer/profile?userId={userId}";
-        string accessToken = SessionManager.Instance.GetAccessToken();
+        string accessToken = TokenManager.Instance.GetAccessToken();
 
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url)) {
             request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
