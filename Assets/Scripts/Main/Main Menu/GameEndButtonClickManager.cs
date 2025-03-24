@@ -11,6 +11,7 @@ public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
         Debug.Log("게임 종료 후 확인 버튼 클릭");
 
         // 메인 프로필 화면으로 돌아가기
+        GameManager.Instance.ChangeToMainScene();
     }
 
     public void OnClick_RestartButton()
@@ -28,5 +29,11 @@ public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
         // 기보 저장 여부 팝업 출력
     }
 
+    public void DORestart()
+    {
+        // 게임 재시작 로직
+        //GameManager.Instance.RestartCurrentGame();
+
+    }
 
 }

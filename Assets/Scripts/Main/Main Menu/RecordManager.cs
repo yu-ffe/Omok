@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class RecordManager : Singleton<RecordManager>
+public class RecordManager : UI_Panel
 {
+    public static RecordManager Instance { get; private set; }
+    
     [Header("기보 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
@@ -11,16 +14,27 @@ public class RecordManager : Singleton<RecordManager>
     List<string> recordNameList = new List<string>();
     List<string> nickNameList = new List<string>();
     List<int> dateList = new List<int>();
+    
+    public Button btnClose;
 
     public void SetScrollView(ScrollViewSet scrollViewSet)
     {
         this.scrollViewSet = scrollViewSet;
     }
+    
+    void Awake()
+    {
+        if(Instance == null) Instance = this;
+        else Destroy(this.gameObject);
+    }
 
     private void Start()
     {
-
-        /// 테스트
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Record, this);
+        btnClose.onClick.AddListener(Hide);
+        gameObject.SetActive(false);
+        
+        // 테스트
         GetRecordData();
     }
 
@@ -172,5 +186,25 @@ public class RecordManager : Singleton<RecordManager>
             Destroy(gameObject);
         }
     }*/
+    public override void Show()
+    {
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+        gameObject.SetActive(true);
+        GetRecordData();
+    }
+
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
+    }
+
+    public override void OnEnable()
+    {
+    }
+
+    public override void OnDisable()
+    {
+    }
 }
 
