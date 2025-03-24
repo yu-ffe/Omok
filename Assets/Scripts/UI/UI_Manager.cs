@@ -23,10 +23,14 @@ public class UI_Manager : Singleton<UI_Manager>
     
     public event Action<PanelType> OnPanelRegistered; // 패널이 등록될 때 발생하는 이벤트
 
+<<<<<<< HEAD
     protected override void Awake()
     {
         Debug.Log("[UI_Manager] Awake 시작");
         
+=======
+    private void Awake() {
+>>>>>>> 95432e6b94b3c9b95ff302e12b23a5f0aa184c1b
         Instance = null;
         base.Awake();
         InitializePanels(); // 패널을 한 번에 등록
