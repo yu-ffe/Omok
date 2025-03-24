@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WB;
 
 public class GradeChangeManager
 {
@@ -45,11 +46,11 @@ public class GradeChangeManager
         else return GetWinPointWithHighGrade();
     }
 
-    public static int GetRankPointAndGradeUpdate(string userId, PlayerData palyerData, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
+    public static int GetRankPointAndGradeUpdate(string userId, PlayerData userSession, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
     {
-        int rankPoint = palyerData.rankPoint;
+        int rankPoint = userSession.rankPoint;
 
-        if (palyerData != null)
+        if (userSession != null)
         {
             switch (gameResultType)
             {
@@ -57,46 +58,44 @@ public class GradeChangeManager
 
                     int winPoint = 3; // 기본 승리 포인트
 
-                    if (palyerData.grade >= 10) winPoint = winPointWithLowGrade; // 10급~18급: 10점 증가
-                    else if (palyerData.grade >= 5) winPoint = winPointWithMiddleGrade; // 5급~9급: 6점 증가
+                    if (userSession.grade >= 10) winPoint = winPointWithLowGrade; // 10급~18급: 10점 증가
+                    else if (userSession.grade >= 5) winPoint = winPointWithMiddleGrade; // 5급~9급: 6점 증가
                     else winPoint = winPointWithHighGrade; // 1급~4급: 3점 증가
 
-                    if (palyerData.grade > 1) // 1급은 승점 제외
+                    if (userSession.grade > 1) // 1급은 승점 제외
                     {
-                        palyerData.rankPoint += winPoint; // 급수에 따라 승급 포인트 증가
+                        userSession.rankPoint += winPoint; // 급수에 따라 승급 포인트 증가
 
-                        rankPoint = palyerData.rankPoint;
+                        rankPoint = userSession.rankPoint;
 
-                        if (palyerData.rankPoint >= rankPointRange) // 30점 도달 시 승급
+                        if (userSession.rankPoint >= rankPointRange) // 30점 도달 시 승급
                         {
-                            palyerData.rankPoint = 0;
-                            palyerData.grade = Mathf.Clamp(palyerData.grade - 1, 1, 18); // 급수 상승
+                            userSession.rankPoint = 0;
+                            userSession.grade = Mathf.Clamp(userSession.grade - 1, 1, 18); // 급수 상승
                         }
 
-                        //플레이어 데이터 저장 로직
-                        // SessionManager.UpdateSession(userId, palyerData.coins, palyerData.grade, palyerData.rankPoint);
+                        // SessionManager.UpdateSession(userId, userSession.coins, userSession.grade, userSession.rankPoint);
                     }
 
                     break;
 
                 case GameResult.Lose:
 
-                    palyerData.rankPoint -= losePoint; // 패배 시 승급 포인트 감소
+                    userSession.rankPoint -= losePoint; // 패배 시 승급 포인트 감소
 
-                    rankPoint = palyerData.rankPoint;
+                    rankPoint = userSession.rankPoint;
 
-                    if (palyerData.rankPoint <= -rankPointRange) // -30점 도달 시 강등
+                    if (userSession.rankPoint <= -rankPointRange) // -30점 도달 시 강등
                     {
-                        palyerData.rankPoint = 0;
-                        palyerData.grade = Mathf.Clamp(palyerData.grade + 1, 1, 18); // 급수 감소
+                        userSession.rankPoint = 0;
+                        userSession.grade = Mathf.Clamp(userSession.grade + 1, 1, 18); // 급수 감소
                     }
 
-                    // SessionManager.UpdateSession(userId, palyerData.coins, palyerData.grade, palyerData.rankPoint);
-
+                    // SessionManager.UpdateSession(userId, userSession.coins, userSession.grade, userSession.rankPoint);
                     break;
 
                 case GameResult.Draw:
-                    Debug.Log($"{palyerData.nickname} 플레이어 무승부에 따른 승급 계산 실행");
+                    Debug.Log($"{userSession.nickname} 플레이어 무승부에 따른 승급 계산 실행");
 
                     break;
 

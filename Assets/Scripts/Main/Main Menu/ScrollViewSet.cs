@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using WB;
 
 public class ScrollViewSet : MonoBehaviour
 {
@@ -281,63 +280,14 @@ public class ScrollViewSet : MonoBehaviour
         {
             state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
             state.nameText.text = ShopManager.Instance.GetName(index);
+            state.subText1.text = ShopManager.Instance.GetNum(index).ToString() + " 코인";
+            state.subText2.text = ShopManager.Instance.GetPrice(index).ToString() + " 원";
 
-            if (ShopManager.Instance.isCoinItem[index])
-            {
-                state.subText1.text = $"x{ShopManager.Instance.nums[index]} 코인";
-            }
-            else
-            {
-                state.subText1.text = "특별 아이템";
-            }
-
-            state.subText2.text = $"{ShopManager.Instance.prices[index]} 원";
-
-            if (state.buttonObj == null)
-            {
-                Debug.LogError($"[CellState] buttonObj가 null입니다. Index: {index}");
-                return;
-            }
-
-            if (!state.buttonObj.activeInHierarchy)
-            {
-                state.buttonObj.SetActive(true);
-            }
-
-            Button buyButton = state.buttonObj.GetComponent<Button>();
-            if (buyButton == null)
-            {
-                Debug.LogError($"[CellState] 버튼 컴포넌트가 없습니다. Index: {index}. buttonObj 이름: {state.buttonObj.name}");
-                return;
-            }
-
-            buyButton.onClick.RemoveAllListeners();
-            buyButton.onClick.AddListener(() =>
-            {
-                string message = $"{ShopManager.Instance.GetName(index)}을(를) 구매하시겠습니까?";
-
-                // 첫 번째 팝업: 구매 확인 (확인 & 취소 버튼 있음)
-                UI_Manager.Instance.popup.Show(
-                    message,
-                    "구매", "취소",
-                    okAction: () =>
-                    {
-                        // 확인을 누르면 구매 진행
-                        bool success = ShopManager.Instance.BuyCoin(index);
-
-                        if (success)
-                        {
-                            // 두 번째 팝업: 구매 성공 메시지
-                            UI_Manager.Instance.popup.Show($"{ShopManager.Instance.GetName(index)} 구매 완료!");
-                        }
-                    },
-                    cancelAction: () =>
-                    {
-                        // 취소를 누르면 "구매 취소" 메시지 표시
-                        UI_Manager.Instance.popup.Show("구매를 취소하셨습니다.");
-                    }
-                );
-            });
+            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { ShopManager.Instance.BuyCoin(index); });
         }
     }
+
+
+
+
 }
