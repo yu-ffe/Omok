@@ -189,7 +189,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     }
 
     public static IEnumerator GetRankingRequest(Action<List<Ranking>> callback) {
-        string url = $"{Constants.ServerURL}/user/ranking"; 
+        string url = $"{Constants.ServerURL}/user/ranking";
 
         int retryCount = 0;
 
@@ -235,6 +235,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         int retryCount = 0;
 
         while (retryCount < MaxRetryCount) {
+            retryCount++;
             using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
                 // 승/패를 서버에 전송하기 위해 JSON 형식으로 데이터 추가
                 string jsonData = JsonConvert.SerializeObject(new { result = isWin }); // result: true(승리) or false(패배)
@@ -264,7 +265,6 @@ public class NetworkManager : Singleton<NetworkManager> {
                 //         // 예: 콜백 호출 또는 실패 처리
                 //     }
                 // });
-                retryCount++;
             }
         }
 
@@ -331,4 +331,9 @@ public class NetworkManager : Singleton<NetworkManager> {
 //         }
 //     }
 // }
+
+// 해당 코드는 임시로 동작시킴
+    public void SendGameReqult(GameLogic.GameResult gameResult) {
+        StartCoroutine(SendGameResult(gameResult == GameLogic.GameResult.Win));
+    }
 }
