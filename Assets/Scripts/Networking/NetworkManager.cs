@@ -21,14 +21,14 @@ public class NetworkManager : Singleton<NetworkManager> {
         PlayerData playerData = PlayerManager.Instance.playerData;
 
         WWWForm form = new WWWForm();
-        form.AddField("id", playerData.id);
+        form.AddField("email", playerData.email);
         form.AddField("password", playerData.password);
         form.AddField("nickname", playerData.nickname);
         form.AddField("profileNum", playerData.profileNum);
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
-            
+
             bool success = request.result == UnityWebRequest.Result.Success;
             string responseText = request.downloadHandler.text;
 
@@ -50,29 +50,25 @@ public class NetworkManager : Singleton<NetworkManager> {
         }
     }
 
-    public static IEnumerator CheckIdRequest(string id, Action<CheckResponse> callback)
-    {
+    public static IEnumerator CheckIdRequest(string email, Action<CheckResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
-        form.AddField("type", "id");
-        form.AddField("value", id);
+        form.AddField("type", "email");
+        form.AddField("value", email);
 
-        using (UnityWebRequest request = UnityWebRequest.Post(url, form))
-        {
+        using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
             callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
         }
     }
 
-    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback)
-    {
+    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
         form.AddField("type", "nickname");
         form.AddField("value", nickname);
 
-        using (UnityWebRequest request = UnityWebRequest.Post(url, form))
-        {
+        using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
             callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
         }
@@ -83,13 +79,12 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator SignInRequest(Action<TokenResponse> callback)
-    {
+    public static IEnumerator SignInRequest(Action<TokenResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signin";
         PlayerData playerData = PlayerManager.Instance.playerData;
 
         WWWForm form = new WWWForm();
-        form.AddField("id", playerData.id);
+        form.AddField("email", playerData.email);
         form.AddField("password", playerData.password);
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
@@ -100,18 +95,36 @@ public class NetworkManager : Singleton<NetworkManager> {
         }
     }
 
-    public static IEnumerator TryAutoLoginRequest(Action<TokenResponse> callback) {
-        string url = $"{Constants.ServerURL}/auth/signin/refresh";
+    public static IEnumerator AutoSignInRequest(Action<TokenResponse> callback) {
+        string url = $"{Constants.ServerURL}/auth/signin/autoSignIn";
         string refreshToken = TokenManager.Instance.GetRefreshToken();
-        // TODO: refresh token 만료 처리 필요할 수 있음
+        int retryCount = 0;
 
-        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "")) {
-            request.SetRequestHeader("Authorization", "Bearer " + refreshToken);
-            yield return request.SendWebRequest();
 
-            string jsonResponse = request.downloadHandler.text;
-            callback?.Invoke(JsonConvert.DeserializeObject<TokenResponse>(jsonResponse));
+        Debug.Log("TryAutoSignInRequest");
+
+        while (retryCount < MaxRetryCount) {
+            retryCount++;
+            Debug.Log(retryCount + "회 재시도");
+
+            using (UnityWebRequest request = UnityWebRequest.Get(url)) {
+                Debug.Log("TryAutoSignInRequest - UnityWebRequest.Get");
+                Debug.Log(refreshToken);
+                request.SetRequestHeader("Authorization", $"Bearer {refreshToken}");
+                Debug.Log("TryAutoSignInRequest - SetRequestHeader");
+                yield return request.SendWebRequest();
+                Debug.Log(request.responseCode);
+                if (request.result == UnityWebRequest.Result.Success) {
+                    string jsonResponse = request.downloadHandler.text;
+                    TokenResponse tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(jsonResponse);
+                    callback?.Invoke(tokenResponse);
+                    yield break;
+                }
+            }
+            Debug.LogError("GetUserInfoRequest failed");
         }
+        callback?.Invoke(null);
+
     }
 
     // ======================================================
@@ -222,7 +235,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         // 실패 처리 (retryCount 초과 시)
         // 예: 콜백 호출 또는 실패 처리
     }
-    
+
 
     // ======================================================
     //                     유저 토큰 검증

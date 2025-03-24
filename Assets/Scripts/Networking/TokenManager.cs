@@ -12,6 +12,7 @@ public class TokenManager : Singleton<TokenManager> {
     private string _refreshToken;
 
     protected override void Awake() {
+        base.Awake();
         _refreshToken = GetRefreshToken();
     }
 

@@ -6,117 +6,86 @@ using UnityEngine;
 using TMPro;
 
 public class SignInHandler : Singleton<SignInHandler> {
-    private const string AutoLoginEnabledKey = "AutoLoginEnabledKey";
+    private const string AutoLoginEnabled = "AutoLoginEnabledKey";
 
-    public void TrySignIn(string id, string password, Action<bool, string> callback) {
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)) {
-            callback(false, "아이디와 비밀번호를 모두 입력하세요.");
-            return;
-        }
- 
-        SignIn(id, password, callback);
+    public void AttemptSignIn(string email, string password, Action<bool, string> callback) {
+
+        if (!ValidationManager.Validate("email", email, callback)) return;
+        if (!ValidationManager.Validate("password", password, callback)) return;
+
+        UtilityManager.EncryptPassword(ref password);
+
+        StartCoroutine(SignIn(email, password, callback));
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
+    private static IEnumerator SignIn(string email, string password, Action<bool, string> callback) {
 
-    private void SignIn(string id, string pwd, Action<bool, string> callback) {
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pwd)) {
-            Debug.LogError(" SignIn 실패: ID 또는 비밀번호가 비어 있음");
-            callback(false, "ID 또는 비밀번호가 올바르지 않습니다.");
-            return;
+        PlayerManager.Instance.playerData.SetPrivateData(email, password);
+
+        TokenResponse tokenResponse = null;
+        yield return NetworkManager.SignInRequest(response => {
+            tokenResponse = response;
+            PlayerManager.Instance.playerData.ClearPrivateData();
+        });
+        if (tokenResponse is null) {
+            callback(false, "로그인 실패");
+            yield break;
         }
         
-        // string password = EncryptPassword(pwd ?? "");
-        string password = pwd;
-        
-        PlayerManager.Instance.playerData.SetPrivateData(id, password);
-        Debug.Log(id + " " + password);
+        TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
 
-        StartCoroutine(NetworkManager.SignInRequest(response => {
-            Debug.Log("SignInRequest response: " + response);
-            if (response == null) {
-                callback(false, "서버 응답이 없습니다.");
-                return;
-            }
-
-            TokenManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
-            Debug.Log("SignInRequest response.RefreshToken: " + response.RefreshToken);
-            Debug.Log("SignInRequest response.AccessToken: " + response.AccessToken);
-
-            StartCoroutine(NetworkManager.GetUserInfoRequest(data => {
-                Debug.Log("GetUserInfoRequest data: " + data);
-                if (data != null) {
-                    UpdateUserData(data);
-                    callback(true, "로그인 성공");
-                }
-                else {
-                    callback(false, "유저 정보를 가져오지 못했습니다.");
-                }
-            }));
-        }));
+        yield return LoadPlayerData(callback);
     }
 
-    private void UpdateUserData(PlayerDataResponse dataResponse) {
-        PlayerManager.Instance.playerData.nickname = dataResponse.Nickname;
-        PlayerManager.Instance.playerData.profileNum = dataResponse.ProfileNum;
-        PlayerManager.Instance.playerData.coins = dataResponse.Coins;
-        PlayerManager.Instance.playerData.grade = dataResponse.Grade;
-        PlayerManager.Instance.playerData.rankPoint = dataResponse.RankPoint;
-        PlayerManager.Instance.playerData.winCount = dataResponse.WinCount;
-        PlayerManager.Instance.playerData.loseCount = dataResponse.LoseCount;
-    }
+    // ReSharper disable Unity.PerformanceAnalysis
+    public IEnumerator AttemptAutoSignIn(Action<bool, string> callback) {
 
-    private static string EncryptPassword(string plainPassword) {
-        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainPassword);
-        return Convert.ToBase64String(plainTextBytes);
-    }
-
-    public IEnumerator AttemptAutoLogin(Action<bool, string> callback) {
+        Debug.Log("[SignInHandler] AttemptAutoSignIn");
         if (!GetAutoLoginEnabled()) {
-            Debug.Log("자동 로그인 비활성화됨");
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
             callback(false, "자동 로그인 비활성화");
             yield break;
         }
-        yield return RefreshSessionForAutoLogin(callback);
+        Debug.Log("[SignInHandler] AttemptAutoSignIn - TryAutoSignInRequest");
+        TokenResponse tokenResponse = null;
+        StartCoroutine(NetworkManager.AutoSignInRequest(response => {
+            Debug.Log("[SignInHandler] AttemptAutoSignIn - TryAutoSignInRequest - Response");
+            Debug.Log(response);
+            tokenResponse = response;
+            
+            Debug.Log("[SignInHandler] AttemptAutoSignIn - TokenResponse");
+            if (tokenResponse is null) {
+                callback(false, "자동 로그인 실패");
+                Debug.Log("[SignInHandler] AttemptAutoSignIn - TokenResponse is null");
+            }
+            Debug.Log("[SignInHandler] AttemptAutoSignIn - UpdateTokens");
+            TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+            callback(true, "자동 로그인 성공");
+
+            Debug   .Log("[SignInHandler] AttemptAutoSignIn - LoadPlayerData");
+            StartCoroutine(LoadPlayerData(callback));
+        }));
     }
 
-    private IEnumerator RefreshSessionForAutoLogin(Action<bool, string> callback) {
-        // 현재 저장된 refreshToken 가져오기
-        string refreshToken = TokenManager.Instance.GetRefreshToken();
+    private static IEnumerator LoadPlayerData(Action<bool, string> callback) {
+        PlayerDataResponse playerInfoResponse = null;
+        yield return NetworkManager.GetUserInfoRequest(response => { playerInfoResponse = response; });
+        if (playerInfoResponse is null) {
+            callback(false, "사용자 정보 요청 실패");
+            yield break;
+        }
 
-        if (!string.IsNullOrEmpty(refreshToken)) {
-            // 토큰을 이용하여 자동 로그인 시도
-            yield return StartCoroutine(NetworkManager.TryAutoLoginRequest(success => {
-                if (success is not null) {
-                    // 토큰 갱신 성공시 사용자 정보를 요청
-                    NetworkManager.TryAutoLoginRequest(data => {
-                        if (data is not null) {
-                            // 사용자 데이터 업데이트
-                            TokenManager.Instance.UpdateTokens(success.RefreshToken, success.AccessToken);
-                            // TODO: 자동로그인하면 서버에서 데이터 가져오는 로직도 추가
-                            callback?.Invoke(true, "자동 로그인 성공");
-                        }
-                        else {
-                            callback?.Invoke(false, "사용자 정보 요청 실패");
-                        }
-                    });
-                }
-                else {
-                    callback?.Invoke(false, "토큰 갱신 실패");
-                }
-            }));
-        }
-        else {
-            callback?.Invoke(false, "로그인 정보 없음");
-        }
+        PlayerManager.Instance.SetPlayerData(playerInfoResponse);
+        callback(true, "로그인 성공");
     }
 
     public static bool GetAutoLoginEnabled() {
-        return PlayerPrefs.GetInt(AutoLoginEnabledKey, 1) == 1;
+        return PlayerPrefs.GetInt(AutoLoginEnabled, 1) == 1;
     }
 
     public void SetAutoLoginEnabled(bool isEnabled) {
-        PlayerPrefs.SetInt(AutoLoginEnabledKey, isEnabled ? 1 : 0);
+        PlayerPrefs.SetInt(AutoLoginEnabled, isEnabled ? 1 : 0);
         PlayerPrefs.Save();
     }
+
 }
