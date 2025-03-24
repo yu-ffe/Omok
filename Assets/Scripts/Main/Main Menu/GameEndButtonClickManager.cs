@@ -27,6 +27,8 @@ public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
         Debug.Log("게임 종료 후 기보 저장 버튼 클릭");
 
         // 기보 저장 여부 팝업 출력
+
+        GameRecorder.SaveGameRecord(); // 기보 저장
     }
 
     public void DORestart()
