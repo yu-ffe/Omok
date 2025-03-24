@@ -28,7 +28,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
                     if (instance == null)
                     {
                         // 없으면 새로 생성
-                        GameObject singletonObject = new GameObject(typeof(T).Name);
+                        GameObject singletonObject = new GameObject(typeof(T).Name + " (Singleton)");
                         instance = singletonObject.AddComponent<T>();
 
                         // 씬 전환시에도 유지

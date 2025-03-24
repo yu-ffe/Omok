@@ -258,11 +258,12 @@ public class ScrollViewSet : MonoBehaviour
 
         if (state.cellType == CellState.CellType.Ranking)
         {
-            state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
-            state.nameText.text = RankingManager.Instance.GetName(index);
-            state.subText1.text = RankingManager.Instance.GetGrade(index).ToString() + " 급";
-            state.subText2.text = RankingManager.Instance.GetWin(index).ToString() + " 승";
-            state.subText3.text = RankingManager.Instance.GetLose(index).ToString() + " 패";
+            // state.cell_Image.sprite = RankingManager.Instance.GetRanking(index).;
+            state.cell_Image.sprite = null;
+            state.nameText.text = RankingManager.Instance.GetRanking(index).Nickname;
+            state.subText1.text = RankingManager.Instance.GetRanking(index).Grade + " 급";
+            state.subText2.text = RankingManager.Instance.GetRanking(index).WinCount+ " 승";
+            state.subText3.text = RankingManager.Instance.GetRanking(index).LoseCount+ " 패";
             state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
         }
 

@@ -1,3 +1,4 @@
+using Commons.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,8 @@ public class RankingManager : UI_Panel
     [Header("랭킹 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
-    List<Sprite> profileSpriteList = new List<Sprite>();
-    List<string> nickNameList = new List<string>();
-    List<int> gradeList = new List<int>();
-    List<int> winList = new List<int>();
-    List<int> loseList = new List<int>();
+    // List<Sprite> profileSpriteList = new List<Sprite>();
+    List<Ranking> playerLankingList;
 
     public Button btnClose;
 
@@ -88,14 +86,14 @@ public class RankingManager : UI_Panel
         });
 
         // 정렬된 데이터를 리스트에 추가
-        foreach (var userData in userDataList)
-        {
-            profileSpriteList.Add(userData.Profile);
-            nickNameList.Add(userData.Nickname);
-            gradeList.Add(userData.Grade);
-            winList.Add(userData.Win);
-            loseList.Add(userData.Lose);
-        }
+        // foreach (var userData in userDataList)
+        // {
+        //     profileSpriteList.Add(userData.Profile);
+        //     nickNameList.Add(userData.Nickname);
+        //     gradeList.Add(userData.Grade);
+        //     winList.Add(userData.Win);
+        //     loseList.Add(userData.Lose);
+        // }
     }
 
     public float GetWinRate(int winCount, int loseCount) // 승률 반환 (일반 계산용)
@@ -106,26 +104,30 @@ public class RankingManager : UI_Panel
 
     void ResetData()
     {
-        profileSpriteList.Clear();
-        nickNameList.Clear();
-        gradeList.Clear();
-        winList.Clear();
-        loseList.Clear();
+        // profileSpriteList.Clear();
+        // nickNameList.Clear();
+        // gradeList.Clear();
+        // winList.Clear();
+        // loseList.Clear();
     }
 
-    public int GetMaxCellNum() => profileSpriteList.Count;
+    public int GetMaxCellNum() => playerLankingList.Count;
+    public Ranking GetRanking(int index) => (playerLankingList.Count > index) ? playerLankingList[index] : null;
 
-    public Sprite GetSprite(int index) => (profileSpriteList.Count > index) ? profileSpriteList[index] : null;
-    public string GetName(int index) => (nickNameList.Count > index) ? nickNameList[index] : null;
-    public int GetGrade(int index) => (gradeList.Count > index) ? gradeList[index] : 0;
-    public int GetWin(int index) => (winList.Count > index) ? winList[index] : 0;
-    public int GetLose(int index) => (loseList.Count > index) ? loseList[index] : 0;
+    // public Sprite GetSprite(int index) => (playerLankingList..Count > index) ? profileSpriteList[index] : null;
+    // public string GetName(int index) => (nickNameList.Count > index) ? nickNameList[index] : null;
+    // public int GetGrade(int index) => (gradeList.Count > index) ? gradeList[index] : 0;
+    // public int GetWin(int index) => (winList.Count > index) ? winList[index] : 0;
+    // public int GetLose(int index) => (loseList.Count > index) ? loseList[index] : 0;
 
 
     public float GetWinRate(int index) // 승류 반환 (여러 유저 계산용)
     {
-        int wins = GetWin(index);
-        int losses = GetLose(index);
+        Ranking ranking = playerLankingList[index];
+        // int wins = GetWin(index);
+        // int losses = GetLose(index);
+        int wins = ranking.WinCount;
+        int losses = ranking.LoseCount;
 
         int totalGames = wins + losses;
         if (totalGames == 0) return 0f; // 경기 기록이 없을 경우 0% 반환
@@ -139,9 +141,12 @@ public class RankingManager : UI_Panel
         ResetData();
         // TODO: 서버 연동 필요
         // List<string> userIdList = SessionManager.GetAllUserIds();
-        List<string> userIdList = null;
-        SortingAndSave(userIdList);
-        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+        StartCoroutine(NetworkManager.GetRankingRequest((rankings) =>
+        {
+            playerLankingList = rankings;
+            scrollViewSet.StageSelectPopSet(rankings.Count);
+            
+        }));
     }
     
     public override void Show()
