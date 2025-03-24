@@ -259,8 +259,6 @@ public class ScrollViewSet : MonoBehaviour
     CellState state = cell.GetComponent<CellState>();
     if (state == null)
     {
-        CellState state = cell.GetComponent<CellState>();
-
         if (state.cellType == CellState.CellType.Ranking)
         {
             // state.cell_Image.sprite = RankingManager.Instance.GetRanking(index).;
@@ -287,11 +285,11 @@ public class ScrollViewSet : MonoBehaviour
     switch (state.cellType)
     {
         case CellState.CellType.Ranking:
-            SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(index));
-            SafeSetText(state.nameText, RankingManager.Instance.GetName(index));
-            SafeSetText(state.subText1, $"{RankingManager.Instance.GetGrade(index)} 급");
-            SafeSetText(state.subText2, $"{RankingManager.Instance.GetWin(index)} 승");
-            SafeSetText(state.subText3, $"{RankingManager.Instance.GetLose(index)} 패");
+            // SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(index));
+            SafeSetText(state.nameText, RankingManager.Instance.GetRanking(index).Nickname);
+            SafeSetText(state.subText1, $"{RankingManager.Instance.GetRanking(index).Grade} 급");
+            SafeSetText(state.subText2, $"{RankingManager.Instance.GetRanking(index).WinCount} 승");
+            SafeSetText(state.subText3, $"{RankingManager.Instance.GetRanking(index).LoseCount} 패");
             SafeSetText(state.subText4, $"{RankingManager.Instance.GetWinRate(index):F2}%");
             break;
 
