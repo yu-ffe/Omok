@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -125,6 +126,7 @@ public class ScrollViewSet : MonoBehaviour
 
         CellPositionSet(0);
     }
+
 
     void CellPositionSet(int startRow)
     {
@@ -252,42 +254,72 @@ public class ScrollViewSet : MonoBehaviour
 
 
 
-    void CellInfoUpdate(GameObject cell, int index)
+  void CellInfoUpdate(GameObject cell, int index)
+{
+    CellState state = cell.GetComponent<CellState>();
+    if (state == null)
     {
-        CellState state = cell.GetComponent<CellState>();
-
-        if (state.cellType == CellState.CellType.Ranking)
-        {
-            state.cell_Image.sprite = RankingManager.Instance.GetSprite(index);
-            state.nameText.text = RankingManager.Instance.GetName(index);
-            state.subText1.text = RankingManager.Instance.GetGrade(index).ToString() + " 급";
-            state.subText2.text = RankingManager.Instance.GetWin(index).ToString() + " 승";
-            state.subText3.text = RankingManager.Instance.GetLose(index).ToString() + " 패";
-            state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
-        }
-
-        else if (state.cellType == CellState.CellType.Record)
-        {
-            state.cell_Image.sprite = RecordManager.Instance.GetSprite(index);
-            state.nameText.text = RecordManager.Instance.GetRecordName(index);
-            state.subText1.text = RecordManager.Instance.GetName(index);
-            state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
-
-            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });
-        }
-
-        else if (state.cellType == CellState.CellType.Shop)
-        {
-            state.cell_Image.sprite = ShopManager.Instance.GetSprite(index);
-            state.nameText.text = ShopManager.Instance.GetName(index);
-            state.subText1.text = ShopManager.Instance.GetNum(index).ToString() + " 코인";
-            state.subText2.text = ShopManager.Instance.GetPrice(index).ToString() + " 원";
-
-            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { ShopManager.Instance.BuyCoin(index); });
-        }
+        Debug.LogError($"[CellInfoUpdate] CellState 컴포넌트가 없음 - index: {index}, cell name: {cell.name}");
+        return;
     }
 
+    switch (state.cellType)
+    {
+        case CellState.CellType.Ranking:
+            SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(index));
+            SafeSetText(state.nameText, RankingManager.Instance.GetName(index));
+            SafeSetText(state.subText1, $"{RankingManager.Instance.GetGrade(index)} 급");
+            SafeSetText(state.subText2, $"{RankingManager.Instance.GetWin(index)} 승");
+            SafeSetText(state.subText3, $"{RankingManager.Instance.GetLose(index)} 패");
+            SafeSetText(state.subText4, $"{RankingManager.Instance.GetWinRate(index):F2}%");
+            break;
 
+        case CellState.CellType.Record:
+            SafeSetImage(state.cell_Image, RecordManager.Instance.GetSprite(index));
+            SafeSetText(state.nameText, RecordManager.Instance.GetRecordName(index));
+            SafeSetText(state.subText1, RecordManager.Instance.GetName(index));
+            SafeSetText(state.subText2, RecordManager.Instance.GetDate(index).ToString());
 
+            AddSafeButton(state.buttonObj, () => RecordManager.Instance.RemoveRecord(index));
+            break;
 
+        case CellState.CellType.Shop:
+            SafeSetImage(state.cell_Image, ShopManager.Instance.GetSprite(index));
+            SafeSetText(state.nameText, ShopManager.Instance.GetName(index));
+            SafeSetText(state.subText1, $"{ShopManager.Instance.GetNum(index)} 코인");
+            SafeSetText(state.subText2, $"{ShopManager.Instance.GetPrice(index)} 원");
+            SafeSetText(state.subText3, ""); // Shop에서는 안 씀 → 빈 문자열
+            SafeSetText(state.subText4, "");
+
+            AddSafeButton(state.buttonObj, () => ShopManager.Instance.BuyCoin(index));
+            break;
+
+        default:
+            Debug.LogWarning($"[CellInfoUpdate] Unknown cell type: {state.cellType}");
+            break;
+    }
+}
+
+    void SafeSetText(TMP_Text textComponent, string value)
+    {
+        if (textComponent != null)
+            textComponent.text = value;
+    }
+
+    void SafeSetImage(Image imageComponent, Sprite sprite)
+    {
+        if (imageComponent != null)
+            imageComponent.sprite = sprite;
+    }
+
+    void AddSafeButton(GameObject buttonObj, UnityEngine.Events.UnityAction action)
+    {
+        if (buttonObj == null) return;
+
+        Button btn = buttonObj.GetComponent<Button>();
+        if (btn == null) btn = buttonObj.AddComponent<Button>();
+
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(action);
+    }
 }

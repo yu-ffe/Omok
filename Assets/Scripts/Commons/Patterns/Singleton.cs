@@ -20,18 +20,19 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
             lock (lockObject)
             {
-                if (instance == null)
+                if (!instance)
                 {
                     // 씬에서 찾기 (이미 존재)
                     instance = FindObjectOfType<T>();
 
-                    if (instance == null)
+                    if (!instance)
                     {
-                        // 없으면 새로 생성
-                        GameObject singletonObject = new GameObject(typeof(T).Name);
+                        if (isShuttingDown)
+                            return null;
+
+                        GameObject singletonObject = new GameObject(typeof(T).Name + " (Singleton)");
                         instance = singletonObject.AddComponent<T>();
 
-                        // 씬 전환시에도 유지
                         DontDestroyOnLoad(singletonObject);
                     }
                 }
@@ -57,4 +58,16 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
             Destroy(gameObject);
         }
     }
+    
+    private void OnApplicationQuit()
+    {
+        isShuttingDown = true;
+    }
+    
+    private void OnDestroy()
+    {
+        // 애플리케이션이 강제로 종료되지 않은 경우에도 제거 처리
+        isShuttingDown = true;
+    }
+
 }

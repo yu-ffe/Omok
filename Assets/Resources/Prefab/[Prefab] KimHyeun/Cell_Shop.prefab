@@ -205,7 +205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 118035224217364152}
-  - component: {fileID: 4816868522581887757}
+  - component: {fileID: 2217748816031999256}
   m_Layer: 5
   m_Name: Cell_Shop
   m_TagString: Untagged
@@ -235,7 +235,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 900, y: 300}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &4816868522581887757
+--- !u!114 &2217748816031999256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

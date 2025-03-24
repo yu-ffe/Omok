@@ -28,6 +28,7 @@ public class UI_Manager : Singleton<UI_Manager>
         base.Awake();
         InitializePanels(); // 패널을 한 번에 등록
     }
+    
     private void InitializePanels()
     {
         Panels.Clear();  // 혹시 남아있는 데이터 제거
