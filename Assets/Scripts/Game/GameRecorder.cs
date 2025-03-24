@@ -10,7 +10,7 @@ public class GameRecorder
     static GameResult gameResult;
 
     // 게임 결과 임시 저장
-    public void GameResultSave(GameResult result) // TODO 게임 종료 후 초기화 전 호출 필요
+    public static void GameResultSave(GameResult result) // TODO 게임 종료 후 초기화 전 호출 필요
     {
         gameResult = result;
     }
