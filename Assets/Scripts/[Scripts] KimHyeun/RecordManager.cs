@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
-using WB;
 
-public class RecordManager : UI_Panel
+public class RecordManager : Singleton<RecordManager>
 {
-    public static RecordManager Instance{get; private set;}
-    
     [Header("기보 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
@@ -17,39 +12,30 @@ public class RecordManager : UI_Panel
     List<string> nickNameList = new List<string>();
     List<int> dateList = new List<int>();
 
-    public Button btnClose;
-    
     public void SetScrollView(ScrollViewSet scrollViewSet)
     {
         this.scrollViewSet = scrollViewSet;
     }
-    
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {
-        UI_Manager.Instance.AddPanel(panelType, this);
-        btnClose.onClick.AddListener(Hide);
-        gameObject.SetActive(false);
-        LoadRecordData();
+
+        /// 테스트
+        GetRecordData();
     }
 
-    public void LoadRecordData() // 기보 팝업 오픈 시 호출
+    public void GetRecordData() // 기보 팝업 오픈 시 호출
     {
-        ResetData();
-        // 기보 데이터 불러오기 (추후 PlayerPrefs 또는 데이터베이스 연동)
-        
-        Debug.Log("기보 데이터를 불러오는 중...");
+        ResetData(); // 초기화
+
+
+
+        // 기보 데이터 불러오기 필요  (playerpref 기록 불러오기)
+
+
+
+
+        // scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
 
@@ -58,14 +44,7 @@ public class RecordManager : UI_Panel
     // TODO (기보 구현 후) 기보 제거 기능
     public void RemoveRecord(int index)
     {
-        Debug.Log($"{index}인덱스 기보 제거 (RecordPanelController)");
-        if (index < resultSpriteList.Count)
-        {
-            resultSpriteList.RemoveAt(index);
-            recordNameList.RemoveAt(index);
-            nickNameList.RemoveAt(index);
-            dateList.RemoveAt(index);
-        }
+        Debug.Log($"{index}인덱스 기보 제거(RecordManager)");
     }
 
 
@@ -193,22 +172,5 @@ public class RecordManager : UI_Panel
             Destroy(gameObject);
         }
     }*/
-    public override void Show()
-    {
-        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
-
-        gameObject.SetActive(true);
-        LoadRecordData();
-    }
-
-    public override void Hide()
-    {
-        gameObject.SetActive(false);
-        UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true); // 메인 패널 다시 활성화
-    }
-
-    public override void OnEnable() { }
-
-    public override void OnDisable() { }
 }
 

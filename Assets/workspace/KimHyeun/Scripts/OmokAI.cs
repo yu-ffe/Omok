@@ -1,9 +1,9 @@
+using Commons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Text;
-using workspace.Ham6._03_Sctipts.Game;
 
 namespace KimHyeun {
 
