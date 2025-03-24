@@ -46,7 +46,24 @@ public class RecordManager : UI_Panel
 
         // 기보 데이터 불러오기 필요  (playerpref 기록 불러오기)
 
+        /*
+        // 특정 기보 불러오기 (예: 3번째 기보)
+        RecordData loadedRecord = GameRecorder.LoadGameRecord(3);
+        if (loadedRecord != null)
+        {
+            Debug.Log($"불러온 기록: {loadedRecord.Nickname} / {loadedRecord.Date} / {loadedRecord.Result}");
+        }
 
+        // 모든 저장된 기보 목록 가져오기
+        List<RecordData> allRecords = GameRecorder.GetAllGameRecords();
+        foreach (var record in allRecords)
+        {
+            Debug.Log($"기보: {record.Nickname} / {record.Date} / {record.Result}");
+        }
+
+        // 특정 기보 삭제 (예: 2번째 기보 삭제)
+        GameRecorder.DeleteGameRecord(2);
+        */
 
 
         // scrollViewSet.StageSelectPopSet(GetMaxCellNum());
@@ -143,6 +160,7 @@ public class RecordManager : UI_Panel
         {
             return 0;
         }
+
     }
 
 
@@ -153,39 +171,42 @@ public class RecordManager : UI_Panel
 
 
 
-    /*
-    private static RecordManager _instance;
 
-    public static RecordManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<RecordManager>();
-                if (_instance == null)
-                {
-                    GameObject obj = new GameObject();
-                    obj.name = typeof(RecordManager).Name;
-                    _instance = obj.AddComponent<RecordManager>();
-                }
-            }
-            return _instance;
-        }
-    }
 
-    private void Awake()
-    {
-        if (_instance == null)
-        {
-            _instance = this as RecordManager;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public override void Show()
     {
         UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
