@@ -38,7 +38,7 @@ public class SignInHandler : Singleton<SignInHandler> {
                 return;
             }
 
-            SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
+            TokenManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
             Debug.Log("SignInRequest response.RefreshToken: " + response.RefreshToken);
             Debug.Log("SignInRequest response.AccessToken: " + response.AccessToken);
 
@@ -82,7 +82,7 @@ public class SignInHandler : Singleton<SignInHandler> {
 
     private IEnumerator RefreshSessionForAutoLogin(Action<bool, string> callback) {
         // 현재 저장된 refreshToken 가져오기
-        string refreshToken = SessionManager.Instance.GetRefreshToken();
+        string refreshToken = TokenManager.Instance.GetRefreshToken();
 
         if (!string.IsNullOrEmpty(refreshToken)) {
             // 토큰을 이용하여 자동 로그인 시도
@@ -92,7 +92,7 @@ public class SignInHandler : Singleton<SignInHandler> {
                     NetworkManager.TryAutoLoginRequest(data => {
                         if (data is not null) {
                             // 사용자 데이터 업데이트
-                            SessionManager.Instance.UpdateTokens(success.RefreshToken, success.AccessToken);
+                            TokenManager.Instance.UpdateTokens(success.RefreshToken, success.AccessToken);
                             // TODO: 자동로그인하면 서버에서 데이터 가져오는 로직도 추가
                             callback?.Invoke(true, "자동 로그인 성공");
                         }

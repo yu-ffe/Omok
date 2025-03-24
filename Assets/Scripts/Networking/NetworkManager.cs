@@ -102,7 +102,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 
     public static IEnumerator TryAutoLoginRequest(Action<TokenResponse> callback) {
         string url = $"{Constants.ServerURL}/auth/signin/refresh";
-        string refreshToken = SessionManager.Instance.GetRefreshToken();
+        string refreshToken = TokenManager.Instance.GetRefreshToken();
         // TODO: refresh token 만료 처리 필요할 수 있음
 
         using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, "")) {
@@ -120,7 +120,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 
     public static IEnumerator LogOutRequest(Action<bool> callback) {
         string url = $"{Constants.ServerURL}/logout";
-        string refreshToken = SessionManager.Instance.GetRefreshToken();
+        string refreshToken = TokenManager.Instance.GetRefreshToken();
 
         if (string.IsNullOrEmpty(refreshToken)) {
             callback?.Invoke(false);
@@ -142,7 +142,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ReSharper disable Unity.PerformanceAnalysis
     public static IEnumerator GetUserInfoRequest(Action<PlayerDataResponse> callback) {
         string url = $"{Constants.ServerURL}/user/info";
-        string accessToken = SessionManager.Instance.GetAccessToken();
+        string accessToken = TokenManager.Instance.GetAccessToken();
         int retryCount = 0;
 
         while (retryCount < MaxRetryCount) {
@@ -161,12 +161,12 @@ public class NetworkManager : Singleton<NetworkManager> {
 
                 if (request.responseCode != 401)
                     continue;
-                yield return SessionManager.Instance.RefreshAccessTokenRequest((success) => {
-                    if (!success) {
-                        callback?.Invoke(null);
-                        // TODO: 실패 로직 처리 가능성 있음
-                    }
-                });
+                // yield return TokenManager.Instance.RefreshAccessTokenRequest((success) => {
+                //     if (!success) {
+                //         callback?.Invoke(null);
+                //         // TODO: 실패 로직 처리 가능성 있음
+                //     }
+                // });
             }
             Debug.LogError("GetUserInfoRequest failed");
         }
@@ -182,7 +182,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ReSharper disable Unity.PerformanceAnalysis
     public static IEnumerator SendGameResult(bool isWin) {
         string url = $"{Constants.ServerURL}/game/result"; // 서버 URL에 맞게 수정
-        string accessToken = SessionManager.Instance.GetAccessToken(); // 액세스 토큰 가져오기
+        string accessToken = TokenManager.Instance.GetAccessToken(); // 액세스 토큰 가져오기
         int retryCount = 0;
 
         while (retryCount < MaxRetryCount) {
@@ -209,12 +209,12 @@ public class NetworkManager : Singleton<NetworkManager> {
                     continue;
 
                 // 액세스 토큰이 만료되었을 경우, 새로 고침 후 재시도
-                yield return SessionManager.Instance.RefreshAccessTokenRequest((success) => {
-                    if (!success) {
-                        // 토큰 갱신 실패 시 적절한 처리 필요
-                        // 예: 콜백 호출 또는 실패 처리
-                    }
-                });
+                // yield return TokenManager.Instance.RefreshAccessTokenRequest((success) => {
+                //     if (!success) {
+                //         // 토큰 갱신 실패 시 적절한 처리 필요
+                //         // 예: 콜백 호출 또는 실패 처리
+                //     }
+                // });
                 retryCount++;
             }
         }
@@ -224,4 +224,62 @@ public class NetworkManager : Singleton<NetworkManager> {
     }
     
 
+    // ======================================================
+    //                     유저 토큰 검증
+    // ======================================================
+
+    // 일단 사용 X
+    // private IEnumerator VerifyServerSession(Action<bool> callback) {
+    //     string url = Constants.ServerURL + "verifySession";
+    //     WWWForm form = new WWWForm();
+    //     form.AddField("accessToken", _accessToken);
+    //
+    //     UnityWebRequest request = UnityWebRequest.Post(url, form);
+    //     yield return request.SendWebRequest();
+    //
+    //     if (request.result == UnityWebRequest.Result.Success) {
+    //         var response = JsonUtility.FromJson<CheckResponse>(request.downloadHandler.text);
+    //         callback(response.Success);
+    //     }
+    //     else {
+    //         Debug.LogError("[SessionManager] 서버와 연결 실패.");
+    //         callback(false);
+    //     }
+    // }
+    //
+    // // ======================================================
+    // //                    유저 토큰 재발행
+    // // ======================================================
+    //
+    // public IEnumerator RefreshAccessTokenRequest(Action<bool> callback) {
+    //     string url = $"{Constants.ServerURL}/auth/refresh";
+    //     string refreshToken = GetRefreshToken();
+    //
+    //     // TODO: Refresh Token 만료시 로그아웃 처리
+    //
+    //     if (string.IsNullOrEmpty(refreshToken)) {
+    //         callback?.Invoke(false);
+    //         yield break;
+    //     }
+    //
+    //     using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
+    //         request.SetRequestHeader("Authorization", $"Bearer {refreshToken}");
+    //         yield return request.SendWebRequest();
+    //
+    //         if (request.result == UnityWebRequest.Result.Success) {
+    //             string jsonResponse = request.downloadHandler.text;
+    //             var response = JsonConvert.DeserializeObject<TokenResponse>(jsonResponse);
+    //             if (response != null && !string.IsNullOrEmpty(response.AccessToken)) {
+    //                 UpdateAccessToken(response.AccessToken);
+    //                 callback?.Invoke(true); // 새로운 accessToken 반환
+    //             }
+    //             else {
+    //                 callback?.Invoke(false);
+    //             }
+    //         }
+    //         else {
+    //             callback?.Invoke(false);
+    //         }
+    //     }
+    // }
 }

@@ -108,7 +108,7 @@ public class SignUpHandler : Singleton<SignUpHandler>
         {
             if (response != null)
             {
-                SessionManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
+                TokenManager.Instance.UpdateTokens(response.RefreshToken, response.AccessToken);
                 NetworkManager.GetUserInfoRequest((userData) =>
                 {
                     if (userData != null)
