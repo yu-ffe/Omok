@@ -77,7 +77,7 @@ public class RecordManager : UI_Panel
 
         }
 
-        // TODO 기보 재생
+        ReplayShow(loadedRecord);
     }
 
 
@@ -249,7 +249,12 @@ public class RecordManager : UI_Panel
 
 
 
+    public void ReplayShow(RecordData recordData)
+    {
 
+
+        // TODO 기보 재생
+    }
 
 
 
