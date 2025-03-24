@@ -458,6 +458,8 @@ public class GameLogic : IDisposable
         secondPlayerState = null;
         GameManager.Instance.ChangeToMainScene();
 
+        NetworkManager.Instance.SendGameReqult(gameResult);
+
         //TODO: 서버에 승리 정보 전송
         //TODO: 이 부분 봇과의 대전도 서버로 전송?
         //TODO: UI활성화
