@@ -274,6 +274,7 @@ public class ScrollViewSet : MonoBehaviour
             state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
 
             state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });
+            cell.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
         }
 
         else if (state.cellType == CellState.CellType.Shop)

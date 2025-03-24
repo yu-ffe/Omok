@@ -65,7 +65,7 @@ public class RecordManager : UI_Panel
 
 
     // 기보 플레이 호출 기능
-    public RecordData RecordReplay(int index)
+    public void RecordReplay(int index)
     {
         Debug.Log($"{index}인덱스 기보 재생(RecordManager)");
 
@@ -75,11 +75,12 @@ public class RecordManager : UI_Panel
         {
             Debug.Log($"불러온 기록: {loadedRecord.Nickname} / {loadedRecord.Date} / {loadedRecord.Result}");
 
-            return loadedRecord;
         }
 
-        return null;
+        // TODO 기보 재생
     }
+
+
 
     // 기보 제거 기능
     public void RemoveRecord(int index)
