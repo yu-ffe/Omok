@@ -35,7 +35,14 @@ using UnityEngine.UI;
 
         void OnDestroy()
         {
-            UI_Manager.Instance.RemoveCallback("result");
+            if (UI_Manager.Instance != null)
+            {
+                UI_Manager.Instance.RemoveCallback("result");
+            }
+            else
+            {
+                Debug.LogWarning("[UI_Popup] OnDestroy 중 UI_Manager.Instance가 null입니다. 이미 종료 중이거나 파괴됨.");
+            }
         }
 
         public virtual void ShowStartEvent() { }
