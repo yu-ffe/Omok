@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 public class AppStart : MonoBehaviour {
 
+    public GameObject canvas;
+    
     void Awake() {
         //PlayerManager.Instance.UpdateUserData();
 
@@ -14,7 +16,9 @@ public class AppStart : MonoBehaviour {
 
     private void Start() {
         Debug.Log("[AppStart] 앱 시작");
-
+        
+        canvas.SetActive(true);
+        
         PlayerPrefs.Save();
         
         // 이미 로그인되어 있다면 자동 로그인 생략하고 메인화면 표시

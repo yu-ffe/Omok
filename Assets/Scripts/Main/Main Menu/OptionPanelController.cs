@@ -66,6 +66,7 @@ public class OptionPanelController : UI_Panel
         }
         float bgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
         bgmSlider.value = bgmVolume;
+        SoundManager.Instance.SetBgmVolume(bgmVolume);
 
         if (!PlayerPrefs.HasKey(SETTING_VOLUME_KEY))
         {
@@ -74,6 +75,8 @@ public class OptionPanelController : UI_Panel
         }
         float sfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
         sfxSlider.value = sfxVolume;
+        SoundManager.Instance.SetSfxVolume(sfxVolume);
+        
         
         // 슬라이더 이벤트 연결
         bgmSlider.onValueChanged.AddListener(SetBGMVolume);

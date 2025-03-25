@@ -42,7 +42,7 @@ public class UI_Manager : Singleton<UI_Manager>
     { 
         Debug.Log("[UI_Manager] Awake 시작");
 
-       Instance = null;
+       // Instance = null;
        base.Awake();
        InitializePanels(); // 패널을 한 번에 등록
         

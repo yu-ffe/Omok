@@ -54,7 +54,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
         else if (instance != this)
         {
-            return;
             Destroy(gameObject);
         }
     }
