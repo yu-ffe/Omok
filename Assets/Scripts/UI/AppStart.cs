@@ -16,9 +16,10 @@ public class AppStart : MonoBehaviour {
         Debug.Log("[AppStart] 앱 시작");
 
         PlayerPrefs.Save();
-
+        
         // UI 로딩 화면 표시
         UI_Manager.Instance.Show(UI_Manager.PanelType.Loading);
+        
         // 자동 로그인 처리
         Debug.Log("[AppStart] 자동 로그인 여부 확인 중...");
         StartCoroutine(SignInHandler.Instance.AttemptAutoSignIn((success, message) => {

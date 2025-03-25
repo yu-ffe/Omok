@@ -1218,7 +1218,6 @@ GameObject:
   - component: {fileID: 8996487660739701221}
   - component: {fileID: 6941022847852399106}
   - component: {fileID: 8933036975566440279}
-  - component: {fileID: 8699934672357737954}
   m_Layer: 5
   m_Name: EndGamePanel
   m_TagString: Untagged
@@ -1287,32 +1286,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8699934672357737954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4787836240153357919}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caa8e891a58fa2c43bc9b66cc67e7b0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelType: 10
-  resultText: {fileID: 6221023491549827928}
-  gradeResultText: {fileID: 1679275817588597001}
-  gradeMinText: {fileID: 1637362908100048593}
-  gradeMaxText: {fileID: 5607851239559159295}
-  gradeBar: {fileID: 8708046787015964794}
-  gradePlusCellPrefab: {fileID: 1506984166855900036, guid: c7c84efdecc3bc94e9a1d295265c1660, type: 3}
-  gradeMinusCellPrefab: {fileID: 8646609686867957861, guid: dc2912b359c0b5445ac7d1d70e51fd05, type: 3}
-  okButton: {fileID: 5877386951876502262}
-  okButtonText: {fileID: 2347324160106997035}
-  restartButton: {fileID: 3339391318279599888}
-  restartButtonText: {fileID: 7474521439379829519}
-  recordButton: {fileID: 6830519196193036531}
-  recordButtonText: {fileID: 5360124737881031845}
 --- !u!1 &5193918497119194303
 GameObject:
   m_ObjectHideFlags: 0

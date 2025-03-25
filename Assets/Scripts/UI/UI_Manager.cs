@@ -121,21 +121,32 @@ public class UI_Manager : Singleton<UI_Manager>
             return;
         }
 
-        // 같은 패널이면 굳이 Hide/Show 안 함
+        // 이미 해당 패널이 보여지고 있다면 중복 실행 안 함
         if (nowShowingPanelType == panelKey)
         {
             Debug.Log($"[UI_Manager] Show(): {panelKey} (이미 활성화된 패널입니다)");
             return;
         }
 
+        // 현재 패널이 GameEnd이고, 새로 보여줄 패널도 GameEnd라면 무시 (중복 방지)
+        if (nowShowingPanelType == panelKey && Panels[panelKey].gameObject.activeSelf)
+        {
+            Debug.Log($"[UI_Manager] Show(): {panelKey} 이미 활성화 상태 → 중복 Show 방지");
+            return;
+        }
+
+        // 현재 패널 숨김
         if (nowShowingPanelType != PanelType.None)
+        {
             Hide(nowShowingPanelType);
+        }
 
         Panels[panelKey].Show();
         nowShowingPanelType = panelKey;
 
         Debug.Log($"[UI_Manager] Show(): {panelKey} 패널 활성화 완료");
     }
+
 
 
     public void Hide(PanelType panelKey)

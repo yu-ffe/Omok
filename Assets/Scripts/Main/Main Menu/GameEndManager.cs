@@ -16,6 +16,8 @@ public enum GameResult // TODO 게임 로직과 겹치면 제거
 public class GameEndManager : UI_Panel
 {
     public static GameEndManager Instance{get; private set;}
+    
+    [SerializeField] GameObject gg;
 
     [Header("필수 할당")]
     [SerializeField] TMP_Text resultText;
@@ -39,6 +41,7 @@ public class GameEndManager : UI_Panel
     [SerializeField] Button recordButton;
     [SerializeField] TMP_Text recordButtonText;
 
+    private GameResult pendingResult;
 
     void Awake()
     {
@@ -64,6 +67,31 @@ public class GameEndManager : UI_Panel
         gameObject.SetActive(false); // 패널 비활성화
     }
 
+    public void PrepareGameEndInfo(GameResult result)
+    {
+        pendingResult = result;
+
+        // 패널이 아직 비활성화되어 있으면 Enable 될 때 처리
+        if (!gameObject.activeInHierarchy)
+        {
+            Debug.Log("[GameEndManager] 패널 비활성 상태, Enable 후 처리 예정");
+            return;
+        }
+
+        // 이미 켜져 있다면 바로 처리
+        ApplyEndGameInfo();
+    }
+    
+    private void ApplyEndGameInfo()
+    {
+        if (pendingResult == GameResult.None) return;
+
+        Debug.Log("[GameEndManager] 게임 종료 정보 적용 시작");
+
+        SetEndGameInfo(pendingResult);
+        pendingResult = GameResult.None;
+    }
+    
     public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
     {
         // 승점바 설정
@@ -370,10 +398,11 @@ public class GameEndManager : UI_Panel
 
     public override void Show()
     {
-        if (!gameObject.activeSelf)
-            gameObject.SetActive(true);
-
-        Debug.Log($"[{name}] Show() → gameObject 활성화됨");
+        if (!gg.activeSelf)
+        {
+            gg.SetActive(true);
+            Debug.Log("보이기");
+        }
         
         okButton.onClick.RemoveAllListeners();
         restartButton.onClick.RemoveAllListeners();
@@ -386,16 +415,24 @@ public class GameEndManager : UI_Panel
     
     public override void Hide()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     public override void OnEnable()
     {
         TryAutoRegister();
+        
+        StartCoroutine(DelayedApply());
     }
 
     public override void OnDisable()
     {
+    }
+    
+    private IEnumerator DelayedApply()
+    {
+        yield return null; // 1프레임 대기 후
+        ApplyEndGameInfo();
     }
 
     private void TryAutoRegister()

@@ -458,8 +458,13 @@ public class GameLogic : IDisposable
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
+        
+        UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+        
+        // 바로 실행 안 하고 GameEndManager에 맡긴다
+        GameEndManager.Instance?.PrepareGameEndInfo((global::GameResult)gameResult);
 
-        var panelKey = UI_Manager.PanelType.GameEnd;
+        /*var panelKey = UI_Manager.PanelType.GameEnd;
         if (UI_Manager.Instance.HasPanel(panelKey))
         {
             UI_Manager.Instance.Show(panelKey); // 1. 먼저 활성화
@@ -478,8 +483,9 @@ public class GameLogic : IDisposable
                     panel?.SetEndGameInfo(ConvertToUIResult(gameResult));
                 }
             };
-        }
+        }*/
     }
+
     
     private global::GameResult ConvertToUIResult(GameLogic.GameResult result)
     {
