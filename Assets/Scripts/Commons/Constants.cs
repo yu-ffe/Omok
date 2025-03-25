@@ -15,6 +15,7 @@ namespace Commons {
             MultiPlayer,
         }
         
+        //게임 결과 (승패 판정)
         public enum GameResult
         {
             None, // 게임 진행 중

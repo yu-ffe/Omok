@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using Commons;
 
-public enum GameResult // TODO 게임 로직과 겹치면 제거
+/*public enum GameResult // TODO 게임 로직과 겹치면 제거
 {
     None, // 게임 진행 중
     Win, // 플레이어 승
     Lose, // 플레이어 패
     Draw // 비김
-}
+}*/
 
 public class GameEndManager : UI_Panel
 {
@@ -41,7 +42,7 @@ public class GameEndManager : UI_Panel
     [SerializeField] Button recordButton;
     [SerializeField] TMP_Text recordButtonText;
 
-    private GameResult pendingResult;
+    private Constants.GameResult pendingResult;
 
     void Awake()
     {
@@ -54,8 +55,6 @@ public class GameEndManager : UI_Panel
             Destroy(gameObject);
         }
         TryAutoRegister();
-        gameObject.SetActive(false);
-        
     }
     
     void Start()
@@ -64,10 +63,9 @@ public class GameEndManager : UI_Panel
         {
             UI_Manager.Instance.AddPanel(panelType, this);
         }
-        gameObject.SetActive(false); // 패널 비활성화
     }
 
-    public void PrepareGameEndInfo(GameResult result)
+    public void PrepareGameEndInfo(Constants.GameResult result)
     {
         pendingResult = result;
 
@@ -84,15 +82,15 @@ public class GameEndManager : UI_Panel
     
     private void ApplyEndGameInfo()
     {
-        if (pendingResult == GameResult.None) return;
+        if (pendingResult == Constants.GameResult.None) return;
 
         Debug.Log("[GameEndManager] 게임 종료 정보 적용 시작");
 
         SetEndGameInfo(pendingResult);
-        pendingResult = GameResult.None;
+        pendingResult = Constants.GameResult.None;
     }
     
-    public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
+    public void SetEndGameInfo(Constants.GameResult gameResult)  // 실행 코드
     {
         // 승점바 설정
         GradeBarSetting();
@@ -264,7 +262,7 @@ public class GameEndManager : UI_Panel
         recordButtonText.text = "기보 저장";
     }
 
-    public void SetAfterGameEnd(GameResult gameResult) // 게임 종료 처리
+    public void SetAfterGameEnd(Constants.GameResult gameResult) // 게임 종료 처리
     {
         // 현재 로그인된 유저 세션ID, 해당 세션 정보 불러오기
         PlayerData playerData = PlayerManager.Instance.playerData;
@@ -278,7 +276,7 @@ public class GameEndManager : UI_Panel
 
         switch (gameResult)
         {
-            case GameResult.Win:
+            case Constants.GameResult.Win:
                 resultText.text = "승리!\n" + getPointPlusValue + "포인트 획득";
 
                 // 승점 변동 애니메이션
@@ -286,7 +284,7 @@ public class GameEndManager : UI_Panel
 
                 break;
 
-            case GameResult.Lose:
+            case Constants.GameResult.Lose:
                 resultText.text = "패배!\n" + getPointMinusValue + "포인트 손실";
 
                 // 승점 변동 애니메이션
@@ -294,7 +292,7 @@ public class GameEndManager : UI_Panel
 
                 break;
 
-            case GameResult.Draw:
+            case Constants.GameResult.Draw:
                 resultText.text = "무승부!\n포인트 변동 없음";
 
                 // 승점 변동 애니메이션
@@ -364,7 +362,7 @@ public class GameEndManager : UI_Panel
         seq.Play(); // 애니메이션 실행
     }
 
-    void RankPointSet(PlayerData playerData, GameResult gameResult)
+    void RankPointSet(PlayerData playerData, Constants.GameResult gameResult)
     {
         // 실질적 승급 계산
         int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(playerData.nickname, playerData, gameResult);

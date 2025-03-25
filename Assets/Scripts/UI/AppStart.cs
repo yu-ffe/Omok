@@ -17,6 +17,13 @@ public class AppStart : MonoBehaviour {
 
         PlayerPrefs.Save();
         
+        // 이미 로그인되어 있다면 자동 로그인 생략하고 메인화면 표시
+        if (PlayerManager.Instance != null && PlayerManager.Instance.IsLoggedIn)
+        {
+            UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+            return;
+        }
+        
         // UI 로딩 화면 표시
         UI_Manager.Instance.Show(UI_Manager.PanelType.Loading);
         

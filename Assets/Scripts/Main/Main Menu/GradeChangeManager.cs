@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using WB;
+using Commons;
 
 public class GradeChangeManager
 {
@@ -46,7 +47,7 @@ public class GradeChangeManager
         else return GetWinPointWithHighGrade();
     }
 
-    public static int GetRankPointAndGradeUpdate(string userId, PlayerData userSession, GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
+    public static int GetRankPointAndGradeUpdate(string userId, PlayerData userSession, Constants.GameResult gameResultType) // 승패 결과를 받아서 유저 세션에 저장 (변경된 급수는 유저 세션에서 접근)
     {
         int rankPoint = userSession.rankPoint;
 
@@ -54,7 +55,7 @@ public class GradeChangeManager
         {
             switch (gameResultType)
             {
-                case GameResult.Win:
+                case Constants.GameResult.Win:
 
                     int winPoint = 3; // 기본 승리 포인트
 
@@ -79,7 +80,7 @@ public class GradeChangeManager
 
                     break;
 
-                case GameResult.Lose:
+                case Constants.GameResult.Lose:
 
                     userSession.rankPoint -= losePoint; // 패배 시 승급 포인트 감소
 
@@ -94,7 +95,7 @@ public class GradeChangeManager
                     // SessionManager.UpdateSession(userId, userSession.coins, userSession.grade, userSession.rankPoint);
                     break;
 
-                case GameResult.Draw:
+                case Constants.GameResult.Draw:
                     Debug.Log($"{userSession.nickname} 플레이어 무승부에 따른 승급 계산 실행");
 
                     break;

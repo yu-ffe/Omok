@@ -31,7 +31,7 @@ public abstract class BasePlayerState
         {
             var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
 
-            if (gameResult == GameLogic.GameResult.None)
+            if (gameResult == Constants.GameResult.None)
             {
                 HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
             }
@@ -133,13 +133,10 @@ public class AIState : BasePlayerState
     // AI가 자동으로 착수하는 로직
     public override void OnEnter(GameLogic gameLogic)
     {
-        HamAI hamAI = new HamAI(gameLogic.GetBoard());
-
-        hamAI.maxDepth = 1;
-
+        OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
+        
         // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
-        var move = hamAI.GetBestMove();
-
+        var move = OmokAI.GetBestMove();
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
             HandleMove(gameLogic, move.Item1, move.Item2);
@@ -148,7 +145,7 @@ public class AIState : BasePlayerState
         {
             Debug.Log($"{move.Item1},{move.Item2}");
             Debug.Log("둘 수 있는 수가 없음");
-            gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
+            gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
         }
     }
 
@@ -214,15 +211,6 @@ public class GameLogic : IDisposable
     //TODO: 멀티시 구현
     //private MultiplayManager _multiplayManager; // 멀티플레이 관리 객체
     //private string _roomId; // 멀티플레이 방 ID
-
-    //게임 결과 (승패 판정)
-    public enum GameResult
-    {
-        None, // 게임 진행 중
-        Win, // 플레이어 승
-        Lose, // 플레이어 패
-        Draw // 비김
-    }
 
     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
     public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
@@ -364,23 +352,23 @@ public class GameLogic : IDisposable
     }
 
     //게임 결과 확인 함수
-    public GameResult CheckGameResult()
+    public Constants.GameResult CheckGameResult()
     {
         if (CheckGameWin(Constants.PlayerType.PlayerA))
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}승리");
-            return GameResult.Win;
+            return Constants.GameResult.Win;
         }
 
         if (CheckGameWin(Constants.PlayerType.PlayerB))
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}승리");
-            return GameResult.Lose;
+            return Constants.GameResult.Lose;
         }
         //TODO: 무승부 조건
         //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
 
-        return GameResult.None; // 게임 계속 진행
+        return Constants.GameResult.None; // 게임 계속 진행
     }
 
     //게임의 승패를 판단하는 함수
@@ -439,19 +427,19 @@ public class GameLogic : IDisposable
         if (playerType == Constants.PlayerType.PlayerA)
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}패배");
-            EndGame(GameResult.Lose); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Lose); // 게임이 끝났다면 종료 처리
 
         }
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}패배");
-            EndGame(GameResult.Win); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Win); // 게임이 끝났다면 종료 처리
         }
     }
     
 
     //게임 종료 시 호출
-    public void EndGame(GameResult gameResult)
+    public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
 
@@ -462,7 +450,7 @@ public class GameLogic : IDisposable
         UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
         
         // 바로 실행 안 하고 GameEndManager에 맡긴다
-        GameEndManager.Instance?.PrepareGameEndInfo((global::GameResult)gameResult);
+        GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
 
         /*var panelKey = UI_Manager.PanelType.GameEnd;
         if (UI_Manager.Instance.HasPanel(panelKey))
@@ -484,18 +472,6 @@ public class GameLogic : IDisposable
                 }
             };
         }*/
-    }
-
-    
-    private global::GameResult ConvertToUIResult(GameLogic.GameResult result)
-    {
-        return result switch
-        {
-            GameLogic.GameResult.Win => (global::GameResult)GameResult.Win,
-            GameLogic.GameResult.Lose => (global::GameResult)GameResult.Lose,
-            GameLogic.GameResult.Draw => (global::GameResult)GameResult.Draw,
-            _ => (global::GameResult)GameResult.None
-        };
     }
 
     //현재 게임판 반환
