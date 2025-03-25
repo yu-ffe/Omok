@@ -36,11 +36,21 @@ public class GameEndManager : UI_Panel
 
     public override void Show()
     {
-        if (!gg.activeSelf) gg.SetActive(true);
+        Debug.Log("[GameEndManager] Show() 호출됨");
+
+        if (!gg.activeSelf)
+        {
+            Debug.Log("[GameEndManager] gg 활성화");
+            gg.SetActive(true);
+        }
+
         EndButtonInfoSet();
     }
 
-    public override void Hide() { }
+    public override void Hide()
+    {
+        gameObject.SetActive(false); // 혹시 어디선가 이게 먼저 실행되면 안 됨
+    }
 
     public override void OnEnable()
     {
@@ -86,7 +96,11 @@ public class GameEndManager : UI_Panel
 
     private void EndButtonClickListenerSet()
     {
-        Button okBtn = okButton.GetComponent<Button>() ?? okButton.AddComponent<Button>();
+        Debug.Log("[GameEndManager] 버튼 리스너 등록 시작");
+        
+        Button okBtn = okButton.GetComponent<Button>();
+        Debug.Log("okButton 컴포넌트 있음? " + (okBtn != null));
+
         Button restartBtn = restartButton.GetComponent<Button>() ?? restartButton.AddComponent<Button>();
         Button recordBtn = recordButton.GetComponent<Button>() ?? recordButton.AddComponent<Button>();
 
@@ -94,7 +108,7 @@ public class GameEndManager : UI_Panel
         restartBtn.onClick.RemoveAllListeners();
         recordBtn.onClick.RemoveAllListeners();
 
-        okBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_OkButton(); });
+        okBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_OkButton();});
         restartBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_RestartButton(); });
         recordBtn.onClick.AddListener(() => { GameRecorder.SaveGameRecord(); });
     }

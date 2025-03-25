@@ -40,4 +40,10 @@ public class PlayerManager : Singleton<PlayerManager> {
         PlayerPrefs.SetInt("PlayerCoins", playerData.coins);
         PlayerPrefs.Save();
     }
+    
+    public void RefreshUserData()
+    {
+        Debug.Log("[PlayerManager] 유저 데이터 새로고침 시작");
+        Instance.StartCoroutine(UpdateUserData());
+    }
 }

@@ -16,9 +16,11 @@ public class MainPanel : UI_Panel {
     private PlayerData playerData;
     
     bool isConnctedCompoenets = false;
-
+    
+    
+    
     void Start() {
-        
+        Debug.Log("[MainPanel] Start");
         StartCoroutine(EnsureUIManagerInitialized());
     
         
@@ -38,7 +40,7 @@ public class MainPanel : UI_Panel {
         }
 
         UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Main, this);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     private IEnumerator LoadPlayerDataAndInitializeUI() {
@@ -50,9 +52,21 @@ public class MainPanel : UI_Panel {
     }
     
     public override void Show() {
-        ResfreshUserInfo();
+        Debug.Log("[MainPanel] Show() 호출됨");
         gameObject.SetActive(true);
-        UI_Manager.Instance.Panels[UI_Manager.PanelType.Login].gameObject.SetActive(false);
+
+        if (!isConnctedCompoenets)
+        {
+            Debug.Log("[MainPanel] FindComponents() 실행");
+            FindComponents();
+
+        }
+        
+        ResfreshUserInfo();
+        if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Login, out var loginPanel))
+            loginPanel.gameObject.SetActive(false);
+        if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Loading, out var loadingPanel))
+            loadingPanel.gameObject.SetActive(false);
     }
     public override void Hide() {
         gameObject.SetActive(false);
@@ -62,14 +76,21 @@ public class MainPanel : UI_Panel {
 
 
     void FindComponents() {
+        Debug.Log("[MainPanel] FindComponents 시작");
+
         var root = transform;
         txtCoin = root.GetChild(0).GetComponent<TextMeshProUGUI>();
         imgUserPortrait = root.GetChild(1).GetComponent<Image>();
         txtUserName = root.GetChild(2).GetComponent<TextMeshProUGUI>();
+        
+        Debug.Log($"txtCoin: {txtCoin}, imgUserPortrait: {imgUserPortrait}, txtUserName: {txtUserName}");
 
         var buttons = root.GetChild(3).GetComponentsInChildren<Button>();
+        Debug.Log($"버튼 수: {buttons.Length}");
 
-        for (int i = 0; i < buttons.Length; i++) {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].onClick.RemoveAllListeners(); // 중복 방지
             int index = i;
             buttons[i].onClick.AddListener(() => { OnClick_Menu(index); });
         }
