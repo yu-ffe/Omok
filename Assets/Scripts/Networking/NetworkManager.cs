@@ -333,7 +333,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 // }
 
 // 해당 코드는 임시로 동작시킴
-    public void SendGameReqult(GameResult gameResult) {
-        StartCoroutine(SendGameResult(gameResult == GameResult.Win));
+    public void SendGameReqult(Constants.GameResult gameResult) {
+        StartCoroutine(SendGameResult(gameResult == Constants.GameResult.Win));
     }
 }

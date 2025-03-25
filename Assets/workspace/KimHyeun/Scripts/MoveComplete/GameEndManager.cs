@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commons;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -32,7 +33,7 @@ namespace KimHyeun {
 
         
 
-        public void SetEndGameInfo(GameResult gameResult)  // 실행 코드
+        public void SetEndGameInfo(Constants.GameResult gameResult)  // 실행 코드
         {
             // 승점바 설정
             GradeBarSetting();
@@ -177,7 +178,7 @@ namespace KimHyeun {
             recordButtonText.text = "기보 저장";
         }
 
-        public void SetAfterGameEnd(GameResult gameResult) // 게임 종료 처리
+        public void SetAfterGameEnd(Constants.GameResult gameResult) // 게임 종료 처리
         {
             // 현재 로그인된 유저 세션ID, 해당 세션 정보 불러오기
             UserSession userSession = SessionManager.GetSession(SessionManager.currentUserId);
@@ -191,7 +192,7 @@ namespace KimHyeun {
 
             switch (gameResult) 
             {
-                case GameResult.Win:
+                case Constants.GameResult.Win:
                     resultText.text = "승리!\n" + getPointPlusValue + "포인트 획득";
 
                     // 승점 변동 애니메이션
@@ -199,7 +200,7 @@ namespace KimHyeun {
 
                     break;
 
-                case GameResult.Lose:
+                case Constants.GameResult.Lose:
                     resultText.text = "패배!\n" + getPointMinusValue + "포인트 손실";
 
                     // 승점 변동 애니메이션
@@ -207,7 +208,7 @@ namespace KimHyeun {
 
                     break;
 
-                case GameResult.Draw:
+                case Constants.GameResult.Draw:
                     resultText.text = "무승부!\n포인트 변동 없음";
 
                     // 승점 변동 애니메이션
@@ -277,7 +278,7 @@ namespace KimHyeun {
             seq.Play(); // 애니메이션 실행
         }
 
-        void RankPointSet(UserSession userSession, GameResult gameResult)
+        void RankPointSet(UserSession userSession, Constants.GameResult gameResult)
         {
             // 실질적 승급 계산
             int afterRankPoint = GradeChangeManager.GetRankPointAndGradeUpdate(SessionManager.currentUserId, userSession, gameResult);
