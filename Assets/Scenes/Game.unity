@@ -487,7 +487,7 @@ MonoBehaviour:
   gradeBar: {fileID: 2143468949}
   gradePlusCellPrefab: {fileID: 1506984166855900036, guid: c7c84efdecc3bc94e9a1d295265c1660, type: 3}
   gradeMinusCellPrefab: {fileID: 8646609686867957861, guid: dc2912b359c0b5445ac7d1d70e51fd05, type: 3}
-  okButton: {fileID: 2113710505}
+  okButton: {fileID: 2143468948}
   restartButton: {fileID: 2143468946}
   recordButton: {fileID: 2143468944}
   okButtonText: {fileID: 2143468947}
@@ -1174,11 +1174,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6916633976698750952, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
   m_PrefabInstance: {fileID: 2113710503}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2113710505 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3600012562592618921, guid: 487980ab8f8f84c56be5ad7387b7329d, type: 3}
-  m_PrefabInstance: {fileID: 2113710503}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2114001622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,7 +1438,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5360124737881031845, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
   m_PrefabInstance: {fileID: 2143468941}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2143468944}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -1451,7 +1446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 --- !u!1 &2143468944 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 926238088755860801, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2668561770999154416, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
   m_PrefabInstance: {fileID: 2143468941}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2143468945 stripped
@@ -1481,6 +1476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2143468948 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7108318297530383928, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
+  m_PrefabInstance: {fileID: 2143468941}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2143468949 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8708046787015964794, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}

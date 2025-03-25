@@ -36,6 +36,7 @@ public class UI_Manager : Singleton<UI_Manager>
     [SerializeField] PanelType nowShowingPanelType;
 
     public event Action<PanelType> OnPanelRegistered; // 패널이 등록될 때 발생하는 이벤트
+    private bool _initialized = false;
 
 
     protected override void Awake()
@@ -48,10 +49,12 @@ public class UI_Manager : Singleton<UI_Manager>
         
     }
 
-    private void InitializePanels()
+    public void InitializePanels()
     {
         Debug.Log("[UI_Manager] InitializePanels 호출");
-
+        if (_initialized) return;
+        _initialized = true;
+        
         Panels.Clear(); // 혹시 남아있는 데이터 제거
         foreach (var panelData in panelList)
         {
@@ -113,7 +116,7 @@ public class UI_Manager : Singleton<UI_Manager>
     }
 
 
-    public void Show(PanelType panelKey)
+    public void Show(PanelType panelKey, bool forceRefresh = false)
     {
         if (!Panels.ContainsKey(panelKey) || !Panels[panelKey])
         {
@@ -121,21 +124,12 @@ public class UI_Manager : Singleton<UI_Manager>
             return;
         }
 
-        // 이미 해당 패널이 보여지고 있다면 중복 실행 안 함
-        if (nowShowingPanelType == panelKey)
-        {
-            Debug.Log($"[UI_Manager] Show(): {panelKey} (이미 활성화된 패널입니다)");
-            return;
-        }
-
-        // 현재 패널이 GameEnd이고, 새로 보여줄 패널도 GameEnd라면 무시 (중복 방지)
-        if (nowShowingPanelType == panelKey && Panels[panelKey].gameObject.activeSelf)
+        if (nowShowingPanelType == panelKey && Panels[panelKey].gameObject.activeSelf && !forceRefresh)
         {
             Debug.Log($"[UI_Manager] Show(): {panelKey} 이미 활성화 상태 → 중복 Show 방지");
             return;
         }
 
-        // 현재 패널 숨김
         if (nowShowingPanelType != PanelType.None)
         {
             Hide(nowShowingPanelType);
@@ -143,9 +137,9 @@ public class UI_Manager : Singleton<UI_Manager>
 
         Panels[panelKey].Show();
         nowShowingPanelType = panelKey;
-
         Debug.Log($"[UI_Manager] Show(): {panelKey} 패널 활성화 완료");
     }
+
 
 
 

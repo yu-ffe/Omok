@@ -55,10 +55,26 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeToMainScene()
     {
+        Debug.Log("[GameManager] ChangeToMainScene 호출됨");
+
         _gameLogic?.Dispose();
         _gameLogic = null;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+
+        SceneTransitionManager.Instance.RegisterAfterLoadAction("Main", () =>
+        {
+            Debug.Log("[SceneTransition] Main 씬 로드 완료 후 초기화");
+
+            var appStart = GameObject.FindObjectOfType<AppStart>();
+            if (appStart != null)
+            {
+                appStart.Initialize();
+                appStart.gameObject.SetActive(false);
+            }
+        });
+
+        SceneTransitionManager.Instance.LoadSceneAsync("Main").Forget();
     }
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
