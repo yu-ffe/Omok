@@ -32,6 +32,7 @@ public abstract class BasePlayerState
             var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
 
             if (gameResult == Constants.GameResult.None)
+
             {
                 HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
             }
@@ -137,6 +138,7 @@ public class AIState : BasePlayerState
         
         // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
         var move = OmokAI.GetBestMove();
+
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
             HandleMove(gameLogic, move.Item1, move.Item2);
@@ -146,6 +148,7 @@ public class AIState : BasePlayerState
             Debug.Log($"{move.Item1},{move.Item2}");
             Debug.Log("둘 수 있는 수가 없음");
             gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
+
         }
     }
 
@@ -212,7 +215,8 @@ public class GameLogic : IDisposable
     //private MultiplayManager _multiplayManager; // 멀티플레이 관리 객체
     //private string _roomId; // 멀티플레이 방 ID
 
-    //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
+
+     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
     public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
     {
         this.OmokBoard = OmokBoard;
@@ -442,7 +446,10 @@ public class GameLogic : IDisposable
     public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
-
+        
+        GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
+        NetworkManager.Instance.SendGameReqult(gameResult);
+        
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
@@ -472,6 +479,13 @@ public class GameLogic : IDisposable
                 }
             };
         }*/
+
+        GameManager.Instance.ChangeToMainScene();
+        
+        //TODO: 서버에 승리 정보 전송
+        //TODO: 이 부분 봇과의 대전도 서버로 전송?
+        //TODO: UI활성화
+        //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }
 
     //현재 게임판 반환

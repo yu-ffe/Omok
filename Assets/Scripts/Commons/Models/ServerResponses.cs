@@ -35,4 +35,13 @@ namespace Commons.Models {
             this.RefreshToken = refreshToken;
         }
     }
+
+    public class Ranking {
+        public string Nickname;
+        public int ProfileNum;
+        public int Grade;
+        public int RankPoint;
+        public int WinCount;
+        public int LoseCount;
+    }
 }

@@ -29,6 +29,9 @@ public class AppStart : MonoBehaviour {
         
         // 자동 로그인 처리
         Debug.Log("[AppStart] 자동 로그인 여부 확인 중...");
+        
+        // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+        // 제작하는동안만 주석, 나중에 주석 풀기
         StartCoroutine(SignInHandler.Instance.AttemptAutoSignIn((success, message) => {
             if (success) {
                 Debug.Log("[AppStart] 자동 로그인 성공, 메인 화면으로 이동");

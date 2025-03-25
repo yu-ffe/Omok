@@ -32,6 +32,11 @@ namespace KimHyeun {
             
         }
 
+        public void RecordSave()
+        {
+            GameRecorder.GameResultSave(GameResult.Win); // 결과 임시 저장
+            GameRecorder.SaveGameRecord(); // 기보 저장
+        }
 
         // 게임 종료 처리 호출
         public void WinTest()
@@ -54,13 +59,5 @@ namespace KimHyeun {
 
 
 
-
-    public enum GameResult
-    {
-        None, // 게임 진행 중
-        Win, // 플레이어 승
-        Lose, // 플레이어 패
-        Draw // 비김
-    }
 }
 
