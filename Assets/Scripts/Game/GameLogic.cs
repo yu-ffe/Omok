@@ -202,7 +202,8 @@ public class GameLogic : IDisposable
 {
     public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
-
+    public Timer timer;
+    
     //기보확인을 위한 리스트
     public List<(Constants.PlayerType player, int x, int y)> moveList = new List<(Constants.PlayerType, int, int)>();
 
@@ -217,10 +218,11 @@ public class GameLogic : IDisposable
 
 
      //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
+    public GameLogic(Timer timer, OmokBoard OmokBoard, Constants.GameType gameType)
     {
         this.OmokBoard = OmokBoard;
-
+        this.timer = timer;
+        
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
 
@@ -289,17 +291,20 @@ public class GameLogic : IDisposable
     //현재 상태 변경 (턴 전환 시 사용)
     public void SetState(BasePlayerState state)
     {        
-        
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
+        timer.StopTimer();
+        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
+        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
 
         _currentPlayerState = state;
         
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작1");
-        //TODO: 여기에 턴이 바뀔때 쓸 함수입력
+        //TODO: 여기에 턴이 시잘할 때 쓸 함수입력
+        timer.StartTimer();
+
+        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작2");
+        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
+        //TODO: 여기에 턴이 끝날 때 쓸 함수입력
     }
 
     public Constants.PlayerType GetCurrentPlayerType()
