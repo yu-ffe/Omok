@@ -448,7 +448,9 @@ public class GameLogic : IDisposable
         Debug.Log($"게임끝 게임결과 : {gameResult}");
         
         GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
-        NetworkManager.Instance.SendGameReqult(gameResult);
+        NetworkManager.Instance.GameEndSendForm(gameResult);
+        
+        
         
         SetState(null); // 상태 초기화
         firstPlayerState = null;
