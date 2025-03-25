@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Update = Unity.VisualScripting.Update;
+using Commons;
 
 public abstract class BasePlayerState
 {
@@ -30,7 +31,8 @@ public abstract class BasePlayerState
         {
             var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
 
-            if (gameResult == GameResult.None)
+            if (gameResult == Constants.GameResult.None)
+
             {
                 HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
             }
@@ -133,7 +135,7 @@ public class AIState : BasePlayerState
     public override void OnEnter(GameLogic gameLogic)
     {
         OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
-
+        
         // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
         var move = OmokAI.GetBestMove();
 
@@ -145,7 +147,8 @@ public class AIState : BasePlayerState
         {
             Debug.Log($"{move.Item1},{move.Item2}");
             Debug.Log("둘 수 있는 수가 없음");
-            gameLogic.EndGame(GameResult.Draw); // 무승부 처리
+            gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
+
         }
     }
 
@@ -212,8 +215,8 @@ public class GameLogic : IDisposable
     //private MultiplayManager _multiplayManager; // 멀티플레이 관리 객체
     //private string _roomId; // 멀티플레이 방 ID
 
-   
-    //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
+
+     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
     public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
     {
         this.OmokBoard = OmokBoard;
@@ -353,23 +356,23 @@ public class GameLogic : IDisposable
     }
 
     //게임 결과 확인 함수
-    public GameResult CheckGameResult()
+    public Constants.GameResult CheckGameResult()
     {
         if (CheckGameWin(Constants.PlayerType.PlayerA))
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}승리");
-            return GameResult.Win;
+            return Constants.GameResult.Win;
         }
 
         if (CheckGameWin(Constants.PlayerType.PlayerB))
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}승리");
-            return GameResult.Lose;
+            return Constants.GameResult.Lose;
         }
         //TODO: 무승부 조건
         //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
 
-        return GameResult.None; // 게임 계속 진행
+        return Constants.GameResult.None; // 게임 계속 진행
     }
 
     //게임의 승패를 판단하는 함수
@@ -428,18 +431,19 @@ public class GameLogic : IDisposable
         if (playerType == Constants.PlayerType.PlayerA)
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}패배");
-            EndGame(GameResult.Lose); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Lose); // 게임이 끝났다면 종료 처리
 
         }
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}패배");
-            EndGame(GameResult.Win); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Win); // 게임이 끝났다면 종료 처리
         }
     }
+    
 
     //게임 종료 시 호출
-    public void EndGame(GameResult gameResult)
+    public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
         
@@ -449,6 +453,33 @@ public class GameLogic : IDisposable
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
+        
+        UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+        
+        // 바로 실행 안 하고 GameEndManager에 맡긴다
+        GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
+
+        /*var panelKey = UI_Manager.PanelType.GameEnd;
+        if (UI_Manager.Instance.HasPanel(panelKey))
+        {
+            UI_Manager.Instance.Show(panelKey); // 1. 먼저 활성화
+            var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
+            panel?.SetEndGameInfo(ConvertToUIResult(gameResult)); // 2. 정보 설정 (Coroutine 가능)
+        }
+        else
+        {
+            // 만약 패널이 늦게 등록되면 → 등록될 때 Show + 설정
+            UI_Manager.Instance.OnPanelRegistered += (registeredKey) =>
+            {
+                if (registeredKey == panelKey)
+                {
+                    UI_Manager.Instance.Show(panelKey);
+                    var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
+                    panel?.SetEndGameInfo(ConvertToUIResult(gameResult));
+                }
+            };
+        }*/
+
         GameManager.Instance.ChangeToMainScene();
         
         //TODO: 서버에 승리 정보 전송

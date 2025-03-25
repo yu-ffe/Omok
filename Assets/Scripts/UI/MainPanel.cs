@@ -52,9 +52,11 @@ public class MainPanel : UI_Panel {
     public override void Show() {
         ResfreshUserInfo();
         gameObject.SetActive(true);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Login].gameObject.SetActive(false);
     }
     public override void Hide() {
         gameObject.SetActive(false);
+        UI_Manager.Instance.Panels[UI_Manager.PanelType.Login].gameObject.SetActive(false);
 
     }
 
