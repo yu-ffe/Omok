@@ -277,8 +277,8 @@ public class ScrollViewSet : MonoBehaviour
             state.subText1.text = RecordManager.Instance.GetName(index);
             state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
 
-            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });
-            cell.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
+            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });                
+            cell.transform.GetChild(0).gameObject.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
         }
         return;
     }
@@ -301,7 +301,8 @@ public class ScrollViewSet : MonoBehaviour
             SafeSetText(state.subText2, RecordManager.Instance.GetDate(index).ToString());
 
             AddSafeButton(state.buttonObj, () => RecordManager.Instance.RemoveRecord(index));
-            break;
+            AddSafeButton(cell.transform.GetChild(0).gameObject, () => RecordManager.Instance.RecordReplay(index));
+                break;
 
         case CellState.CellType.Shop:
             SafeSetImage(state.cell_Image, ShopManager.Instance.GetSprite(index));
@@ -312,9 +313,10 @@ public class ScrollViewSet : MonoBehaviour
             SafeSetText(state.subText4, "");
 
             AddSafeButton(state.buttonObj, () => ShopManager.Instance.BuyCoin(index));
-            break;
 
-        default:
+                break;
+
+       default:
             Debug.LogWarning($"[CellInfoUpdate] Unknown cell type: {state.cellType}");
             break;
     }

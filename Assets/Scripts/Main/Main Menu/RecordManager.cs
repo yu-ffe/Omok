@@ -23,6 +23,10 @@ public class RecordManager : UI_Panel
 
     public Button btnClose;
 
+
+    RecordData loadedRecord;
+    int loadIndex;
+
     public void SetScrollView(ScrollViewSet scrollViewSet)
     {
         this.scrollViewSet = scrollViewSet;
@@ -71,14 +75,16 @@ public class RecordManager : UI_Panel
         Debug.Log($"{index}인덱스 기보 재생(RecordManager)");
 
         // 특정 기보 불러오기 (예: 3번째 기보)
-        RecordData loadedRecord = GameRecorder.LoadGameRecord(index);
+        loadedRecord = GameRecorder.LoadGameRecord(index);
+        loadIndex = 0;
+
         if (loadedRecord != null)
         {
             Debug.Log($"불러온 기록: {loadedRecord.Nickname} / {loadedRecord.Date} / {loadedRecord.Result}");
 
         }
 
-        ReplayShow(loadedRecord);
+        ReplayShow();
     }
 
 
@@ -250,16 +256,47 @@ public class RecordManager : UI_Panel
 
 
 
-    public void ReplayShow(RecordData recordData)
+    public void ReplayShow()
     {
 
 
-        // TODO 기보 재생
+        // TODO 기보 재생 함수 추가, 재생에 필요한값은 아래 함수들로 획득
     }
 
+    public (Constants.PlayerType player, int x, int y) GetBeforeLocation() // 현재 기보 이전 수 좌표
+    {
+        if (loadIndex > 0) // 최소 0번
+        {
+            loadIndex--;
 
+            return loadedRecord.Moves[loadIndex];
+        }
 
+        else
+        {
+            return (Constants.PlayerType.None, 0, 0); // 되돌아 갈 값 없음
+        }
+    }
 
+    public (Constants.PlayerType player, int x, int y) GetAfterLocation() // 현재 기보 다음 수 좌표
+    {
+        if (loadIndex < loadedRecord.Moves.Count) // 최대 리스트 수 이하
+        {
+            loadIndex++;
+
+            return loadedRecord.Moves[loadIndex];
+        }
+
+        else
+        {
+            return (Constants.PlayerType.None, 0, 0); // 끝낰
+        }
+    }
+
+    public RecordData GetLoadedRecordData() // 불러온 기보에 대한 정보
+    {
+        return loadedRecord;
+    }
 
 
 
