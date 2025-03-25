@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commons;
 using UnityEngine;
 
 namespace KimHyeun {
@@ -34,7 +35,7 @@ namespace KimHyeun {
 
         public void RecordSave()
         {
-            GameRecorder.GameResultSave(GameResult.Win); // 결과 임시 저장
+            GameRecorder.GameResultSave(Constants.GameResult.Win); // 결과 임시 저장
             GameRecorder.SaveGameRecord(); // 기보 저장
         }
 
@@ -42,17 +43,17 @@ namespace KimHyeun {
         public void WinTest()
         {
             // TODO EndGame(GameResult gameResult) 내부에서 실행
-            GameEndManager.Instance.SetEndGameInfo(GameResult.Win);
+            GameEndManager.Instance.SetEndGameInfo(Constants.GameResult.Win);
         }
 
         public void LoseTest()
         {
-            GameEndManager.Instance.SetEndGameInfo(GameResult.Lose);
+            GameEndManager.Instance.SetEndGameInfo(Constants.GameResult.Lose);
         }
 
         public void DrawTest()
         {
-            GameEndManager.Instance.SetEndGameInfo(GameResult.Draw);
+            GameEndManager.Instance.SetEndGameInfo(Constants.GameResult.Draw);
         }
     }
 
