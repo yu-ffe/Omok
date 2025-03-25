@@ -81,6 +81,7 @@ public class MainPanel : UI_Panel {
         UI_Manager.Instance.AddCallback("UserInfo", ResfreshUserInfo);
     }
     public override void OnDisable() {
+        if (UI_Manager.Instance == null) return;
         UI_Manager.Instance.RemoveCallback("UserInfo");
     }
 
