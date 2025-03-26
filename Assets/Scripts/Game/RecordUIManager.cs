@@ -5,16 +5,31 @@ using UnityEngine.UI;
 
 public class RecordUIManager : Singleton<RecordUIManager>
 {
-    [SerializeField] GameObject recordUIObj;
+    [Header("조정될 UI")]
+    [SerializeField] GameObject recordUIObj; // 기보 버튼들
+    [SerializeField] GameObject surrenderObj; // 기권 버튼
+    [SerializeField] GameObject goMainObj; // 뒤로가기 버튼
+    [SerializeField] GameObject timerObj; // 타이머
+    [SerializeField] GameObject fireObj; // 착수
 
+    [Header("수 이동 버튼 오브젝트들")]
     [SerializeField] GameObject buttonObj_First;
     [SerializeField] GameObject buttonObj_Before;
     [SerializeField] GameObject buttonObj_After;
     [SerializeField] GameObject buttonObj_Last;
 
-    public void RecordUISet(bool on)
+    public void RecordUISet(bool isRecord)
     {
-        recordUIObj.SetActive(on);
+        // 기보 수이동 버튼 표기
+        recordUIObj.SetActive(isRecord);
+
+        // 기권 버튼 뒤로가기 버튼 변경
+        surrenderObj.SetActive(!isRecord);
+        goMainObj.SetActive(isRecord);
+
+        // 타이머, 착수 버튼 표기
+        timerObj.SetActive(!isRecord);
+        fireObj.SetActive(!isRecord);
     }
 
     private void Start()
