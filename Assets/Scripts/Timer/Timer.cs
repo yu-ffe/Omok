@@ -27,6 +27,11 @@ public class Timer : MonoBehaviour
     private void Awake()
     {
         InitTimer(); // 시작 시 초기화
+        GameManager.Instance.timer = this;
+    }
+
+    private void Start()
+    {
     }
 
     private void Update()
@@ -44,6 +49,8 @@ public class Timer : MonoBehaviour
             UpdateUI();
             OnTimeout?.Invoke(); // 콜백 실행
             HideHandles(); // 핸들 숨김
+            
+            GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
         }
         else
         {

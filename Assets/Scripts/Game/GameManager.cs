@@ -11,6 +11,10 @@ public class GameManager : Singleton<GameManager>
     private Canvas _canvas;
     private Constants.GameType _gameType;
     private GameLogic _gameLogic;
+    
+    public OmokBoard omokBoard ;
+    public Timer timer;
+    
 
     public GameLogic GameLogicInstance => _gameLogic;
     
@@ -45,7 +49,7 @@ public class GameManager : Singleton<GameManager>
     public void ChangeToMainScene()
     {
         Debug.Log("[GameManager] ChangeToMainScene 호출됨");
-
+        
         _gameLogic?.Dispose();
         _gameLogic = null;
 
@@ -70,8 +74,11 @@ public class GameManager : Singleton<GameManager>
         if (scene.name == "Game")
         {
             // 씬에 배치된 오브젝트 찾기
-            var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
-            var timer = GameObject.FindObjectOfType<Timer>();
+
+            if (omokBoard == null || timer == null)
+            {
+                Debug.Log($"null");
+            }
 
             // TODO: 오목판 초기화
             //blockController.InitBlocks();
@@ -79,7 +86,7 @@ public class GameManager : Singleton<GameManager>
             // Game Logic 객체 생성
             if (_gameLogic != null) _gameLogic.Dispose();
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            _gameLogic = new GameLogic(timer,omokBoard, _gameType);
+            _gameLogic = new GameLogic(_gameType);
         }
 
         _canvas = GameObject.FindObjectOfType<Canvas>();
