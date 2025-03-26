@@ -155,6 +155,10 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     {
         // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
         ShowHintStone(boardCoord);
+        if (GameManager.Instance.GameLogicInstance.timer.GetRemainingTime() == 0)
+        {
+            GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
+        }
     }
     
     //미리보기 마커 생성함수

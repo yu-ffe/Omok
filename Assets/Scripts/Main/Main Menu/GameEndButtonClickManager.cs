@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
 {
+    
+    
     /// <summary>
     /// [확인] 버튼 클릭 → 메인 화면으로 전환
     /// </summary>
@@ -10,13 +12,6 @@ public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
         Debug.Log("[GameEndButtonClickManager] 확인 버튼 클릭 → 메인 씬으로 이동");
 
         GameManager.Instance.ChangeToMainScene();
-
-        // 또는 씬 전환 매니저를 쓸 경우:
-        // SceneTransitionManager.Instance.RegisterBeforeLoadAction("MainScene", () => {
-        //     PlayerManager.Instance.RefreshUserData();
-        //     Debug.Log("MainScene 로드 전에 유저 데이터 갱신 완료");
-        // });
-        // SceneTransitionManager.Instance.LoadSceneAsync("MainScene").Forget();
     }
 
     /// <summary>

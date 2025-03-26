@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,12 @@ public class AppStart : MonoBehaviour {
 
     public GameObject canvas;
     
-    void Awake() {
-        //PlayerManager.Instance.UpdateUserData();
-
+    private void Start()
+    {
+        Initialize();
     }
 
-    //TODO: AutoLogin 기능 추가
-
-    private void Start() {
+    public void Initialize() {
         Debug.Log("[AppStart] 앱 시작");
         
         canvas.SetActive(true);
@@ -29,12 +28,12 @@ public class AppStart : MonoBehaviour {
         }
         
         // UI 로딩 화면 표시
-        UI_Manager.Instance.Show(UI_Manager.PanelType.Loading);
+        //UI_Manager.Instance.Show(UI_Manager.PanelType.Loading);
         
         // 자동 로그인 처리
         Debug.Log("[AppStart] 자동 로그인 여부 확인 중...");
         
-        // UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
+        UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
         // 제작하는동안만 주석, 나중에 주석 풀기
         StartCoroutine(SignInHandler.Instance.AttemptAutoSignIn((success, message) => {
             if (success) {
