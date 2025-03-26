@@ -151,10 +151,11 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         return instance;
     }
 
+
     void Update()
     {
-        // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
         ShowHintStone(boardCoord);
+        // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
         if (GameManager.Instance.GameLogicInstance.timer.GetRemainingTime() == 0)
         {
             GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
@@ -185,14 +186,21 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         }
         
         //돌이 비워있고, 마우스가 보드안에 있으면
-        if (GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y) && inBoard)
-        {
-            ShowMarker(hintMarker,rt, coord);
-        }
-        else
-        {
+        bool isValidGameType = GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer || 
+                               GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer;
+
+        bool isCurrentPlayerA = GameManager.Instance.GameLogicInstance.GetCurrentPlayerType() == Constants.PlayerType.PlayerA;
+        bool isCellValid = GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y) && inBoard;
+
+        if (isValidGameType && isCurrentPlayerA || !isValidGameType) {
+            hintMarker.SetActive(isCellValid);
+            if (isCellValid) {
+                ShowMarker(hintMarker, rt, coord);
+            }
+        } else {
             hintMarker.SetActive(false);
         }
+
     }
     
     //마지막에 착수된 마커 표시하기 위한 함수

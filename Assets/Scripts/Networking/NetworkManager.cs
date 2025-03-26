@@ -258,13 +258,6 @@ public class NetworkManager : Singleton<NetworkManager> {
                 if (request.responseCode != 401)
                     continue;
 
-                // 액세스 토큰이 만료되었을 경우, 새로 고침 후 재시도
-                // yield return TokenManager.Instance.RefreshAccessTokenRequest((success) => {
-                //     if (!success) {
-                //         // 토큰 갱신 실패 시 적절한 처리 필요
-                //         // 예: 콜백 호출 또는 실패 처리
-                //     }
-                // });
             }
         }
 
@@ -333,7 +326,13 @@ public class NetworkManager : Singleton<NetworkManager> {
 // }
 
 // 해당 코드는 임시로 동작시킴
-    public void SendGameReqult(Constants.GameResult gameResult) {
-        StartCoroutine(SendGameResult(gameResult == Constants.GameResult.Win));
+
+    public void GameEndSendForm(Constants.GameResult gameReult) {
+        StartCoroutine(SendGameReqult(gameReult));
+    }
+
+    public IEnumerator SendGameReqult(Constants.GameResult gameResult) {
+        yield return StartCoroutine(SendGameResult(gameResult == Constants.GameResult.Win));
+        yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
     }
 }

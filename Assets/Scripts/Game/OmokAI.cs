@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-public class OmokAI {
+public class OmokAI{
     private const int BOARD_SIZE = 15;
     private Constants.PlayerType[,] board;
     const int maxDepth = 4;
@@ -304,7 +305,10 @@ public class OmokAI {
 
 
 
-
+    public async Task<(int, int)> GetBestMoveAsync(int timeLimit = 3000)
+    {
+        return await Task.Run(() => GetBestMove(timeLimit)); // 백그라운드 스레드에서 실행
+    }
 
     // 2000 이지? 3000 노말 4000 하드? (최대 시간 n/1000초) 
     public (int, int) GetBestMove(int timeLimit = 3000) {

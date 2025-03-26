@@ -132,12 +132,11 @@ public class PlayerState : BasePlayerState
 public class AIState : BasePlayerState
 {
     // AI가 자동으로 착수하는 로직
-    public override void OnEnter(GameLogic gameLogic)
+    public override async void OnEnter(GameLogic gameLogic)
     {
         OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
         
-        // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
-        var move = OmokAI.GetBestMove();
+        var move = await OmokAI.GetBestMoveAsync();
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
@@ -453,7 +452,9 @@ public class GameLogic : IDisposable
         Debug.Log($"게임끝 게임결과 : {gameResult}");
         
         GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
-        NetworkManager.Instance.SendGameReqult(gameResult);
+        NetworkManager.Instance.GameEndSendForm(gameResult);
+        
+        
         
         SetState(null); // 상태 초기화
         firstPlayerState = null;
