@@ -455,9 +455,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 6d199a224ee7cb1429541c13d805d4c5, type: 2}
     - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: 1735731460099496515, guid: 6d199a224ee7cb1429541c13d805d4c5, type: 2}
+    - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 907991958675244417, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -642,6 +658,22 @@ PrefabInstance:
       propertyPath: timerHolder
       value: 
       objectReference: {fileID: 502338822}
+    - target: {fileID: 6410778378725459515, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.a
+      value: 0.29803923
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410778378725459515, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410778378725459515, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410778378725459515, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7379603065666517090, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -674,6 +706,18 @@ PrefabInstance:
       propertyPath: timerPrefab
       value: 
       objectReference: {fileID: 6835226160482892050, guid: beb324cf65c4a4344960d53ab1e0a377, type: 3}
+    - target: {fileID: 8738289646115438141, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8738289646115438141, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8738289646115438141, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8882544919086370188, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_Name
       value: GamePanel
@@ -686,10 +730,10 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 668223846}
     - targetCorrespondingSourceObject: {fileID: 7439954842892486441, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 107075658}
     - targetCorrespondingSourceObject: {fileID: 7439954842892486441, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
-      insertIndex: 1
+      insertIndex: -1
       addedObject: {fileID: 502338822}
     - targetCorrespondingSourceObject: {fileID: 8677040072230026702, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       insertIndex: 1

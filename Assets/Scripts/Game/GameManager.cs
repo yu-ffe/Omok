@@ -8,11 +8,12 @@ public class GameManager : Singleton<GameManager>
 {
     public Constants.GameType lastGameType { get; private set; }
 
-    private Canvas _canvas;
+    //private Canvas _canvas;
     private Constants.GameType _gameType;
-    private GameLogic _gameLogic;
-
-    public GameLogic GameLogicInstance => _gameLogic;
+    
+    public GameLogic gameLogic;
+    public OmokBoard omokBoard ;
+    public Timer timer;
     
     public void StartGame(Constants.GameType gameType)
     {
@@ -52,8 +53,8 @@ public class GameManager : Singleton<GameManager>
     {
         Debug.Log("[GameManager] ChangeToMainScene 호출됨");
 
-        _gameLogic?.Dispose();
-        _gameLogic = null;
+        gameLogic?.Dispose();
+        gameLogic = null;
 
         SceneTransitionManager.Instance.RegisterAfterLoadAction("Main", () =>
         {
@@ -77,27 +78,28 @@ public class GameManager : Singleton<GameManager>
     {
         if (scene.name == "Game")
         {
-            // 씬에 배치된 오브젝트 찾기
-            var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
-            var timer = GameObject.FindObjectOfType<Timer>();
-
             // TODO: 오목판 초기화
             //blockController.InitBlocks();
 
             // Game Logic 객체 생성
-            if (_gameLogic != null) _gameLogic.Dispose();
+            if (gameLogic != null)
+            {
+                gameLogic.Dispose();
+                Debug.Log($"_gameLogic을 삭제");
+            }
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            _gameLogic = new GameLogic(timer,omokBoard, _gameType);
+            gameLogic = new GameLogic(_gameType);
+            Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
             recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
         }
 
-        _canvas = GameObject.FindObjectOfType<Canvas>();
+        //_canvas = GameObject.FindObjectOfType<Canvas>();
     }
 
     private void OnApplicationQuit()
     {
-        _gameLogic?.Dispose();
-        _gameLogic = null;
+        gameLogic?.Dispose();
+        gameLogic = null;
     }
 }
