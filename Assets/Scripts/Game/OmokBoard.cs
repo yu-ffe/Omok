@@ -156,6 +156,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     {
         ShowHintStone(boardCoord);
         // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
+        if (GameManager.Instance.GameLogicInstance == null) return; // 게임이 끝난경우 시간 차이 문제 
         if (GameManager.Instance.GameLogicInstance.timer.GetRemainingTime() == 0)
         {
             GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
