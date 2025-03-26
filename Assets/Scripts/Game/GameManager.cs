@@ -20,6 +20,10 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("Game"); 
     }
 
+    public Constants.GameType GetGameType() {
+        return this._gameType;
+    }
+
     public void RestartCurrentGame()
     {
         Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
