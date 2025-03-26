@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     public void StartGame(Constants.GameType gameType)
     {
         _gameType = gameType;
+        lastGameType = gameType;
         SceneManager.LoadScene("Game"); 
     }
 
@@ -33,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
-
+        lastGameType = gameType;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 

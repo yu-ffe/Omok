@@ -224,7 +224,7 @@ public class GameLogic : IDisposable
         
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
-
+        
         switch (gameType)
         {
             case Constants.GameType.SinglePlayer:
@@ -245,6 +245,8 @@ public class GameLogic : IDisposable
                 SetState(firstPlayerState);
                 break;
             }
+            
+            
 
             /*TODO: 멀티플레이시 구현
             case Constants.GameType.MultiPlayer:
@@ -464,29 +466,6 @@ public class GameLogic : IDisposable
         
         // 바로 실행 안 하고 GameEndManager에 맡긴다
         GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
-
-        /*var panelKey = UI_Manager.PanelType.GameEnd;
-        if (UI_Manager.Instance.HasPanel(panelKey))
-        {
-            UI_Manager.Instance.Show(panelKey); // 1. 먼저 활성화
-            var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
-            panel?.SetEndGameInfo(ConvertToUIResult(gameResult)); // 2. 정보 설정 (Coroutine 가능)
-        }
-        else
-        {
-            // 만약 패널이 늦게 등록되면 → 등록될 때 Show + 설정
-            UI_Manager.Instance.OnPanelRegistered += (registeredKey) =>
-            {
-                if (registeredKey == panelKey)
-                {
-                    UI_Manager.Instance.Show(panelKey);
-                    var panel = UI_Manager.Instance.Panels[panelKey] as GameEndManager;
-                    panel?.SetEndGameInfo(ConvertToUIResult(gameResult));
-                }
-            };
-        }*/
-
-        // GameManager.Instance.ChangeToMainScene();
         
         //TODO: 서버에 승리 정보 전송
         //TODO: 이 부분 봇과의 대전도 서버로 전송?
