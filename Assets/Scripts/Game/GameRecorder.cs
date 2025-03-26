@@ -40,7 +40,7 @@ public class GameRecorder
 
         // PlayerMove로 변환하여 저장
         List<PlayerMove> moves = new List<PlayerMove>();
-        foreach (var move in GameManager.Instance.GameLogicInstance.moveList)
+        foreach (var move in GameManager.Instance.gameLogic.moveList)
         {
             moves.Add(new PlayerMove(move.player, move.x, move.y));
         }

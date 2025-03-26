@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -94,8 +95,8 @@ public class GamePanel : UI_Panel {
         txtNickNameRight = imgProfileRight.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         //imgLeftTime = parentsInfo.GetChild(0).GetComponent<Image>();
         //txtTimer = imgLeftTime.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        imgGameTurn[0] = parentsInfo.GetChild(1).GetComponent<Image>();
-        imgGameTurn[1] = parentsInfo.GetChild(2).GetComponent<Image>();
+        imgGameTurn[0] = parentsInfo.GetChild(0).GetComponent<Image>();
+        imgGameTurn[1] = parentsInfo.GetChild(1).GetComponent<Image>();
         isComponentsConnected = true;
 
         var giveup = parentsButton.GetChild(0).GetComponent<Button>();
@@ -131,10 +132,19 @@ public class GamePanel : UI_Panel {
 
         //게임 로직에 따라 변경
         Debug.Log("Game Panel : TurnStateRefresh");
-        //Temp Test value
-        int now = 0;
-        imgGameTurn[0].color = now == 0 ? Color.white : Color.gray;
-        imgGameTurn[1].color = now == 1 ? Color.white : Color.gray;
+        Debug.Log($"{GameManager.Instance.gameLogic}");
+        Debug.Log($"{GameManager.Instance.gameLogic.GetCurrentPlayerType()}");
+        
+        var currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
+
+        SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
+        SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+    }
+    void SetImageAlpha(Image image, float alpha)
+    {
+        Color color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     void TimeRefresh() {
