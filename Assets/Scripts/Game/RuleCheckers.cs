@@ -48,7 +48,7 @@ public class RuleCheckers
                         (bool isViolation2nd, int v3z, int v4z, int v6z, int sc3z, int sbv3z)
                              = IsRuleViolation(Opened2ndPlaces[z].x, Opened2ndPlaces[z].y, isFakeCheck: true);
                         isOtherPlaceViolation = isViolation2nd;
-                        Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
+                        // Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
                     }
                     if (!isOtherPlaceViolation)
                     {
@@ -339,8 +339,6 @@ public class RuleCheckers
 
 
         isSpaceFourL = leftStoneCount + rightStoneCount == 3;
-        if (x == 7 && y == 7)
-            Debug.Log($"isSpaceFourL : {isSpaceFourL}/{leftStoneCount}+{rightStoneCount}");
 
         if (isOpenFour)
             isSpaceFourL = false;
@@ -397,8 +395,6 @@ public class RuleCheckers
         }
 
         isSpaceFourR = rightStoneCount + leftStoneCount == 3;
-        if (x == 7 && y == 7)
-            Debug.Log($"isSpaceFourR : {isSpaceFourR}/{leftStoneCount}+{rightStoneCount}");
 
         if (isOpenFour)
             isSpaceFourR = false;
@@ -426,6 +422,4 @@ public class RuleCheckers
         return IsValid(x + dir.x, y + dir.y) && board[x + dir.x, y + dir.y] == Constants.PlayerType.None;
     }
 
-    // 사이 띈 4 4
-    // 
 }
