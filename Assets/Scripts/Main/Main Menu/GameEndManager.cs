@@ -112,6 +112,12 @@ public class GameEndManager : UI_Panel
         restartBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_RestartButton(); });
         recordBtn.onClick.AddListener(() => { GameRecorder.SaveGameRecord(); });
     }
+    
+    public void ShowGameEndPanel(string message)
+    {
+        UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+    }
+
 
     private void SetButtonTexts()
     {

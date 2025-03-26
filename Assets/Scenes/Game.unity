@@ -621,6 +621,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5879189655804282104, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: timerHolder
+      value: 
+      objectReference: {fileID: 502338822}
     - target: {fileID: 7379603065666517090, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_fontAsset
       value: 

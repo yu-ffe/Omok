@@ -2011,9 +2011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec8dc916f649ac4493c9ea8da09ef46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerText: {fileID: 0}
-  timer: 30
-  currentTime: 30
 --- !u!224 &1593487719 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6874406902199899089, guid: 37d83e704ef15e24186a3a560624e30a, type: 3}
