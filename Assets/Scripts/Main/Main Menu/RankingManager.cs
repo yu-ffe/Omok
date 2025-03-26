@@ -37,19 +37,24 @@ public class RankingManager : UI_Panel
 
     public void GetUserData() // 랭킹 팝업 오픈 시 호출
     {
-        ResetData(); // 초기화
+        // ResetData(); // 초기화
 
 
+        StartCoroutine(NetworkManager.GetRankingRequest((rankings) =>
+        {
+            playerLankingList = rankings;
+            scrollViewSet.StageSelectPopSet(GetMaxCellNum());
+            
+        }));
         // 모든 유저 id 찾기, 해당 유저들의 정보(딕셔너리 형식) 접근
         // 유저 데이터 불러오기 - 회원가입, 프로필 연동 (닉네임, 프로필 이미지, 급수, 승, 패)
         // TODO: 서버에서 모든 유저 랭킹 가져오기 -> 이건 아직 안만들꺼임
         // TODO: 서버에서 랭킹 업데이트 -> 랭킹만 가져오기로 동작 예정
         // List<string> userIdList = SessionManager.GetAllUserIds();
-        List<string> userIdList = null;
+        // List<string> userIdList = null;
         
-        SortingAndSave(userIdList); // 모든 아이디를 전달
+        // SortingAndSave(userIdList); // 모든 아이디를 전달
 
-        scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
 
     void SortingAndSave(List<string> userIdList) // 급수 기반 정렬 하여 보여줄 데이터 목록 구성

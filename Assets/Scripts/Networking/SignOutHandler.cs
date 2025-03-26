@@ -10,6 +10,7 @@ public class SignOutHandler : MonoBehaviour {
     
     public void SignOut() {
         TokenManager.Instance.ClearTokens();
+        UI_Manager.Instance.Hide(UI_Manager.PanelType.Main);
         UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
     }
 }

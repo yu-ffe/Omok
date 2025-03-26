@@ -107,7 +107,7 @@ public class MainPanel : UI_Panel {
     }
 
 
-    void ResfreshUserInfo() {
+    public void ResfreshUserInfo() {
         //Coin
         playerData = PlayerManager.Instance.playerData;
         txtCoin.text = playerData.coins.ToString();

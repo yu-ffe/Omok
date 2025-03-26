@@ -5,7 +5,6 @@ using UnityEngine;
 using WB;
 using workspace.YU__FFE.Scripts;
 
-namespace Wb {
 public class RankingPanel : WB.UI_Panel
 {
     public ScrollViewSet scrollView;
@@ -21,7 +20,6 @@ public class RankingPanel : WB.UI_Panel
     {
         // 매니저 스크롤 뷰에 해당 스크롤 뷰 할당
         RankingManager.Instance.SetScrollView(scrollView);
-        RankingManager.Instance.GetUserData();
         gameObject.SetActive(true);
     }
     public override void Hide()
@@ -41,5 +39,3 @@ public class RankingPanel : WB.UI_Panel
 
 }
 
-    
-}

@@ -339,11 +339,28 @@ public class NetworkManager : Singleton<NetworkManager> {
     ///////////////////////////////////////////////////// 아래는 코인 차감 로직
     public IEnumerator GameStartRequest(Action<CheckResponse> callback) {
         string url = $"{Constants.ServerURL}/game/start";
-        PlayerData playerData = PlayerManager.Instance.playerData;
 
         string accessToken = TokenManager.Instance.GetAccessToken();
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, new WWWForm())) {
+            request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+            yield return request.SendWebRequest();
+
+            string responseText = request.downloadHandler.text;
+            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(responseText));
+        }
+    }
+    
+    public IEnumerator GamePurchaseRequest(int num, int price, Action<CheckResponse> callback) {
+        string url = $"{Constants.ServerURL}/game/shop";
+        
+        string accessToken = TokenManager.Instance.GetAccessToken();
+
+        WWWForm form = new WWWForm();
+        form.AddField("num", num);
+        form.AddField("price", price);
+        
+        using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
             yield return request.SendWebRequest();
 

@@ -24,6 +24,8 @@ using UnityEngine;
         abstract public void Hide();
         abstract public void OnEnable();
         abstract public void OnDisable();
+        public void LoadPlayerDataAndInitializeUI() {
+        }
     }
 
 
