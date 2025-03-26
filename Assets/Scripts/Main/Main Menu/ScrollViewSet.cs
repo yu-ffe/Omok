@@ -21,8 +21,8 @@ public class ScrollViewSet : MonoBehaviour
     List<GameObject> pool = new List<GameObject>(); // 오브젝트 풀링 리스트
 
     [Header("필수 입력")]
-    [SerializeField, Tooltip("셀 간의 간격")] float spacing;     // 셀 간의 간격
-    [SerializeField, Tooltip("전체 셀 수")] int totalCells;
+    float spacing;     // 셀 간의 간격
+    int totalCells;
     [SerializeField, Tooltip("생성할 셀 수(버퍼 포함)(권장:보이는 셀 + (가로 셀 개수 * 3))")] int createCellCount;
     [SerializeField, Tooltip("가로 셀 개수")] int cellRowCount;
 
@@ -45,6 +45,11 @@ public class ScrollViewSet : MonoBehaviour
         scrollRect.verticalNormalizedPosition = 1f;
 
         totalCells = maxCellNum;
+
+        float cell_Y_Size = cellPrefab.GetComponent<RectTransform>().sizeDelta.y;
+
+       
+        createCellCount = Mathf.CeilToInt(contentRectTransform.sizeDelta.y / (cell_Y_Size + spacing)) * cellRowCount;
 
         if (createCellCount > totalCells) // 생성 셀 개수 보정
         {
