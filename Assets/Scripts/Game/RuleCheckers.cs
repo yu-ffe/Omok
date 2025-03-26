@@ -48,7 +48,7 @@ public class RuleCheckers
                         (bool isViolation2nd, int v3z, int v4z, int v6z, int sc3z, int sbv3z)
                              = IsRuleViolation(Opened2ndPlaces[z].x, Opened2ndPlaces[z].y, isFakeCheck: true);
                         isOtherPlaceViolation = isViolation2nd;
-                        // Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
+                        Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
                     }
                     if (!isOtherPlaceViolation)
                     {
@@ -77,7 +77,7 @@ public class RuleCheckers
 
         foreach (Vector2Int dir in DIR)
         {
-            var (openThree, openFour, overSix, spaceThree, spaceBetweenThree) = CheckRow(x, y, dir, isFakeCheck);
+            var (openThree, openFour, overSix, spaceThree, spaceBetweenThree, spaceFourL, spaceFourR) = CheckRow(x, y, dir, isFakeCheck);
 
             if (openFour)
                 countOpened4++;
@@ -86,6 +86,8 @@ public class RuleCheckers
             else if (overSix) countOver6++;
             if (spaceThree) countSpaceThree++;
             if (spaceBetweenThree) countSpaceBetweenThree++;
+            if (spaceFourL) countOpened4++;
+            if (spaceFourR) countOpened4++;
         }
 
         bool hasDoubleOpenThree = countOpened3 >= 2;
@@ -108,7 +110,7 @@ public class RuleCheckers
     }
 
     /// <summary> 특정 위치에서 열린 3, 열린 4, 6목, 띄운 3목, 양쪽 돌 1개씩인 3목을 검사 </summary>
-    (bool isOpenThree, bool isOpenFour, bool isOverSix, bool isSpaceThree, bool isSpaceBetweenThree) CheckRow(int x, int y, Vector2Int dir, bool isFakeCheck)
+    (bool isOpenThree, bool isOpenFour, bool isOverSix, bool isSpaceThree, bool isSpaceBetweenThree, bool isSpaceFourL, bool isSpaceFourR) CheckRow(int x, int y, Vector2Int dir, bool isFakeCheck)
     {
         int count = 1; // 현재 착수한 돌 포함
         bool leftOpen = false, rightOpen = false;
@@ -155,7 +157,7 @@ public class RuleCheckers
 
         bool isOverSix = (count >= 6);
 
-
+        //* === === === === === === 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
 
         bool isSpaceThree = false;
         bool isSpaceBetweenThree = false;
@@ -284,12 +286,134 @@ public class RuleCheckers
         if (isOpenThree)
             isSpaceBetweenThree = false;
 
+        //* === === === === === === 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
 
-        return (isOpenThree, isOpenFour, isOverSix, isSpaceThree, isSpaceBetweenThree);
+        bool isSpaceFourL = false;
+        int emptyCount = 0;
+        px = x;
+        py = y;
+        leftStoneCount = 0;
+        //! Left > -
+        while (IsValid(px - dir.x, py - dir.y))
+        {
+            if (board[px - dir.x, py - dir.y] == Constants.PlayerType.None)
+            {
+                if (!isFakeCheck)
+                    Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
+                if (emptyCount == 2)
+                    break;
+                emptyCount++;
+            }
+            else if (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA)
+            {
+                leftStoneCount++;
+            }
+            else break;
+            px -= dir.x;
+            py -= dir.y;
+        }
+        //! Right > +
+        px = x;
+        py = y;
+        rightStoneCount = 0;
+        while (IsValid(px + dir.x, py + dir.y))
+        {
+            if (board[px + dir.x, py + dir.y] == Constants.PlayerType.None)
+            {
+                if (!isFakeCheck)
+                    Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
+                if (emptyCount == 2)
+                    break;
+                emptyCount++;
+
+            }
+            else if (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA)
+            {
+                rightStoneCount++;
+            }
+            else break;
+
+            px += dir.x;
+            py += dir.y;
+        }
+
+
+        isSpaceFourL = leftStoneCount + rightStoneCount == 3;
+        if (x == 7 && y == 7)
+            Debug.Log($"isSpaceFourL : {isSpaceFourL}/{leftStoneCount}+{rightStoneCount}");
+
+        if (isOpenFour)
+            isSpaceFourL = false;
+
+        //* === === === === === ===
+        bool isSpaceFourR = false;
+        emptyCount = 0;
+        px = x;
+        py = y;
+        rightStoneCount = 0;
+
+        //! Right > +
+        while (IsValid(px + dir.x, py + dir.y))
+        {
+            if (board[px + dir.x, py + dir.y] == Constants.PlayerType.None)
+            {
+                if (!isFakeCheck)
+                    Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
+                if (emptyCount == 2)
+                    break;
+                emptyCount++;
+
+            }
+            else if (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA)
+            {
+                rightStoneCount++;
+            }
+            else break;
+
+            px += dir.x;
+            py += dir.y;
+        }
+        //! Left > -
+        px = x;
+        py = y;
+        leftStoneCount = 0;
+        while (IsValid(px - dir.x, py - dir.y))
+        {
+            if (board[px - dir.x, py - dir.y] == Constants.PlayerType.None)
+            {
+                if (!isFakeCheck)
+                    Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
+                if (emptyCount == 2)
+                    break;
+                emptyCount++;
+            }
+            else if (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA)
+            {
+                leftStoneCount++;
+            }
+            else break;
+            px -= dir.x;
+            py -= dir.y;
+        }
+
+        isSpaceFourR = rightStoneCount + leftStoneCount == 3;
+        if (x == 7 && y == 7)
+            Debug.Log($"isSpaceFourR : {isSpaceFourR}/{leftStoneCount}+{rightStoneCount}");
+
+        if (isOpenFour)
+            isSpaceFourR = false;
+
+
+        return (isOpenThree, isOpenFour, isOverSix, isSpaceThree, isSpaceBetweenThree, isSpaceFourL, isSpaceFourR);
     }
 
 
+    (int p3, int p4) CheckRow(int x, int y, Vector2Int dir)
+    {
+        //해당 줄의 검은돌 개수 확인 (양쪽)
 
+        return (1, 2);
+    }
     /// <summary> 보드 좌표 검사 </summary>
     bool IsValid(int x, int y)
     {
@@ -302,4 +426,6 @@ public class RuleCheckers
         return IsValid(x + dir.x, y + dir.y) && board[x + dir.x, y + dir.y] == Constants.PlayerType.None;
     }
 
+    // 사이 띈 4 4
+    // 
 }
