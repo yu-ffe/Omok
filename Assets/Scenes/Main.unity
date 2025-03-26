@@ -1271,13 +1271,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e137534fa4d474090fa1bbb6488ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmSource: {fileID: 0}
+  bgmSource: {fileID: 1891428773}
   sfxSources:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   audioMixer: {fileID: 24100000, guid: 00656a6ece8dc5e45beb0c2392a172bd, type: 2}
+  mainBGM: {fileID: 8300000, guid: af2c3360cc6f4f6428f0658090678bff, type: 3}
+  gameBGM: {fileID: 8300000, guid: f2db7865004b71043b1b342364ed65ce, type: 3}
 --- !u!114 &731257257
 MonoBehaviour:
   m_ObjectHideFlags: 0
