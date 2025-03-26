@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Commons;
+using Newtonsoft.Json;
 
 public class GameRecorder
 {
@@ -37,17 +38,30 @@ public class GameRecorder
         int newIndex = recordCount;
         string recordKey = $"record_{newIndex}";
 
-        // 기보 데이터를 JSON 문자열로 변환 후 저장
+        // PlayerMove로 변환하여 저장
+        List<PlayerMove> moves = new List<PlayerMove>();
+        foreach (var move in GameManager.Instance.GameLogicInstance.moveList)
+        {
+            moves.Add(new PlayerMove(move.player, move.x, move.y));
+        }
+
         RecordData record = new RecordData
         {
             Nickname = nickname,
             Grade = grade,
             Date = date,
             Result = gameResult.ToString(),
-            Moves = GameManager.Instance.GameLogicInstance.moveList
+            Moves = moves
         };
 
-        string json = JsonUtility.ToJson(record);
+        // Newtonsoft.Json으로 직렬화
+        string json = JsonConvert.SerializeObject(record);
+        Debug.Log("저장: " + json);
+
+
+
+
+
         PlayerPrefs.SetString(recordKey, json);
 
         // 저장된 개수 업데이트
@@ -66,7 +80,19 @@ public class GameRecorder
         if (PlayerPrefs.HasKey(recordKey))
         {
             string json = PlayerPrefs.GetString(recordKey);
-            return JsonUtility.FromJson<RecordData>(json);
+            Debug.Log("로드: " + json);
+
+            // Newtonsoft.Json으로 역직렬화
+            RecordData record = JsonConvert.DeserializeObject<RecordData>(json);
+
+            // Moves가 null이라면 빈 리스트로 초기화
+            if (record.Moves == null)
+            {
+                record.Moves = new List<PlayerMove>();
+            }
+
+            Debug.Log("Moves count: " + record.Moves.Count);
+            return record;
         }
 
         Debug.LogWarning($"기보를 찾을 수 없음: {recordKey}");
@@ -150,7 +176,29 @@ public class GameRecorder
 
 
 
+    private static void DeleteAllRecords() // 테스트용 모든 기보 제거
+    {
+        int recordCount = PlayerPrefs.GetInt("RecordCount", 0);
 
+        // 저장된 기록이 없으면 종료
+        if (recordCount <= 0) return;
+
+        // 모든 기록 삭제
+        for (int i = 0; i < recordCount; i++)
+        {
+            string key = $"record_{i}";
+            if (PlayerPrefs.HasKey(key))
+            {
+                PlayerPrefs.DeleteKey(key);
+            }
+        }
+
+        // 기록 개수 초기화
+        PlayerPrefs.SetInt("RecordCount", 0);
+
+        PlayerPrefs.Save();
+        Debug.Log("모든 기보 삭제 완료");
+    }
 
 
 

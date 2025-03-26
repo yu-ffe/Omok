@@ -39,7 +39,7 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
         {
             loadIndex--;
 
-            return loadedRecord.Moves[loadIndex];
+            return (loadedRecord.Moves[loadIndex].player, loadedRecord.Moves[loadIndex].x, loadedRecord.Moves[loadIndex].y);
         }
 
         else
@@ -50,11 +50,11 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
 
     public (Constants.PlayerType player, int x, int y) GetAfterLocation() // 현재 기보 다음 수 좌표
     {
-        if (loadIndex < loadedRecord.Moves.Count) // 최대 리스트 수 이하
+        if (loadIndex < loadedRecord.Moves.Count - 1) // 최대 리스트 수 이하
         {
             loadIndex++;
 
-            return loadedRecord.Moves[loadIndex];
+            return (loadedRecord.Moves[loadIndex].player, loadedRecord.Moves[loadIndex].x, loadedRecord.Moves[loadIndex].y);
         }
 
         else
