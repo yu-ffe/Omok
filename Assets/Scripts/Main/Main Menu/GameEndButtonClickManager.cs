@@ -50,6 +50,8 @@ public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
             }
         );
     }
+    
+    
 
     /// <summary>
     /// 실제 게임 재시작 로직

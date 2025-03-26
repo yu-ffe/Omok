@@ -1833,7 +1833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3623024011760480000}
-  - component: {fileID: 8303109183281366601}
+  - component: {fileID: 5879189655804282104}
   m_Layer: 5
   m_Name: GamePanel
   m_TagString: Untagged
@@ -1863,7 +1863,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8303109183281366601
+--- !u!114 &5879189655804282104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1872,7 +1872,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8882544919086370188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb9914d7acf44c4f93aeb03dbb6f218, type: 3}
+  m_Script: {fileID: 11500000, guid: bb24b7ef35e08634789056c3f2a8457b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelType: 3
@@ -1880,11 +1880,11 @@ MonoBehaviour:
   txtNickNameLeft: {fileID: 7604628269954432545}
   imgProfileRight: {fileID: 6260467834570762745}
   txtNickNameRight: {fileID: 3029061084697200118}
-  txtTimer: {fileID: 5131311388313040898}
-  imgLeftTime: {fileID: 8135301992997616603}
+  timerHolder: {fileID: 0}
+  timerPrefab: {fileID: 6835226160482892050, guid: beb324cf65c4a4344960d53ab1e0a377, type: 3}
   imgGameTurn:
-  - {fileID: 8738289646115438141}
-  - {fileID: 6410778378725459515}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &8975049581551834614
 GameObject:
   m_ObjectHideFlags: 0
