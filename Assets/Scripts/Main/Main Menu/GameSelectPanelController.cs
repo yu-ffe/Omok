@@ -20,22 +20,44 @@ public class GameSelectPanelController : UI_Panel {
     }
 
     private void StartSinglePlay() {
-        Hide();
-        GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
+        StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+            if(callback.Success) {
+                StartCoroutine(PlayerManager.Instance.UpdateUserData());
+                Hide();
+                GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
+            }
+            else {
+                Debug.Log("싱글 플레이 실패: 돈 부족");
+            }
+        }));
         // Todo: 스타트 싱글 플레이
 
     }
     private void StartDualPlay() {
-        Hide();
-        GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
-        
+        StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+            if(callback.Success) {
+                StartCoroutine(PlayerManager.Instance.UpdateUserData());
+                Hide();
+                GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+            }
+            else {
+                Debug.Log("듀얼 플레이 실패: 돈 부족");
+            }
+        }));
 
     }
 
     private void StartMultiPlay() {
-        Hide();
-        GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
-
+        StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+            if(callback.Success) {
+                StartCoroutine(PlayerManager.Instance.UpdateUserData());
+                Hide();
+                GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
+            }
+            else {
+                Debug.Log("멀티 플레이 실패: 돈 부족");
+            }
+        }));
         // Todo: 스타트 멀티 플레이
 
     }

@@ -1,6 +1,8 @@
 
 
-public class LogoutHandler : Singleton<LogoutHandler> {
+using UnityEngine;
+
+public class SignOutHandler : MonoBehaviour {
 
     // ======================================================
     //                      로그아웃

@@ -13,18 +13,14 @@ router.post("/", async (req, res) => {
 
         // Refresh Token을 검증하여 유저 정보를 추출
         const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
-        const userId = decoded.userId;
+        const userId = decoded.email;
 
         // 해당 유저를 찾아서 토큰 삭제
         const user = await User.findById(userId);
         if (!user) {
             return res.status(400).json({ error: "유효하지 않은 유저입니다." });
         }
-
-        // 토큰 삭제
-        user.sessionToken = null;  // 또는 user.sessionToken = '';
-        user.refreshToken = null;  // 또는 user.refreshToken = '';
-        await user.save();
+        // 서버에선 할게 없네?
 
         // 로그아웃 후 성공 메시지 전송
         res.json({ success: true, message: "로그아웃 성공" });

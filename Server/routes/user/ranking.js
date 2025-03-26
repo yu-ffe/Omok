@@ -7,7 +7,7 @@ router.get('/', async (req, res) => {
     try {
         // DB에서 grade 오름차순, rankPoint 내림차순으로 정렬하여 상위 10명 가져오기
         const rankings = await User.find()
-            .sort({ grade: -1, rankPoint: 1, winCount: -1, loseCount: 1 })  // grade 오름차순, rankPoint 내림차순
+            .sort({ grade: 1, rankPoint: -1, winCount: -1, loseCount: 1 })  // grade 오름차순, rankPoint 내림차순
             .limit(10);  // 상위 10명만 가져오기
 
         // 조회된 랭킹 데이터가 없다면
