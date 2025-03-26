@@ -33,6 +33,7 @@ public class GameManager : Singleton<GameManager>
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
+
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
@@ -84,6 +85,8 @@ public class GameManager : Singleton<GameManager>
             if (_gameLogic != null) _gameLogic.Dispose();
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
             _gameLogic = new GameLogic(timer,omokBoard, _gameType);
+
+            RecordUIManager.Instance.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
         }
 
         _canvas = GameObject.FindObjectOfType<Canvas>();
