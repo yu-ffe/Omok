@@ -39,10 +39,10 @@ public class RecordUIManager : Singleton<RecordUIManager>
 
     void ButtonSet()
     {
-        AddSafeButton(buttonObj_First, () => { Debug.Log("기보 처음 수까지 두기 함수 실행"); });
-        AddSafeButton(buttonObj_Before, () => { Debug.Log("기보 이전 수 두기 함수 실행"); });
-        AddSafeButton(buttonObj_After, () => { Debug.Log("기보 다음 수 두기 함수 실행"); });
-        AddSafeButton(buttonObj_Last, () => { Debug.Log("기보 마지막 수까지 두기 함수 실행"); });
+        AddSafeButton(buttonObj_First, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetBeforeLocation, true); });
+        AddSafeButton(buttonObj_Before, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetBeforeLocation, false); });
+        AddSafeButton(buttonObj_After, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetAfterLocation, false); });
+        AddSafeButton(buttonObj_Last, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetAfterLocation, true); });
     }
 
     void AddSafeButton(GameObject buttonObj, UnityEngine.Events.UnityAction action)
