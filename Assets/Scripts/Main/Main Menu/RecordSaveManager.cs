@@ -64,6 +64,16 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
     }
 
     #region 기보 착수 기능
+
+    /*
+     RecordSaveManager기보 착수 기능 레기온 다 만들어둠 필요하신곳에 이동시켜서 TODO표 표시해놓은 착수기능 추가해주시고
+ButtonSet 보시면 각 버튼들에 아까보신 RecordSaveManager 쪽 함수들로 연결되어있는데
+RecordSaveManager 인스턴스 대신 이동시키신곳 인스턴스로 변경해주시면 
+
+    추가 문제
+흰돌 반투명 보임, 클릭시 초록표시 뜸
+    */
+
     public void TurnGo(Func<(Constants.PlayerType, int, int)> getLocationFunc, bool isContinuous)
     {
         if (isContinuous)
