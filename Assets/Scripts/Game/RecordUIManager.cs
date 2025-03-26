@@ -39,10 +39,10 @@ public class RecordUIManager : Singleton<RecordUIManager>
 
     void ButtonSet()
     {
-        AddSafeButton(buttonObj_First, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetBeforeLocation, true); });
-        AddSafeButton(buttonObj_Before, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetBeforeLocation, false); });
-        AddSafeButton(buttonObj_After, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetAfterLocation, false); });
-        AddSafeButton(buttonObj_Last, () => { RecordManager.Instance.TurnGo(RecordManager.Instance.GetAfterLocation, true); });
+        AddSafeButton(buttonObj_First, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetBeforeLocation, true); });
+        AddSafeButton(buttonObj_Before, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetBeforeLocation, false); });
+        AddSafeButton(buttonObj_After, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, false); });
+        AddSafeButton(buttonObj_Last, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, true); });
     }
 
     void AddSafeButton(GameObject buttonObj, UnityEngine.Events.UnityAction action)
