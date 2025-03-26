@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RecordUIManager : Singleton<RecordUIManager>
+public class RecordUIManager : MonoBehaviour
 {
     [Header("조정될 UI")]
     [SerializeField] GameObject recordUIObj; // 기보 버튼들
