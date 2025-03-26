@@ -259,8 +259,8 @@ public class RecordManager : UI_Panel
     public void ReplayShow()
     {
 
-
-        // TODO 기보 재생 함수 추가, 재생에 필요한값은 아래 함수들로 획득
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.Record);
+        // 기보 재생 함수-기보플레이용 UI 표기, 재생에 필요한값은 아래 함수들로 획득
     }
 
     public (Constants.PlayerType player, int x, int y) GetBeforeLocation() // 현재 기보 이전 수 좌표
