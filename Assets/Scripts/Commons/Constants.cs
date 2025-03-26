@@ -13,7 +13,7 @@ namespace Commons {
             SinglePlayer,
             DualPlayer,
             MultiPlayer,
-            Record
+            Record,
         }
         
         //게임 결과 (승패 판정)
