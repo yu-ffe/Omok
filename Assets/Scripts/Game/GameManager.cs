@@ -17,6 +17,7 @@ public class GameManager : Singleton<GameManager>
     public void StartGame(Constants.GameType gameType)
     {
         _gameType = gameType;
+        lastGameType = gameType;
         SceneManager.LoadScene("Game"); 
     }
 
@@ -33,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
-
+        lastGameType = gameType;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
@@ -69,6 +70,8 @@ public class GameManager : Singleton<GameManager>
         SceneTransitionManager.Instance.LoadSceneAsync("Main").Forget();
     }
 
+    public RecordUIManager recordUIManager;
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -86,7 +89,7 @@ public class GameManager : Singleton<GameManager>
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
             _gameLogic = new GameLogic(timer,omokBoard, _gameType);
 
-            FindObjectOfType<RecordUIManager>().RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
+            recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
         }
 
         _canvas = GameObject.FindObjectOfType<Canvas>();

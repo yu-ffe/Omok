@@ -18,6 +18,12 @@ public class RecordUIManager : MonoBehaviour
     [SerializeField] GameObject buttonObj_After;
     [SerializeField] GameObject buttonObj_Last;
 
+
+    private void Awake()
+    {
+        GameManager.Instance.recordUIManager = this;
+    }
+
     public void RecordUISet(bool isRecord)
     {
         // 기보 수이동 버튼 표기
