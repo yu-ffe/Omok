@@ -1,12 +1,15 @@
 using System;
 using Commons;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public Constants.GameType lastGameType { get; private set; }
+    public Constants.GameType CurrentGameType {get; private set;}
+    public string DualPlayWinnerNickname { get; private set; } //닉네임 저장
 
     //private Canvas _canvas;
     private Constants.GameType _gameType;
@@ -18,6 +21,32 @@ public class GameManager : Singleton<GameManager>
     public GameLogic GameLogicInstance => gameLogic;
 
     private bool _trackingAIState = false;
+    
+    public GamePopup gamePopupPrefab;
+    private GamePopup popupInstance;
+    
+    public void SetDualPlayWinner(string nickname)
+    {
+        DualPlayWinnerNickname = nickname;
+    }
+    
+    public void SetGameType(Constants.GameType gameType)
+    {
+        _gameType = gameType;
+        CurrentGameType = gameType;
+        Debug.Log($"[GameManager] 게임 타입 설정됨: {gameType}");
+    }
+    
+    public void ShowPopup(string message, string confirmText, UnityAction onConfirm, string cancelText = null, UnityAction onCancel = null)
+    {
+        if (popupInstance == null)
+        {
+            popupInstance = Instantiate(gamePopupPrefab, FindObjectOfType<Canvas>().transform);
+        }
+
+        popupInstance.Setup(message, confirmText, onConfirm, cancelText, onCancel);
+        popupInstance.OpenPopup();
+    }
     
     public void SetTrackingAIState(bool state)
     {
@@ -33,6 +62,7 @@ public class GameManager : Singleton<GameManager>
     {
         _gameType = gameType;
         lastGameType = gameType;
+        CurrentGameType = gameType;
         SceneManager.LoadScene("Game"); 
         SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
     }

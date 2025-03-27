@@ -52,6 +52,7 @@ public class GameSelectPanelController : UI_Panel {
             if(callback.Success) {
                 StartCoroutine(PlayerManager.Instance.UpdateUserData());
                 Hide();
+                GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
                 GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
             }
             else 
@@ -66,8 +67,7 @@ public class GameSelectPanelController : UI_Panel {
                     "취소",
                     okAction: () =>
                     {
-                        if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Shop, out var shopPanel))
-                            shopPanel.gameObject.SetActive(true);
+                        UI_Manager.Instance.Show(UI_Manager.PanelType.Shop);
                     },
                     cancelAction: () => UI_Manager.Instance.popup.Hide()
                 );
