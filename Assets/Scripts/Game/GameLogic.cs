@@ -157,7 +157,7 @@ public class AIState : BasePlayerState
             GameManager.Instance.SetAILevel(Constants.AILevel.Hard);
         }
 
-        var move = await OmokAI.GetBestMoveAsync(aiTimeLevel, OmokBoard);
+        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard, aiTimeLevel);
 
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
