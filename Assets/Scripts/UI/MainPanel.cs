@@ -66,7 +66,6 @@ public class MainPanel : UI_Panel
 
         }
 
-        ResfreshUserInfo();
         if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Login, out var loginPanel))
             loginPanel.gameObject.SetActive(false);
         if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Loading, out var loadingPanel))
@@ -106,6 +105,7 @@ public class MainPanel : UI_Panel
 
     public override void OnEnable()
     {
+        ResfreshUserInfo();
         UI_Manager.Instance.AddCallback("UserInfo", ResfreshUserInfo);
     }
     public override void OnDisable()
