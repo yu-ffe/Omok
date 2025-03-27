@@ -101,6 +101,7 @@ namespace WB
                 if (onStones.ContainsKey(XY))
                 {
                     PushStone(onStones[XY]);
+                    onStones.Remove(XY);
                 }
                 board[XY.x, XY.y] = type;
                 return;
@@ -108,17 +109,13 @@ namespace WB
 
             var stone = PopStone(type);
             stone.XY = XY;
-
             if (onStones.ContainsKey(XY))
             {
                 PushStone(onStones[XY]);
-                onStones[XY] = stone;
-            }
-            else
-            {
-                onStones.Add(XY, stone);
+                onStones.Remove(XY);
             }
 
+            onStones.Add(XY, stone);
             board[XY.x, XY.y] = type;
 
         }
