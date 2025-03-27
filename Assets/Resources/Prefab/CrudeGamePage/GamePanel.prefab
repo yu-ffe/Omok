@@ -1885,6 +1885,7 @@ MonoBehaviour:
   imgGameTurn:
   - {fileID: 0}
   - {fileID: 0}
+  gamePopup: {fileID: 6994140266454606912, guid: 5f6eae80431c629498f355511c4f5d7e, type: 3}
 --- !u!1 &8975049581551834614
 GameObject:
   m_ObjectHideFlags: 0

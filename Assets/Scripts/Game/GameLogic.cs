@@ -128,6 +128,7 @@ public class PlayerState : BasePlayerState
     }
 }
 
+
 //AI 플레이 상태
 public class AIState : BasePlayerState
 {
@@ -138,7 +139,7 @@ public class AIState : BasePlayerState
 
         int aiTimeLevel = 3000;
 
-        if (PlayerManager.Instance.playerData.grade > 9) // 18~10급
+        if(PlayerManager.Instance.playerData.grade > 9) // 18~10급
         {
             aiTimeLevel = 2000;
             GameManager.Instance.SetAILevel(Constants.AILevel.Easy);

@@ -23,6 +23,9 @@ public class GamePanel : UI_Panel {
     //public TextMeshProUGUI txtTimer;
     //public Image imgLeftTime;
     public Image[] imgGameTurn = new Image[2];
+    
+    public GamePopup gamePopupPrefab;
+    private GamePopup popupInstance;
 
     bool isComponentsConnected = false;
 
@@ -113,18 +116,17 @@ public class GamePanel : UI_Panel {
 
     /// <summary> 양쪽 게임 유저의 프로필 사진와 닉네임 가져옵니다 </summary>
     void LoadProfile() {
-        // Sprite sprite_Left = SessionManager.GetUserProfileSprite()
-        //  Sprite sprite_Right = SessionManager.GetUserProfileSprite()
+        
 
-        //
-        // imgProfileRight.sprite = sprite_Right
         imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(PlayerManager.Instance.playerData.profileNum);
         txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
 
 
         if(GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer)
         {
-            switch (Constants.AILevel.Middle) // 게임 로직에 AI 난이도 저장하는 변수로 변경
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
+
+            switch (GameManager.Instance.GetAILevel()) // AI 난이도
             {
                 case Constants.AILevel.Easy:
                     txtNickNameRight.text = "AI-Lv1";
@@ -142,16 +144,20 @@ public class GamePanel : UI_Panel {
 
         else if(GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer) // 멀티 시 상대 정보 불러오기
         {
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "멀티 상대";
         }
 
         else if (GameManager.Instance.GetGameType() == Constants.GameType.Record) // 기보 시 저장된 상대 정보 불러오기
         {
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "상대 플레이어";
         }
 
         else // 듀얼 플레이
         {
+            imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(1);
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameLeft.text = "플레이어 A";
             txtNickNameRight.text = "플레이어 B";
         }
@@ -173,11 +179,27 @@ public class GamePanel : UI_Panel {
         
         var currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
 
-        SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
-        SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+        if (imgGameTurn != null && imgGameTurn.Length >= 2)
+        {
+            if (imgGameTurn[0] != null)
+                SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
+        
+            if (imgGameTurn[1] != null)
+                SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+        }
+        else
+        {
+            Debug.LogWarning("GamePanel의 imgGameTurn 이미지 참조가 누락되었습니다.");
+        }
     }
     void SetImageAlpha(Image image, float alpha)
     {
+        if (image == null)
+        {
+            Debug.LogWarning("SetImageAlpha 호출 시 image가 null입니다.");
+            return;
+        }
+
         Color color = image.color;
         color.a = alpha;
         image.color = color;
@@ -198,15 +220,28 @@ public class GamePanel : UI_Panel {
 
 
     /// <summary> 기권버튼 이벤트 </summary>
-    public void Button_GiveUp() {
-        if (GameEndManager.Instance != null)
+    public void Button_GiveUp()
+    {
+        if (popupInstance == null)
         {
-            GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!"); // 원하는 메시지 전달
+            popupInstance = Instantiate(gamePopupPrefab, FindObjectOfType<Canvas>().transform);
         }
-        else
-        {
-            Debug.LogError("[GamePanel] GameEndManager.Instance가 null입니다!");
-        }
+
+        popupInstance.Setup(
+            message: "정말로 기권하시겠습니까?",
+            confirmText: "예",
+            confirmAction: OnGiveUpConfirmed,
+            cancelText: "아니오",
+            cancelAction: () => Debug.Log("기권 취소됨")
+        );
+
+        popupInstance.OpenPopup();
+    }
+    
+    private void OnGiveUpConfirmed()
+    {
+        var currentPlayerType = GameManager.Instance.gameLogic.GetCurrentPlayerType();
+        GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(currentPlayerType);
     }
 
     /// <summary> 착수버튼 이벤트 </summary>

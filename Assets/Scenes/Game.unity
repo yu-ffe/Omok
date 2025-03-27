@@ -658,6 +658,10 @@ PrefabInstance:
       propertyPath: timerHolder
       value: 
       objectReference: {fileID: 502338822}
+    - target: {fileID: 5879189655804282104, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: gamePopupPrefab
+      value: 
+      objectReference: {fileID: 1652068663901884948, guid: 5f6eae80431c629498f355511c4f5d7e, type: 3}
     - target: {fileID: 6410778378725459515, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_Color.a
       value: 0.29803923
