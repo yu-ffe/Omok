@@ -95,12 +95,16 @@ public class GameEndManager : UI_Panel
         // DualPlayer일 경우 버튼 변경 처리
         if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
         {
-            // 메시지 출력만
-            string winnerNick = GameManager.Instance.DualPlayWinnerNickname;
+            var winnerPlayer = Constants.GetWinnerPlayerFromGameResult(gameResult);
 
-            if (string.IsNullOrEmpty(winnerNick)) winnerNick = "플레이어";
+            string winnerLabel = winnerPlayer switch
+            {
+                Constants.PlayerType.PlayerA => "PlayerA",
+                Constants.PlayerType.PlayerB => "PlayerB",
+                _ => "플레이어"
+            };
 
-            resultText.text = $"{winnerNick}의 승리입니다!";
+            resultText.text = $"{winnerLabel}의 승리입니다!";
             
             // 버튼 보이기/숨기기
             okButton.SetActive(true);

@@ -390,19 +390,24 @@ public class GameLogic : IDisposable
     {
         if (CheckGameWin(Constants.PlayerType.PlayerA))
         {
-            Debug.Log($"{Constants.PlayerType.PlayerA}승리");
-            return Constants.GameResult.Win;
+            Debug.Log($"{Constants.PlayerType.PlayerA} 승리");
+
+            return GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer
+                ? Constants.GameResult.Player1Win
+                : Constants.GameResult.Win;
         }
 
         if (CheckGameWin(Constants.PlayerType.PlayerB))
         {
-            Debug.Log($"{Constants.PlayerType.PlayerB}승리");
-            return Constants.GameResult.Lose;
-        }
-        //TODO: 무승부 조건
-        //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
+            Debug.Log($"{Constants.PlayerType.PlayerB} 승리");
 
-        return Constants.GameResult.None; // 게임 계속 진행
+            return GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer
+                ? Constants.GameResult.Player2Win
+                : Constants.GameResult.Lose;
+        }
+
+        // TODO: 무승부 처리 추가
+        return Constants.GameResult.None;
     }
 
     //게임의 승패를 판단하는 함수
@@ -453,6 +458,9 @@ public class GameLogic : IDisposable
 
         return false;
     }
+    
+  
+
 
     //현재 플레이어를 패배하게 하는 함수
     public void HandleCurrentPlayerDefeat(Constants.PlayerType playerType)
@@ -464,11 +472,6 @@ public class GameLogic : IDisposable
                 ? Constants.GameResult.Player2Win
                 : Constants.GameResult.Player1Win;
 
-            string winnerNick = playerType == Constants.PlayerType.PlayerA
-                ? Player2Nickname  // 상대
-                : Player1Nickname; // 본인
-
-            GameManager.Instance.SetDualPlayWinner(winnerNick);
             GameEndManager.Instance.PrepareGameEndInfo(result);
             return;
         }

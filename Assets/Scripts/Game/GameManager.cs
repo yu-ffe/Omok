@@ -142,10 +142,7 @@ public class GameManager : Singleton<GameManager>
                 string player1Nick = PlayerManager.Instance.playerData.nickname;
                 string player2Nick = "상대"; // 듀얼플레이에서 쓸 고정 닉네임
 
-                gameLogic = new GameLogic(omokBoard, _gameType, player1Nick, player2Nick);
-
-                //  GameLogic 생성자는 이 한 줄이면 충분
-                gameLogic = new GameLogic(omokBoard, _gameType, player1Nick, player2Nick);
+                gameLogic = new GameLogic(omokBoard, _gameType, player1Nick, player2Nick); // ✅ 한 번만 생성
 
                 Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
