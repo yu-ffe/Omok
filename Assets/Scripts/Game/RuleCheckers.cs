@@ -41,8 +41,6 @@ public class RuleCheckers
                 (bool isViolation, int v3, int v4, int v6, int sc3, int sbv3) = IsRuleViolation(x, y);
                 if (isViolation)
                 {
-                    // Debug.Log($"[{checkXY}]금수위치발견/거짓금수판별 다른곳 체크={v3},{v4},{v6},{sc3},{sbv3}");
-
                     //! 2nd 다른 곳의 금수체크
                     bool isOtherPlaceViolation = false;
                     for (int z = 0; z < Opened2ndPlaces.Count; z++)
@@ -52,13 +50,11 @@ public class RuleCheckers
                         isOtherPlaceViolation = isViolation2nd;
                         // Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
                     }
-
-                     if (!isOtherPlaceViolation)
+                    if (!isOtherPlaceViolation)
                     {
                         InvalidPlaces.Add(new(x, y));
                         // Debug.Log($"<color=#ff0000>{x},{y} is violation</color>3[{v3}]4[{v4}]6[{v6}]s3[{sc3}]sb3[{sbv3}]");
                     }
-
                 }
                 //* 임시로 검은돌 놓ㄹ고 검사한 것 원위치
                 board[x, y] = Constants.PlayerType.None;
@@ -82,7 +78,6 @@ public class RuleCheckers
         foreach (Vector2Int dir in DIR)
         {
             var (openThree, openFour, overSix, spaceThree, spaceBetweenThree, spaceFourL, spaceFourR) = CheckRow(x, y, dir, isFakeCheck);
-
 
             if (openFour)
                 countOpened4++;
@@ -124,21 +119,17 @@ public class RuleCheckers
         while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
         {
             count++;
-            if (!isFakeCheck)
-                // Debug.Log($"add : {px - dir.x},{py - dir.y}");
-
             px -= dir.x;
             py -= dir.y;
         }
 
         //! Open Check : L
         int leftEndX = px - dir.x, leftEndY = py - dir.y;
-        if (IsOpened(leftEndX, leftEndX, Vector2Int.zero))
+        if (IsOpened(leftEndX, leftEndY, Vector2Int.zero))
         {
-            rightOpen = true;
+            leftOpen = true;
             if (!isFakeCheck)
                 Opened2ndPlaces.Add(new(leftEndX, leftEndY));
-
         }
 
         // 반대 방향 탐색
@@ -147,9 +138,6 @@ public class RuleCheckers
         while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
         {
             count++;
-            if (!isFakeCheck)
-                // Debug.Log($"add : {px + dir.x},{py + dir.y}");
-
             px += dir.x;
             py += dir.y;
         }
@@ -161,7 +149,6 @@ public class RuleCheckers
             rightOpen = true;
             if (!isFakeCheck)
                 Opened2ndPlaces.Add(new(rightEndX, rightEndY));
-
         }
 
         bool isOpenThree = (count == 3 && leftOpen && rightOpen);
@@ -191,9 +178,6 @@ public class RuleCheckers
             py -= dir.y;
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
-                    // Debug.Log($"add : {px},{py}");
-
                 leftStoneCount++;
                 px -= dir.x;
                 py -= dir.y;
@@ -204,8 +188,6 @@ public class RuleCheckers
             leftEmptyFirst = false;
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
-                    // Debug.Log($"add : {px},{py}");
                 leftStoneCount++;
                 px -= dir.x;
                 py -= dir.y;
@@ -226,8 +208,6 @@ public class RuleCheckers
             py += dir.y;
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
-                    // Debug.Log($"add : {px},{py}");
                 rightStoneCount++;
                 px += dir.x;
                 py += dir.y;
@@ -238,8 +218,6 @@ public class RuleCheckers
             rightEmptyFirst = false;
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
-                    // Debug.Log($"add : {px + dir.x},{py + dir.y}");
                 rightStoneCount++;
                 px += dir.x;
                 py += dir.y;
@@ -261,7 +239,7 @@ public class RuleCheckers
             // - 2 1 0 1 2 3 4 - 
             bool backL = IsOpened(x, y, dir);
             bool frontL = IsOpened(x, y, dir * -4);
-          
+
             bool backR = IsOpened(x, y, dir * -1);
             bool frontR = IsOpened(x, y, dir * 4);
 
@@ -309,7 +287,11 @@ public class RuleCheckers
             isSpaceBetweenThree = false;
 
         //* === === === === === === 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 
-
+        Vector2Int leftFoward = new(x, y);
+        Vector2Int rightFoward = new(x, y);
+        Vector2Int leftBack = new(x, y);
+        Vector2Int rightBack = new(x, y);
+        Vector2Int lastPoint = new(x, y);
         bool isSpaceFourL = false;
         int emptyCount = 0;
         px = x;
@@ -322,6 +304,7 @@ public class RuleCheckers
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
+
                 if (emptyCount == 2)
                     break;
                 emptyCount++;
@@ -329,11 +312,13 @@ public class RuleCheckers
             else if (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA)
             {
                 leftStoneCount++;
+                lastPoint = new(px - dir.x, py - dir.y);
             }
             else break;
             px -= dir.x;
             py -= dir.y;
         }
+        leftFoward = new(lastPoint.x, lastPoint.y);
         //! Right > +
         px = x;
         py = y;
@@ -352,13 +337,14 @@ public class RuleCheckers
             else if (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA)
             {
                 rightStoneCount++;
+                lastPoint = new(px + dir.x, py + dir.y);
             }
             else break;
 
             px += dir.x;
             py += dir.y;
         }
-
+        leftBack = new(lastPoint.x, lastPoint.y);
 
         isSpaceFourL = leftStoneCount + rightStoneCount == 3;
 
@@ -387,12 +373,15 @@ public class RuleCheckers
             else if (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA)
             {
                 rightStoneCount++;
+                lastPoint = new(px + dir.x, py + dir.y);
             }
             else break;
 
             px += dir.x;
             py += dir.y;
         }
+
+        rightFoward = new(lastPoint.x, lastPoint.y);
         //! Left > -
         px = x;
         py = y;
@@ -410,17 +399,21 @@ public class RuleCheckers
             else if (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA)
             {
                 leftStoneCount++;
+                lastPoint = new(px - dir.x, py - dir.y);
             }
             else break;
             px -= dir.x;
             py -= dir.y;
         }
 
+        rightBack = new(lastPoint.x, lastPoint.y);
+
+        bool sameLine = (leftFoward == rightBack) && (rightFoward == leftBack);
+
         isSpaceFourR = rightStoneCount + leftStoneCount == 3;
 
-        if (isOpenFour)
+        if (isOpenFour || sameLine)
             isSpaceFourR = false;
-
 
         return (isOpenThree, isOpenFour, isOverSix, isSpaceThree, isSpaceBetweenThree, isSpaceFourL, isSpaceFourR);
     }
