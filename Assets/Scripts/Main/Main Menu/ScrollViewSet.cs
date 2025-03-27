@@ -35,26 +35,21 @@ public class ScrollViewSet : MonoBehaviour
     [Header("추가 필요 정보")]
     bool needMore;
 
-    private void Start()
-    {
-        scrollRect.onValueChanged.AddListener(OnScroll);
-    }
+   
 
     public void StageSelectPopSet(int maxCellNum) // 최초 외부 호출
     {
+        if (scrollRect.onValueChanged.GetPersistentEventCount() == 0)
+        {
+            scrollRect.onValueChanged.AddListener(OnScroll);
+        }
+
+        spacing = 10f;
         scrollRect.verticalNormalizedPosition = 1f;
 
         totalCells = maxCellNum;
 
-        float cell_Y_Size = cellPrefab.GetComponent<RectTransform>().sizeDelta.y;
-
-       
-        createCellCount = Mathf.CeilToInt(contentRectTransform.sizeDelta.y / (cell_Y_Size + spacing)) * cellRowCount;
-
-        if (createCellCount > totalCells) // 생성 셀 개수 보정
-        {
-            createCellCount = totalCells;
-        }
+      
 
         if (totalCells > 0)
         {
@@ -115,6 +110,13 @@ public class ScrollViewSet : MonoBehaviour
 
         contentRectTransform.sizeDelta = new Vector2(contentWidth, contentHeight);
         contentRectTransform.anchoredPosition = new Vector2(0, 0);
+
+        createCellCount = Mathf.CeilToInt(contentRectTransform.sizeDelta.y / (cellHeight + spacing)) * cellRowCount;
+
+        if (createCellCount > totalCells) // 생성 셀 개수 보정
+        {
+            createCellCount = totalCells;
+        }
 
 
         InitPool();
