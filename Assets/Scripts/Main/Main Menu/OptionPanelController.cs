@@ -52,10 +52,10 @@ public class OptionPanelController : UI_Panel
         // 토글 변경 시 자동 로그인 설정 저장
         autoLoginToggle.onValueChanged.AddListener(OnAutoLoginToggleChanged);
         experimentalToggle.onValueChanged.AddListener(OnExperimentalToggleChanged);
+        experimentalToggle.isOn = PlayerPrefs.GetInt("Experimental", 0) == 1;
         
     }
     private void OnExperimentalToggleChanged(bool arg0) {
-        Debug.Log("실험적 기능 토글 변경: " + arg0);
         PlayerPrefs.SetInt("Experimental", arg0 ? 1 : 0);
     }
 

@@ -1310,7 +1310,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   omokBoard: {fileID: 0}
   timer: {fileID: 0}
-  isTrackingAIState: 1
   recordUIManager: {fileID: 0}
 --- !u!114 &731257259
 MonoBehaviour:
@@ -1382,6 +1381,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1602736802285595352, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339328699687573739, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339328699687573739, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339328699687573739, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2339328699687573739, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3159555580267394927, guid: 7bfb464df3b6e6544aade889b0f16b77, type: 3}

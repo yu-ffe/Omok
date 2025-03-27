@@ -344,7 +344,6 @@ public class OmokAI{
         bool allMovesLosing = true; // 모든 수가 지는 수인지 체크
 
         foreach (var move in validMoves) {
-            // Debug.Log(GameManager.Instance.isTrackingAIState);
             if (GameManager.Instance.GetTrackingAIState()) {
                 Task.Run(() => {
                     var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
