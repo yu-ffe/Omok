@@ -23,6 +23,9 @@ public class GamePanel : UI_Panel {
     //public TextMeshProUGUI txtTimer;
     //public Image imgLeftTime;
     public Image[] imgGameTurn = new Image[2];
+    
+    public GamePopup gamePopupPrefab;
+    private GamePopup popupInstance;
 
     bool isComponentsConnected = false;
 
@@ -217,10 +220,29 @@ public class GamePanel : UI_Panel {
 
 
     /// <summary> 기권버튼 이벤트 </summary>
-    public void Button_GiveUp() {
+    public void Button_GiveUp()
+    {
+        if (popupInstance == null)
+        {
+            popupInstance = Instantiate(gamePopupPrefab, FindObjectOfType<Canvas>().transform);
+        }
+
+        popupInstance.Setup(
+            message: "정말로 기권하시겠습니까?",
+            confirmText: "예",
+            confirmAction: OnGiveUpConfirmed,
+            cancelText: "아니오",
+            cancelAction: () => Debug.Log("기권 취소됨")
+        );
+
+        popupInstance.OpenPopup();
+    }
+    
+    private void OnGiveUpConfirmed()
+    {
         if (GameEndManager.Instance != null)
         {
-            GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!"); // 원하는 메시지 전달
+            GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!");
         }
         else
         {
