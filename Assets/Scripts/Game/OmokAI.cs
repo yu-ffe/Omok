@@ -305,13 +305,12 @@ public class OmokAI{
 
 
 
-    public async Task<(int, int)> GetBestMoveAsync(int timeLimit = 3000)
-    {
-        return await Task.Run(() => GetBestMove(timeLimit)); // 백그라운드 스레드에서 실행
+    public async Task<(int, int)> GetBestMoveAsync(OmokBoard omokBoard, int timeLimit = 3000) {
+        return await Task.Run(() => GetBestMove(omokBoard, timeLimit)); // 백그라운드 스레드에서 실행
     }
 
     // 2000 이지? 3000 노말 4000 하드? (최대 시간 n/1000초) 
-    public (int, int) GetBestMove(int timeLimit = 3000) {
+    public (int, int) GetBestMove(OmokBoard omokBoard, int timeLimit = 3000) {
         // Stopwatch를 사용하여 시간 추적
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();

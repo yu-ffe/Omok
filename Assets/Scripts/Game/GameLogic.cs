@@ -136,7 +136,9 @@ public class AIState : BasePlayerState
     {
         OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
         
-        var move = await OmokAI.GetBestMoveAsync();
+        // var move = await OmokAI.GetBestMoveAsync();
+        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard);
+
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
@@ -197,8 +199,10 @@ public class MultiplayState : BasePlayerState
     }
     */
 
-public class GameLogic : IDisposable
-{
+public class GameLogic : IDisposable {
+
+    public OmokBoard OmokBoard;
+    
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
     
     //기보확인을 위한 리스트
@@ -215,8 +219,9 @@ public class GameLogic : IDisposable
 
 
      //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(Constants.GameType gameType)
+    public GameLogic(OmokBoard omokBoard, Constants.GameType gameType)
     {
+        this.OmokBoard = omokBoard;
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
         

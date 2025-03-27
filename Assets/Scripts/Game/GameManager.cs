@@ -90,7 +90,7 @@ public class GameManager : Singleton<GameManager>
                 Debug.Log($"_gameLogic을 삭제");
             }
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            gameLogic = new GameLogic(_gameType);
+            gameLogic = new GameLogic(omokBoard, _gameType);
             Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
             recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
