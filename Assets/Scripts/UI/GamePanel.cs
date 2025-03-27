@@ -240,14 +240,8 @@ public class GamePanel : UI_Panel {
     
     private void OnGiveUpConfirmed()
     {
-        if (GameEndManager.Instance != null)
-        {
-            GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!");
-        }
-        else
-        {
-            Debug.LogError("[GamePanel] GameEndManager.Instance가 null입니다!");
-        }
+        var currentPlayerType = GameManager.Instance.gameLogic.GetCurrentPlayerType();
+        GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(currentPlayerType);
     }
 
     /// <summary> 착수버튼 이벤트 </summary>

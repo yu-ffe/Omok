@@ -93,7 +93,7 @@ public class PlayerState : BasePlayerState
         {
             GameManager.Instance.omokBoard.ShowXMarker();
         }
-        
+
         if (Constants.PlayerType.PlayerA == gameLogic.GetCurrentPlayerType())
         {
             GameManager.Instance.omokBoard.RemoveXmarker();
@@ -219,12 +219,13 @@ public class MultiplayState : BasePlayerState
     }
     */
 
-public class GameLogic : IDisposable {
+public class GameLogic : IDisposable
+{
 
     public OmokBoard OmokBoard;
-    
+
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
-    
+
     //기보확인을 위한 리스트
     public List<(Constants.PlayerType player, int x, int y)> moveList = new List<(Constants.PlayerType, int, int)>();
 
@@ -238,87 +239,87 @@ public class GameLogic : IDisposable {
     //private string _roomId; // 멀티플레이 방 ID
 
 
-     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
+    //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
     public GameLogic(OmokBoard omokBoard, Constants.GameType gameType)
     {
         this.OmokBoard = omokBoard;
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
-        
+
         switch (gameType)
         {
             case Constants.GameType.SinglePlayer:
-            {
-                firstPlayerState = new PlayerState(true); // 첫 번째 플레이어
-                secondPlayerState = new AIState(); // AI 플레이어
-
-                // 첫 번째 플레이어부터 시작
-                SetState(firstPlayerState);
-                break;
-            }
-            case Constants.GameType.DualPlayer:
-            {
-                firstPlayerState = new PlayerState(true);
-                secondPlayerState = new PlayerState(false);
-                // 게임 시작
-
-                SetState(firstPlayerState);
-                break;
-            }
-            
-            
-
-            /*TODO: 멀티플레이시 구현
-            case Constants.GameType.MultiPlayer:
-            {
-                // 멀티플레이 매니저 초기화 및 상태 관리
-                _multiplayManager = new MultiplayManager((state, roomId) =>
                 {
-                    _roomId = roomId;
-                    switch (state)
+                    firstPlayerState = new PlayerState(true); // 첫 번째 플레이어
+                    secondPlayerState = new AIState(); // AI 플레이어
+
+                    // 첫 번째 플레이어부터 시작
+                    SetState(firstPlayerState);
+                    break;
+                }
+            case Constants.GameType.DualPlayer:
+                {
+                    firstPlayerState = new PlayerState(true);
+                    secondPlayerState = new PlayerState(false);
+                    // 게임 시작
+
+                    SetState(firstPlayerState);
+                    break;
+                }
+
+
+
+                /*TODO: 멀티플레이시 구현
+                case Constants.GameType.MultiPlayer:
+                {
+                    // 멀티플레이 매니저 초기화 및 상태 관리
+                    _multiplayManager = new MultiplayManager((state, roomId) =>
                     {
-                        case Constants.MultiplayManagerState.CreateRoom:
-                            Debug.Log("## 방 생성 완료");
-                            // TODO: 대기 화면 표시
-                            break;
-                        case Constants.MultiplayManagerState.JoinRoom:
-                            Debug.Log("## 방 참가 완료");
-                            firstPlayerState = new MultiplayState(true, _multiplayManager);
-                            secondPlayerState = new GameManager.PlayerState(false, _multiplayManager, roomId);
-                            SetState(firstPlayerState);
-                            break;
-                        case Constants.MultiplayManagerState.StartGame:
-                            Debug.Log("## 게임 시작");
-                            firstPlayerState = new GameManager.PlayerState(true, _multiplayManager, roomId);
-                            secondPlayerState = new MultiplayState(false, _multiplayManager);
-                            SetState(firstPlayerState);
-                            break;
-                        case Constants.MultiplayManagerState.ExitRoom:
-                            Debug.Log("## 방 나가기");
-                            // TODO: 방 나가기 처리
-                            break;
-                        case Constants.MultiplayManagerState.EndGame:
-                            Debug.Log("## 게임 종료");
-                            // TODO: 게임 종료 처리
-                            break;
-                    }
-                });
-                break;
-            }
-            */
+                        _roomId = roomId;
+                        switch (state)
+                        {
+                            case Constants.MultiplayManagerState.CreateRoom:
+                                Debug.Log("## 방 생성 완료");
+                                // TODO: 대기 화면 표시
+                                break;
+                            case Constants.MultiplayManagerState.JoinRoom:
+                                Debug.Log("## 방 참가 완료");
+                                firstPlayerState = new MultiplayState(true, _multiplayManager);
+                                secondPlayerState = new GameManager.PlayerState(false, _multiplayManager, roomId);
+                                SetState(firstPlayerState);
+                                break;
+                            case Constants.MultiplayManagerState.StartGame:
+                                Debug.Log("## 게임 시작");
+                                firstPlayerState = new GameManager.PlayerState(true, _multiplayManager, roomId);
+                                secondPlayerState = new MultiplayState(false, _multiplayManager);
+                                SetState(firstPlayerState);
+                                break;
+                            case Constants.MultiplayManagerState.ExitRoom:
+                                Debug.Log("## 방 나가기");
+                                // TODO: 방 나가기 처리
+                                break;
+                            case Constants.MultiplayManagerState.EndGame:
+                                Debug.Log("## 게임 종료");
+                                // TODO: 게임 종료 처리
+                                break;
+                        }
+                    });
+                    break;
+                }
+                */
         }
     }
 
     //현재 상태 변경 (턴 전환 시 사용)
     public void SetState(BasePlayerState state)
-    {        
+    {
         GameManager.Instance.timer.StopTimer();
         // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
         // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
 
         _currentPlayerState = state;
-        
+
         //TODO: 여기에 턴이 시잘할 때 쓸 함수입력
         GameManager.Instance.timer.StartTimer();
         UI_Manager.Instance.RequestExecute("turn");
@@ -447,10 +448,10 @@ public class GameLogic : IDisposable {
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     //현재 플레이어를 패배하게 하는 함수
     public void HandleCurrentPlayerDefeat(Constants.PlayerType playerType)
     {
@@ -467,25 +468,25 @@ public class GameLogic : IDisposable {
             EndGame(Constants.GameResult.Win); // 게임이 끝났다면 종료 처리
         }
     }
-    
+
 
     //게임 종료 시 호출
     public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
-        
+
         GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
         NetworkManager.Instance.GameEndSendForm(gameResult);
-        
+
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
-        
+
         UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
-        
+
         // 바로 실행 안 하고 GameEndManager에 맡긴다
         GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
-        
+
         //TODO: 서버에 승리 정보 전송
         //TODO: 이 부분 봇과의 대전도 서버로 전송?
         //TODO: UI활성화

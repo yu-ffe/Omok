@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainPanel : UI_Panel {
+public class MainPanel : UI_Panel
+{
     public TextMeshProUGUI txtCoin;
     public Image imgUserPortrait;
     public TextMeshProUGUI txtUserName;
@@ -14,23 +15,24 @@ public class MainPanel : UI_Panel {
     // 데이터 요청 후 가져오기
 
     private PlayerData playerData;
-    
+
     bool isConnctedCompoenets = false;
-    
-    
-    
-    void Start() {
+
+
+
+    void Start()
+    {
         Debug.Log("[MainPanel] Start");
         StartCoroutine(EnsureUIManagerInitialized());
-    
-        
+
+
         if (!isConnctedCompoenets)
             FindComponents();
-        
+
         // 유저 정보를 서버에서 가져온 후 UI 생성, 비동기로 실행
         //StartCoroutine(LoadPlayerDataAndInitializeUI());
     }
-    
+
     // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator EnsureUIManagerInitialized()
     {
@@ -43,15 +45,17 @@ public class MainPanel : UI_Panel {
         //gameObject.SetActive(false);
     }
 
-    private IEnumerator LoadPlayerDataAndInitializeUI() {
+    private IEnumerator LoadPlayerDataAndInitializeUI()
+    {
         yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
         playerData = PlayerManager.Instance.playerData;
 
         UI_Manager.Instance.AddPanel(panelType, this);
         gameObject.SetActive(false);
     }
-    
-    public override void Show() {
+
+    public override void Show()
+    {
         Debug.Log("[MainPanel] Show() 호출됨");
         gameObject.SetActive(true);
 
@@ -61,28 +65,29 @@ public class MainPanel : UI_Panel {
             FindComponents();
 
         }
-        
-        ResfreshUserInfo();
+
         if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Login, out var loginPanel))
             loginPanel.gameObject.SetActive(false);
         if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Loading, out var loadingPanel))
             loadingPanel.gameObject.SetActive(false);
     }
-    public override void Hide() {
+    public override void Hide()
+    {
         gameObject.SetActive(false);
         UI_Manager.Instance.Panels[UI_Manager.PanelType.Login].gameObject.SetActive(false);
 
     }
 
 
-    void FindComponents() {
+    void FindComponents()
+    {
         Debug.Log("[MainPanel] FindComponents 시작");
 
         var root = transform;
         txtCoin = root.GetChild(0).GetComponent<TextMeshProUGUI>();
         imgUserPortrait = root.GetChild(1).GetComponent<Image>();
         txtUserName = root.GetChild(2).GetComponent<TextMeshProUGUI>();
-        
+
         Debug.Log($"txtCoin: {txtCoin}, imgUserPortrait: {imgUserPortrait}, txtUserName: {txtUserName}");
 
         var buttons = root.GetChild(3).GetComponentsInChildren<Button>();
@@ -98,16 +103,20 @@ public class MainPanel : UI_Panel {
         isConnctedCompoenets = true;
     }
 
-    public override void OnEnable() {
+    public override void OnEnable()
+    {
+        ResfreshUserInfo();
         UI_Manager.Instance.AddCallback("UserInfo", ResfreshUserInfo);
     }
-    public override void OnDisable() {
+    public override void OnDisable()
+    {
         if (UI_Manager.Instance == null) return;
         UI_Manager.Instance.RemoveCallback("UserInfo");
     }
 
 
-    public void ResfreshUserInfo() {
+    public void ResfreshUserInfo()
+    {
         //Coin
         playerData = PlayerManager.Instance.playerData;
         txtCoin.text = playerData.coins.ToString();
@@ -118,7 +127,7 @@ public class MainPanel : UI_Panel {
         // imgUserPortrait.sprite = SessionManager.ProfileSprites[playerData.profileNum];
     }
 
-    
+
     private void StartSinglePlay()
     {
         UI_Manager.Instance.popup.Show(
@@ -140,8 +149,10 @@ public class MainPanel : UI_Panel {
     }
 
 
-    public void OnClick_Menu(int idx) {
-        switch (idx) {
+    public void OnClick_Menu(int idx)
+    {
+        switch (idx)
+        {
             case 0:
                 Debug.Log("대국 시작"); // 싱글플레이인지 멀티플레이인지 선택하는 팝업뜸
                 UI_Manager.Instance.Show(UI_Manager.PanelType.GameSelect);

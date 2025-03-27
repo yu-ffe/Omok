@@ -40,13 +40,13 @@ public class UI_Manager : Singleton<UI_Manager>
 
 
     protected override void Awake()
-    { 
+    {
         Debug.Log("[UI_Manager] Awake 시작");
 
-       // Instance = null;
-       base.Awake();
-       InitializePanels(); // 패널을 한 번에 등록
-        
+        // Instance = null;
+        base.Awake();
+        InitializePanels(); // 패널을 한 번에 등록
+
     }
 
     public void InitializePanels()
@@ -54,7 +54,7 @@ public class UI_Manager : Singleton<UI_Manager>
         Debug.Log("[UI_Manager] InitializePanels 호출");
         if (_initialized) return;
         _initialized = true;
-        
+
         Panels.Clear(); // 혹시 남아있는 데이터 제거
         foreach (var panelData in panelList)
         {
@@ -94,10 +94,12 @@ public class UI_Manager : Singleton<UI_Manager>
     /// <summary> 패널UI의 정보들을 새로고침하는 함수 등록 </summary>
     public void AddCallback(string key, UnityAction action)
     {
-        if (!_callBack.ContainsKey(key))
-            _callBack[key] = action;
-        else
-            _callBack[key] += action;
+        //! 이전 씬들의 콜백을 참조하지 않도록
+        //! 씬에서 콜백 하나만 할당해야하므로 나머지 조건들은 주석처리
+        // if (!_callBack.ContainsKey(key))
+        _callBack[key] = action;
+        // else
+        // _callBack[key] += action;
     }
 
     public void RequestExecute(string key)
