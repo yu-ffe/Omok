@@ -298,6 +298,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     // AI가 백인 경우에만 동작, 흑백 랜덤 시작으로 개선시에는 수정 필요
     public void AIWhiteShowMarker((int, int) pos) {
+        // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
         MarkerWhiteHint.SetActive(true);
         // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
         MarkerWhiteHintRt.anchoredPosition = GetLocalPosition(pos.Item1, pos.Item2);

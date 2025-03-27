@@ -17,13 +17,24 @@ public class GameManager : Singleton<GameManager>
     
     public GameLogic GameLogicInstance => gameLogic;
 
-    public bool isTrackingAIState = true;
+    private bool _trackingAIState = false;
+    
+    public void SetTrackingAIState(bool state)
+    {
+        _trackingAIState = state;
+    }
+    
+    public bool GetTrackingAIState()
+    {
+        return _trackingAIState;
+    }
     
     public void StartGame(Constants.GameType gameType)
     {
         _gameType = gameType;
         lastGameType = gameType;
         SceneManager.LoadScene("Game"); 
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
     }
 
     public Constants.GameType GetGameType() {
@@ -40,6 +51,7 @@ public class GameManager : Singleton<GameManager>
     {
         _gameType = gameType;
         lastGameType = gameType;
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 

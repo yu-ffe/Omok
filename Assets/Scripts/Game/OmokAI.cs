@@ -344,7 +344,8 @@ public class OmokAI{
         bool allMovesLosing = true; // 모든 수가 지는 수인지 체크
 
         foreach (var move in validMoves) {
-            if (GameManager.Instance.isTrackingAIState) {
+            // Debug.Log(GameManager.Instance.isTrackingAIState);
+            if (GameManager.Instance.GetTrackingAIState()) {
                 Task.Run(() => {
                     var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
                     if (best.score != 0)
@@ -393,7 +394,7 @@ public class OmokAI{
             // 각 수에 대한 방어 점수 계산 및 저장
             bestMoves.Clear();
             foreach (var move in validMoves) {
-                if (GameManager.Instance.isTrackingAIState) {
+                if (GameManager.Instance.GetTrackingAIState()) {
                     Task.Run(() => {
                         var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
                         if (best.score != 0)
@@ -437,6 +438,11 @@ public class OmokAI{
         }
 
         stopwatch.Stop();
+        if (GameManager.Instance.GetTrackingAIState()) {
+            Task.Run(() => {
+                omokBoard.AIWhiteHideMarker(); // 메인 스레드에서 AIWhiteShowMarker 호출
+            });
+        }
         return bestMove;
     }
 

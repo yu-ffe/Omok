@@ -1206,6 +1206,7 @@ GameObject:
   - component: {fileID: 731257255}
   - component: {fileID: 731257254}
   - component: {fileID: 731257253}
+  - component: {fileID: 731257261}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1307,6 +1308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec8dc916f649ac4493c9ea8da09ef46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  omokBoard: {fileID: 0}
+  timer: {fileID: 0}
+  isTrackingAIState: 1
+  recordUIManager: {fileID: 0}
 --- !u!114 &731257259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1335,6 +1340,18 @@ Transform:
   - {fileID: 1163866529}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &731257261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731257252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db47e6ac54d94669a4a9bfac17cb8521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &733999493
 PrefabInstance:
   m_ObjectHideFlags: 0
