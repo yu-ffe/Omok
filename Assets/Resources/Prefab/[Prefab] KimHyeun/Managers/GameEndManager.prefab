@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa8e891a58fa2c43bc9b66cc67e7b0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelType: 10
   resultText: {fileID: 0}
   gradeResultText: {fileID: 0}
   gradeMinText: {fileID: 0}

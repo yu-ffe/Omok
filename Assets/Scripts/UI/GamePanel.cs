@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Commons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using KimHyeun;
-using MJ;
 using UnityEngine.SceneManagement;
-using workspace.YU__FFE.Scripts;
 
 public class GamePanel : UI_Panel {
     [Header("좌측 프로필")]
@@ -37,6 +35,9 @@ public class GamePanel : UI_Panel {
         UI_Manager.Instance.AddCallback("time", TimeRefresh);
 
         SpawnTimer();
+
+        LoadProfile();
+
     }
 
     /// <summary>
@@ -65,8 +66,8 @@ public class GamePanel : UI_Panel {
     }
 
     public override void Show() {
-        LoadProfile();
-
+        
+        
         LoadGameState();
 
         gameObject.SetActive(true);
@@ -94,8 +95,8 @@ public class GamePanel : UI_Panel {
         txtNickNameRight = imgProfileRight.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         //imgLeftTime = parentsInfo.GetChild(0).GetComponent<Image>();
         //txtTimer = imgLeftTime.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        imgGameTurn[0] = parentsInfo.GetChild(1).GetComponent<Image>();
-        imgGameTurn[1] = parentsInfo.GetChild(2).GetComponent<Image>();
+        imgGameTurn[0] = parentsInfo.GetChild(0).GetComponent<Image>();
+        imgGameTurn[1] = parentsInfo.GetChild(1).GetComponent<Image>();
         isComponentsConnected = true;
 
         var giveup = parentsButton.GetChild(0).GetComponent<Button>();
@@ -113,12 +114,48 @@ public class GamePanel : UI_Panel {
     /// <summary> 양쪽 게임 유저의 프로필 사진와 닉네임 가져옵니다 </summary>
     void LoadProfile() {
         // Sprite sprite_Left = SessionManager.GetUserProfileSprite()
-        // Sprite sprite_Right = SessionManager.GetUserProfileSprite()
+        //  Sprite sprite_Right = SessionManager.GetUserProfileSprite()
 
-        // imgProfileLeft.sprite = sprite_Left;
-        // imgProfileRight.sprite = sprite_Right;
-        // txtNickNameLeft.text = nickName_Left;
-        // txtNickNameRight.text = nickName_Right;
+        //
+        // imgProfileRight.sprite = sprite_Right
+        imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(PlayerManager.Instance.playerData.profileNum);
+        txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
+
+
+        if(GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer)
+        {
+            switch (Constants.AILevel.Middle) // 게임 로직에 AI 난이도 저장하는 변수로 변경
+            {
+                case Constants.AILevel.Easy:
+                    txtNickNameRight.text = "AI-Lv1";
+                    break;
+
+                case Constants.AILevel.Middle:
+                    txtNickNameRight.text = "AI-Lv2";
+                    break;
+
+                case Constants.AILevel.Hard:
+                    txtNickNameRight.text = "AI-Lv3";
+                    break;
+            }
+        }
+
+        else if(GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer) // 멀티 시 상대 정보 불러오기
+        {
+            txtNickNameRight.text = "멀티 상대";
+        }
+
+        else if (GameManager.Instance.GetGameType() == Constants.GameType.Record) // 기보 시 저장된 상대 정보 불러오기
+        {
+            txtNickNameRight.text = "상대 플레이어";
+        }
+
+        else // 듀얼 플레이
+        {
+            txtNickNameLeft.text = "플레이어 A";
+            txtNickNameRight.text = "플레이어 B";
+        }
+        
     }
 
 
@@ -131,10 +168,19 @@ public class GamePanel : UI_Panel {
 
         //게임 로직에 따라 변경
         Debug.Log("Game Panel : TurnStateRefresh");
-        //Temp Test value
-        int now = 0;
-        imgGameTurn[0].color = now == 0 ? Color.white : Color.gray;
-        imgGameTurn[1].color = now == 1 ? Color.white : Color.gray;
+        Debug.Log($"{GameManager.Instance.gameLogic}");
+        Debug.Log($"{GameManager.Instance.gameLogic.GetCurrentPlayerType()}");
+        
+        var currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
+
+        SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
+        SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+    }
+    void SetImageAlpha(Image image, float alpha)
+    {
+        Color color = image.color;
+        color.a = alpha;
+        image.color = color;
     }
 
     void TimeRefresh() {
@@ -153,13 +199,14 @@ public class GamePanel : UI_Panel {
 
     /// <summary> 기권버튼 이벤트 </summary>
     public void Button_GiveUp() {
-        UI_Manager.Instance.popup.Show(
-            msg: "기권 하시겠습니까?",
-            "기권",
-            "취소",
-            okAction: () => { SceneManager.LoadSceneAsync("Main"); },
-            cancelAction: () => { }
-        );
+        if (GameEndManager.Instance != null)
+        {
+            GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!"); // 원하는 메시지 전달
+        }
+        else
+        {
+            Debug.LogError("[GamePanel] GameEndManager.Instance가 null입니다!");
+        }
     }
 
     /// <summary> 착수버튼 이벤트 </summary>

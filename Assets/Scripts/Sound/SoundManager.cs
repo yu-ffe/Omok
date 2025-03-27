@@ -1,7 +1,7 @@
 using UnityEngine.Audio;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class SoundManager : Singleton<SoundManager>
 {
@@ -12,6 +12,10 @@ public class SoundManager : Singleton<SoundManager>
     [Header("오디오 믹서")]
     public AudioMixer audioMixer;
     
+    [Header("BGM 클립")]
+    public AudioClip mainBGM;
+    public AudioClip gameBGM;
+    
     private const string BGM_VOLUME_KEY = "BGM_VOLUME";
     private const string SFX_VOLUME_KEY = "SFX_VOLUME";
     
@@ -19,6 +23,32 @@ public class SoundManager : Singleton<SoundManager>
     {
         base.Awake();
         InitializeVolume();
+    }
+    
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        switch (scene.name)
+        {
+            case "Main":
+                PlayBGM(mainBGM);
+                break;
+            case "Game":
+                PlayBGM(gameBGM);
+                break;
+            default:
+                bgmSource.Stop();
+                break;
+        }
     }
     
     /// <summary> 
@@ -42,6 +72,8 @@ public class SoundManager : Singleton<SoundManager>
             OptionPanelController.Instance.sfxSlider.value = saveSfxVolume;
         }
     }
+    
+    
 
     public void PlayBGM(AudioClip clip, bool loop = true)
     {

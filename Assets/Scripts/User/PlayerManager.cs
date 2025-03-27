@@ -4,7 +4,23 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerManager : Singleton<PlayerManager> {
+
+    [SerializeField] Sprite[] profileSprites;
+
+    public void SetSprites(Sprite[] sprites)
+    {
+        profileSprites = sprites;
+    }
+
+    public Sprite GetProfileSprites(int index)
+    {
+        return profileSprites[index];
+    }
+
+
     public PlayerData playerData = new PlayerData();
+    
+    public bool IsLoggedIn => playerData != null && !string.IsNullOrEmpty(playerData.nickname);
 
     // 지금은 비동기지만 필요 없을 가능성이 높음.
     // 임시 변경
@@ -37,5 +53,11 @@ public class PlayerManager : Singleton<PlayerManager> {
         // (선택 사항) PlayerPrefs에도 저장하여 로컬에서도 반영
         PlayerPrefs.SetInt("PlayerCoins", playerData.coins);
         PlayerPrefs.Save();
+    }
+    
+    public void RefreshUserData()
+    {
+        Debug.Log("[PlayerManager] 유저 데이터 새로고침 시작");
+        Instance.StartCoroutine(UpdateUserData());
     }
 }

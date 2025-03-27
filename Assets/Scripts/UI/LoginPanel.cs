@@ -55,12 +55,13 @@ public class LoginPanel : UI_Panel
 
         // 로그인 상태 초기화
         Show_LoginPhase();
-        
+
         //Login 여부 확인
 
         // 프로필 스프라이트 초기화
         // TODO: 스프라이트 저장 클래스는 다른곳으로.
         // SessionManager.ProfileSprites = profileSprites;
+        PlayerManager.Instance.SetSprites(profileSprites);
 
         // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
         // TODO: 이미지도 동일
@@ -134,55 +135,55 @@ public class LoginPanel : UI_Panel
         objProfileImages.SetActive(true);
     }
     
-    IEnumerator UploadProfileImage(Texture2D texture, string userId)
-    {
-        Texture2D readableTexture = GetReadableTexture(texture);
-        if (readableTexture == null)
-        {
-            Debug.LogError("[UploadProfileImage] Readable Texture 변환 실패!");
-            yield break;
-        }
-
-        byte[] imageBytes = readableTexture.EncodeToPNG();
-        WWWForm form = new WWWForm();
-        form.AddBinaryData("file", imageBytes, "profile.png", "image/png");
-        form.AddField("userId", userId);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(uploadProfileUrl, form))
-        {
-            yield return www.SendWebRequest();
-
-            //  서버 응답 로그 추가
-            string responseText = www.downloadHandler.text;
-            Debug.Log($"[UploadProfileImage] 서버 응답: {responseText}");
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                // JSON인지 확인 후 파싱
-                if (responseText.StartsWith("{") && responseText.EndsWith("}"))
-                {
-                    try
-                    {
-                        UploadResponse response = JsonUtility.FromJson<UploadResponse>(responseText);
-                        uploadedImageUrl = response.imageUrl; //  JSON에서 URL 추출
-                        Debug.Log($"[UploadProfileImage] 업로드된 이미지 URL: {uploadedImageUrl}");
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Debug.LogError($"[UploadProfileImage] JSON 파싱 오류: {ex.Message}");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("[UploadProfileImage] 서버 응답이 JSON 형식이 아닙니다: " + responseText);
-                }
-            }
-            else
-            {
-                Debug.LogError("[UploadProfileImage] 프로필 이미지 업로드 실패: " + www.error);
-            }
-        }
-    }
+    // IEnumerator UploadProfileImage(Texture2D texture, string userId)
+    // {
+    //     Texture2D readableTexture = GetReadableTexture(texture);
+    //     if (readableTexture == null)
+    //     {
+    //         Debug.LogError("[UploadProfileImage] Readable Texture 변환 실패!");
+    //         yield break;
+    //     }
+    //
+    //     byte[] imageBytes = readableTexture.EncodeToPNG();
+    //     WWWForm form = new WWWForm();
+    //     form.AddBinaryData("file", imageBytes, "profile.png", "image/png");
+    //     form.AddField("userId", userId);
+    //
+    //     using (UnityWebRequest www = UnityWebRequest.Post(uploadProfileUrl, form))
+    //     {
+    //         yield return www.SendWebRequest();
+    //
+    //         //  서버 응답 로그 추가
+    //         string responseText = www.downloadHandler.text;
+    //         Debug.Log($"[UploadProfileImage] 서버 응답: {responseText}");
+    //
+    //         if (www.result == UnityWebRequest.Result.Success)
+    //         {
+    //             // JSON인지 확인 후 파싱
+    //             if (responseText.StartsWith("{") && responseText.EndsWith("}"))
+    //             {
+    //                 try
+    //                 {
+    //                     UploadResponse response = JsonUtility.FromJson<UploadResponse>(responseText);
+    //                     uploadedImageUrl = response.imageUrl; //  JSON에서 URL 추출
+    //                     Debug.Log($"[UploadProfileImage] 업로드된 이미지 URL: {uploadedImageUrl}");
+    //                 }
+    //                 catch (System.Exception ex)
+    //                 {
+    //                     Debug.LogError($"[UploadProfileImage] JSON 파싱 오류: {ex.Message}");
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 Debug.LogError("[UploadProfileImage] 서버 응답이 JSON 형식이 아닙니다: " + responseText);
+    //             }
+    //         }
+    //         else
+    //         {
+    //             Debug.LogError("[UploadProfileImage] 프로필 이미지 업로드 실패: " + www.error);
+    //         }
+    //     }
+    // }
 
     //  서버 응답을 처리할 클래스 추가 (JSON 파싱용)
     [System.Serializable]
@@ -213,7 +214,7 @@ public class LoginPanel : UI_Panel
             profileImages[i].color = i == index ? Color.white : Color.gray;
         }
 
-        StartCoroutine(UploadProfileImage(profileSprites[index].texture, inputEmail.text.Trim()));
+        // StartCoroutine(UploadProfileImage(profileSprites[index].texture, inputEmail.text.Trim()));
     }
 
     
@@ -249,13 +250,7 @@ public class LoginPanel : UI_Panel
     {
         txtMessage.text = "로그인 중...";
 
-        if (SignInHandler.Instance == null)
-        {
-            Debug.LogError("[LoginPanel] SignInHandler.Instance가 null입니다! Unity Scene에서 SignInHandler 오브젝트가 있는지 확인하세요.");
-            return;
-        }
-
-        SignInHandler.Instance.TrySignIn(inputEmail.text.Trim(), inputPassword.text, (isSuccess, message) =>
+        SignInHandler.Instance.AttemptSignIn(inputEmail.text.Trim(), inputPassword.text, (isSuccess, message) =>
         {
             txtMessage.text = message;
 
@@ -266,17 +261,6 @@ public class LoginPanel : UI_Panel
             }
         });
     }
-
-    /*public void OnClick_Login() {
-        //로그인 시도
-        // 콜백이 더 어울릴듯
-        var (isSuccsess, message) = SignInHandler.Instance.TrySignIn(inputEmail.text.Trim(), inputPassword.text);
-
-        txtMessage.text = message;
-
-        if (isSuccsess)
-            UI_Manager.Instance.Show(UI_Manager.PanelType.Main);
-    }*/
 
     public void OnClick_Signup_Show() {
         Show_SignUpPhase();
@@ -291,68 +275,18 @@ public class LoginPanel : UI_Panel
         }
 
         txtMessage.text = "회원가입 중...";
-        StartCoroutine(UploadProfileImageAndSignUp());
+        SignUpHandler.Instance.AttemptSignUp(inputEmail.text.Trim(), inputPassword.text, inputCheckPassword.text, inputNickName.text.Trim(), selectedImageIndex, (isSuccess, message) =>
+        {
+            txtMessage.text = message;
+
+            if (isSuccess)
+            {
+                Debug.Log("[LoginPanel] 회원가입 성공, 로그인 화면으로 이동");
+                OnClick_Login();
+            }
+        });
     }
 
-
-
-    //  회원가입 
-    IEnumerator UploadProfileImageAndSignUp()
-    {
-        //  프로필 이미지 업로드 요청
-        yield return StartCoroutine(UploadProfileImage(profileSprites[selectedImageIndex].texture, inputEmail.text.Trim()));
-
-        //  업로드된 이미지 URL이 null인지 확인
-        if (string.IsNullOrEmpty(uploadedImageUrl))
-        {
-            Debug.LogError("[UploadProfileImageAndSignUp] uploadedImageUrl이 설정되지 않았습니다!");
-            txtMessage.text = "프로필 이미지 업로드 실패!";
-            yield break;
-        }
-        Debug.Log($"[UploadProfileImageAndSignUp] 업로드된 프로필 이미지 URL: {uploadedImageUrl}");
-
-        //  회원가입 요청
-        WWWForm form = new WWWForm();
-        form.AddField("id", inputEmail.text.Trim());
-        form.AddField("password", inputPassword.text);
-        form.AddField("passwordCheck", inputCheckPassword.text);
-        form.AddField("nickname", inputNickName.text.Trim());
-        form.AddField("imgUrl", uploadedImageUrl);
-
-        using (UnityWebRequest www = UnityWebRequest.Post(signUpUrl, form))
-        {
-            yield return www.SendWebRequest();
-
-            //  서버 응답 확인
-            string responseText = www.downloadHandler.text;
-            Debug.Log($"[UploadProfileImageAndSignUp] 서버 응답: {responseText}");
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("[UploadProfileImageAndSignUp] 회원가입 성공!");
-
-                //  회원가입 성공 후 로그인 화면으로 이동
-                ShowSignInPanel();
-            }
-            else
-            {
-                //  이미 존재하는 아이디일 경우 UI에 메시지 표시
-                if (www.responseCode == 400) // 400 Bad Request
-                {
-                    Debug.LogError("[UploadProfileImageAndSignUp] 이미 존재하는 아이디입니다.");
-                    txtMessage.text = "이미 사용 중인 이메일입니다. 다른 이메일을 입력하세요.";
-                }
-                else
-                {
-                    Debug.LogError($"[UploadProfileImageAndSignUp] 회원가입 실패: {www.error}");
-                    txtMessage.text = "회원가입 요청 중 오류 발생";
-                }
-            }
-        }
-    }
-
-
-    
     void ShowSignInPanel()
     {
         UI_Manager.Instance.Show(UI_Manager.PanelType.Login);

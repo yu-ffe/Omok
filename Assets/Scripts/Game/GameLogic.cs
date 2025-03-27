@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Update = Unity.VisualScripting.Update;
+using Commons;
 
 public abstract class BasePlayerState
 {
@@ -30,7 +31,8 @@ public abstract class BasePlayerState
         {
             var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
 
-            if (gameResult == GameLogic.GameResult.None)
+            if (gameResult == Constants.GameResult.None)
+
             {
                 HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
             }
@@ -80,21 +82,21 @@ public class PlayerState : BasePlayerState
     // 상태 진입 시 실행 (플레이어 입력을 처리할 수 있도록 설정)
     public override void OnEnter(GameLogic gameLogic)
     {
-        gameLogic.OmokBoard.OnOnGridClickedDelegate = (row, col) => { HandleMove(gameLogic, row, col); };
+        GameManager.Instance.omokBoard.OnOnGridClickedDelegate = (row, col) => { HandleMove(gameLogic, row, col); };
     }
 
     // 상태 종료 시 실행 (이벤트 핸들러 해제)
     public override void OnExit(GameLogic gameLogic)
     {
-        gameLogic.OmokBoard.OnOnGridClickedDelegate = null;
+        GameManager.Instance.omokBoard.OnOnGridClickedDelegate = null;
         if (Constants.PlayerType.PlayerB == gameLogic.GetCurrentPlayerType())
         {
-            gameLogic.OmokBoard.ShowXMarker();
+            GameManager.Instance.omokBoard.ShowXMarker();
         }
         
         if (Constants.PlayerType.PlayerA == gameLogic.GetCurrentPlayerType())
         {
-            gameLogic.OmokBoard.RemoveXmarker();
+            GameManager.Instance.omokBoard.RemoveXmarker();
         }
     }
 
@@ -130,14 +132,13 @@ public class PlayerState : BasePlayerState
 public class AIState : BasePlayerState
 {
     // AI가 자동으로 착수하는 로직
-    public override void OnEnter(GameLogic gameLogic)
+    public override async void OnEnter(GameLogic gameLogic)
     {
-        HamAI hamAI = new HamAI(gameLogic.GetBoard());
+        OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
+        
+        // var move = await OmokAI.GetBestMoveAsync();
+        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard);
 
-        hamAI.maxDepth = 1;
-
-        // MCTS 알고리즘을 통해 AI의 판단 좌표를 구함
-        var move = hamAI.GetBestMove();
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
@@ -147,13 +148,14 @@ public class AIState : BasePlayerState
         {
             Debug.Log($"{move.Item1},{move.Item2}");
             Debug.Log("둘 수 있는 수가 없음");
-            gameLogic.EndGame(GameLogic.GameResult.Draw); // 무승부 처리
+            gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
+
         }
     }
 
     public override void OnExit(GameLogic gameLogic)
     {
-        gameLogic.OmokBoard.ShowXMarker();
+        GameManager.Instance.omokBoard.ShowXMarker();
     }
 
     public override void HandleMove(GameLogic gameLogic, int row, int col)
@@ -197,11 +199,12 @@ public class MultiplayState : BasePlayerState
     }
     */
 
-public class GameLogic : IDisposable
-{
-    public OmokBoard OmokBoard; // 바둑판(게임판) 컨트롤러
-    private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
+public class GameLogic : IDisposable {
 
+    public OmokBoard OmokBoard;
+    
+    private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
+    
     //기보확인을 위한 리스트
     public List<(Constants.PlayerType player, int x, int y)> moveList = new List<(Constants.PlayerType, int, int)>();
 
@@ -214,23 +217,14 @@ public class GameLogic : IDisposable
     //private MultiplayManager _multiplayManager; // 멀티플레이 관리 객체
     //private string _roomId; // 멀티플레이 방 ID
 
-    //게임 결과 (승패 판정)
-    public enum GameResult
-    {
-        None, // 게임 진행 중
-        Win, // 플레이어 승
-        Lose, // 플레이어 패
-        Draw // 비김
-    }
 
-    //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(OmokBoard OmokBoard, Constants.GameType gameType)
+     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
+    public GameLogic(OmokBoard omokBoard, Constants.GameType gameType)
     {
-        this.OmokBoard = OmokBoard;
-
+        this.OmokBoard = omokBoard;
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
-
+        
         switch (gameType)
         {
             case Constants.GameType.SinglePlayer:
@@ -251,6 +245,8 @@ public class GameLogic : IDisposable
                 SetState(firstPlayerState);
                 break;
             }
+            
+            
 
             /*TODO: 멀티플레이시 구현
             case Constants.GameType.MultiPlayer:
@@ -296,17 +292,21 @@ public class GameLogic : IDisposable
     //현재 상태 변경 (턴 전환 시 사용)
     public void SetState(BasePlayerState state)
     {        
-        
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
+        GameManager.Instance.timer.StopTimer();
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
 
         _currentPlayerState = state;
         
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작1");
-        //TODO: 여기에 턴이 바뀔때 쓸 함수입력
+        //TODO: 여기에 턴이 시잘할 때 쓸 함수입력
+        GameManager.Instance.timer.StartTimer();
+        UI_Manager.Instance.RequestExecute("turn");
+
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
-        //Debug.Log($"{GetCurrentPlayerType()}의 턴 시작2");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
+        //TODO: 여기에 턴이 끝날 때 쓸 함수입력
     }
 
     public Constants.PlayerType GetCurrentPlayerType()
@@ -338,9 +338,9 @@ public class GameLogic : IDisposable
             Debug.Log($"{GetCurrentPlayerType()}의 턴{row},{col}에 보드상에 흑돌{playerType} 기입");
             //기보저장
             moveList.Add((playerType, row, col));
-            OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
+            GameManager.Instance.omokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
 
-            OmokBoard.ShowLastStone(); // 마지막 돌 표시
+            GameManager.Instance.omokBoard.ShowLastStone(); // 마지막 돌 표시
 
             return true;
         }
@@ -352,9 +352,9 @@ public class GameLogic : IDisposable
             Debug.Log($"{GetCurrentPlayerType()}의 턴 {row},{col}에 보드상에 백돌{playerType} 기입");
             //기보저장
             moveList.Add((playerType, row, col));
-            OmokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
+            GameManager.Instance.omokBoard.PlaceStone(playerType, row, col); // UI에 마커 추가
 
-            OmokBoard.ShowLastStone(); // 마지막 돌 표시
+            GameManager.Instance.omokBoard.ShowLastStone(); // 마지막 돌 표시
 
             return true;
         }
@@ -363,23 +363,23 @@ public class GameLogic : IDisposable
     }
 
     //게임 결과 확인 함수
-    public GameResult CheckGameResult()
+    public Constants.GameResult CheckGameResult()
     {
         if (CheckGameWin(Constants.PlayerType.PlayerA))
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}승리");
-            return GameResult.Win;
+            return Constants.GameResult.Win;
         }
 
         if (CheckGameWin(Constants.PlayerType.PlayerB))
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}승리");
-            return GameResult.Lose;
+            return Constants.GameResult.Lose;
         }
         //TODO: 무승부 조건
         //if (MinimaxAIController.IsAllBlocksPlaced(_board)) { return GameResult.Draw; }
 
-        return GameResult.None; // 게임 계속 진행
+        return Constants.GameResult.None; // 게임 계속 진행
     }
 
     //게임의 승패를 판단하는 함수
@@ -391,9 +391,9 @@ public class GameLogic : IDisposable
         };
 
         // 보드의 모든 셀 순회 (BOARD_SIZE는 15)
-        for (int r = 0; r < OmokBoard.gridSize; r++)
+        for (int r = 0; r < GameManager.Instance.omokBoard.gridSize; r++)
         {
-            for (int c = 0; c < OmokBoard.gridSize; c++)
+            for (int c = 0; c < GameManager.Instance.omokBoard.gridSize; c++)
             {
                 Constants.PlayerType cell = _board[r, c];
                 // 비어 있는 셀은 건너뜁니다.
@@ -405,14 +405,14 @@ public class GameLogic : IDisposable
                     // 시작점인지 확인 (이전에 같은 돌이 있다면 이미 계산된 것으로 간주)
                     int prevR = r - dir[0];
                     int prevC = c - dir[1];
-                    if (prevR >= 0 && prevR < OmokBoard.gridSize && prevC >= 0 && prevC < OmokBoard.gridSize &&
+                    if (prevR >= 0 && prevR < GameManager.Instance.omokBoard.gridSize && prevC >= 0 && prevC < GameManager.Instance.omokBoard.gridSize &&
                         _board[prevR, prevC] == cell)
                         continue;
 
                     int count = 1; // 현재 셀 포함
                     int nr = r + dir[0];
                     int nc = c + dir[1];
-                    while (nr >= 0 && nr < OmokBoard.gridSize && nc >= 0 && nc < OmokBoard.gridSize && _board[nr, nc] == cell && cell == playerType)
+                    while (nr >= 0 && nr < GameManager.Instance.omokBoard.gridSize && nc >= 0 && nc < GameManager.Instance.omokBoard.gridSize && _board[nr, nc] == cell && cell == playerType)
                     {
                         count++;
                         nr += dir[0];
@@ -438,26 +438,36 @@ public class GameLogic : IDisposable
         if (playerType == Constants.PlayerType.PlayerA)
         {
             Debug.Log($"{Constants.PlayerType.PlayerA}패배");
-            EndGame(GameResult.Lose); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Lose); // 게임이 끝났다면 종료 처리
 
         }
         else if (playerType == Constants.PlayerType.PlayerB)
         {
             Debug.Log($"{Constants.PlayerType.PlayerB}패배");
-            EndGame(GameResult.Win); // 게임이 끝났다면 종료 처리
+            EndGame(Constants.GameResult.Win); // 게임이 끝났다면 종료 처리
         }
     }
+    
 
     //게임 종료 시 호출
-    public void EndGame(GameResult gameResult)
+    public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
-
+        
+        GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
+        NetworkManager.Instance.GameEndSendForm(gameResult);
+        
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
-        GameManager.Instance.ChangeToMainScene();
-
+        
+        UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+        
+        // 바로 실행 안 하고 GameEndManager에 맡긴다
+        GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
+        
+        //TODO: 서버에 승리 정보 전송
+        //TODO: 이 부분 봇과의 대전도 서버로 전송?
         //TODO: UI활성화
         //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
     }

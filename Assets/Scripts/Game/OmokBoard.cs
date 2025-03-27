@@ -70,7 +70,12 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             });
         }
     }*/
-
+    private void Awake()
+    {
+        GameManager.Instance.omokBoard = this;
+        Debug.Log($"{GameManager.Instance.omokBoard} 게임보드");
+    }
+    
     void Start()
     {
         CalculateSizes();
@@ -151,21 +156,22 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         return instance;
     }
 
+
     void Update()
     {
-        // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
         ShowHintStone(boardCoord);
+        // 현재 좌표에 미리보기 돌을 표시 (현재까지 돌 개수를 기준으로 색상을 결정)
     }
     
     //미리보기 마커 생성함수
     private void ShowHintStone(Vector2Int coord)
     {
-        if (!GameManager.Instance || GameManager.Instance.GameLogicInstance == null)
+        if (!GameManager.Instance || GameManager.Instance.gameLogic == null)
         {
             return;
         }
         
-        Constants.PlayerType currentPlayer = GameManager.Instance.GameLogicInstance.GetCurrentPlayerType();
+        Constants.PlayerType currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
         GameObject hintMarker = MarkerBlackHint;
         RectTransform rt = MarkerBlackHintRt;
             
@@ -180,10 +186,27 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             rt = MarkerWhiteHintRt;
         }
         
+        if (GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer) {
+            if (GameManager.Instance.GameLogicInstance.GetCurrentPlayerType() == Constants.PlayerType.None) {
+                return; // AI타입이 NONE이라서 일단 그대로 넣어둠
+            }
+        } // 아래 코드와 중첩되는것같지만 일단 그대로 둠
+        
         //돌이 비워있고, 마우스가 보드안에 있으면
-        if (GameManager.Instance.GameLogicInstance.IsCellEmpty(coord.x, coord.y) && inBoard)
+        bool isValidGameType = GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer ||
+                               GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer;
+
+        bool isCurrentPlayerA = GameManager.Instance.gameLogic.GetCurrentPlayerType() == Constants.PlayerType.PlayerA;
+        
+        bool isCellValid = GameManager.Instance.gameLogic.IsCellEmpty(coord.x, coord.y) && inBoard;
+
+        if (isValidGameType && isCurrentPlayerA || !isValidGameType)
         {
-            ShowMarker(hintMarker,rt, coord);
+            hintMarker.SetActive(isCellValid);
+            if (isCellValid)
+            {
+                ShowMarker(hintMarker, rt, coord);
+            }
         }
         else
         {
@@ -194,7 +217,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     //마지막에 착수된 마커 표시하기 위한 함수
     public void ShowLastStone()
     {
-        var lastMove = GameManager.Instance.GameLogicInstance.moveList.Last();
+        var lastMove = GameManager.Instance.gameLogic.moveList.Last();
         Vector2Int localPos = new Vector2Int(lastMove.x, lastMove.y);
         
         ShowMarker(MarkerLast,MarkerLastRt, localPos);
@@ -205,7 +228,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     public void ShowXMarker()
     {
         RuleCheckers ruleCheckers = new RuleCheckers();
-        ruleCheckers.Initialize(GameManager.Instance.GameLogicInstance.GetBoard());
+        ruleCheckers.Initialize(GameManager.Instance.gameLogic.GetBoard());
 
         xMarkerCoords = ruleCheckers.CheckAllBoard();
         
@@ -237,7 +260,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             }
 
             // 마커 활성화 및 anchoredPosition 업데이트
-            GameManager.Instance.GameLogicInstance.GetBoard()[coord.x,coord.y] = Constants.PlayerType.PlayerX;
+            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = Constants.PlayerType.PlayerX;
             
             marker.SetActive(true);
             rt.anchoredPosition = new Vector2(localPos.x, localPos.y);
@@ -259,7 +282,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         for (int i = 0; i < xMarkerCoords.Count; i++)
         {
             Vector2Int coord = xMarkerCoords[i];
-            GameManager.Instance.GameLogicInstance.GetBoard()[coord.x,coord.y] = Constants.PlayerType.None;
+            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = Constants.PlayerType.None;
         }
     }
 
@@ -272,6 +295,23 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         
         rt.anchoredPosition = localPos;
     }
+    
+    // AI가 백인 경우에만 동작, 흑백 랜덤 시작으로 개선시에는 수정 필요
+    public void AIWhiteShowMarker((int, int) pos) {
+        // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
+        MarkerWhiteHint.SetActive(true);
+        // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
+        MarkerWhiteHintRt.anchoredPosition = GetLocalPosition(pos.Item1, pos.Item2);
+    }
+    
+    public void AIWhiteHideMarker() {
+        UnityMainThreadDispatcher.Instance.Enqueue(() =>
+        {
+            // SetActive 또는 다른 Unity API 호출
+            MarkerWhiteHint.SetActive(false); // 예시로 SetActive 호출
+        });
+    }
+
 
     //바둑판 크기의 비례한 공백과 시작위치 계산
     void CalculateSizes()
@@ -363,7 +403,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     // UI에 마우스를 땟을 때 실행
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (GameManager.Instance.GameLogicInstance.IsCellEmpty(boardCoord.x, boardCoord.y))
+        if (GameManager.Instance.gameLogic.IsCellEmpty(boardCoord.x, boardCoord.y))
         {
             selectedBoardCoord = boardCoord;
             //선택 마크를 출력
@@ -386,6 +426,6 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     public void OnPointerUpCurrentPlayerDefeat()
     {
-        GameManager.Instance.GameLogicInstance.HandleCurrentPlayerDefeat(GameManager.Instance.GameLogicInstance.GetCurrentPlayerType());
+        GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(GameManager.Instance.gameLogic.GetCurrentPlayerType());
     }
 }

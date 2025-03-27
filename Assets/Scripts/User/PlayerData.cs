@@ -1,11 +1,14 @@
 
+using UnityEngine.Serialization;
+
 [System.Serializable]
 public class PlayerData {
     
     /// <summary>
     /// id, password는 저장 X
     /// </summary>
-    public string id;
+    [FormerlySerializedAs("id")]
+    public string email;
     public string nickname;
     public string password;
     public int profileNum;
@@ -19,9 +22,9 @@ public class PlayerData {
     }
 
     // 생성자
-    public PlayerData(string id, string nickname, string password, int profileNum, int coins, int grade,
+    public PlayerData(string email, string nickname, string password, int profileNum, int coins, int grade,
                       int rankPoint, int winCount, int loseCount) {
-        this.id = id;
+        this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.profileNum = profileNum;
@@ -43,17 +46,17 @@ public class PlayerData {
     }
 
     public void SetPrivateData(string id, string password) {
-        this.id = id;
+        this.email = id;
         this.password = password;
     }
 
     public void ClearPrivateData() {
-        this.id = null;
+        this.email = null;
         this.password = null;
     }
 
     public void SetPrivateData(string id, string nickname, string password, int profile) {
-        this.id = id;
+        this.email = id;
         this.nickname = nickname;
         this.password = password;
         this.profileNum = profile;

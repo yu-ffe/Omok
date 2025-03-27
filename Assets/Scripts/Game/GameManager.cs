@@ -1,32 +1,57 @@
 using System;
 using Commons;
-using MyNamespace;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Text timerText; // UI 타이머 텍스트
-    public float timer = 30.0f; // 기본 타이머 값 
-    public float currentTime = 30.0f; // 현재 남은 시간
+    public Constants.GameType lastGameType { get; private set; }
 
-    private Canvas _canvas;
+    //private Canvas _canvas;
     private Constants.GameType _gameType;
-    private GameLogic _gameLogic;
+    
+    public GameLogic gameLogic;
+    public OmokBoard omokBoard ;
+    public Timer timer;
+    
+    public GameLogic GameLogicInstance => gameLogic;
 
-    public GameLogic GameLogicInstance => _gameLogic;
-
-    // UI 타이머 업데이트 함수
-    public void UpdateTimerUI()
+    private bool _trackingAIState = false;
+    
+    public void SetTrackingAIState(bool state)
     {
-        TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
-        timerText.text = string.Format("{0:00} : {1:000}", timeSpan.Seconds, timeSpan.Milliseconds);
+        _trackingAIState = state;
+    }
+    
+    public bool GetTrackingAIState()
+    {
+        return _trackingAIState;
+    }
+    
+    public void StartGame(Constants.GameType gameType)
+    {
+        _gameType = gameType;
+        lastGameType = gameType;
+        SceneManager.LoadScene("Game"); 
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
     }
 
+    public Constants.GameType GetGameType() {
+        return this._gameType;
+    }
+
+    public void RestartCurrentGame()
+    {
+        Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
+        StartGame(lastGameType);
+    }
+    
     public void ChangeToGameScene(Constants.GameType gameType)
     {
         _gameType = gameType;
+        lastGameType = gameType;
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
@@ -42,38 +67,57 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeToMainScene()
     {
-        _gameLogic?.Dispose();
-        _gameLogic = null;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+        Debug.Log("[GameManager] ChangeToMainScene 호출됨");
+
+        gameLogic?.Dispose();
+        gameLogic = null;
+
+        SceneTransitionManager.Instance.RegisterAfterLoadAction("Main", () =>
+        {
+            Debug.Log("[SceneTransition] Main 씬 로드 완료 후 초기화");
+
+            var appStart = GameObject.FindObjectOfType<AppStart>();
+            if (appStart != null)
+            {
+                appStart.Initialize();
+                appStart.gameObject.SetActive(false);
+            }
+        });
+
+        SceneTransitionManager.Instance.LoadSceneAsync("Main").Forget();
     }
+
+    // 게임씬 UI 관련 매니저
+    public RecordUIManager recordUIManager;
+    
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "Game")
         {
-            // 씬에 배치된 오브젝트 찾기 (BlockContorller, GameUIController)
-            var omokBoard = GameObject.FindObjectOfType<OmokBoard>();
-
-            //_gameUIController = GameObject.FindObjectOfType<GameUIController>();
-
             // TODO: 오목판 초기화
             //blockController.InitBlocks();
 
-            // Game UI 초기화
-            // _gameUIController.SetGameUIMode(GameUIController.GameUIMode.Init);
-
             // Game Logic 객체 생성
-            if (_gameLogic != null) _gameLogic.Dispose();
+            if (gameLogic != null)
+            {
+                gameLogic.Dispose();
+                Debug.Log($"_gameLogic을 삭제");
+            }
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            _gameLogic = new GameLogic(omokBoard, _gameType);
+            gameLogic = new GameLogic(omokBoard, _gameType);
+            Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
+
+            recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
+
         }
 
-        _canvas = GameObject.FindObjectOfType<Canvas>();
+        //_canvas = GameObject.FindObjectOfType<Canvas>();
     }
 
     private void OnApplicationQuit()
     {
-        _gameLogic?.Dispose();
-        _gameLogic = null;
+        gameLogic?.Dispose();
+        gameLogic = null;
     }
 }

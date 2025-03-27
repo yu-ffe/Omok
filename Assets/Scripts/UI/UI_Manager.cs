@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UI_Manager : Singleton<UI_Manager> 
+public class UI_Manager : Singleton<UI_Manager>
 {
     [Serializable]
     public struct PanelData
@@ -11,8 +11,22 @@ public class UI_Manager : Singleton<UI_Manager>
         public UI_Manager.PanelType panelType;
         public UI_Panel panel;
     }
+
     // 공통 Popup창
-    public enum PanelType { None, Login, Main, Game, Record, Shop, Ranking, Option, Loading,  GameSelect}
+    public enum PanelType
+    {
+        None,
+        Login,
+        Main,
+        Game,
+        Record,
+        Shop,
+        Ranking,
+        Option,
+        Loading,
+        GameSelect,
+        GameEnd
+    }
 
     public List<PanelData> panelList = new List<PanelData>();
     public Dictionary<PanelType, UI_Panel> Panels { get; private set; } = new();
@@ -20,17 +34,28 @@ public class UI_Manager : Singleton<UI_Manager>
     public UI_Popup popup;
     private Dictionary<string, UnityAction> _callBack = new();
     [SerializeField] PanelType nowShowingPanelType;
-    
-    public event Action<PanelType> OnPanelRegistered; // 패널이 등록될 때 발생하는 이벤트
 
-    private void Awake()
-    {
-        base.Awake();
-        InitializePanels(); // 패널을 한 번에 등록
+    public event Action<PanelType> OnPanelRegistered; // 패널이 등록될 때 발생하는 이벤트
+    private bool _initialized = false;
+
+
+    protected override void Awake()
+    { 
+        Debug.Log("[UI_Manager] Awake 시작");
+
+       // Instance = null;
+       base.Awake();
+       InitializePanels(); // 패널을 한 번에 등록
+        
     }
-    private void InitializePanels()
+
+    public void InitializePanels()
     {
-        Panels.Clear();  // 혹시 남아있는 데이터 제거
+        Debug.Log("[UI_Manager] InitializePanels 호출");
+        if (_initialized) return;
+        _initialized = true;
+        
+        Panels.Clear(); // 혹시 남아있는 데이터 제거
         foreach (var panelData in panelList)
         {
             if (panelData.panel != null)
@@ -46,7 +71,8 @@ public class UI_Manager : Singleton<UI_Manager>
     }*/
 
     /// <summary> 활성화 된 패널들이 UI 매니저에 등록됨 </summary>
-    public void AddPanel(PanelType key, UI_Panel panel) {
+    public void AddPanel(PanelType key, UI_Panel panel)
+    {
         if (key == PanelType.None)
             return;
         Panels ??= new();
@@ -57,7 +83,8 @@ public class UI_Manager : Singleton<UI_Manager>
         OnPanelRegistered?.Invoke(key); // 패널이 등록되었음을 알림
     }
 
-    public void RemovePanel(PanelType key) {
+    public void RemovePanel(PanelType key)
+    {
         if (!Panels.ContainsKey(key))
             return;
 
@@ -89,7 +116,7 @@ public class UI_Manager : Singleton<UI_Manager>
     }
 
 
-    public void Show(PanelType panelKey)
+    public void Show(PanelType panelKey, bool forceRefresh = false)
     {
         if (!Panels.ContainsKey(panelKey) || !Panels[panelKey])
         {
@@ -97,25 +124,48 @@ public class UI_Manager : Singleton<UI_Manager>
             return;
         }
 
+        if (nowShowingPanelType == panelKey && Panels[panelKey].gameObject.activeSelf && !forceRefresh)
+        {
+            Debug.Log($"[UI_Manager] Show(): {panelKey} 이미 활성화 상태 → 중복 Show 방지");
+            return;
+        }
+
         if (nowShowingPanelType != PanelType.None)
+        {
             Hide(nowShowingPanelType);
-        
-        //기존의 메인 패널을 숨기지 않고 새로운 패널 보여주기로 변경 (주석처리)
+        }
+
         Panels[panelKey].Show();
         nowShowingPanelType = panelKey;
+        Debug.Log($"[UI_Manager] Show(): {panelKey} 패널 활성화 완료");
     }
+
+
+
 
     public void Hide(PanelType panelKey)
     {
         if (Panels.ContainsKey(panelKey))
-            Panels[panelKey].Hide();
+        {
+            var panel = Panels[panelKey];
+
+            // 이미 파괴된 경우 제거
+            if (panel == null)
+            {
+                Debug.LogWarning($"패널 {panelKey}는 이미 Destroy됨. 패널 리스트에서 제거함.");
+                Panels.Remove(panelKey);
+                return;
+            }
+
+            panel.Hide();
+        }
     }
-    
+
     public bool HasPanel(PanelType panelKey)
     {
         return Panels != null && Panels.ContainsKey(panelKey);
     }
-    
-    
+
+
 
 }

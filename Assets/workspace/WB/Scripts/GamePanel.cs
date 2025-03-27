@@ -173,18 +173,14 @@ namespace WB
         /// <summary> 기권버튼 이벤트 </summary>
         public void Button_GiveUp()
         {
-            UI_Manager.Instance.popup.Show(
-            msg: "기권 하시겠습니까?",
-            "기권", "취소",
-            okAction: () =>
+            if (GameEndManager.Instance != null)
             {
-                SceneManager.LoadSceneAsync("Main");
-            },
-            cancelAction: () =>
-            {
-
+                GameEndManager.Instance.ShowGameEndPanel("상대가 기권했습니다!"); // 원하는 메시지 전달
             }
-            );
+            else
+            {
+                Debug.LogError("[GamePanel] GameEndManager.Instance가 null입니다!");
+            }
         }
 
         /// <summary> 착수버튼 이벤트 </summary>
