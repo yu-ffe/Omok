@@ -46,6 +46,12 @@ public class SignInHandler : Singleton<SignInHandler> {
             callback(false, "자동 로그인 비활성화");
             yield break;
         }
+        
+        if (TokenManager.Instance.GetRefreshToken() is null || TokenManager.Instance.GetRefreshToken() == "") {
+            callback(false, "자동 로그인 실패: 리프레시 토큰 없음");
+            yield break;
+        }
+        
         Debug.Log("[SignInHandler] AttemptAutoSignIn - TryAutoSignInRequest");
         TokenResponse tokenResponse = null;
         StartCoroutine(NetworkManager.AutoSignInRequest(response => {

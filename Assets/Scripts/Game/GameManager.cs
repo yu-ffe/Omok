@@ -14,14 +14,27 @@ public class GameManager : Singleton<GameManager>
     public GameLogic gameLogic;
     public OmokBoard omokBoard ;
     public Timer timer;
+    
+    public GameLogic GameLogicInstance => gameLogic;
 
-
-
+    private bool _trackingAIState = false;
+    
+    public void SetTrackingAIState(bool state)
+    {
+        _trackingAIState = state;
+    }
+    
+    public bool GetTrackingAIState()
+    {
+        return _trackingAIState;
+    }
+    
     public void StartGame(Constants.GameType gameType)
     {
         _gameType = gameType;
         lastGameType = gameType;
         SceneManager.LoadScene("Game"); 
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
     }
 
     public Constants.GameType GetGameType() {
@@ -38,6 +51,7 @@ public class GameManager : Singleton<GameManager>
     {
         _gameType = gameType;
         lastGameType = gameType;
+        SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
@@ -91,7 +105,7 @@ public class GameManager : Singleton<GameManager>
                 Debug.Log($"_gameLogic을 삭제");
             }
             Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            gameLogic = new GameLogic(_gameType);
+            gameLogic = new GameLogic(omokBoard, _gameType);
             Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
             recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기

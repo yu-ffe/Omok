@@ -16,6 +16,7 @@ public class SignUpHandler : Singleton<SignUpHandler> {
         if (!ValidationManager.Validate("password", password, callback)) return;
         if (!ValidationManager.ValidatePasswordMatch(password, passwordCheck, callback)) return;
         if (!ValidationManager.Validate("nickname", nickname, callback)) return;
+        if(!ValidationManager.Validate("imgIndex", imgIndex, callback)) return;
 
         UtilityManager.EncryptPassword(ref password);
 
