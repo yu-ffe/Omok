@@ -21,6 +21,9 @@ public class GameEndManager : UI_Panel
     RectTransform[] gradeMinusCells = new RectTransform[3];
     Constants.GameResult pendingResult;
 
+    [SerializeField] Transform originPosition;
+    [SerializeField] Transform showPosition;
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,6 +31,8 @@ public class GameEndManager : UI_Panel
         else Destroy(gameObject);
        
         TryAutoRegister();
+
+        transform.position = originPosition.position;
     }
 
     void Start()
@@ -38,6 +43,7 @@ public class GameEndManager : UI_Panel
 
     public override void Show()
     {
+        transform.position = showPosition.position;
         /*
         Debug.Log("[GameEndManager] Show() 호출됨");
 
@@ -52,6 +58,7 @@ public class GameEndManager : UI_Panel
 
     public override void Hide()
     {
+        transform.position = originPosition.position;
         // gameObject.SetActive(false); // 혹시 어디선가 이게 먼저 실행되면 안 됨
     }
 
