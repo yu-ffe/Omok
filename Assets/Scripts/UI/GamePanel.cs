@@ -113,18 +113,17 @@ public class GamePanel : UI_Panel {
 
     /// <summary> 양쪽 게임 유저의 프로필 사진와 닉네임 가져옵니다 </summary>
     void LoadProfile() {
-        // Sprite sprite_Left = SessionManager.GetUserProfileSprite()
-        //  Sprite sprite_Right = SessionManager.GetUserProfileSprite()
+        
 
-        //
-        // imgProfileRight.sprite = sprite_Right
         imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(PlayerManager.Instance.playerData.profileNum);
         txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
 
 
         if(GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer)
         {
-            switch (Constants.AILevel.Middle) // 게임 로직에 AI 난이도 저장하는 변수로 변경
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
+
+            switch (Constants.AILevel.Middle) // TODO 게임 로직에 AI 난이도 저장하는 변수로 변경
             {
                 case Constants.AILevel.Easy:
                     txtNickNameRight.text = "AI-Lv1";
@@ -142,16 +141,20 @@ public class GamePanel : UI_Panel {
 
         else if(GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer) // 멀티 시 상대 정보 불러오기
         {
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "멀티 상대";
         }
 
         else if (GameManager.Instance.GetGameType() == Constants.GameType.Record) // 기보 시 저장된 상대 정보 불러오기
         {
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "상대 플레이어";
         }
 
         else // 듀얼 플레이
         {
+            imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(1);
+            imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameLeft.text = "플레이어 A";
             txtNickNameRight.text = "플레이어 B";
         }
