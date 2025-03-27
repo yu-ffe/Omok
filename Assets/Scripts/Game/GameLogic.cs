@@ -483,6 +483,7 @@ public class GameLogic : IDisposable
         secondPlayerState = null;
 
         UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+        GameEndManager.Instance.Show();
 
         // 바로 실행 안 하고 GameEndManager에 맡긴다
         GameEndManager.Instance?.PrepareGameEndInfo(gameResult);
