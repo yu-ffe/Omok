@@ -221,6 +221,8 @@ public class MultiplayState : BasePlayerState
 
 public class GameLogic : IDisposable
 {
+    public string Player1Nickname { get; private set; }
+    public string Player2Nickname { get; private set; }
 
     public OmokBoard OmokBoard;
 
@@ -240,9 +242,13 @@ public class GameLogic : IDisposable
 
 
     //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(OmokBoard omokBoard, Constants.GameType gameType)
+    public GameLogic(OmokBoard omokBoard, Constants.GameType gameType, 
+        string player1Nickname = "Player1", string player2Nickname = "Player2")
     {
         this.OmokBoard = omokBoard;
+        Player1Nickname = player1Nickname;
+        Player2Nickname = player2Nickname;
+        
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
 
@@ -250,10 +256,8 @@ public class GameLogic : IDisposable
         {
             case Constants.GameType.SinglePlayer:
                 {
-                    firstPlayerState = new PlayerState(true); // 첫 번째 플레이어
-                    secondPlayerState = new AIState(); // AI 플레이어
-
-                    // 첫 번째 플레이어부터 시작
+                    firstPlayerState = new PlayerState(true);
+                    secondPlayerState = new AIState();
                     SetState(firstPlayerState);
                     break;
                 }
@@ -261,8 +265,6 @@ public class GameLogic : IDisposable
                 {
                     firstPlayerState = new PlayerState(true);
                     secondPlayerState = new PlayerState(false);
-                    // 게임 시작
-
                     SetState(firstPlayerState);
                     break;
                 }
@@ -462,7 +464,11 @@ public class GameLogic : IDisposable
                 ? Constants.GameResult.Player2Win
                 : Constants.GameResult.Player1Win;
 
-            //GameEndManager.Instance.ShowGameEndPanel("");
+            string winnerNick = playerType == Constants.PlayerType.PlayerA
+                ? Player2Nickname  // 상대
+                : Player1Nickname; // 본인
+
+            GameManager.Instance.SetDualPlayWinner(winnerNick);
             GameEndManager.Instance.PrepareGameEndInfo(result);
             return;
         }

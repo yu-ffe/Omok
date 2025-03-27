@@ -119,7 +119,7 @@ public class GameManager : Singleton<GameManager>
 
     // 게임씬 UI 관련 매니저
     public RecordUIManager recordUIManager;
-    
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -129,20 +129,31 @@ public class GameManager : Singleton<GameManager>
             //blockController.InitBlocks();
 
             // Game Logic 객체 생성
-            if (gameLogic != null)
+            if (scene.name == "Game")
             {
-                gameLogic.Dispose();
-                Debug.Log($"_gameLogic을 삭제");
+                if (gameLogic != null)
+                {
+                    gameLogic.Dispose();
+                    Debug.Log($"_gameLogic을 삭제");
+                }
+
+                Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
+
+                string player1Nick = PlayerManager.Instance.playerData.nickname;
+                string player2Nick = "상대"; // 듀얼플레이에서 쓸 고정 닉네임
+
+                gameLogic = new GameLogic(omokBoard, _gameType, player1Nick, player2Nick);
+
+                //  GameLogic 생성자는 이 한 줄이면 충분
+                gameLogic = new GameLogic(omokBoard, _gameType, player1Nick, player2Nick);
+
+                Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
+
+                recordUIManager.RecordUISet(_gameType == Constants.GameType.Record);
             }
-            Debug.Log($"씬이 생성될 gameType은 : {_gameType}");
-            gameLogic = new GameLogic(omokBoard, _gameType);
-            Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
-            recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
-
+            //_canvas = GameObject.FindObjectOfType<Canvas>();
         }
-
-        //_canvas = GameObject.FindObjectOfType<Canvas>();
     }
 
     private void OnApplicationQuit()

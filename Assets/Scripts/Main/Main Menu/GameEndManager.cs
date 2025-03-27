@@ -96,18 +96,11 @@ public class GameEndManager : UI_Panel
         if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
         {
             // 메시지 출력만
-            switch (gameResult)
-            {
-                case Constants.GameResult.Player1Win:
-                    resultText.text = "Player1의 승리입니다!";
-                    break;
-                case Constants.GameResult.Player2Win:
-                    resultText.text = "Player2의 승리입니다!";
-                    break;
-                default:
-                    resultText.text = "결과를 알 수 없습니다.";
-                    break;
-            }
+            string winnerNick = GameManager.Instance.DualPlayWinnerNickname;
+
+            if (string.IsNullOrEmpty(winnerNick)) winnerNick = "플레이어";
+
+            resultText.text = $"{winnerNick}의 승리입니다!";
             
             // 버튼 보이기/숨기기
             okButton.SetActive(true);
