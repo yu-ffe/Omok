@@ -25,6 +25,13 @@ namespace Commons {
             Draw // 비김
         }
         
+        public enum AILevel
+        {
+            Easy,
+            Middle,
+            Hard
+        }
+
         
         public const string ServerURL = "http://localhost"; // Express 서버 URL
     }

@@ -114,12 +114,12 @@ public class GamePanel : UI_Panel {
     /// <summary> 양쪽 게임 유저의 프로필 사진와 닉네임 가져옵니다 </summary>
     void LoadProfile() {
         // Sprite sprite_Left = SessionManager.GetUserProfileSprite()
-        // Sprite sprite_Right = SessionManager.GetUserProfileSprite()
+       //  Sprite sprite_Right = SessionManager.GetUserProfileSprite()
 
         // imgProfileLeft.sprite = sprite_Left;
         // imgProfileRight.sprite = sprite_Right;
-        // txtNickNameLeft.text = nickName_Left;
-        // txtNickNameRight.text = nickName_Right;
+         txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
+        // txtNickNameRight.text = nickName_Right; // 멀티 시 상대 정보 불러오기
     }
 
 
