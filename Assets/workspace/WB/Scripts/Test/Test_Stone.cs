@@ -3,34 +3,36 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TT = Commons.Constants.PlayerType;
-
-public class Test_Stone : MonoBehaviour
+namespace WB
 {
+    public class Test_Stone : MonoBehaviour
+    {
 
 
-    Transform tr;
-    public Transform Tr
-    {
-        get
+        Transform tr;
+        public Transform Tr
         {
-            if (tr == null)
-                tr = transform;
-            return tr;
+            get
+            {
+                if (tr == null)
+                    tr = transform;
+                return tr;
+            }
         }
-    }
-    public TT type;
-    Vector2Int xy;
-    public Vector2Int XY
-    {
-        get
+        public TT type;
+        Vector2Int xy;
+        public Vector2Int XY
         {
-            return xy;
-        }
-        set
-        {
-            xy = value;
-            gameObject.name = $"{value.x},{value.y}";
-            Tr.position = new Vector3(value.x, value.y, 0f);
+            get
+            {
+                return xy;
+            }
+            set
+            {
+                xy = value;
+                gameObject.name = $"{value.x},{value.y}";
+                Tr.position = new Vector3(value.x, value.y, 0f);
+            }
         }
     }
 }
