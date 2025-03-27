@@ -41,7 +41,7 @@ public class RuleCheckers
                 (bool isViolation, int v3, int v4, int v6, int sc3, int sbv3) = IsRuleViolation(x, y);
                 if (isViolation)
                 {
-                    Debug.Log($"[{checkXY}]금수위치발견/거짓금수판별 다른곳 체크={v3},{v4},{v6},{sc3},{sbv3}");
+                    // Debug.Log($"[{checkXY}]금수위치발견/거짓금수판별 다른곳 체크={v3},{v4},{v6},{sc3},{sbv3}");
                     //! 2nd 다른 곳의 금수체크
                     bool isOtherPlaceViolation = false;
                     for (int z = 0; z < Opened2ndPlaces.Count; z++)
@@ -49,13 +49,13 @@ public class RuleCheckers
                         (bool isViolation2nd, int v3z, int v4z, int v6z, int sc3z, int sbv3z)
                              = IsRuleViolation(Opened2ndPlaces[z].x, Opened2ndPlaces[z].y, isFakeCheck: true);
                         isOtherPlaceViolation = isViolation2nd;
-                        Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
+                        // Debug.Log($"<color=#2CC42CFF>{Opened2ndPlaces[z].x},{Opened2ndPlaces[z].y} is violation</color>3[{v3z}]4[{v4z}]6[{v6z}]s3[{sc3z}]sb3[{sbv3z}]");
                     }
-                    Debug.Log($"<color=#B65BB3FF>{x},{y} FaceCheck -> other violation : {isOtherPlaceViolation}</color>");
+                    // Debug.Log($"<color=#B65BB3FF>{x},{y} FaceCheck -> other violation : {isOtherPlaceViolation}</color>");
                     if (!isOtherPlaceViolation)
                     {
                         InvalidPlaces.Add(new(x, y));
-                        Debug.Log($"<color=#ff0000>{x},{y} is violation</color>3[{v3}]4[{v4}]6[{v6}]s3[{sc3}]sb3[{sbv3}]");
+                        // Debug.Log($"<color=#ff0000>{x},{y} is violation</color>3[{v3}]4[{v4}]6[{v6}]s3[{sc3}]sb3[{sbv3}]");
                     }
 
                     // Prev
@@ -134,7 +134,7 @@ public class RuleCheckers
         {
             count++;
             if (!isFakeCheck)
-                Debug.Log($"add : {px - dir.x},{py - dir.y}");
+                // Debug.Log($"add : {px - dir.x},{py - dir.y}");
 
             px -= dir.x;
             py -= dir.y;
@@ -155,7 +155,7 @@ public class RuleCheckers
         {
             count++;
             if (!isFakeCheck)
-                Debug.Log($"add : {px + dir.x},{py + dir.y}");
+                // Debug.Log($"add : {px + dir.x},{py + dir.y}");
 
             px += dir.x;
             py += dir.y;
@@ -193,7 +193,7 @@ public class RuleCheckers
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
                 if (!isFakeCheck)
-                    Debug.Log($"add : {px},{py}");
+                    // Debug.Log($"add : {px},{py}");
 
                 leftStoneCount++;
                 px -= dir.x;
@@ -206,7 +206,7 @@ public class RuleCheckers
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
                 if (!isFakeCheck)
-                    Debug.Log($"add : {px},{py}");
+                    // Debug.Log($"add : {px},{py}");
                 leftStoneCount++;
                 px -= dir.x;
                 py -= dir.y;
@@ -228,7 +228,7 @@ public class RuleCheckers
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
                 if (!isFakeCheck)
-                    Debug.Log($"add : {px},{py}");
+                    // Debug.Log($"add : {px},{py}");
                 rightStoneCount++;
                 px += dir.x;
                 py += dir.y;
@@ -240,7 +240,7 @@ public class RuleCheckers
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
                 if (!isFakeCheck)
-                    Debug.Log($"add : {px + dir.x},{py + dir.y}");
+                    // Debug.Log($"add : {px + dir.x},{py + dir.y}");
                 rightStoneCount++;
                 px += dir.x;
                 py += dir.y;

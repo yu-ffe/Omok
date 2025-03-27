@@ -86,7 +86,7 @@ public class MainPanel : UI_Panel {
         Debug.Log($"txtCoin: {txtCoin}, imgUserPortrait: {imgUserPortrait}, txtUserName: {txtUserName}");
 
         var buttons = root.GetChild(3).GetComponentsInChildren<Button>();
-        Debug.Log($"버튼 수: {buttons.Length}");
+        // Debug.Log($"버튼 수: {buttons.Length}");
 
         for (int i = 0; i < buttons.Length; i++)
         {

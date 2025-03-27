@@ -293,9 +293,9 @@ public class GameLogic : IDisposable {
     public void SetState(BasePlayerState state)
     {        
         GameManager.Instance.timer.StopTimer();
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
 
         _currentPlayerState = state;
         
@@ -303,9 +303,9 @@ public class GameLogic : IDisposable {
         GameManager.Instance.timer.StartTimer();
         UI_Manager.Instance.RequestExecute("turn");
 
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
         //TODO: 여기에 턴이 끝날 때 쓸 함수입력
     }
 
