@@ -92,6 +92,52 @@ public class GameEndManager : UI_Panel
 
     public void SetEndGameInfo(Constants.GameResult gameResult)
     {
+        // DualPlayer일 경우 버튼 변경 처리
+        if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
+        {
+            // 메시지 출력만
+            switch (gameResult)
+            {
+                case Constants.GameResult.Player1Win:
+                    resultText.text = "Player1의 승리입니다!";
+                    break;
+                case Constants.GameResult.Player2Win:
+                    resultText.text = "Player2의 승리입니다!";
+                    break;
+                default:
+                    resultText.text = "결과를 알 수 없습니다.";
+                    break;
+            }
+            
+            // 버튼 보이기/숨기기
+            okButton.SetActive(true);
+            restartButton.SetActive(true);
+            recordButton.SetActive(false);
+
+            // 텍스트 설정
+            okButtonText.text = "확인";
+            restartButtonText.text = "재대국";
+
+            // okButton 클릭 시 → 단순히 패널 닫기
+            var okBtn = okButton.GetComponent<Button>();
+            okBtn.onClick.RemoveAllListeners();
+            okBtn.onClick.AddListener(() =>
+            {
+                this.Hide();
+            });
+
+            var restartBtn = restartButton.GetComponent<Button>();
+            restartBtn.onClick.RemoveAllListeners();
+            restartBtn.onClick.AddListener(() =>
+            {
+                GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
+                GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+            });
+
+            return; // DualPlayer 처리 종료
+        }
+
+        // 싱글/멀티 플레이일 경우 기존 로직 실행
         GradeBarSetting();
         GradeCellReset();
         GradeMinMaxTextSet();
@@ -207,12 +253,24 @@ public class GameEndManager : UI_Panel
             case Constants.GameResult.Draw:
                 resultText.text = "무승부!\n포인트 변동 없음";
                 break;
+            case Constants.GameResult.Player1Win:
+                resultText.text = "Player1의 승리!";
+                break;
+            case Constants.GameResult.Player2Win:
+                resultText.text = "Player2의 승리!";
+                break;
             default:
                 resultText.text = "오류!";
                 return;
         }
+        
+        // Single/Multi만 포인트 처리
+        if (result == Constants.GameResult.Win || result == Constants.GameResult.Lose)
+        {
+            RankPointSet(player, result);
+        }
 
-        RankPointSet(player, result);
+        //RankPointSet(player, result);
         GameRecorder.GameResultSave(result); // 게임 결과 저장
     }
 

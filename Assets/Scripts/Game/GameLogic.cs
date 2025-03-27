@@ -455,17 +455,28 @@ public class GameLogic : IDisposable
     //현재 플레이어를 패배하게 하는 함수
     public void HandleCurrentPlayerDefeat(Constants.PlayerType playerType)
     {
-        //TODO:멀티면 바뀌어야 될 코드
+        // DualPlayer → 팝업으로 처리하고 Draw 결과만 넘김
+        if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
+        {
+            Constants.GameResult result = playerType == Constants.PlayerType.PlayerA
+                ? Constants.GameResult.Player2Win
+                : Constants.GameResult.Player1Win;
+
+            //GameEndManager.Instance.ShowGameEndPanel("");
+            GameEndManager.Instance.PrepareGameEndInfo(result);
+            return;
+        }
+
+        // 나머지 모드는 실제 승패 처리
         if (playerType == Constants.PlayerType.PlayerA)
         {
-            Debug.Log($"{Constants.PlayerType.PlayerA}패배");
-            EndGame(Constants.GameResult.Lose); // 게임이 끝났다면 종료 처리
-
+            Debug.Log($"{playerType} 패배 → EndGame(Lose)");
+            EndGame(Constants.GameResult.Lose);
         }
-        else if (playerType == Constants.PlayerType.PlayerB)
+        else
         {
-            Debug.Log($"{Constants.PlayerType.PlayerB}패배");
-            EndGame(Constants.GameResult.Win); // 게임이 끝났다면 종료 처리
+            Debug.Log($"{playerType} 패배 → EndGame(Win)");
+            EndGame(Constants.GameResult.Win);
         }
     }
 
