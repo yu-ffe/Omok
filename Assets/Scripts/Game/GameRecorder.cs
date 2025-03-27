@@ -80,7 +80,7 @@ public class GameRecorder
         if (PlayerPrefs.HasKey(recordKey))
         {
             string json = PlayerPrefs.GetString(recordKey);
-            Debug.Log("로드: " + json);
+            // Debug.Log("로드: " + json);
 
             // Newtonsoft.Json으로 역직렬화
             RecordData record = JsonConvert.DeserializeObject<RecordData>(json);
@@ -95,7 +95,7 @@ public class GameRecorder
             return record;
         }
 
-        Debug.LogWarning($"기보를 찾을 수 없음: {recordKey}");
+        // Debug.LogWarning($"기보를 찾을 수 없음: {recordKey}");
         return null;
     }
 
