@@ -128,6 +128,7 @@ public class PlayerState : BasePlayerState
     }
 }
 
+
 //AI 플레이 상태
 public class AIState : BasePlayerState
 {
@@ -135,9 +136,28 @@ public class AIState : BasePlayerState
     public override async void OnEnter(GameLogic gameLogic)
     {
         OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
-        
-        // var move = await OmokAI.GetBestMoveAsync();
-        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard);
+
+        int aiTimeLevel = 3000;
+
+        if(PlayerManager.Instance.playerData.grade > 9) // 18~10급
+        {
+            aiTimeLevel = 2000;
+            GameManager.Instance.SetAILevel(Constants.AILevel.Easy);
+        }
+
+        else if (PlayerManager.Instance.playerData.grade > 5) // 9~6급
+        {
+            aiTimeLevel = 3000;
+            GameManager.Instance.SetAILevel(Constants.AILevel.Middle);
+        }
+
+        else // 5~1급
+        {
+            aiTimeLevel = 4000;
+            GameManager.Instance.SetAILevel(Constants.AILevel.Hard);
+        }
+
+        var move = await OmokAI.GetBestMoveAsync(aiTimeLevel, OmokBoard);
 
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
