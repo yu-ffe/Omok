@@ -4,6 +4,20 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerManager : Singleton<PlayerManager> {
+
+    [SerializeField] Sprite[] profileSprites;
+
+    public void SetSprites(Sprite[] sprites)
+    {
+        profileSprites = sprites;
+    }
+
+    public Sprite GetProfileSprites(int index)
+    {
+        return profileSprites[index];
+    }
+
+
     public PlayerData playerData = new PlayerData();
     
     public bool IsLoggedIn => playerData != null && !string.IsNullOrEmpty(playerData.nickname);

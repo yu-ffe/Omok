@@ -55,12 +55,13 @@ public class LoginPanel : UI_Panel
 
         // 로그인 상태 초기화
         Show_LoginPhase();
-        
+
         //Login 여부 확인
 
         // 프로필 스프라이트 초기화
         // TODO: 스프라이트 저장 클래스는 다른곳으로.
         // SessionManager.ProfileSprites = profileSprites;
+        PlayerManager.Instance.SetSprites(profileSprites);
 
         // 버튼 안 이미지 초기화 (다른 스크립트에서 접근 가능)
         // TODO: 이미지도 동일
