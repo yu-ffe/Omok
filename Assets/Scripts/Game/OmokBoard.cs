@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Commons;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -53,6 +54,9 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     bool ismarker_Last = false;
     GameObject marker_Last = null;
+    Constants.GameType gameType;
+    
+    List<GameObject> stoneObjects = new();
     
     public delegate void OnGridClicked(int row, int col);
     public OnGridClicked OnOnGridClickedDelegate;
@@ -80,6 +84,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     {
         CalculateSizes();
         InitializeGameObjects();
+        gameType = GameManager.Instance.GetGameType();
     }
     
     //마크 오브젝트를 할당하는 함수
@@ -166,7 +171,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     //미리보기 마커 생성함수
     private void ShowHintStone(Vector2Int coord)
     {
-        if (!GameManager.Instance || GameManager.Instance.gameLogic == null)
+        if (!GameManager.Instance || GameManager.Instance.gameLogic == null || Constants.GameType.Record == gameType)
         {
             return;
         }
@@ -349,13 +354,48 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 바둑판로컬위치로 바꿔줌
 
         GameObject stone = Instantiate(playerType == Constants.PlayerType.PlayerA ? MarkerBlackPrefab : MarkerWhitePrefab, boardImage);
-        
         // 3. 생성된 돌의 위치와 크기 설정
         float stoneSize = cellSize * 0.85f;
 
+        if (Constants.GameType.Record == gameType)
+        {
+            GameObject stoneNum = new GameObject("StoneNum");
+
+            stoneNum.transform.SetParent(stone.transform);
+
+            TextMeshProUGUI tmpText = stoneNum.AddComponent<TextMeshProUGUI>();
+            tmpText.alignment = TextAlignmentOptions.Center;
+            tmpText.fontSize = 18;
+            tmpText.fontStyle = FontStyles.Bold;
+            
+            RectTransform rect = tmpText.GetComponent<RectTransform>();
+            rect.anchoredPosition = Vector2.zero;
+            
+            int siblingIndex = boardImage.childCount - 5;
+            tmpText.text = "" + siblingIndex;
+
+            if (siblingIndex % 2 == 1)
+            {
+                tmpText.color = Color.black;
+            }
+            else
+            {
+                tmpText.color = Color.white;
+            }
+        }
+        
         RectTransform stoneRect = stone.GetComponent<RectTransform>();
         stoneRect.anchoredPosition = localPos;
         stoneRect.sizeDelta = new Vector2(stoneSize, stoneSize);
+    }
+
+    public void RemoveStone()
+    {
+        if (boardImage.childCount > 0)
+        {
+            Transform lastChild = boardImage.GetChild(boardImage.childCount - 1);
+            Destroy(lastChild.gameObject);
+        }
     }
     
     //바둑알의 배열을 읽고 지정된 로컬좌표로 바꿔주는 함수
@@ -403,6 +443,11 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     // UI에 마우스를 땟을 때 실행
     public void OnPointerUp(PointerEventData eventData)
     {
+        if (Constants.GameType.Record == gameType)
+        {
+            return;
+        }
+        
         if (GameManager.Instance.gameLogic.IsCellEmpty(boardCoord.x, boardCoord.y))
         {
             selectedBoardCoord = boardCoord;
