@@ -274,7 +274,7 @@ public class LoginPanel : UI_Panel
         }
 
         txtMessage.text = "회원가입 중...";
-        SignUpHandler.Instance.AttemptSignUp(inputEmail.text.Trim(), inputPassword.text, inputCheckPassword.text, inputNickName.text.Trim(), 1, (isSuccess, message) =>
+        SignUpHandler.Instance.AttemptSignUp(inputEmail.text.Trim(), inputPassword.text, inputCheckPassword.text, inputNickName.text.Trim(), selectedImageIndex, (isSuccess, message) =>
         {
             txtMessage.text = message;
 
