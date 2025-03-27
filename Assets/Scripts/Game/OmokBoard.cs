@@ -186,6 +186,12 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             rt = MarkerWhiteHintRt;
         }
         
+        if (GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer) {
+            if (GameManager.Instance.GameLogicInstance.GetCurrentPlayerType() == Constants.PlayerType.None) {
+                return; // AI타입이 NONE이라서 일단 그대로 넣어둠
+            }
+        } // 아래 코드와 중첩되는것같지만 일단 그대로 둠
+        
         //돌이 비워있고, 마우스가 보드안에 있으면
         bool isValidGameType = GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer ||
                                GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer;
@@ -289,6 +295,23 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         
         rt.anchoredPosition = localPos;
     }
+    
+    // AI가 백인 경우에만 동작, 흑백 랜덤 시작으로 개선시에는 수정 필요
+    public void AIWhiteShowMarker((int, int) pos) {
+        // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
+        MarkerWhiteHint.SetActive(true);
+        // Debug.Log($"AI 착수 위치: {pos.Item1}, {pos.Item2}");
+        MarkerWhiteHintRt.anchoredPosition = GetLocalPosition(pos.Item1, pos.Item2);
+    }
+    
+    public void AIWhiteHideMarker() {
+        UnityMainThreadDispatcher.Instance.Enqueue(() =>
+        {
+            // SetActive 또는 다른 Unity API 호출
+            MarkerWhiteHint.SetActive(false); // 예시로 SetActive 호출
+        });
+    }
+
 
     //바둑판 크기의 비례한 공백과 시작위치 계산
     void CalculateSizes()

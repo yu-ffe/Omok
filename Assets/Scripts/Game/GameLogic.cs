@@ -136,7 +136,9 @@ public class AIState : BasePlayerState
     {
         OmokAI OmokAI = new OmokAI(gameLogic.GetBoard());
         
-        var move = await OmokAI.GetBestMoveAsync();
+        // var move = await OmokAI.GetBestMoveAsync();
+        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard);
+
 
         if (move.Item1 >= 0 && move.Item2 >= 0)
         {
@@ -197,8 +199,10 @@ public class MultiplayState : BasePlayerState
     }
     */
 
-public class GameLogic : IDisposable
-{
+public class GameLogic : IDisposable {
+
+    public OmokBoard OmokBoard;
+    
     private Constants.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
     
     //기보확인을 위한 리스트
@@ -215,8 +219,9 @@ public class GameLogic : IDisposable
 
 
      //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-    public GameLogic(Constants.GameType gameType)
+    public GameLogic(OmokBoard omokBoard, Constants.GameType gameType)
     {
+        this.OmokBoard = omokBoard;
         // 바둑판 배열 초기화 (15x15 크기)
         _board = new Constants.PlayerType[15, 15];
         
@@ -288,9 +293,9 @@ public class GameLogic : IDisposable
     public void SetState(BasePlayerState state)
     {        
         GameManager.Instance.timer.StopTimer();
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
         _currentPlayerState?.OnExit(this); // 기존 상태 종료
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝2");
 
         _currentPlayerState = state;
         
@@ -298,9 +303,9 @@ public class GameLogic : IDisposable
         GameManager.Instance.timer.StartTimer();
         UI_Manager.Instance.RequestExecute("turn");
 
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
-        Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
+        // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작4");
         //TODO: 여기에 턴이 끝날 때 쓸 함수입력
     }
 

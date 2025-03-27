@@ -14,6 +14,9 @@ public class OptionPanelController : UI_Panel
     [Header("자동 로그인 토글 연결")]
     public Toggle autoLoginToggle;
     
+    [Header("실험적 기능")]
+    public Toggle experimentalToggle;
+    
     [Header("세팅 패널 프리팹 ")]
     public GameObject settingPanelPrefab;
     
@@ -48,8 +51,14 @@ public class OptionPanelController : UI_Panel
         
         // 토글 변경 시 자동 로그인 설정 저장
         autoLoginToggle.onValueChanged.AddListener(OnAutoLoginToggleChanged);
+        experimentalToggle.onValueChanged.AddListener(OnExperimentalToggleChanged);
+        experimentalToggle.isOn = PlayerPrefs.GetInt("Experimental", 0) == 1;
+        
     }
-    
+    private void OnExperimentalToggleChanged(bool arg0) {
+        PlayerPrefs.SetInt("Experimental", arg0 ? 1 : 0);
+    }
+
     // 자동 로그인 토글 콜백
     private void OnAutoLoginToggleChanged(bool isOn)
     {
