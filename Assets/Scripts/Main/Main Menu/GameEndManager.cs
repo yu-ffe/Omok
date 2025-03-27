@@ -21,11 +21,18 @@ public class GameEndManager : UI_Panel
     RectTransform[] gradeMinusCells = new RectTransform[3];
     Constants.GameResult pendingResult;
 
-    void Awake()
+    [SerializeField] Transform originPosition;
+    [SerializeField] Transform showPosition;
+
+    protected override void Awake()
     {
+        base.Awake();
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+       
         TryAutoRegister();
+
+        transform.position = originPosition.position;
     }
 
     void Start()
@@ -36,20 +43,23 @@ public class GameEndManager : UI_Panel
 
     public override void Show()
     {
+        transform.position = showPosition.position;
+        /*
         Debug.Log("[GameEndManager] Show() 호출됨");
 
-        if (!gg.activeSelf)
+        if (!gameObject.activeSelf)
         {
             Debug.Log("[GameEndManager] gg 활성화");
-            gg.SetActive(true);
-        }
+            gameObject.SetActive(true);
+        }*/
 
         EndButtonInfoSet();
     }
 
     public override void Hide()
     {
-        gameObject.SetActive(false); // 혹시 어디선가 이게 먼저 실행되면 안 됨
+        transform.position = originPosition.position;
+        // gameObject.SetActive(false); // 혹시 어디선가 이게 먼저 실행되면 안 됨
     }
 
     public override void OnEnable()
@@ -115,7 +125,8 @@ public class GameEndManager : UI_Panel
     
     public void ShowGameEndPanel(string message)
     {
-        UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
+        UI_Manager.Instance.Show(panelType);
+        Show();
     }
 
 
