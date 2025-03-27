@@ -293,20 +293,32 @@ public class RuleCheckers
         Vector2Int rightBack = new(x, y);
         Vector2Int lastPoint = new(x, y);
         bool isSpaceFourL = false;
+        bool searchEnd = false;
         int emptyCount = 0;
         px = x;
         py = y;
         leftStoneCount = 0;
         //! Left > -
-        while (IsValid(px - dir.x, py - dir.y))
+        while (true)
         {
+            if (!IsValid(px - dir.x, py - dir.y))
+            {
+                emptyCount++;
+                break;
+            }
             if (board[px - dir.x, py - dir.y] == Constants.PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
 
-                if (emptyCount == 2)
+                // if (emptyCount == 2)
+                //     break;
+                if (searchEnd)
+                {
+                    emptyCount++;
                     break;
+                }
+                searchEnd = true;
                 emptyCount++;
             }
             else if (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA)
@@ -323,8 +335,13 @@ public class RuleCheckers
         px = x;
         py = y;
         rightStoneCount = 0;
-        while (IsValid(px + dir.x, py + dir.y))
+        while (true)
         {
+            if (!IsValid(px + dir.x, py + dir.y))
+            {
+                emptyCount++;
+                break;
+            }
             if (board[px + dir.x, py + dir.y] == Constants.PlayerType.None)
             {
                 if (!isFakeCheck)
@@ -332,7 +349,6 @@ public class RuleCheckers
                 if (emptyCount == 2)
                     break;
                 emptyCount++;
-
             }
             else if (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA)
             {
@@ -352,6 +368,7 @@ public class RuleCheckers
             isSpaceFourL = false;
 
         //* === === === === === ===
+        searchEnd = false;
         bool isSpaceFourR = false;
         emptyCount = 0;
         px = x;
@@ -359,14 +376,26 @@ public class RuleCheckers
         rightStoneCount = 0;
 
         //! Right > +
-        while (IsValid(px + dir.x, py + dir.y))
+        while (true)
         {
+            if (!IsValid(px + dir.x, py + dir.y))
+            {
+                emptyCount++;
+                break;
+            }
             if (board[px + dir.x, py + dir.y] == Constants.PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
-                if (emptyCount == 2)
+
+                // if (emptyCount == 2)
+                //     break;
+                if (searchEnd)
+                {
+                    emptyCount++;
                     break;
+                }
+                searchEnd = true;
                 emptyCount++;
 
             }
@@ -386,8 +415,13 @@ public class RuleCheckers
         px = x;
         py = y;
         leftStoneCount = 0;
-        while (IsValid(px - dir.x, py - dir.y))
+        while (true)
         {
+            if (!IsValid(px - dir.x, py - dir.y))
+            {
+                emptyCount++;
+                break;
+            }
             if (board[px - dir.x, py - dir.y] == Constants.PlayerType.None)
             {
                 if (!isFakeCheck)
@@ -414,6 +448,15 @@ public class RuleCheckers
 
         if (isOpenFour || sameLine)
             isSpaceFourR = false;
+
+        if (isSpaceFourR)
+        {
+            bool openedLeftFoward = IsOpened(leftFoward.x, leftFoward.y, dir * -2);
+            bool openedLeftBack = IsOpened(leftBack.x, leftBack.y, dir * 2);
+            bool openedRightFoward = IsOpened(rightFoward.x, rightFoward.y, dir * 2);
+            bool openedRightBack = IsOpened(rightBack.x, rightBack.y, dir * -2);
+            isSpaceFourR = openedLeftFoward && openedLeftBack && openedRightFoward && openedRightBack;
+        }
 
         return (isOpenThree, isOpenFour, isOverSix, isSpaceThree, isSpaceBetweenThree, isSpaceFourL, isSpaceFourR);
     }
