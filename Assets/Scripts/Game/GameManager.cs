@@ -87,8 +87,9 @@ public class GameManager : Singleton<GameManager>
         SceneTransitionManager.Instance.LoadSceneAsync("Main").Forget();
     }
 
+    // 게임씬 UI 관련 매니저
     public RecordUIManager recordUIManager;
-
+    
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -108,6 +109,7 @@ public class GameManager : Singleton<GameManager>
             Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
             recordUIManager.RecordUISet(_gameType == Constants.GameType.Record); // 기보 UI 표기
+
         }
 
         //_canvas = GameObject.FindObjectOfType<Canvas>();
