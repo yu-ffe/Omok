@@ -117,8 +117,7 @@ public class GamePanel : UI_Panel {
         //  Sprite sprite_Right = SessionManager.GetUserProfileSprite()
 
         //
-        // imgProfileRight.sprite = sprite_Right;
-
+        // imgProfileRight.sprite = sprite_Right
         imgProfileLeft.sprite = PlayerManager.Instance.GetProfileSprites(PlayerManager.Instance.playerData.profileNum);
         txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
 
