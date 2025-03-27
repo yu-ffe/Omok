@@ -14,6 +14,8 @@ public class GameManager : Singleton<GameManager>
     public GameLogic gameLogic;
     public OmokBoard omokBoard ;
     public Timer timer;
+
+    public bool isTrackingAIState = false;
     
     public void StartGame(Constants.GameType gameType)
     {

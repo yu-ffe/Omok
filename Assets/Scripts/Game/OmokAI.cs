@@ -345,6 +345,16 @@ public class OmokAI{
         bool allMovesLosing = true; // 모든 수가 지는 수인지 체크
 
         foreach (var move in validMoves) {
+            if (GameManager.Instance.isTrackingAIState) {
+                Task.Run(() => {
+                    var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
+                    if (best.score != 0)
+                        UnityMainThreadDispatcher.Instance.Enqueue(() => {
+                            omokBoard.AIWhiteShowMarker(best.move); // 메인 스레드에서 AIWhiteShowMarker 호출
+                        });
+                    //Main Thread에서 호출, 처음 0만 제외
+                });
+            }
             board[move.Item1, move.Item2] = Constants.PlayerType.PlayerB;
             int score = AlphaBetaPruningWithTimeLimit(1, int.MinValue, int.MaxValue, false, stopwatch, timeLimit);
 
@@ -384,6 +394,16 @@ public class OmokAI{
             // 각 수에 대한 방어 점수 계산 및 저장
             bestMoves.Clear();
             foreach (var move in validMoves) {
+                if (GameManager.Instance.isTrackingAIState) {
+                    Task.Run(() => {
+                        var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
+                        if (best.score != 0)
+                            UnityMainThreadDispatcher.Instance.Enqueue(() => {
+                                omokBoard.AIWhiteShowMarker(best.move); // 메인 스레드에서 AIWhiteShowMarker 호출
+                            });
+                        //Main Thread에서 호출, 처음 0만 제외
+                    });
+                }
                 int defensiveScore = EvaluateDefensiveMove(move.Item1, move.Item2);
                 bestMoves.Add((move, defensiveScore));
             }
