@@ -45,8 +45,8 @@ public class RecordUIManager : MonoBehaviour
 
     void ButtonSet()
     {
-        AddSafeButton(buttonObj_First, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetBeforeLocation, true); });
-        AddSafeButton(buttonObj_Before, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetBeforeLocation, false); });
+        AddSafeButton(buttonObj_First, () => { RecordSaveManager.Instance.TurnBack(RecordSaveManager.Instance.GetBeforeLocation, true); });
+        AddSafeButton(buttonObj_Before, () => { RecordSaveManager.Instance.TurnBack(RecordSaveManager.Instance.GetBeforeLocation, false); });
         AddSafeButton(buttonObj_After, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, false); });
         AddSafeButton(buttonObj_Last, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, true); });
     }

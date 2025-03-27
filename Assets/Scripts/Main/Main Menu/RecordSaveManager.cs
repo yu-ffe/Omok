@@ -81,13 +81,31 @@ RecordSaveManager 인스턴스 대신 이동시키신곳 인스턴스로 변경�
         else
             PlaceStone(getLocationFunc());
     }
+    
+    public void TurnBack(Func<(Constants.PlayerType, int, int)> getLocationFunc, bool isContinuous)
+    {
+        if (isContinuous)
+            StartCoroutine(RemoveToTargetLocation(getLocationFunc));
+        else
+            ReMoveStone(getLocationFunc());
+    }
 
+    void ReMoveStone((Constants.PlayerType, int, int) location)
+    {
+        if (location.Item1 == Constants.PlayerType.None) return;
+
+        Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
+        // TODO: location 좌표에 착수 기능 추가
+        GameManager.Instance.omokBoard.RemoveStone();
+    }
+    
     void PlaceStone((Constants.PlayerType, int, int) location)
     {
         if (location.Item1 == Constants.PlayerType.None) return;
 
         Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
         // TODO: location 좌표에 착수 기능 추가
+        GameManager.Instance.omokBoard.PlaceStone(location.Item1,location.Item2,location.Item3);
     }
 
     IEnumerator GoToTargetLocation(Func<(Constants.PlayerType, int, int)> getLocationFunc)
@@ -97,6 +115,23 @@ RecordSaveManager 인스턴스 대신 이동시키신곳 인스턴스로 변경�
         while (location.Item1 != Constants.PlayerType.None) // 이동 가능할 때만 실행
         {
             // TODO: location 좌표에 착수 기능
+            GameManager.Instance.omokBoard.PlaceStone(location.Item1,location.Item2,location.Item3);
+            Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
+
+            yield return new WaitForSeconds(0.2f);
+
+            location = getLocationFunc(); // 다음 목표 좌표 이동
+        }
+    }
+    
+    IEnumerator RemoveToTargetLocation(Func<(Constants.PlayerType, int, int)> getLocationFunc)
+    {
+        (Constants.PlayerType, int, int) location = getLocationFunc();
+
+        while (location.Item1 != Constants.PlayerType.None) // 이동 가능할 때만 실행
+        {
+            // TODO: location 좌표에 착수 기능
+            GameManager.Instance.omokBoard.RemoveStone();
             Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
 
             yield return new WaitForSeconds(0.2f);
