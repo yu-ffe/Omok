@@ -123,7 +123,7 @@ public class GamePanel : UI_Panel {
         {
             imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
 
-            switch (Constants.AILevel.Middle) // TODO 게임 로직에 AI 난이도 저장하는 변수로 변경
+            switch (GameManager.Instance.GetAILevel()) // AI 난이도
             {
                 case Constants.AILevel.Easy:
                     txtNickNameRight.text = "AI-Lv1";

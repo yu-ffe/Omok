@@ -14,7 +14,9 @@ public class GameManager : Singleton<GameManager>
     public GameLogic gameLogic;
     public OmokBoard omokBoard ;
     public Timer timer;
-    
+
+
+
     public void StartGame(Constants.GameType gameType)
     {
         _gameType = gameType;
@@ -103,5 +105,20 @@ public class GameManager : Singleton<GameManager>
     {
         gameLogic?.Dispose();
         gameLogic = null;
+    }
+
+
+
+    // 게임 시작 시 AI 레벨 설정 관련
+   [SerializeField] Constants.AILevel aILevel;
+
+    public void SetAILevel(Constants.AILevel aILevel)
+    {
+        this.aILevel = aILevel;
+    }
+
+    public Constants.AILevel GetAILevel()
+    {
+        return aILevel;
     }
 }
