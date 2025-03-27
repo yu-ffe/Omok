@@ -176,11 +176,27 @@ public class GamePanel : UI_Panel {
         
         var currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
 
-        SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
-        SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+        if (imgGameTurn != null && imgGameTurn.Length >= 2)
+        {
+            if (imgGameTurn[0] != null)
+                SetImageAlpha(imgGameTurn[0], currentPlayer == Constants.PlayerType.PlayerA ? 1f : 0.5f);
+        
+            if (imgGameTurn[1] != null)
+                SetImageAlpha(imgGameTurn[1], currentPlayer == Constants.PlayerType.PlayerB ? 1f : 0.3f);
+        }
+        else
+        {
+            Debug.LogWarning("GamePanel의 imgGameTurn 이미지 참조가 누락되었습니다.");
+        }
     }
     void SetImageAlpha(Image image, float alpha)
     {
+        if (image == null)
+        {
+            Debug.LogWarning("SetImageAlpha 호출 시 image가 null입니다.");
+            return;
+        }
+
         Color color = image.color;
         color.a = alpha;
         image.color = color;
