@@ -124,7 +124,7 @@ public class RuleCheckers
         while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
         {
             count++;
-            if (!isFakeCheck)
+            // if (!isFakeCheck)
                 // Debug.Log($"add : {px - dir.x},{py - dir.y}");
 
             px -= dir.x;
@@ -147,7 +147,7 @@ public class RuleCheckers
         while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
         {
             count++;
-            if (!isFakeCheck)
+            // if (!isFakeCheck)
                 // Debug.Log($"add : {px + dir.x},{py + dir.y}");
 
             px += dir.x;
@@ -191,7 +191,7 @@ public class RuleCheckers
             py -= dir.y;
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
+                // if (!isFakeCheck)
                     // Debug.Log($"add : {px},{py}");
 
                 leftStoneCount++;
@@ -204,7 +204,7 @@ public class RuleCheckers
             leftEmptyFirst = false;
             while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
+                // if (!isFakeCheck)
                     // Debug.Log($"add : {px},{py}");
                 leftStoneCount++;
                 px -= dir.x;
@@ -226,7 +226,7 @@ public class RuleCheckers
             py += dir.y;
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
+                // if (!isFakeCheck)
                     // Debug.Log($"add : {px},{py}");
                 rightStoneCount++;
                 px += dir.x;
@@ -238,7 +238,7 @@ public class RuleCheckers
             rightEmptyFirst = false;
             while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == Constants.PlayerType.PlayerA))
             {
-                if (!isFakeCheck)
+                // if (!isFakeCheck)
                     // Debug.Log($"add : {px + dir.x},{py + dir.y}");
                 rightStoneCount++;
                 px += dir.x;
