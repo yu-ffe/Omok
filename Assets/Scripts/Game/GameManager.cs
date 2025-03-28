@@ -74,7 +74,39 @@ public class GameManager : Singleton<GameManager>
     public void RestartCurrentGame()
     {
         Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
-        StartGame(lastGameType);
+
+        if(lastGameType != Constants.GameType.DualPlayer &&
+            lastGameType != Constants.GameType.Record)
+        {
+            StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+                if (callback.Success)
+                {
+                    StartGame(lastGameType);
+                }
+                else
+                {
+                    Debug.Log("싱글 플레이 실패: 돈 부족");
+
+                    UI_Manager.Instance.popup.Show(
+                        $"코인이 부족합니다.",
+                        "상점으로 가기",
+                        "취소",
+                        okAction: () =>
+                        {
+                            if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Shop, out var shopPanel))
+                                shopPanel.gameObject.SetActive(true);
+                        },
+                        cancelAction: () => UI_Manager.Instance.popup.Hide()
+                    );
+                }
+            }));
+        }
+
+        else
+        {
+            StartGame(lastGameType);
+        }
+
     }
     
     public void ChangeToGameScene(Constants.GameType gameType)

@@ -28,7 +28,7 @@ public class GameSelectPanelController : UI_Panel {
                 GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
             }
             else {
-                Debug.Log("듀얼 플레이 실패: 돈 부족");
+                Debug.Log("싱글 플레이 실패: 돈 부족");
                 
                 Hide();
 
@@ -50,11 +50,14 @@ public class GameSelectPanelController : UI_Panel {
     }
     private void StartDualPlay() {
         StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
-            if(callback.Success) {
-                StartCoroutine(PlayerManager.Instance.UpdateUserData());
-                Hide();
-                GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
-                GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+            StartCoroutine(PlayerManager.Instance.UpdateUserData());
+            Hide();
+            GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
+            GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+
+            /*
+            if (callback.Success) {
+               
             }
             else 
             {
@@ -72,7 +75,7 @@ public class GameSelectPanelController : UI_Panel {
                     },
                     cancelAction: () => UI_Manager.Instance.popup.Hide()
                 );
-            }
+            }*/
         }));
 
     }
