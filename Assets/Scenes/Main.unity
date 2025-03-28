@@ -3090,6 +3090,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 444248231}
     m_Modifications:
+    - target: {fileID: 396200228800523835, guid: c06a18dcf9243d046bbc77f4501a5d68, type: 3}
+      propertyPath: gamePopupPrefab
+      value: 
+      objectReference: {fileID: 1652068663901884948, guid: 5f6eae80431c629498f355511c4f5d7e, type: 3}
     - target: {fileID: 3934273386199162245, guid: c06a18dcf9243d046bbc77f4501a5d68, type: 3}
       propertyPath: m_Name
       value: Game Select Panel

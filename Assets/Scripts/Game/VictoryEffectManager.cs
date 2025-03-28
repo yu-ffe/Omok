@@ -23,7 +23,6 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
     private IEnumerator PlayAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        Debug.Log("[이펙트 실행됨]"); // 🔍 이거 꼭 확인
 
         Camera cam = Camera.main;
         Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 5f);
@@ -40,11 +39,9 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
     {
         if (isEffectPlaying) return;
         isEffectPlaying = true;
-        
-        Camera cam = Camera.main;
-        Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 1f);
-        Vector3 worldPos = cam.ScreenToWorldPoint(screenCenter);
-        fireworks.transform.position = worldPos;
+
+        // 고정 위치로 설정 (Vector3.zero 기준에서 아래로 살짝)
+        fireworks.transform.position = new Vector3(0f, -3.8f, 0f);
 
         fireworks.Play();
         SoundManager.Instance.PlayWinSound();

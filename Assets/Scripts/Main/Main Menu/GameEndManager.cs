@@ -55,8 +55,6 @@ public class GameEndManager : UI_Panel
 
         EndButtonInfoSet();
         
-        VictoryEffectManager.Instance.ShowVictoryEffect();
-        
     }
     
 
@@ -91,6 +89,16 @@ public class GameEndManager : UI_Panel
     {
         if (pendingResult == Constants.GameResult.None) return;
         SetEndGameInfo(pendingResult);
+
+        if(pendingResult == Constants.GameResult.Win)
+            VictoryEffectManager.Instance.ShowVictoryEffect();
+        
+        if(pendingResult == Constants.GameResult.Player1Win)
+            VictoryEffectManager.Instance.ShowVictoryEffect();
+        
+        if(pendingResult == Constants.GameResult.Player2Win)
+            VictoryEffectManager.Instance.ShowVictoryEffect();
+        
         pendingResult = Constants.GameResult.None;
     }
 
