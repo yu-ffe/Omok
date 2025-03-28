@@ -1800,6 +1800,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &1437289752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1918,6 +1919,8 @@ RectTransform:
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
+=======
+>>>>>>> parent of ed06ff2 (일단 간단한 승리파티클 생성)
 --- !u!1 &1443883744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3146,6 +3149,7 @@ SceneRoots:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 1146577665}
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
@@ -3154,3 +3158,5 @@ SceneRoots:
 >>>>>>> parent of dbfe2b9 (승리시 파티클 적용)
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
+=======
+>>>>>>> parent of ed06ff2 (일단 간단한 승리파티클 생성)

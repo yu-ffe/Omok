@@ -55,6 +55,7 @@ public class GameEndManager : UI_Panel
 
         EndButtonInfoSet();
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -69,6 +70,8 @@ public class GameEndManager : UI_Panel
 >>>>>>> parent of dbfe2b9 (승리시 파티클 적용)
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
+=======
+>>>>>>> parent of ed06ff2 (일단 간단한 승리파티클 생성)
     }
 
     public override void Hide()
