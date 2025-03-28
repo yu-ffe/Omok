@@ -58,9 +58,14 @@ public class GameEndManager : UI_Panel
 =======
 <<<<<<< HEAD
         
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 >>>>>>> Stashed changes
+=======
+        VictoryEffectManager.Instance.ShowVictoryEffect();
+        
+>>>>>>> parent of dbfe2b9 (승리시 파티클 적용)
     }
 
     public override void Hide()
@@ -94,16 +99,6 @@ public class GameEndManager : UI_Panel
     {
         if (pendingResult == Constants.GameResult.None) return;
         SetEndGameInfo(pendingResult);
-
-        if(pendingResult == Constants.GameResult.Win)
-            VictoryEffectManager.Instance.ShowVictoryEffect();
-        
-        if(pendingResult == Constants.GameResult.Player1Win)
-            VictoryEffectManager.Instance.ShowVictoryEffect();
-        
-        if(pendingResult == Constants.GameResult.Player2Win)
-            VictoryEffectManager.Instance.ShowVictoryEffect();
-        
         pendingResult = Constants.GameResult.None;
     }
 
