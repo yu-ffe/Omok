@@ -182,6 +182,7 @@ public class AIState : BasePlayerState
 
     public override void HandleMove(GameLogic gameLogic, int row, int col)
     {
+        SoundManager.Instance.PlayPlacingSound(); // 착수 효과음
         ProcessMove(gameLogic, Constants.PlayerType.PlayerB, row, col);
     }
 
