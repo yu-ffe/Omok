@@ -374,7 +374,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             int siblingIndex = boardImage.childCount - 5;
             tmpText.text = "" + siblingIndex;
 
-            if (siblingIndex % 2 == 1)
+            if (siblingIndex % 2 == 0)
             {
                 tmpText.color = Color.black;
             }
