@@ -134,12 +134,16 @@ public class GameEndManager : UI_Panel
 
             return; // DualPlayer 처리 종료
         }
-
-        // 싱글/멀티 플레이일 경우 기존 로직 실행
-        GradeBarSetting();
-        GradeCellReset();
-        GradeMinMaxTextSet();
-        SetAfterGameEnd(gameResult);
+        else if (GameManager.Instance.CurrentGameType == Constants.GameType.SinglePlayer 
+                 || GameManager.Instance.CurrentGameType == Constants.GameType.MultiPlayer)
+        {
+            // 싱글/멀티 플레이일 경우 기존 로직 실행
+            GradeBarSetting();
+            GradeCellReset();
+            GradeMinMaxTextSet();
+            SetAfterGameEnd(gameResult);
+        }
+        
     }
 
     private void EndButtonInfoSet()
