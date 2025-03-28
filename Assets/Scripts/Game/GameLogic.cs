@@ -500,6 +500,7 @@ public class GameLogic : IDisposable
     public void EndGame(Constants.GameResult gameResult)
     {
         Debug.Log($"게임끝 게임결과 : {gameResult}");
+        GameManager.Instance.timer.StopTimer();
 
         GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
         NetworkManager.Instance.GameEndSendForm(gameResult);

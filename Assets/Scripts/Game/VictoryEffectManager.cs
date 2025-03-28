@@ -5,22 +5,41 @@ using DG.Tweening;
 public class VictoryEffectManager : Singleton<VictoryEffectManager>
 {
     [Header("Victory Effect References")]
-    public GameObject overlayPanel;
-    public ParticleSystem fireworks;
-
+    //public GameObject overlayPanel;
+    //public ParticleSystem fireworks;
+    
+    public GameObject starPrefab; // Spark_Star 프리팹
+    public RectTransform canvasRect; // UI 기준 RectTransform
+    public int burstCount = 12; // 몇 개 뿌릴지
+    
     private bool isEffectPlaying = false;
 
     protected override void Awake()
     {
         base.Awake(); // Singleton 설정 (중복 생성 방지)
     }
+    public void ShowVictoryEffect()
+    {
+        for (int i = 0; i < burstCount; i++)
+        {
+            GameObject star = Instantiate(starPrefab, canvasRect);
+            
+            // 랜덤 위치 (중앙 기준 약간 퍼지게)
+            Vector2 randPos = UnityEngine.Random.insideUnitCircle * 150f;
+            star.GetComponent<RectTransform>().anchoredPosition = randPos;
+
+            // 랜덤 회전/스케일도 가능
+            float rot = UnityEngine.Random.Range(0f, 360f);
+            star.transform.rotation = Quaternion.Euler(0, 0, rot);
+        }
+        SoundManager.Instance.PlayWinSound();
+    }
     
-    public void ShowVictoryEffectDelayed(float delay = 0.1f)
+    /*public void ShowVictoryEffectDelayed(float delay = 0.1f)
     {
         StartCoroutine(PlayAfterDelay(delay));
     }
     
-    private IEnumerator PlayAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -35,17 +54,8 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
         SoundManager.Instance.PlayWinSound();
     }
 
-    public void ShowVictoryEffect()
-    {
-        if (isEffectPlaying) return;
-        isEffectPlaying = true;
-
-        // 고정 위치로 설정 (Vector3.zero 기준에서 아래로 살짝)
-        fireworks.transform.position = new Vector3(0f, -3.8f, 0f);
-
-        fireworks.Play();
-        SoundManager.Instance.PlayWinSound();
-    }
+    
+    
 
     public void ResetEffect()
     {
@@ -53,6 +63,8 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
         overlayPanel.SetActive(false);
         fireworks.Stop();
     }
+    */
+    
     
     
 }
