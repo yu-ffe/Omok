@@ -156,6 +156,7 @@ MonoBehaviour:
   goMainObj: {fileID: 1212140051}
   timerObj: {fileID: 107075659}
   fireObj: {fileID: 286277648}
+  turnObj: {fileID: 1215835855}
   buttonObj_First: {fileID: 245758651}
   buttonObj_Before: {fileID: 967756281}
   buttonObj_After: {fileID: 2038562932}
@@ -469,6 +470,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2114001626}
     m_Modifications:
+    - target: {fileID: 349121538516088101, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 573337469563291164, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1788,6 +1793,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1212140051}
   m_CullTransparentMesh: 1
+--- !u!1 &1215835855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 349121538516088101, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
+  m_PrefabInstance: {fileID: 286277644}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1443883744
 GameObject:
   m_ObjectHideFlags: 0
