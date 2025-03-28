@@ -11,6 +11,7 @@ public class RecordUIManager : MonoBehaviour
     [SerializeField] GameObject goMainObj; // 뒤로가기 버튼
     [SerializeField] GameObject timerObj; // 타이머
     [SerializeField] GameObject fireObj; // 착수
+    [SerializeField] GameObject turnObj; // 흑백패널
 
     [Header("수 이동 버튼 오브젝트들")]
     [SerializeField] GameObject buttonObj_First;
@@ -36,6 +37,7 @@ public class RecordUIManager : MonoBehaviour
         // 타이머, 착수 버튼 표기
         timerObj.SetActive(!isRecord);
         fireObj.SetActive(!isRecord);
+        turnObj.SetActive(!isRecord);
     }
 
     private void Start()
