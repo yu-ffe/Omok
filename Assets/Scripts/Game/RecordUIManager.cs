@@ -18,7 +18,7 @@ public class RecordUIManager : MonoBehaviour
     [SerializeField] GameObject buttonObj_Before;
     [SerializeField] GameObject buttonObj_After;
     [SerializeField] GameObject buttonObj_Last;
-
+    
 
     private void Awake()
     {
@@ -51,6 +51,10 @@ public class RecordUIManager : MonoBehaviour
         AddSafeButton(buttonObj_Before, () => { RecordSaveManager.Instance.TurnBack(RecordSaveManager.Instance.GetBeforeLocation, false); });
         AddSafeButton(buttonObj_After, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, false); });
         AddSafeButton(buttonObj_Last, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, true); });
+
+        AddSafeButton(goMainObj, () => { GameManager.Instance.ChangeToMainScene(); });
+        
+     
     }
 
     void AddSafeButton(GameObject buttonObj, UnityEngine.Events.UnityAction action)
