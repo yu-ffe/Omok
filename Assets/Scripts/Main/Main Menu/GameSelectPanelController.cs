@@ -77,30 +77,31 @@ public class GameSelectPanelController : UI_Panel {
     }
 
     private void StartMultiPlay() {
-        StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
-            if(callback.Success) {
-                StartCoroutine(PlayerManager.Instance.UpdateUserData());
-                Hide();
-                GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
-            }
-            else {
-                Debug.Log("듀얼 플레이 실패: 돈 부족");
-                
-                Hide();
-
-                UI_Manager.Instance.popup.Show(
-                    $"코인이 부족합니다. 상점으로 가시겠습니까?",
-                    "상점으로 가기",
-                    "취소",
-                    okAction: () =>
-                    {
-                        if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Shop, out var shopPanel))
-                            shopPanel.gameObject.SetActive(true);
-                    },
-                    cancelAction: () => UI_Manager.Instance.popup.Hide()
-                );
-            }
-        }));
+        // StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+        //     if(callback.Success) {
+        //         StartCoroutine(PlayerManager.Instance.UpdateUserData());
+        //         Hide();
+        //         GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
+        //     }
+        //     else {
+        //         Debug.Log("듀얼 플레이 실패: 돈 부족");
+        //         
+        //         Hide();
+        //
+        //         UI_Manager.Instance.popup.Show(
+        //             $"코인이 부족합니다. 상점으로 가시겠습니까?",
+        //             "상점으로 가기",
+        //             "취소",
+        //             okAction: () =>
+        //             {
+        //                 if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Shop, out var shopPanel))
+        //                     shopPanel.gameObject.SetActive(true);
+        //             },
+        //             cancelAction: () => UI_Manager.Instance.popup.Hide()
+        //         );
+        //     }
+        // }));
+        Debug.Log("멀티 플레이 준비중");
         // Todo: 스타트 멀티 플레이
 
     }

@@ -338,7 +338,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2644786747381285862}
         m_TargetAssemblyTypeName: SignOutHandler, Assembly-CSharp
         m_MethodName: SignOut
         m_Mode: 1

@@ -120,8 +120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1272391735300917640}
   m_HandleRect: {fileID: 5655749105322141456}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999994
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -626,7 +626,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6546030818664446814}
   m_HandleRect: {fileID: 6729874233499381040}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -877,7 +877,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 50
   m_Viewport: {fileID: 6004189244126744961}
   m_HorizontalScrollbar: {fileID: 4130066126216443196}
   m_VerticalScrollbar: {fileID: 475693244284962526}
@@ -904,8 +904,6 @@ MonoBehaviour:
   content: {fileID: 3754417953822491727}
   contentRectTransform: {fileID: 4945936788415593668}
   scrollRect: {fileID: 7775739778465008575}
-  spacing: 10
-  totalCells: 10
   createCellCount: 6
   cellRowCount: 1
 --- !u!1 &8039769992230699399
