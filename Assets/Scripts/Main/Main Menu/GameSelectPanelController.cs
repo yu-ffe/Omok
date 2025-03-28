@@ -48,34 +48,37 @@ public class GameSelectPanelController : UI_Panel {
 
     }
     private void StartDualPlay() {
-        StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
-            StartCoroutine(PlayerManager.Instance.UpdateUserData());
+
+        StartCoroutine(PlayerManager.Instance.UpdateUserData());
+        Hide();
+        GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
+        GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+
+
+        /*
+    StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+
+        if (callback.Success) {
+
+        }
+        else 
+        {
+            Debug.Log("듀얼 플레이 실패: 돈 부족");
+
             Hide();
-            GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
-            GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
 
-            /*
-            if (callback.Success) {
-               
-            }
-            else 
-            {
-                Debug.Log("듀얼 플레이 실패: 돈 부족");
-                
-                Hide();
-
-                UI_Manager.Instance.popup.Show(
-                    $"코인이 부족합니다. 상점으로 가시겠습니까?",
-                    "상점으로 가기",
-                    "취소",
-                    okAction: () =>
-                    {
-                        UI_Manager.Instance.Show(UI_Manager.PanelType.Shop);
-                    },
-                    cancelAction: () => UI_Manager.Instance.popup.Hide()
-                );
-            }*/
-        }));
+            UI_Manager.Instance.popup.Show(
+                $"코인이 부족합니다. 상점으로 가시겠습니까?",
+                "상점으로 가기",
+                "취소",
+                okAction: () =>
+                {
+                    UI_Manager.Instance.Show(UI_Manager.PanelType.Shop);
+                },
+                cancelAction: () => UI_Manager.Instance.popup.Hide()
+            );
+        }
+    }));*/
 
     }
 
