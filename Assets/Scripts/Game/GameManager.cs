@@ -74,7 +74,29 @@ public class GameManager : Singleton<GameManager>
     public void RestartCurrentGame()
     {
         Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
-        StartGame(lastGameType);
+
+        if(lastGameType != Constants.GameType.DualPlayer &&
+            lastGameType != Constants.GameType.Record)
+        {
+            StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
+                if (callback.Success)
+                {
+                    StartGame(lastGameType);
+                }
+                else
+                {
+                    Debug.Log("싱글 플레이 실패: 돈 부족@@@@");
+
+                    
+                }
+            }));
+        }
+
+        else
+        {
+            StartGame(lastGameType);
+        }
+
     }
     
     public void ChangeToGameScene(Constants.GameType gameType)
