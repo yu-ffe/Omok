@@ -54,6 +54,13 @@ public class GameEndManager : UI_Panel
         }*/
 
         EndButtonInfoSet();
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+        
+=======
+>>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
+>>>>>>> Stashed changes
     }
 
     public override void Hide()
