@@ -95,6 +95,7 @@ public class GameEndManager : UI_Panel
         // DualPlayer일 경우 버튼 변경 처리
         if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
         {
+            Debug.LogWarning("듀얼 처리");
             var winnerPlayer = Constants.GetWinnerPlayerFromGameResult(gameResult);
 
             string winnerLabel = winnerPlayer switch
@@ -105,7 +106,8 @@ public class GameEndManager : UI_Panel
             };
 
             resultText.text = $"{winnerLabel}의 승리입니다!";
-            
+            gradeResultText.text = null;
+
             // 버튼 보이기/숨기기
             okButton.SetActive(true);
             restartButton.SetActive(true);
@@ -137,6 +139,7 @@ public class GameEndManager : UI_Panel
         else if (GameManager.Instance.CurrentGameType == Constants.GameType.SinglePlayer 
                  || GameManager.Instance.CurrentGameType == Constants.GameType.MultiPlayer)
         {
+            Debug.LogWarning("일반 처리");
             // 싱글/멀티 플레이일 경우 기존 로직 실행
             GradeBarSetting();
             GradeCellReset();
