@@ -23,7 +23,11 @@ public class GamePopup : MonoBehaviour
         
         confirmButtonText.text = confirmText;
         confirmButton.onClick.RemoveAllListeners();
-        confirmButton.onClick.AddListener(confirmAction);
+        confirmButton.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.ButtonClickSound(); //  버튼 클릭 사운드
+            confirmAction?.Invoke();                  //  원래 액션
+        });
         confirmButton.onClick.AddListener(ClosePopup);
 
         if (!string.IsNullOrEmpty(cancelText))
@@ -54,6 +58,7 @@ public class GamePopup : MonoBehaviour
     /// </summary>
     public void ClosePopup()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         gameObject.SetActive(false);
     }
 }

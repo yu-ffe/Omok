@@ -351,6 +351,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     //바둑알을 바둑판로컬위치에 착수하는 함수
     public void PlaceStone(Constants.PlayerType playerType, int x, int y)
     {
+        
         Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 바둑판로컬위치로 바꿔줌
 
         GameObject stone = Instantiate(playerType == Constants.PlayerType.PlayerA ? MarkerBlackPrefab : MarkerWhitePrefab, boardImage);
@@ -459,6 +460,8 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     //착수 버튼에 할당할 함수
     public void OnPointerUpMarkerPositionSelecor()
     {
+        SoundManager.Instance.PlayPlacingSound(); // 바둑돌 놓는 효과음
+
         if (OnOnGridClickedDelegate != null)
             if (OnOnGridClickedDelegate != null && MarkerPosition.activeSelf)
             {

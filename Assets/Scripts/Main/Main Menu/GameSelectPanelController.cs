@@ -19,7 +19,10 @@ public class GameSelectPanelController : UI_Panel {
         gameObject.SetActive(false);
     }
 
-    private void StartSinglePlay() {
+    private void StartSinglePlay()
+    {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+        
         StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
             if(callback.Success) {
                 StartCoroutine(PlayerManager.Instance.UpdateUserData());
@@ -47,7 +50,9 @@ public class GameSelectPanelController : UI_Panel {
         // Todo: 스타트 싱글 플레이
 
     }
-    private void StartDualPlay() {
+    private void StartDualPlay() 
+    {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
 
         StartCoroutine(PlayerManager.Instance.UpdateUserData());
         Hide();
@@ -83,6 +88,7 @@ public class GameSelectPanelController : UI_Panel {
     }
 
     private void StartMultiPlay() {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         // StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
         //     if(callback.Success) {
         //         StartCoroutine(PlayerManager.Instance.UpdateUserData());
@@ -118,6 +124,7 @@ public class GameSelectPanelController : UI_Panel {
     }
 
     public override void Hide() {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         gameObject.SetActive(false);
         UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
 

@@ -86,6 +86,18 @@ public class GameManager : Singleton<GameManager>
                 else
                 {
                     Debug.Log("싱글 플레이 실패: 돈 부족@@@@");
+                    if (popupInstance == null)
+                    {
+                        popupInstance = Instantiate(gamePopupPrefab, FindObjectOfType<Canvas>().transform);
+                    }
+
+                    popupInstance.Setup(
+                        message: "돈이 부족합니다",
+                        confirmText: "예",
+                        confirmAction: popupInstance.ClosePopup
+                    );
+
+                    popupInstance.OpenPopup();
 
                     
                 }

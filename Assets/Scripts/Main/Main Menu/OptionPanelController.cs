@@ -56,12 +56,14 @@ public class OptionPanelController : UI_Panel
         
     }
     private void OnExperimentalToggleChanged(bool arg0) {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         PlayerPrefs.SetInt("Experimental", arg0 ? 1 : 0);
     }
 
     // 자동 로그인 토글 콜백
     private void OnAutoLoginToggleChanged(bool isOn)
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         SignInHandler.Instance.SetAutoLoginEnabled(isOn);
     }
     
@@ -142,6 +144,7 @@ public class OptionPanelController : UI_Panel
     } 
     public override void Hide()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         gameObject.SetActive(false);
         UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
     }

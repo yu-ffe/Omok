@@ -155,23 +155,28 @@ public class MainPanel : UI_Panel
         {
             case 0:
                 Debug.Log("대국 시작"); // 싱글플레이인지 멀티플레이인지 선택하는 팝업뜸
+                SoundManager.Instance.ButtonClickSound();
                 UI_Manager.Instance.Show(UI_Manager.PanelType.GameSelect);
                 break;
             case 1:
                 Debug.Log("내 기보");
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Record);
+                SoundManager.Instance.ButtonClickSound();
                 break;
             case 2:
                 Debug.Log("랭킹");
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Ranking);
+                SoundManager.Instance.ButtonClickSound();
                 break;
             case 3:
                 Debug.Log("상점");
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Shop);
+                SoundManager.Instance.ButtonClickSound();
                 break;
             case 4:
                 Debug.Log("설정");
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Option);
+                SoundManager.Instance.ButtonClickSound();
                 break;
             default: Debug.Log("???"); break;
         }

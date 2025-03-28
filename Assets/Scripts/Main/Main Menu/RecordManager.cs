@@ -288,6 +288,7 @@ public class RecordManager : UI_Panel
 
     public override void Hide()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         gameObject.SetActive(false);
         UI_Manager.Instance.Panels[UI_Manager.PanelType.Main].gameObject.SetActive(true);
     }

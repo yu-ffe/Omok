@@ -137,6 +137,7 @@ using UnityEngine.UI;
 
         public void HidePopup()
         {
+            SoundManager.Instance.ButtonClickSound();//버튼 클릭음
             objPopup.SetActive(false);
         }
 

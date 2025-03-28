@@ -248,6 +248,8 @@ public class LoginPanel : UI_Panel
     
     public void OnClick_Login()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+        
         txtMessage.text = "로그인 중...";
 
         SignInHandler.Instance.AttemptSignIn(inputEmail.text.Trim(), inputPassword.text, (isSuccess, message) =>
@@ -263,11 +265,14 @@ public class LoginPanel : UI_Panel
     }
 
     public void OnClick_Signup_Show() {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         Show_SignUpPhase();
     }
 
     public void OnClick_SignUp_TrySignUp()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+        
         if (selectedImageIndex == -1)
         {
             txtMessage.text = "프로필 이미지를 선택해주세요.";
@@ -339,6 +344,7 @@ public class LoginPanel : UI_Panel
     }
 
     public void OnClick_SignUp_Cancel() {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
         Show_LoginPhase();
     }
 
