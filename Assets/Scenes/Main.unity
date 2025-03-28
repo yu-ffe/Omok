@@ -356,8 +356,8 @@ Canvas:
   m_GameObject: {fileID: 444248227}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 1683287679}
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -407,10 +407,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 444248231}
     m_Modifications:
-    - target: {fileID: 387826114190889968, guid: 5675a947600d04b7a893dcc4d0403680, type: 3}
-      propertyPath: m_RaycastTarget
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 427451409810935210, guid: 5675a947600d04b7a893dcc4d0403680, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -490,10 +486,6 @@ PrefabInstance:
     - target: {fileID: 7089154270135865903, guid: 5675a947600d04b7a893dcc4d0403680, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7407526560785953651, guid: 5675a947600d04b7a893dcc4d0403680, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -484.41003
       objectReference: {fileID: 0}
     - target: {fileID: 7597827352988950472, guid: 5675a947600d04b7a893dcc4d0403680, type: 3}
       propertyPath: m_Pivot.x
@@ -833,7 +825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4945936788415593668, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029783101
+      value: -0.000078961224
       objectReference: {fileID: 0}
     - target: {fileID: 6004189244126744961, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -926,7 +918,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1611621341234998260, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029783101
+      value: -0.000078961224
       objectReference: {fileID: 0}
     - target: {fileID: 1638939764251453915, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_Size
@@ -1114,7 +1106,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -6917924009119283942, guid: 00656a6ece8dc5e45beb0c2392a172bd, type: 2}
   m_audioClip: {fileID: 8300000, guid: c33206d3c82199b42ab3167b23c007cd, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1722,7 +1714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1324718273517624438, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000029783101
+      value: -0.000078961224
       objectReference: {fileID: 0}
     - target: {fileID: 1982181595169843063, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_ScrollSensitivity
