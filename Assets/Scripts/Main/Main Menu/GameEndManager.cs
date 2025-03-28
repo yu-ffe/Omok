@@ -115,12 +115,13 @@ public class GameEndManager : UI_Panel
             okButtonText.text = "확인";
             restartButtonText.text = "재대국";
 
-            // okButton 클릭 시 → 단순히 패널 닫기
+            // okButton 클릭 시 → 씬 전환 해서 메인 패널 열기
             var okBtn = okButton.GetComponent<Button>();
             okBtn.onClick.RemoveAllListeners();
             okBtn.onClick.AddListener(() =>
             {
                 this.Hide();
+                GameManager.Instance.ChangeToMainScene();
             });
 
             var restartBtn = restartButton.GetComponent<Button>();
