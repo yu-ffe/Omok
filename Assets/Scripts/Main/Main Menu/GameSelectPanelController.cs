@@ -24,6 +24,7 @@ public class GameSelectPanelController : UI_Panel {
             if(callback.Success) {
                 StartCoroutine(PlayerManager.Instance.UpdateUserData());
                 Hide();
+                GameManager.Instance.SetGameType(Constants.GameType.SinglePlayer);
                 GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
             }
             else {
