@@ -20,6 +20,9 @@ public class Timer : MonoBehaviour
     public float CurrentTime { get; private set; } // 현재 진행 시간
     private bool _isPaused = true; // 일시정지 여부
     private float radius = 100f;
+    
+    private bool isWarningPlaying = false;
+    private Coroutine warningCoroutine;
 
     public Action OnTimeout; // 시간 초과 시 호출될 콜백
 
@@ -37,6 +40,14 @@ public class Timer : MonoBehaviour
 
         // 시간 흐름
         CurrentTime += Time.deltaTime;
+        float remaining = totalTime - CurrentTime;
+
+        // 경고 사운드 (5초 이하로 처음 진입했을 때 반복)
+        if (!isWarningPlaying && remaining <= 5f)
+        {
+            isWarningPlaying = true;
+            warningCoroutine = StartCoroutine(PlayWarningSoundLoop());
+        }
 
         // 시간 초과
         if (CurrentTime >= totalTime)
@@ -44,6 +55,14 @@ public class Timer : MonoBehaviour
             CurrentTime = totalTime;
             _isPaused = true;
             UpdateUI();
+            // 🔕 사운드 반복 종료
+            if (warningCoroutine != null)
+            {
+                StopCoroutine(warningCoroutine);
+                warningCoroutine = null;
+            }
+            isWarningPlaying = false;
+            
             OnTimeout?.Invoke(); // 콜백 실행
             HideHandles(); // 핸들 숨김
             GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(GameManager.Instance.gameLogic.GetCurrentPlayerType());
@@ -51,6 +70,15 @@ public class Timer : MonoBehaviour
         else
         {
             UpdateUI();
+        }
+    }
+    
+    private IEnumerator PlayWarningSoundLoop()
+    {
+        while (CurrentTime < totalTime)
+        {
+            SoundManager.Instance.PlayTimerSound(); // ⏱️ 타이머 사운드
+            yield return new WaitForSeconds(1f); // ⏲️ 1초 간격 반복
         }
     }
 
@@ -75,13 +103,20 @@ public class Timer : MonoBehaviour
     {
         if (customTime > 0)
         {
-            totalTime = customTime; // 사용자 지정 시간
+            totalTime = customTime;
         }
 
         CurrentTime = 0;
         _isPaused = false;
-        ShowHandles(); // 핸들 표시
-        UpdateUI(); // 즉시 반영
+        isWarningPlaying = false;
+        if (warningCoroutine != null)
+        {
+            StopCoroutine(warningCoroutine);
+            warningCoroutine = null;
+        }
+
+        ShowHandles();
+        UpdateUI();
     }
 
     public void PauseTimer() => _isPaused = true;
