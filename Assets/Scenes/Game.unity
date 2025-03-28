@@ -1892,6 +1892,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 349121538516088101, guid: cfdc6a8c7bae94f74b1fb173e06b7d7f, type: 3}
   m_PrefabInstance: {fileID: 286277644}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
 --- !u!1001 &1437289752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2006,6 +2007,8 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1442171019461226279, guid: 254de97346d235746b7c269dd69c96f7, type: 3}
   m_PrefabInstance: {fileID: 1437289752}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 --- !u!1 &1443883744
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,7 +2931,7 @@ Canvas:
   m_GameObject: {fileID: 2114001622}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 615941801}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -2960,7 +2963,6 @@ RectTransform:
   - {fileID: 2143468942}
   - {fileID: 185292199}
   - {fileID: 1038587064}
-  - {fileID: 1437289753}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3232,4 +3234,7 @@ SceneRoots:
   - {fileID: 965880234}
   - {fileID: 495744558}
   - {fileID: 2655869}
+<<<<<<< HEAD
   - {fileID: 1146577665}
+=======
+>>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
