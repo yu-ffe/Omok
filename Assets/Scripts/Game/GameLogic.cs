@@ -472,6 +472,7 @@ public class GameLogic : IDisposable
                 ? Constants.GameResult.Player2Win
                 : Constants.GameResult.Player1Win;
 
+            GameEndManager.Instance.ShowGameEndPanel("");
             GameEndManager.Instance.PrepareGameEndInfo(result);
             return;
         }
