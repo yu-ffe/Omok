@@ -460,9 +460,10 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     public void OnPointerUpMarkerPositionSelecor()
     {
         if (OnOnGridClickedDelegate != null)
-        {
-            OnOnGridClickedDelegate.Invoke(selectedBoardCoord.x, selectedBoardCoord.y);
-        }
+            if (OnOnGridClickedDelegate != null && MarkerPosition.activeSelf)
+            {
+                OnOnGridClickedDelegate.Invoke(selectedBoardCoord.x, selectedBoardCoord.y);
+            }
         else
         {
             Debug.Log($"델리게이트 없음");
