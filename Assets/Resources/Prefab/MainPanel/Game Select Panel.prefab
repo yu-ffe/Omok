@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 6716379000779192179}
   - component: {fileID: 3371064382016048120}
   - component: {fileID: 3076990934788472185}
+  - component: {fileID: 8202775059857063644}
   m_Layer: 5
   m_Name: SinglePlay Button
   m_TagString: Untagged
@@ -389,6 +390,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8202775059857063644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3461394013794735043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &3487371644456991223
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +845,7 @@ GameObject:
   - component: {fileID: 7801241999591568191}
   - component: {fileID: 8053997762101211366}
   - component: {fileID: 2289017097224039072}
+  - component: {fileID: 1347419140619006533}
   m_Layer: 5
   m_Name: MultiPlay Button
   m_TagString: Untagged
@@ -939,6 +955,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1347419140619006533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6447884690053230133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &7435198264454724372
 GameObject:
   m_ObjectHideFlags: 0
@@ -951,6 +981,7 @@ GameObject:
   - component: {fileID: 6944997654697551249}
   - component: {fileID: 5886595234760531434}
   - component: {fileID: 2040482972516350405}
+  - component: {fileID: 3670266234762439464}
   m_Layer: 5
   m_Name: Cancle Button
   m_TagString: Untagged
@@ -1060,6 +1091,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3670266234762439464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7435198264454724372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &7758792004321122000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,6 +1117,7 @@ GameObject:
   - component: {fileID: 4243784353020835832}
   - component: {fileID: 6861860602716835829}
   - component: {fileID: 6254877633738072583}
+  - component: {fileID: 5131765190245121329}
   m_Layer: 5
   m_Name: DualPlay Button
   m_TagString: Untagged
@@ -1181,6 +1227,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5131765190245121329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7758792004321122000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &9116483073274673615
 GameObject:
   m_ObjectHideFlags: 0

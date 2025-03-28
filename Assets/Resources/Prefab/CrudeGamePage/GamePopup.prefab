@@ -344,6 +344,7 @@ GameObject:
   - component: {fileID: 6098143228902866716}
   - component: {fileID: 2682941432426227858}
   - component: {fileID: 5414769474368142274}
+  - component: {fileID: 3431831174764501731}
   m_Layer: 5
   m_Name: GamePopupButton1 (1)
   m_TagString: Untagged
@@ -453,6 +454,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3431831174764501731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628864920834018489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &3693312829897517175
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +745,7 @@ GameObject:
   - component: {fileID: 4654044159648698740}
   - component: {fileID: 8548535723581543793}
   - component: {fileID: 2472909123146604721}
+  - component: {fileID: 8255202817283277159}
   m_Layer: 5
   m_Name: GamePopupButton1
   m_TagString: Untagged
@@ -839,3 +855,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8255202817283277159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690925525273670731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2

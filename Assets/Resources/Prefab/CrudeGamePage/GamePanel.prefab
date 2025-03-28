@@ -910,6 +910,7 @@ GameObject:
   - component: {fileID: 2331580905411661245}
   - component: {fileID: 7697991673610987137}
   - component: {fileID: 5646415469415951399}
+  - component: {fileID: 1149053308273558209}
   m_Layer: 5
   m_Name: Button-TurnEnd
   m_TagString: Untagged
@@ -1019,6 +1020,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1149053308273558209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590344543930175323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &3305812850091610776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1885,7 +1900,7 @@ MonoBehaviour:
   imgGameTurn:
   - {fileID: 0}
   - {fileID: 0}
-  gamePopup: {fileID: 6994140266454606912, guid: 5f6eae80431c629498f355511c4f5d7e, type: 3}
+  gamePopupPrefab: {fileID: 0}
 --- !u!1 &8975049581551834614
 GameObject:
   m_ObjectHideFlags: 0

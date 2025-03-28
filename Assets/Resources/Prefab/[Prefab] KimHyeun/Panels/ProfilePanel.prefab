@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 6053462619378829888}
   - component: {fileID: 5496223918180021675}
   - component: {fileID: 5523295411494289527}
+  - component: {fileID: 6115985129793779347}
   m_Layer: 5
   m_Name: ShopButton
   m_TagString: Untagged
@@ -227,6 +228,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6115985129793779347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489042431351373094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &1534068840813999065
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +253,7 @@ GameObject:
   - component: {fileID: 4471384147568451122}
   - component: {fileID: 6914450182347511698}
   - component: {fileID: 2723324658887371548}
+  - component: {fileID: 1347102210824538403}
   m_Layer: 5
   m_Name: RankingButton
   m_TagString: Untagged
@@ -303,6 +319,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1347102210824538403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534068840813999065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &2577009992618121573
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +386,7 @@ GameObject:
   - component: {fileID: 1982260987861960213}
   - component: {fileID: 3791317621353489958}
   - component: {fileID: 1999623637923375705}
+  - component: {fileID: 4914254656160720678}
   m_Layer: 5
   m_Name: SettingButton
   m_TagString: Untagged
@@ -421,6 +452,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4914254656160720678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3370240310088153590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &3372254709212119108
 GameObject:
   m_ObjectHideFlags: 0
@@ -1102,6 +1147,7 @@ GameObject:
   - component: {fileID: 8068121961270334257}
   - component: {fileID: 5368513461207921208}
   - component: {fileID: 8198682868941673971}
+  - component: {fileID: 1094762027171997112}
   m_Layer: 5
   m_Name: RecordButton
   m_TagString: Untagged
@@ -1167,6 +1213,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1094762027171997112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4545505298433344415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &4789535374829637399
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,6 +2127,7 @@ GameObject:
   - component: {fileID: 1424368446391033942}
   - component: {fileID: 6262214715440274194}
   - component: {fileID: 6089869529017082308}
+  - component: {fileID: 7571288031071191510}
   m_Layer: 5
   m_Name: GameStartButton
   m_TagString: Untagged
@@ -2132,6 +2193,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7571288031071191510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7557694160069461072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.1
+  duration: 0.2
 --- !u!1 &8186910701913830123
 GameObject:
   m_ObjectHideFlags: 0
