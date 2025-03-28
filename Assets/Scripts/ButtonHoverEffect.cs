@@ -16,6 +16,18 @@ public class ButtonHoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerEx
         originalScale = rectTransform.localScale;
     }
 
+    // 게임 오브젝트가 활성화될 때 원래 상태로 복원
+    private void OnEnable()
+    {
+        rectTransform.localScale = originalScale;
+    }
+
+    // 게임 오브젝트가 비활성화될 때 원래 상태로 복원
+    private void OnDisable()
+    {
+        rectTransform.localScale = originalScale;
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         StopAllCoroutines();
