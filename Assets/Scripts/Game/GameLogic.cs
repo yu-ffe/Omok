@@ -258,14 +258,14 @@ public class GameLogic : IDisposable
                 {
                     firstPlayerState = new PlayerState(true);
                     secondPlayerState = new AIState();
-                    SetState(firstPlayerState);
+                    SetState(firstPlayerState, true);
                     break;
                 }
             case Constants.GameType.DualPlayer:
                 {
                     firstPlayerState = new PlayerState(true);
                     secondPlayerState = new PlayerState(false);
-                    SetState(firstPlayerState);
+                    SetState(firstPlayerState, true);
                     break;
                 }
 
@@ -313,7 +313,7 @@ public class GameLogic : IDisposable
     }
 
     //현재 상태 변경 (턴 전환 시 사용)
-    public void SetState(BasePlayerState state)
+    public void SetState(BasePlayerState state, bool isStart = false)
     {
         GameManager.Instance.timer.StopTimer();
         // Debug.Log($"{GetCurrentPlayerType()}의 턴 끝1");
@@ -324,7 +324,9 @@ public class GameLogic : IDisposable
 
         //TODO: 여기에 턴이 시잘할 때 쓸 함수입력
         GameManager.Instance.timer.StartTimer();
-        UI_Manager.Instance.RequestExecute("turn");
+
+        if(!isStart)
+            UI_Manager.Instance.RequestExecute("turn");
 
         // Debug.Log($"{GetCurrentPlayerType()}의 턴 시작3");
         _currentPlayerState?.OnEnter(this); // 새로운 상태 진입
