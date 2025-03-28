@@ -834,156 +834,6 @@ MonoBehaviour:
   recordButtonText: {fileID: 2143468943}
   originPosition: {fileID: 1038587064}
   showPosition: {fileID: 185292199}
---- !u!1001 &383718232
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: SizeModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startSpeed.scalar
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverTrail.maxColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.b
-      value: 0.039215688
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.g
-      value: 0.8392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.b
-      value: 0.54509807
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.g
-      value: 0.6039216
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: TrailModule.colorOverLifetime.maxColor.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.b
-      value: 0.1882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.g
-      value: 0.23137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.minGradient.key0.b
-      value: 0.98039216
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.minGradient.key0.g
-      value: 0.78431374
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.minGradient.key0.r
-      value: 0.3529412
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: InitialModule.startColor.maxGradient.m_ColorSpace
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6598709733603074085, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7799458301566450875, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-      propertyPath: m_Name
-      value: Particle Fireworks
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
---- !u!198 &383718233 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 727897524901221421, guid: 7dfa9d21df2443b4fb8e585e28e474d9, type: 3}
-  m_PrefabInstance: {fileID: 383718232}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &495744556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,6 +1799,7 @@ GameObject:
   m_PrefabInstance: {fileID: 286277644}
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &1437289752
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2063,6 +1914,8 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1442171019461226279, guid: 254de97346d235746b7c269dd69c96f7, type: 3}
   m_PrefabInstance: {fileID: 1437289752}
   m_PrefabAsset: {fileID: 0}
+=======
+>>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 --- !u!1 &1443883744
@@ -3292,9 +3145,12 @@ SceneRoots:
   - {fileID: 2655869}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 1146577665}
 =======
 >>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
 =======
   - {fileID: 383718232}
 >>>>>>> parent of dbfe2b9 (승리시 파티클 적용)
+=======
+>>>>>>> parent of 119989b (Merge pull request #261 from yu-ffe/feature/minji/Add-shadows)
