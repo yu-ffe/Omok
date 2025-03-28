@@ -26,6 +26,7 @@ public class GameRecorder
 
         // 현재 저장된 기보 개수 확인
         int recordCount = PlayerPrefs.GetInt("RecordCount", 0);
+        Debug.LogWarning($"저장된 기보 수{recordCount}");
 
         // 10개가 넘으면 가장 오래된 기록 삭제
         if (recordCount >= MaxRecords)
@@ -37,6 +38,7 @@ public class GameRecorder
         // 새로운 기보를 저장할 인덱스
         int newIndex = recordCount;
         string recordKey = $"record_{newIndex}";
+        Debug.LogWarning($"저장되는 기보 키 인덱스{recordKey}");
 
         // PlayerMove로 변환하여 저장
         List<PlayerMove> moves = new List<PlayerMove>();

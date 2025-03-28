@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Commons;
 using System;
+using System.Linq;
 
 public class RecordSaveManager : Singleton<RecordSaveManager>
 {
@@ -17,8 +18,11 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
 
         if (loadedRecord != null)
         {
-            Debug.Log($"불러온 기록: {loadedRecord.Nickname} / {loadedRecord.Date} / {loadedRecord.Result}");
+            string movesLog = loadedRecord.Moves.Count > 0
+                ? string.Join(", ", loadedRecord.Moves.Select(m => $"({m.player}, {m.x}, {m.y})"))
+                : "No moves recorded";
 
+            Debug.Log($"불러온 기록: {loadedRecord.Nickname} / {loadedRecord.Date} / {loadedRecord.Result} / Moves: {movesLog}");
         }
     }
 

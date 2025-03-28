@@ -73,13 +73,19 @@ public class RecordManager : UI_Panel
         Debug.Log($"{index}인덱스 기보 재생(RecordManager)");
 
         // 특정 기보 불러오기 (예: 3번째 기보)
-        RecordSaveManager.Instance.SetLoadRecord(GameRecorder.LoadGameRecord(index));
+        RecordSaveManager.Instance.SetLoadRecord(LoadGameRecordFromUI(index));
 
 
 
         RecordSaveManager.Instance.ReplayShow();
     }
 
+    public static RecordData LoadGameRecordFromUI(int uiIndex)
+    {
+        int recordCount = PlayerPrefs.GetInt("RecordCount", 0);
+        int actualIndex = recordCount - 1 - uiIndex; // 최신이 맨 위로 오게 변환
+        return GameRecorder.LoadGameRecord(actualIndex);
+    }
 
 
     // 기보 제거 기능
