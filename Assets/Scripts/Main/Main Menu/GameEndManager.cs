@@ -54,7 +54,11 @@ public class GameEndManager : UI_Panel
         }*/
 
         EndButtonInfoSet();
+        
+        VictoryEffectManager.Instance.ShowVictoryEffect();
+        
     }
+    
 
     public override void Hide()
     {
@@ -259,7 +263,7 @@ public class GameEndManager : UI_Panel
                 resultText.text = "무승부!\n포인트 변동 없음";
                 break;
             case Constants.GameResult.Player1Win:
-                resultText.text = "Player1의 승리!";
+               resultText.text = "Player1의 승리!";
                 break;
             case Constants.GameResult.Player2Win:
                 resultText.text = "Player2의 승리!";
@@ -277,6 +281,16 @@ public class GameEndManager : UI_Panel
 
         //RankPointSet(player, result);
         GameRecorder.GameResultSave(result); // 게임 결과 저장
+    }
+    
+    private IEnumerator ShowVictoryEffectAfterPanelVisible()
+    {
+        // 패널이 실제로 렌더링된 다음 프레임까지 기다리기
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f); // 안정적인 실행 보장
+
+        Debug.Log(" 패널이 보이고 난 후, 승리 이펙트 실행!");
+        VictoryEffectManager.Instance.ShowVictoryEffect();
     }
 
     void UpdateCellScales(float rankPoint, bool animate = false)
