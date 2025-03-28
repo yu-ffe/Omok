@@ -157,19 +157,21 @@ public class AIState : BasePlayerState
             GameManager.Instance.SetAILevel(Constants.AILevel.Hard);
         }
 
-        var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard, aiTimeLevel);
+        try {
+            var move = await OmokAI.GetBestMoveAsync(gameLogic.OmokBoard, aiTimeLevel);
 
 
-        if (move.Item1 >= 0 && move.Item2 >= 0)
-        {
-            HandleMove(gameLogic, move.Item1, move.Item2);
-        }
-        else
-        {
-            Debug.Log($"{move.Item1},{move.Item2}");
-            Debug.Log("둘 수 있는 수가 없음");
-            gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
+            if (move.Item1 >= 0 && move.Item2 >= 0) {
+                HandleMove(gameLogic, move.Item1, move.Item2);
+            }
+            else {
+                Debug.Log($"{move.Item1},{move.Item2}");
+                Debug.Log("둘 수 있는 수가 없음");
+                gameLogic.EndGame(Constants.GameResult.Draw); // 무승부 처리
 
+            }
+        }catch (Exception e) {
+            Debug.Log(e);
         }
     }
 
