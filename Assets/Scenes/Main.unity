@@ -356,8 +356,8 @@ Canvas:
   m_GameObject: {fileID: 444248227}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1683287679}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -825,7 +825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4945936788415593668, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000078961224
+      value: 0.00095704396
       objectReference: {fileID: 0}
     - target: {fileID: 6004189244126744961, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -918,7 +918,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1611621341234998260, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000078961224
+      value: 0.00095704396
       objectReference: {fileID: 0}
     - target: {fileID: 1638939764251453915, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_Size
@@ -1714,7 +1714,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1324718273517624438, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000078961224
+      value: 0.00095704396
       objectReference: {fileID: 0}
     - target: {fileID: 1982181595169843063, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_ScrollSensitivity
