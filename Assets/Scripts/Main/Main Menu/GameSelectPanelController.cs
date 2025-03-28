@@ -38,8 +38,7 @@ public class GameSelectPanelController : UI_Panel {
                     "취소",
                     okAction: () =>
                     {
-                        if (UI_Manager.Instance.Panels.TryGetValue(UI_Manager.PanelType.Shop, out var shopPanel))
-                            shopPanel.gameObject.SetActive(true);
+                        UI_Manager.Instance.Show(UI_Manager.PanelType.Shop);
                     },
                     cancelAction: () => UI_Manager.Instance.popup.Hide()
                 );
