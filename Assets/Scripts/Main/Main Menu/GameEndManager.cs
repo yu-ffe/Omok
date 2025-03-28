@@ -134,6 +134,7 @@ public class GameEndManager : UI_Panel
             okBtn.onClick.RemoveAllListeners();
             okBtn.onClick.AddListener(() =>
             {
+                SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
                 this.Hide();
                 GameManager.Instance.ChangeToMainScene();
             });
@@ -142,6 +143,7 @@ public class GameEndManager : UI_Panel
             restartBtn.onClick.RemoveAllListeners();
             restartBtn.onClick.AddListener(() =>
             {
+                SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
                 GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
                 GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
             });
@@ -181,9 +183,21 @@ public class GameEndManager : UI_Panel
         restartBtn.onClick.RemoveAllListeners();
         recordBtn.onClick.RemoveAllListeners();
 
-        okBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_OkButton();});
-        restartBtn.onClick.AddListener(() => { GameEndButtonClickManager.Instance.OnClick_RestartButton(); });
-        recordBtn.onClick.AddListener(() => { GameRecorder.SaveGameRecord(); });
+        okBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
+            GameEndButtonClickManager.Instance.OnClick_OkButton();
+        });
+        restartBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
+            GameEndButtonClickManager.Instance.OnClick_RestartButton();
+        });
+        recordBtn.onClick.AddListener(() =>
+        {
+            SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
+            GameRecorder.SaveGameRecord();
+        });
     }
     
     public void ShowGameEndPanel(string message)

@@ -284,7 +284,11 @@ public class ScrollViewSet : MonoBehaviour
             state.subText1.text = RecordManager.Instance.GetName(index);
             state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
 
-            state.buttonObj.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RemoveRecord(index); });                
+            state.buttonObj.AddComponent<Button>().onClick.AddListener(() =>
+            {
+                SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+                RecordManager.Instance.RemoveRecord(index);
+            });                
             cell.transform.GetChild(0).gameObject.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
         }
         return;

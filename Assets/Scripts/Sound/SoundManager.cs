@@ -112,6 +112,11 @@ public class SoundManager : Singleton<SoundManager>
         PlaySFX(3);
     }
 
+    public void ButtonClickSound()
+    {
+        PlaySFX(4);
+    }
+    
     public void SetBgmVolume(float value)
     {
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
@@ -122,6 +127,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void SetSfxVolume(float value)
     {
+        Debug.Log($"[SoundManager] SFX 볼륨 설정: {value}");
+        
         float volume = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
         audioMixer.SetFloat("SFXVolume", volume);
         PlayerPrefs.SetFloat(SFX_VOLUME_KEY, value);

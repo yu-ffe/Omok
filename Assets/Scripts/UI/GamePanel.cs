@@ -222,6 +222,8 @@ public class GamePanel : UI_Panel {
     /// <summary> 기권버튼 이벤트 </summary>
     public void Button_GiveUp()
     {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+        
         if (popupInstance == null)
         {
             popupInstance = Instantiate(gamePopupPrefab, FindObjectOfType<Canvas>().transform);
@@ -245,7 +247,9 @@ public class GamePanel : UI_Panel {
     }
 
     /// <summary> 착수버튼 이벤트 </summary>
-    public void Button_EndOfTurn() {
+    public void Button_EndOfTurn()
+    {
+        SoundManager.Instance.ButtonClickSound();//버튼 클릭음
 
     }
 
