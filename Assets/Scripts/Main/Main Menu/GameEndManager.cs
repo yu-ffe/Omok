@@ -92,6 +92,9 @@ public class GameEndManager : UI_Panel
 
         if(pendingResult == Constants.GameResult.Win)
             VictoryEffectManager.Instance.ShowVictoryEffect();
+
+        if (pendingResult == Constants.GameResult.Lose)
+            SoundManager.Instance.PlayGameOverSound();
         
         if(pendingResult == Constants.GameResult.Player1Win)
             VictoryEffectManager.Instance.ShowVictoryEffect();
