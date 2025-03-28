@@ -7,7 +7,6 @@ using UnityEngine.UI;
 using KimHyeun;
 using MJ;
 using UnityEngine.SceneManagement;
-using workspace.YU__FFE.Scripts;
 
 namespace WB
 {

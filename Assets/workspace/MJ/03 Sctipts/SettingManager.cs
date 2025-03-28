@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using Wb;
 using WB;
-using workspace.YU__FFE.Scripts;
 
 namespace MJ
 {

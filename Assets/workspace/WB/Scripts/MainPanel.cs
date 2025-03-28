@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WB;
-using workspace.YU__FFE.Scripts;
 
 namespace WB
 {

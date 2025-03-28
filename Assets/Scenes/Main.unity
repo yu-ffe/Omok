@@ -1756,6 +1756,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RecordPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 6519677090409389513, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7336246307528876651, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_Size
       value: 0.99999994

@@ -44,7 +44,7 @@ public class ScrollViewSet : MonoBehaviour
             scrollRect.onValueChanged.AddListener(OnScroll);
         }
 
-        spacing = 10f;
+        spacing = 30f;
         scrollRect.verticalNormalizedPosition = 1f;
 
         totalCells = maxCellNum;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using KimHyeun;
 using UnityEngine;
 using WB;
-using workspace.YU__FFE.Scripts;
 
 public class RankingPanel : WB.UI_Panel
 {
