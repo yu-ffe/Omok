@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Commons;
+using Commons.Models;
+using Commons.Utils;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -54,7 +56,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     
     bool ismarker_Last = false;
     GameObject marker_Last = null;
-    Constants.GameType gameType;
+    GameEnums.GameType gameType;
     
     List<GameObject> stoneObjects = new();
     
@@ -171,16 +173,16 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     //미리보기 마커 생성함수
     private void ShowHintStone(Vector2Int coord)
     {
-        if (!GameManager.Instance || GameManager.Instance.gameLogic == null || Constants.GameType.Record == gameType)
+        if (!GameManager.Instance || GameManager.Instance.gameLogic == null || GameEnums.GameType.Record == gameType)
         {
             return;
         }
         
-        Constants.PlayerType currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
+        GameEnums.PlayerType currentPlayer = GameManager.Instance.gameLogic.GetCurrentPlayerType();
         GameObject hintMarker = MarkerBlackHint;
         RectTransform rt = MarkerBlackHintRt;
             
-        if (currentPlayer == Constants.PlayerType.PlayerA)
+        if (currentPlayer == GameEnums.PlayerType.PlayerA)
         {
             hintMarker = MarkerBlackHint;
             rt = MarkerBlackHintRt;
@@ -191,17 +193,17 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             rt = MarkerWhiteHintRt;
         }
         
-        if (GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer) {
-            if (GameManager.Instance.GameLogicInstance.GetCurrentPlayerType() == Constants.PlayerType.None) {
+        if (GameManager.Instance.GetGameType() == GameEnums.GameType.SinglePlayer) {
+            if (GameManager.Instance.GameLogicInstance.GetCurrentPlayerType() == GameEnums.PlayerType.None) {
                 return; // AI타입이 NONE이라서 일단 그대로 넣어둠
             }
         } // 아래 코드와 중첩되는것같지만 일단 그대로 둠
         
         //돌이 비워있고, 마우스가 보드안에 있으면
-        bool isValidGameType = GameManager.Instance.GetGameType() == Constants.GameType.SinglePlayer ||
-                               GameManager.Instance.GetGameType() == Constants.GameType.MultiPlayer;
+        bool isValidGameType = GameManager.Instance.GetGameType() == GameEnums.GameType.SinglePlayer ||
+                               GameManager.Instance.GetGameType() == GameEnums.GameType.MultiPlayer;
 
-        bool isCurrentPlayerA = GameManager.Instance.gameLogic.GetCurrentPlayerType() == Constants.PlayerType.PlayerA;
+        bool isCurrentPlayerA = GameManager.Instance.gameLogic.GetCurrentPlayerType() == GameEnums.PlayerType.PlayerA;
         
         bool isCellValid = GameManager.Instance.gameLogic.IsCellEmpty(coord.x, coord.y) && inBoard;
 
@@ -265,7 +267,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
             }
 
             // 마커 활성화 및 anchoredPosition 업데이트
-            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = Constants.PlayerType.PlayerX;
+            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = GameEnums.PlayerType.PlayerX;
             
             marker.SetActive(true);
             rt.anchoredPosition = new Vector2(localPos.x, localPos.y);
@@ -287,7 +289,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
         for (int i = 0; i < xMarkerCoords.Count; i++)
         {
             Vector2Int coord = xMarkerCoords[i];
-            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = Constants.PlayerType.None;
+            GameManager.Instance.gameLogic.GetBoard()[coord.x,coord.y] = GameEnums.PlayerType.None;
         }
     }
 
@@ -349,16 +351,16 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     }
     
     //바둑알을 바둑판로컬위치에 착수하는 함수
-    public void PlaceStone(Constants.PlayerType playerType, int x, int y)
+    public void PlaceStone(GameEnums.PlayerType playerType, int x, int y)
     {
         
         Vector2 localPos  = GetLocalPosition(x, y); //바둑알의 배열을 읽고 바둑판로컬위치로 바꿔줌
 
-        GameObject stone = Instantiate(playerType == Constants.PlayerType.PlayerA ? MarkerBlackPrefab : MarkerWhitePrefab, boardImage);
+        GameObject stone = Instantiate(playerType == GameEnums.PlayerType.PlayerA ? MarkerBlackPrefab : MarkerWhitePrefab, boardImage);
         // 3. 생성된 돌의 위치와 크기 설정
         float stoneSize = cellSize * 0.85f;
 
-        if (Constants.GameType.Record == gameType)
+        if (GameEnums.GameType.Record == gameType)
         {
             GameObject stoneNum = new GameObject("StoneNum");
 
@@ -444,7 +446,7 @@ public class OmokBoard : MonoBehaviour, IPointerMoveHandler,IPointerExitHandler,
     // UI에 마우스를 땟을 때 실행
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (Constants.GameType.Record == gameType)
+        if (GameEnums.GameType.Record == gameType)
         {
             return;
         }

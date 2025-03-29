@@ -1,5 +1,6 @@
 using Commons;
 using Commons.Models;
+using Commons.Patterns;
 using Newtonsoft.Json;
 using System;
 using System.Collections;

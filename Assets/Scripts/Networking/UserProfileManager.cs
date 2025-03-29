@@ -1,4 +1,5 @@
 using Commons;
+using Commons.Patterns;
 using System;
 using UnityEngine;
 using System.Collections;

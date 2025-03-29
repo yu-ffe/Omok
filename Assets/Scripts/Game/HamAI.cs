@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Commons;
+using Commons.Models;
 using UnityEngine;
 
 /// <summary>
 /// HamAI 클래스
-/// - GameLogic의 보드 상태(Constants.PlayerType[,] 형태)를 받아 AI가 착수할 위치를 결정합니다.
+/// - GameLogic의 보드 상태(PlayerType[,] 형태)를 받아 AI가 착수할 위치를 결정합니다.
 /// - Alpha-Beta Pruning 알고리즘을 사용하여 최적의 수를 찾습니다.
 /// 
 /// 사용법:
@@ -18,12 +19,12 @@ public class HamAI
 {
     private const int BOARD_SIZE = 15;
 
-    private Constants.PlayerType[,] board;
+    private GameEnums.PlayerType[,] board;
 
     // 최대 탐색 깊이
     public int maxDepth = 4;
 
-    public HamAI(Constants.PlayerType[,] board)
+    public HamAI(GameEnums.PlayerType[,] board)
     {
         this.board = board;
     }
@@ -44,7 +45,7 @@ public class HamAI
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                if (board[x, y] == Constants.PlayerType.None)
+                if (board[x, y] == GameEnums.PlayerType.None)
                 {
                     validMoves.Add((x, y));
                 }
@@ -64,14 +65,14 @@ public class HamAI
             {
                 for (int y = 0; y < BOARD_SIZE; y++)
                 {
-                    if (board[x, y] == Constants.PlayerType.None)
+                    if (board[x, y] == GameEnums.PlayerType.None)
                     {
                         if (!HasNeighbor(x, y)) continue;
 
-                        board[x, y] = Constants.PlayerType.PlayerB;
+                        board[x, y] = GameEnums.PlayerType.PlayerB;
                         int temp = AlphaBetaPruning(depth + 1, alpha, beta);
                         v = Mathf.Max(v, temp);
-                        board[x, y] = Constants.PlayerType.None;
+                        board[x, y] = GameEnums.PlayerType.None;
                         alpha = Mathf.Max(alpha, v);
                         if (beta <= alpha)
                         {
@@ -96,16 +97,16 @@ public class HamAI
             {
                 for (int y = 0; y < BOARD_SIZE; y++)
                 {
-                    // CHANGED: EMPTY -> Constants.PlayerType.None
-                    if (board[x, y] == Constants.PlayerType.None)
+                    // CHANGED: EMPTY -> PlayerType.None
+                    if (board[x, y] == GameEnums.PlayerType.None)
                     {
                         if (!HasNeighbor(x, y)) continue;
 
-                        // CHANGED: PLAYER -> Constants.PlayerType.PlayerA
-                        board[x, y] = Constants.PlayerType.PlayerA;
+                        // CHANGED: PLAYER -> PlayerType.PlayerA
+                        board[x, y] = GameEnums.PlayerType.PlayerA;
                         int temp = AlphaBetaPruning(depth + 1, alpha, beta);
                         v = Mathf.Min(v, temp);
-                        board[x, y] = Constants.PlayerType.None;
+                        board[x, y] = GameEnums.PlayerType.None;
                         beta = Mathf.Min(beta, v);
                         if (beta <= alpha)
                         {
@@ -150,9 +151,9 @@ public class HamAI
         {
             for (int c = 0; c < BOARD_SIZE; c++)
             {
-                Constants.PlayerType cell = board[r, c];
+                GameEnums.PlayerType cell = board[r, c];
                 // 비어 있는 셀은 건너뜁니다.
-                if (cell == Constants.PlayerType.None) continue;
+                if (cell == GameEnums.PlayerType.None) continue;
 
                 // 4가지 방향에 대해 연속된 돌의 개수 평가
                 foreach (var dir in directions)
@@ -178,14 +179,14 @@ public class HamAI
                     if (count >= 5)
                     {
                         // AI가 승리하면 매우 큰 양수, 플레이어가 승리하면 매우 큰 음수 반환
-                        return (cell == Constants.PlayerType.PlayerB) ? 2000000 : -2000000;
+                        return (cell == GameEnums.PlayerType.PlayerB) ? 2000000 : -2000000;
                     }
 
                     // 연속 돌 개수에 따른 가중치 점수를 추가합니다.
                     // AI의 돌이면 양수, 플레이어의 돌이면 음수로 계산하여 상대적 우위를 평가합니다.
-                    if (cell == Constants.PlayerType.PlayerB)
+                    if (cell == GameEnums.PlayerType.PlayerB)
                         score += weights[count];
-                    else // Constants.PlayerType.PlayerA
+                    else // PlayerType.PlayerA
                         score -= weights[count];
                 }
             }
@@ -209,8 +210,8 @@ public class HamAI
                 int ny = y + dy;
                 if (nx >= 0 && nx < BOARD_SIZE && ny >= 0 && ny < BOARD_SIZE)
                 {
-                    // CHANGED: EMPTY -> Constants.PlayerType.None
-                    if (board[nx, ny] != Constants.PlayerType.None) return true;
+                    // CHANGED: EMPTY -> PlayerType.None
+                    if (board[nx, ny] != GameEnums.PlayerType.None) return true;
                 }
             }
         }
@@ -229,10 +230,10 @@ public class HamAI
         {
             for (int y = 0; y < BOARD_SIZE; y++)
             {
-                // CHANGED: EMPTY -> Constants.PlayerType.None
-                if (board[x, y] == Constants.PlayerType.None)
+                // CHANGED: EMPTY -> PlayerType.None
+                if (board[x, y] == GameEnums.PlayerType.None)
                 {
-                    //if (board[x, y] == Constants.PlayerType.None && HasNeighbor(x, y)) {
+                    //if (board[x, y] == PlayerType.None && HasNeighbor(x, y)) {
                     validMoves.Add((x, y));
                 }
             }
@@ -257,10 +258,10 @@ public class HamAI
 
         foreach (var move in validMoves)
         {
-            // CHANGED: AI_PLAYER -> Constants.PlayerType.PlayerB
-            board[move.Item1, move.Item2] = Constants.PlayerType.PlayerB;
+            // CHANGED: AI_PLAYER -> PlayerType.PlayerB
+            board[move.Item1, move.Item2] = GameEnums.PlayerType.PlayerB;
             int score = AlphaBetaPruning(1, int.MinValue, int.MaxValue);
-            board[move.Item1, move.Item2] = Constants.PlayerType.None;
+            board[move.Item1, move.Item2] = GameEnums.PlayerType.None;
 
             if (score > bestScore)
             {

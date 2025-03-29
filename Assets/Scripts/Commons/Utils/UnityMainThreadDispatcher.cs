@@ -1,26 +1,28 @@
+using Commons.Patterns;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class UnityMainThreadDispatcher : Singleton<UnityMainThreadDispatcher>
-{
-    private static readonly Queue<Action> _executionQueue = new Queue<Action>();
-
-    public void Enqueue(Action action)
+namespace Commons.Utils {
+    public class UnityMainThreadDispatcher : Singleton<UnityMainThreadDispatcher>
     {
-        lock (_executionQueue)
-        {
-            _executionQueue.Enqueue(action);
-        }
-    }
+        private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
-    private void Update()
-    {
-        lock (_executionQueue)
+        public void Enqueue(Action action)
         {
-            while (_executionQueue.Count > 0)
+            lock (_executionQueue)
             {
-                _executionQueue.Dequeue().Invoke();
+                _executionQueue.Enqueue(action);
+            }
+        }
+
+        private void Update()
+        {
+            lock (_executionQueue)
+            {
+                while (_executionQueue.Count > 0)
+                {
+                    _executionQueue.Dequeue().Invoke();
+                }
             }
         }
     }

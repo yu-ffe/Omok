@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Multiton<T> : MonoBehaviour where T : Multiton<T> {
+namespace Commons.Patterns {
+    public abstract class Multiton<T> : MonoBehaviour where T : Multiton<T> {
         private static Dictionary<string, T> instances = new Dictionary<string, T>();
         private static bool isShuttingDown = false;
         private static object lockObject = new object();
@@ -84,3 +85,4 @@ public abstract class Multiton<T> : MonoBehaviour where T : Multiton<T> {
             isShuttingDown = true;
         }
     }
+}

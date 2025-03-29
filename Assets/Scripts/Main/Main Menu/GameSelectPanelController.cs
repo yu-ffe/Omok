@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Commons;
+using Commons.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,8 +28,8 @@ public class GameSelectPanelController : UI_Panel {
             if(callback.Success) {
                 StartCoroutine(PlayerManager.Instance.UpdateUserData());
                 Hide();
-                GameManager.Instance.SetGameType(Constants.GameType.SinglePlayer);
-                GameManager.Instance.ChangeToGameScene(Constants.GameType.SinglePlayer);
+                GameManager.Instance.SetGameType(GameEnums.GameType.SinglePlayer);
+                GameManager.Instance.ChangeToGameScene(GameEnums.GameType.SinglePlayer);
             }
             else {
                 Debug.Log("싱글 플레이 실패: 돈 부족");
@@ -56,8 +57,8 @@ public class GameSelectPanelController : UI_Panel {
 
         StartCoroutine(PlayerManager.Instance.UpdateUserData());
         Hide();
-        GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
-        GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+        GameManager.Instance.SetGameType(GameEnums.GameType.DualPlayer);
+        GameManager.Instance.ChangeToGameScene(GameEnums.GameType.DualPlayer);
 
 
         /*
@@ -93,7 +94,7 @@ public class GameSelectPanelController : UI_Panel {
         //     if(callback.Success) {
         //         StartCoroutine(PlayerManager.Instance.UpdateUserData());
         //         Hide();
-        //         GameManager.Instance.ChangeToGameScene(Constants.GameType.MultiPlayer);
+        //         GameManager.Instance.ChangeToGameScene(GameType.MultiPlayer);
         //     }
         //     else {
         //         Debug.Log("듀얼 플레이 실패: 돈 부족");
