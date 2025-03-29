@@ -1,4 +1,5 @@
 using Commons.Patterns;
+using Game;
 using UnityEngine;
 
 public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>

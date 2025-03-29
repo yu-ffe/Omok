@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Commons;
 using Commons.Models;
+using Game;
 using UnityEngine;
 using UnityEngine.UI;
 

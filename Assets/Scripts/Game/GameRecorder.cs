@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using Commons;
 using Commons.Models;
+using Game;
 using Newtonsoft.Json;
 
 public class GameRecorder

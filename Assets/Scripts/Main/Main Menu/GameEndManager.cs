@@ -5,6 +5,7 @@ using TMPro;
 using DG.Tweening;
 using Commons;
 using Commons.Models;
+using Game;
 
 public class GameEndManager : UI_Panel
 {
@@ -112,7 +113,7 @@ public class GameEndManager : UI_Panel
         if (GameManager.Instance.CurrentGameType == GameEnums.GameType.DualPlayer)
         {
             Debug.LogWarning("듀얼 처리");
-            var winnerPlayer = GetWinnerPlayerFromGameResult(gameResult);
+            var winnerPlayer = Constants.GetWinnerPlayerFromGameResult(gameResult);
 
             string winnerLabel = winnerPlayer switch
             {
