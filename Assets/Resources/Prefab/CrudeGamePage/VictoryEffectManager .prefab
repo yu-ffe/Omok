@@ -49,8 +49,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554bf75983f141e4983c285d170857be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlayPanel: {fileID: 6813628040031414371}
-  fireworks: {fileID: 0}
+  starPrefabs:
+  - {fileID: 8812028991426825621, guid: d40480d967cbb214fba38605bf6e1c32, type: 3}
+  - {fileID: 8812028991426825621, guid: 672889f76d17d0f47808a94b2eb2a1ff, type: 3}
+  - {fileID: 8812028991426825621, guid: 209330c9a8136a548b4b5ef4d370d3b0, type: 3}
+  - {fileID: 8812028991426825621, guid: ffdafaf5f7201714cb282f12e637f0c2, type: 3}
+  - {fileID: 8812028991426825621, guid: 7759aafabaead764d889e7ccafb1b10d, type: 3}
+  canvasRect: {fileID: 0}
+  burstCount: 50
 --- !u!1 &6813628040031414371
 GameObject:
   m_ObjectHideFlags: 0
