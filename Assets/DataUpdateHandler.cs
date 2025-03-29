@@ -16,8 +16,8 @@ public class DataUpdateHandler : MonoBehaviour
         
         if (Time.time >= nextUpdateTime)
         {
-            txtCoin.text = PlayerManager.Instance.playerData.coins.ToString();
-            grade_name.text = PlayerManager.Instance.playerData.grade.ToString() + "\n" + PlayerManager.Instance.playerData.nickname;
+            txtCoin.text = PlayerManager.Instance.playerData.coins.ToString() + " 코인";
+            grade_name.text = PlayerManager.Instance.playerData.grade.ToString() + "급\n" + PlayerManager.Instance.playerData.nickname;
             // 이렇게 짜면 욕먹을테지만 상관없다.
             // 눈속임만 완벽하면 해결될 일..
             nextUpdateTime = Time.time + 0.1f; // 1초 후 다시 실행

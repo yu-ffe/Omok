@@ -467,8 +467,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 1.1
-  duration: 0.2
+  scaleFactor: 1.03
+  duration: 0.1
 --- !u!114 &587134007908301225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -976,8 +976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 1.1
-  duration: 0.2
+  scaleFactor: 1.03
+  duration: 0.1
 --- !u!114 &3412295006631443953
 MonoBehaviour:
   m_ObjectHideFlags: 0

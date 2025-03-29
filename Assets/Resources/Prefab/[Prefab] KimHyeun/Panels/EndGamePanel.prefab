@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 8338532485772970464}
   - component: {fileID: 1618718837459809785}
   - component: {fileID: 7121893223528815380}
+  - component: {fileID: 7224514339653607420}
   m_Layer: 5
   m_Name: TestButton
   m_TagString: Untagged
@@ -534,6 +535,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7224514339653607420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2508057943259160698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.03
+  duration: 1.5
 --- !u!1 &2651168051441883034
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +561,7 @@ GameObject:
   - component: {fileID: 3544645862169751322}
   - component: {fileID: 1148811505777929332}
   - component: {fileID: 7686420502706688905}
+  - component: {fileID: 2117279605948023290}
   m_Layer: 5
   m_Name: TestButton (2)
   m_TagString: Untagged
@@ -666,6 +682,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2117279605948023290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2651168051441883034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.03
+  duration: 1.5
 --- !u!1 &2668561770999154416
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,8 +831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 1.1
-  duration: 0.2
+  scaleFactor: 1.03
+  duration: 0.1
 --- !u!114 &1646723020431791960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1681,8 +1711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 1.1
-  duration: 0.2
+  scaleFactor: 1.03
+  duration: 0.1
 --- !u!114 &5317057936065393484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1710,6 +1740,7 @@ GameObject:
   - component: {fileID: 5277994094077613047}
   - component: {fileID: 4015299723438956262}
   - component: {fileID: 2476801014257378929}
+  - component: {fileID: 5908532310585506852}
   m_Layer: 5
   m_Name: TestButton (1)
   m_TagString: Untagged
@@ -1830,6 +1861,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5908532310585506852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7252375183626703902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleFactor: 1.03
+  duration: 1.5
 --- !u!1 &7431216441804670837
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,8 +2219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 664a68fd0cda4a63a24814cc9b5960e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleFactor: 1.1
-  duration: 0.2
+  scaleFactor: 1.03
+  duration: 0.1
 --- !u!114 &1971632068537727507
 MonoBehaviour:
   m_ObjectHideFlags: 0
