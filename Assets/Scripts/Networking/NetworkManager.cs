@@ -1,5 +1,6 @@
 using Commons;
 using Commons.Models;
+using Commons.Patterns;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -327,12 +328,12 @@ public class NetworkManager : Singleton<NetworkManager> {
 
 // 해당 코드는 임시로 동작시킴
 
-    public void GameEndSendForm(Constants.GameResult gameReult) {
+    public void GameEndSendForm(GameEnums.GameResult gameReult) {
         StartCoroutine(SendGameReqult(gameReult));
     }
 
-    public IEnumerator SendGameReqult(Constants.GameResult gameResult) {
-        yield return StartCoroutine(SendGameResult(gameResult == Constants.GameResult.Win));
+    public IEnumerator SendGameReqult(GameEnums.GameResult gameResult) {
+        yield return StartCoroutine(SendGameResult(gameResult == GameEnums.GameResult.Win));
         yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
     }
 

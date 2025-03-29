@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Commons;
+using Commons.Models;
+using Game;
 
 public class GameEndManager : UI_Panel
 {
@@ -19,7 +21,7 @@ public class GameEndManager : UI_Panel
 
     RectTransform[] gradePlusCells = new RectTransform[3];
     RectTransform[] gradeMinusCells = new RectTransform[3];
-    Constants.GameResult pendingResult;
+    GameEnums.GameResult pendingResult;
 
     [SerializeField] Transform originPosition;
     [SerializeField] Transform showPosition;
@@ -78,7 +80,7 @@ public class GameEndManager : UI_Panel
         ApplyEndGameInfo();
     }
 
-    public void PrepareGameEndInfo(Constants.GameResult result)
+    public void PrepareGameEndInfo(GameEnums.GameResult result)
     {
         pendingResult = result;
         if (!gameObject.activeInHierarchy) return;
@@ -87,36 +89,36 @@ public class GameEndManager : UI_Panel
 
     private void ApplyEndGameInfo()
     {
-        if (pendingResult == Constants.GameResult.None) return;
+        if (pendingResult == GameEnums.GameResult.None) return;
         SetEndGameInfo(pendingResult);
 
-        if(pendingResult == Constants.GameResult.Win)
+        if(pendingResult == GameEnums.GameResult.Win)
             VictoryEffectManager.Instance.ShowVictoryEffect();
 
-        if (pendingResult == Constants.GameResult.Lose)
+        if (pendingResult == GameEnums.GameResult.Lose)
             SoundManager.Instance.PlayGameOverSound();
         
-        if(pendingResult == Constants.GameResult.Player1Win)
+        if(pendingResult == GameEnums.GameResult.Player1Win)
             VictoryEffectManager.Instance.ShowVictoryEffect();
         
-        if(pendingResult == Constants.GameResult.Player2Win)
+        if(pendingResult == GameEnums.GameResult.Player2Win)
             VictoryEffectManager.Instance.ShowVictoryEffect();
         
-        pendingResult = Constants.GameResult.None;
+        pendingResult = GameEnums.GameResult.None;
     }
 
-    public void SetEndGameInfo(Constants.GameResult gameResult)
+    public void SetEndGameInfo(GameEnums.GameResult gameResult)
     {
         // DualPlayer일 경우 버튼 변경 처리
-        if (GameManager.Instance.CurrentGameType == Constants.GameType.DualPlayer)
+        if (GameManager.Instance.CurrentGameType == GameEnums.GameType.DualPlayer)
         {
             Debug.LogWarning("듀얼 처리");
             var winnerPlayer = Constants.GetWinnerPlayerFromGameResult(gameResult);
 
             string winnerLabel = winnerPlayer switch
             {
-                Constants.PlayerType.PlayerA => "PlayerA",
-                Constants.PlayerType.PlayerB => "PlayerB",
+                GameEnums.PlayerType.PlayerA => "PlayerA",
+                GameEnums.PlayerType.PlayerB => "PlayerB",
                 _ => "플레이어"
             };
 
@@ -147,14 +149,14 @@ public class GameEndManager : UI_Panel
             restartBtn.onClick.AddListener(() =>
             {
                 SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
-                GameManager.Instance.SetGameType(Constants.GameType.DualPlayer);
-                GameManager.Instance.ChangeToGameScene(Constants.GameType.DualPlayer);
+                GameManager.Instance.SetGameType(GameEnums.GameType.DualPlayer);
+                GameManager.Instance.ChangeToGameScene(GameEnums.GameType.DualPlayer);
             });
 
             return; // DualPlayer 처리 종료
         }
-        else if (GameManager.Instance.CurrentGameType == Constants.GameType.SinglePlayer 
-                 || GameManager.Instance.CurrentGameType == Constants.GameType.MultiPlayer)
+        else if (GameManager.Instance.CurrentGameType == GameEnums.GameType.SinglePlayer 
+                 || GameManager.Instance.CurrentGameType == GameEnums.GameType.MultiPlayer)
         {
             Debug.LogWarning("일반 처리");
             // 싱글/멀티 플레이일 경우 기존 로직 실행
@@ -268,7 +270,7 @@ public class GameEndManager : UI_Panel
         gradeMaxText.text = range.ToString();
     }
 
-    public void SetAfterGameEnd(Constants.GameResult result)
+    public void SetAfterGameEnd(GameEnums.GameResult result)
     {
         var player = PlayerManager.Instance.playerData;
         UpdateCellScales(player.rankPoint);
@@ -278,19 +280,19 @@ public class GameEndManager : UI_Panel
 
         switch (result)
         {
-            case Constants.GameResult.Win:
+            case GameEnums.GameResult.Win:
                 resultText.text = $"승리!\n{winPoint}포인트 획득";
                 break;
-            case Constants.GameResult.Lose:
+            case GameEnums.GameResult.Lose:
                 resultText.text = $"패배!\n{losePoint}포인트 손실";
                 break;
-            case Constants.GameResult.Draw:
+            case GameEnums.GameResult.Draw:
                 resultText.text = "무승부!\n포인트 변동 없음";
                 break;
-            case Constants.GameResult.Player1Win:
+            case GameEnums.GameResult.Player1Win:
                resultText.text = "Player1의 승리!";
                 break;
-            case Constants.GameResult.Player2Win:
+            case GameEnums.GameResult.Player2Win:
                 resultText.text = "Player2의 승리!";
                 break;
             default:
@@ -299,7 +301,7 @@ public class GameEndManager : UI_Panel
         }
         
         // Single/Multi만 포인트 처리
-        if (result == Constants.GameResult.Win || result == Constants.GameResult.Lose)
+        if (result == GameEnums.GameResult.Win || result == GameEnums.GameResult.Lose)
         {
             RankPointSet(player, result);
         }
@@ -341,7 +343,7 @@ public class GameEndManager : UI_Panel
         seq.Play();
     }
 
-    void RankPointSet(PlayerData playerData, Constants.GameResult result)
+    void RankPointSet(PlayerData playerData, GameEnums.GameResult result)
     {
         int afterPoint = GradeChangeManager.GetRankPointAndGradeUpdate(playerData.nickname, playerData, result);
         int winPoint = GradeChangeManager.GetWinPoint(playerData.grade);

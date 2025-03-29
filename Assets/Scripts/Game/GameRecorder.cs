@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Commons;
+using Commons.Models;
+using Game;
 using Newtonsoft.Json;
 
 public class GameRecorder
 {
     private const int MaxRecords = 10; // 최대 저장 개수
 
-    static Constants.GameResult gameResult;
+    static GameEnums.GameResult gameResult;
 
     // 게임 결과 임시 저장
-    public static void GameResultSave(Constants.GameResult result) // TODO 게임 종료 후 초기화 전 호출 필요
+    public static void GameResultSave(GameEnums.GameResult result) // TODO 게임 종료 후 초기화 전 호출 필요
     {
         gameResult = result;
     }

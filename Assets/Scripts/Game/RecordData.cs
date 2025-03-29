@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Commons;
+using Commons.Models;
 using System;
 
 [System.Serializable]
@@ -17,11 +18,11 @@ public class RecordData
 [Serializable]
 public class PlayerMove
 {
-    public Constants.PlayerType player;
+    public GameEnums.PlayerType player;
     public int x;
     public int y;
 
-    public PlayerMove(Constants.PlayerType player, int x, int y)
+    public PlayerMove(GameEnums.PlayerType player, int x, int y)
     {
         this.player = player;
         this.x = x;
