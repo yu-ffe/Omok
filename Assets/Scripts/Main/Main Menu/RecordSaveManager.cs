@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
 using Commons.Patterns;
 using Game;
 using System;
 using System.Linq;
 
-public class RecordSaveManager : Singleton<RecordSaveManager>
+public class RecordSaveManager : MonoSingleton<RecordSaveManager>
 {
     RecordData loadedRecord;
     int loadIndex;
@@ -37,10 +38,10 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
     public void ReplayShow()
     {
         // 기보 재생 함수-기보플레이용 UI 표기
-        GameManager.Instance.ChangeToGameScene(GameEnums.GameType.Record);
+        GameManager.Instance.ChangeToGameScene(GameType.Record);
     }
 
-    public (GameEnums.PlayerType player, int x, int y) GetBeforeLocation() // 현재 기보 이전 수 좌표
+    public (PlayerType player, int x, int y) GetBeforeLocation() // 현재 기보 이전 수 좌표
     {
         if (loadIndex > 0)
         {
@@ -49,11 +50,11 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
         }
         else
         {
-            return (GameEnums.PlayerType.None, 0, 0); // 되돌아 갈 값 없음
+            return (PlayerType.None, 0, 0); // 되돌아 갈 값 없음
         }
     }
 
-    public (GameEnums.PlayerType player, int x, int y) GetAfterLocation() // 현재 기보 다음 수 좌표
+    public (PlayerType player, int x, int y) GetAfterLocation() // 현재 기보 다음 수 좌표
     {
         if (loadIndex < loadedRecord.Moves.Count - 1) // 다음 수가 존재할 때만 증가
         {
@@ -62,13 +63,13 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
         }
         else
         {
-            return (GameEnums.PlayerType.None, 0, 0); // 끝
+            return (PlayerType.None, 0, 0); // 끝
         }
     }
 
     #region 기보 착수 기능
 
-    public void TurnGo(Func<(GameEnums.PlayerType, int, int)> getLocationFunc, bool isContinuous)
+    public void TurnGo(Func<(PlayerType, int, int)> getLocationFunc, bool isContinuous)
     {
         if (isContinuous)
             StartCoroutine(GoToTargetLocation(getLocationFunc));
@@ -76,7 +77,7 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
             PlaceStone(getLocationFunc());
     }
     
-    public void TurnBack(Func<(GameEnums.PlayerType, int, int)> getLocationFunc, bool isContinuous)
+    public void TurnBack(Func<(PlayerType, int, int)> getLocationFunc, bool isContinuous)
     {
         if (isContinuous)
             StartCoroutine(RemoveToTargetLocation(getLocationFunc));
@@ -84,29 +85,29 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
             ReMoveStone(getLocationFunc());
     }
 
-    void ReMoveStone((GameEnums.PlayerType, int, int) location)
+    void ReMoveStone((PlayerType, int, int) location)
     {
-        if (location.Item1 == GameEnums.PlayerType.None) return;
+        if (location.Item1 == PlayerType.None) return;
 
         Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
         // TODO: location 좌표에 착수 기능 추가
         GameManager.Instance.omokBoard.RemoveStone();
     }
     
-    void PlaceStone((GameEnums.PlayerType, int, int) location)
+    void PlaceStone((PlayerType, int, int) location)
     {
-        if (location.Item1 == GameEnums.PlayerType.None) return;
+        if (location.Item1 == PlayerType.None) return;
 
         Debug.Log($"({location.Item2}, {location.Item3}) 좌표");
         // TODO: location 좌표에 착수 기능 추가
         GameManager.Instance.omokBoard.PlaceStone(location.Item1,location.Item2,location.Item3);
     }
 
-    IEnumerator GoToTargetLocation(Func<(GameEnums.PlayerType, int, int)> getLocationFunc)
+    IEnumerator GoToTargetLocation(Func<(PlayerType, int, int)> getLocationFunc)
     {
-        (GameEnums.PlayerType, int, int) location = getLocationFunc();
+        (PlayerType, int, int) location = getLocationFunc();
 
-        while (location.Item1 != GameEnums.PlayerType.None) // 이동 가능할 때만 실행
+        while (location.Item1 != PlayerType.None) // 이동 가능할 때만 실행
         {
             // TODO: location 좌표에 착수 기능
             GameManager.Instance.omokBoard.PlaceStone(location.Item1,location.Item2,location.Item3);
@@ -118,11 +119,11 @@ public class RecordSaveManager : Singleton<RecordSaveManager>
         }
     }
     
-    IEnumerator RemoveToTargetLocation(Func<(GameEnums.PlayerType, int, int)> getLocationFunc)
+    IEnumerator RemoveToTargetLocation(Func<(PlayerType, int, int)> getLocationFunc)
     {
-        (GameEnums.PlayerType, int, int) location = getLocationFunc();
+        (PlayerType, int, int) location = getLocationFunc();
 
-        while (location.Item1 != GameEnums.PlayerType.None) // 이동 가능할 때만 실행
+        while (location.Item1 != PlayerType.None) // 이동 가능할 때만 실행
         {
             // TODO: location 좌표에 착수 기능
             GameManager.Instance.omokBoard.RemoveStone();

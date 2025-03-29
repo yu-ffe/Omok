@@ -1,18 +1,19 @@
 using Commons.Models;
+using Commons.Models.Enums;
 using Commons.Patterns;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Game {
-    public class GameManager : Singleton<GameManager>
+    public class GameManager : MonoSingleton<GameManager>
     {
-        public GameEnums.GameType lastGameType { get; private set; }
-        public GameEnums.GameType CurrentGameType {get; private set;}
+        public GameType lastGameType { get; private set; }
+        public GameType CurrentGameType {get; private set;}
         public string DualPlayWinnerNickname { get; private set; } //닉네임 저장
 
         //private Canvas _canvas;
-        private GameEnums.GameType _gameType;
+        private GameType _gameType;
     
         public GameLogic gameLogic;
         public OmokBoard omokBoard ;
@@ -30,7 +31,7 @@ namespace Game {
             DualPlayWinnerNickname = nickname;
         }
     
-        public void SetGameType(GameEnums.GameType gameType)
+        public void SetGameType(GameType gameType)
         {
             _gameType = gameType;
             CurrentGameType = gameType;
@@ -58,7 +59,7 @@ namespace Game {
             return _trackingAIState;
         }
     
-        public void StartGame(GameEnums.GameType gameType)
+        public void StartGame(GameType gameType)
         {
             _gameType = gameType;
             lastGameType = gameType;
@@ -67,7 +68,7 @@ namespace Game {
             SetTrackingAIState(PlayerPrefs.GetInt("Experimental") == 1);
         }
 
-        public GameEnums.GameType GetGameType() {
+        public GameType GetGameType() {
             return this._gameType;
         }
 
@@ -75,8 +76,8 @@ namespace Game {
         {
             Debug.Log($"[GameManager] 이전 모드로 재시작: {lastGameType}");
 
-            if(lastGameType != GameEnums.GameType.DualPlayer &&
-               lastGameType != GameEnums.GameType.Record)
+            if(lastGameType != GameType.DualPlayer &&
+               lastGameType != GameType.Record)
             {
                 StartCoroutine(NetworkManager.Instance.GameStartRequest(callback => {
                     if (callback.Success)
@@ -111,7 +112,7 @@ namespace Game {
 
         }
     
-        public void ChangeToGameScene(GameEnums.GameType gameType)
+        public void ChangeToGameScene(GameType gameType)
         {
             _gameType = gameType;
             lastGameType = gameType;
@@ -180,7 +181,7 @@ namespace Game {
 
                     Debug.Log($"_gameLogic이 존재함? : {gameLogic}");
 
-                    recordUIManager.RecordUISet(_gameType == GameEnums.GameType.Record);
+                    recordUIManager.RecordUISet(_gameType == GameType.Record);
                 }
 
                 //_canvas = GameObject.FindObjectOfType<Canvas>();
@@ -196,14 +197,14 @@ namespace Game {
 
 
         // 게임 시작 시 AI 레벨 설정 관련
-        [SerializeField] GameEnums.AILevel aILevel;
+        [SerializeField] AILevel aILevel;
 
-        public void SetAILevel(GameEnums.AILevel aILevel)
+        public void SetAILevel(AILevel aILevel)
         {
             this.aILevel = aILevel;
         }
 
-        public GameEnums.AILevel GetAILevel()
+        public AILevel GetAILevel()
         {
             return aILevel;
         }

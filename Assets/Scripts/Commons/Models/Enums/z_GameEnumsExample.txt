@@ -1,0 +1,4 @@
+public enum AILevel { Easy, Middle, Hard }
+public enum GameResult { None, Win, Lose, Draw, Player1Win, Player2Win }
+public enum GameType { SinglePlayer, DualPlayer, MultiPlayer, Record }
+public enum PlayerType { None, PlayerA, PlayerB, PlayerX }

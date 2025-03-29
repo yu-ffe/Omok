@@ -1,10 +1,11 @@
 using Commons.Models;
+using Commons.Models.Response;
 using Commons.Patterns;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerManager : Singleton<PlayerManager> {
+public class PlayerManager : MonoSingleton<PlayerManager> {
 
     [SerializeField] Sprite[] profileSprites;
 
@@ -27,11 +28,11 @@ public class PlayerManager : Singleton<PlayerManager> {
     // 임시 변경
     public IEnumerator UpdateUserData() {
         StartCoroutine(NetworkManager.GetUserInfoRequest(response => {
-            playerData.coins = response.Coins;
-            playerData.grade = response.Grade;
-            playerData.rankPoint = response.RankPoint;
-            playerData.winCount = response.WinCount;
-            playerData.loseCount = response.LoseCount;
+            playerData.coins = response.Value.Coins;
+            playerData.grade = response.Value.Grade;
+            playerData.rankPoint = response.Value.RankPoint;
+            playerData.winCount = response.Value.WinCount;
+            playerData.loseCount = response.Value.LoseCount;
         }));
         yield break;
     }

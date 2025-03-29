@@ -1,4 +1,5 @@
 using Commons.Models;
+using Commons.Models.Enums;
 
 namespace Commons {
     public static class Constants {
@@ -10,13 +11,13 @@ namespace Commons {
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public static GameEnums.GameResult GetWinResultFromPlayerType(GameEnums.PlayerType player)
+        public static GameResult GetWinResultFromPlayerType(PlayerType player)
         {
             return player switch
             {
-                GameEnums.PlayerType.PlayerA => GameEnums.GameResult.Player1Win,
-                GameEnums.PlayerType.PlayerB => GameEnums.GameResult.Player2Win,
-                _ => GameEnums.GameResult.None
+                PlayerType.PlayerA => GameResult.Player1Win,
+                PlayerType.PlayerB => GameResult.Player2Win,
+                _ => GameResult.None
             };
         }
     
@@ -25,13 +26,13 @@ namespace Commons {
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static GameEnums.PlayerType GetWinnerPlayerFromGameResult(GameEnums.GameResult result)
+        public static PlayerType GetWinnerPlayerFromGameResult(GameResult result)
         {
             return result switch
             {
-                GameEnums.GameResult.Player1Win => GameEnums.PlayerType.PlayerA,
-                GameEnums.GameResult.Player2Win => GameEnums.PlayerType.PlayerB,
-                _ => GameEnums.PlayerType.None
+                GameResult.Player1Win => PlayerType.PlayerA,
+                GameResult.Player2Win => PlayerType.PlayerB,
+                _ => PlayerType.None
             };
         }
     }

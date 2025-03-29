@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace WB
 {
-    public class UI_Manager : Singleton<UI_Manager>
+    public class UI_Manager : MonoSingleton<UI_Manager>
     {
         // 공통 Popup창
         public enum PanelType

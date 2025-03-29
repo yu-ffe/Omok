@@ -2,7 +2,7 @@ using Commons.Patterns;
 using Game;
 using UnityEngine;
 
-public class GameEndButtonClickManager : Singleton<GameEndButtonClickManager>
+public class GameEndButtonClickManager : MonoSingleton<GameEndButtonClickManager>
 {
     
     

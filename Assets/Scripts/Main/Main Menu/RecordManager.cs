@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -107,7 +108,7 @@ public class RecordManager : UI_Panel
 
         for (int i = 0; i < recordDatas.Count; i++)
         {
-            if (!Enum.TryParse(recordDatas[i].Result, out GameEnums.GameResult resultEnum))
+            if (!Enum.TryParse(recordDatas[i].Result, out GameResult resultEnum))
             {
                 Debug.LogWarning($"GameResult 변환 실패: {recordDatas[i].Result}");
                 continue; // 변환 실패 시 무시
@@ -144,19 +145,19 @@ public class RecordManager : UI_Panel
     }
 
 
-    Sprite GetResultSprite(GameEnums.GameResult gameResult)
+    Sprite GetResultSprite(GameResult gameResult)
     {
-        if(gameResult == GameEnums.GameResult.Win)
+        if(gameResult == GameResult.Win)
         {
             return winSprite;
         }
 
-        else if (gameResult == GameEnums.GameResult.Lose)
+        else if (gameResult == GameResult.Lose)
         {
             return loseSprite;
         }
 
-        else if (gameResult == GameEnums.GameResult.Draw)
+        else if (gameResult == GameResult.Draw)
         {
             return drawSprite;
         }

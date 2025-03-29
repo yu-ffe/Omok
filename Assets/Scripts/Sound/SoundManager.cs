@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : MonoSingleton<SoundManager>
 {
     [Header("오디오 소스")]
     public AudioSource bgmSource;

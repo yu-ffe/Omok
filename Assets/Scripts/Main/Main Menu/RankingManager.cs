@@ -1,4 +1,5 @@
 using Commons.Models;
+using Commons.Models.Response;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class RankingManager : UI_Panel
     [SerializeField] ScrollViewSet scrollViewSet;
 
     // List<Sprite> profileSpriteList = new List<Sprite>();
-    List<Ranking> playerLankingList;
+    List<PlayerRanking> playerLankingList;
 
     public Button btnClose;
 
@@ -117,7 +118,7 @@ public class RankingManager : UI_Panel
     }
 
     public int GetMaxCellNum() => playerLankingList.Count;
-    public Ranking GetRanking(int index) => (playerLankingList.Count > index) ? playerLankingList[index] : null;
+    public PlayerRanking? GetRanking(int index) => (playerLankingList.Count > index) ? playerLankingList[index] : null;
 
     // public Sprite GetSprite(int index) => (playerLankingList..Count > index) ? profileSpriteList[index] : null;
     // public string GetName(int index) => (nickNameList.Count > index) ? nickNameList[index] : null;
@@ -128,7 +129,7 @@ public class RankingManager : UI_Panel
 
     public float GetWinRate(int index) // 승류 반환 (여러 유저 계산용)
     {
-        Ranking ranking = playerLankingList[index];
+        PlayerRanking ranking = playerLankingList[index];
         // int wins = GetWin(index);
         // int losses = GetLose(index);
         int wins = ranking.WinCount;

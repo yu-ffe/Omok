@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
 using UnityEngine;
 
 public class RuleCheckers
 {
     const int MAX = 15;
     const int MIN = 0;
-    GameEnums.PlayerType[,] board;
+    PlayerType[,] board;
     readonly Vector2Int[] DIR = { new(1, 0), new(1, 1), new(0, 1), new(-1, 1) };
 
-    public void Initialize(GameEnums.PlayerType[,] playingBoard)
+    public void Initialize(PlayerType[,] playingBoard)
     {
         board = playingBoard;
     }
 
     public RuleCheckers()
     {
-        board = new GameEnums.PlayerType[MAX, MAX];
+        board = new PlayerType[MAX, MAX];
     }
 
     readonly List<Vector2Int> InvalidPlaces = new List<Vector2Int>();
@@ -31,13 +32,13 @@ public class RuleCheckers
         {
             for (int y = 0; y < MAX; y++)
             {
-                if (board[x, y] != GameEnums.PlayerType.None) // 빈 곳만 검사
+                if (board[x, y] != PlayerType.None) // 빈 곳만 검사
                     continue;
 
                 Opened2ndPlaces.Clear();// 거짓금수 체크를 위한 빈 자리 체크할 곳
                 checkXY = new(x, y);    //**
                 //* 임시로 검은돌로 위치
-                board[x, y] = GameEnums.PlayerType.PlayerA;
+                board[x, y] = PlayerType.PlayerA;
 
                 (bool isViolation, int v3, int v4, int v6, int sc3, int sbv3) = IsRuleViolation(x, y);
                 if (isViolation)
@@ -58,7 +59,7 @@ public class RuleCheckers
                     }
                 }
                 //* 임시로 검은돌 놓ㄹ고 검사한 것 원위치
-                board[x, y] = GameEnums.PlayerType.None;
+                board[x, y] = PlayerType.None;
             }
         }
 
@@ -117,7 +118,7 @@ public class RuleCheckers
         bool leftOpen = false, rightOpen = false;
         int px = x, py = y;
 
-        while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.PlayerA))
+        while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == PlayerType.PlayerA))
         {
             count++;
             px -= dir.x;
@@ -136,7 +137,7 @@ public class RuleCheckers
         // 반대 방향 탐색
         px = x;
         py = y;
-        while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.PlayerA))
+        while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == PlayerType.PlayerA))
         {
             count++;
             px += dir.x;
@@ -170,14 +171,14 @@ public class RuleCheckers
 
 
         //! LEFT > -
-        if (IsValid(px - dir.x, py - dir.y) && board[px - dir.x, py - dir.y] == GameEnums.PlayerType.None)
+        if (IsValid(px - dir.x, py - dir.y) && board[px - dir.x, py - dir.y] == PlayerType.None)
         {
             if (!isFakeCheck)
                 Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
             leftEmptyFirst = true;
             px -= dir.x;
             py -= dir.y;
-            while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.PlayerA))
+            while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == PlayerType.PlayerA))
             {
                 leftStoneCount++;
                 px -= dir.x;
@@ -187,7 +188,7 @@ public class RuleCheckers
         else
         {
             leftEmptyFirst = false;
-            while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.PlayerA))
+            while (IsValid(px - dir.x, py - dir.y) && (board[px - dir.x, py - dir.y] == PlayerType.PlayerA))
             {
                 leftStoneCount++;
                 px -= dir.x;
@@ -200,14 +201,14 @@ public class RuleCheckers
         int rightStoneCount = 0;
         bool rightEmptyFirst = false;
         //!RIGHT > +
-        if (IsValid(px + dir.x, py + dir.y) && board[px + dir.x, py + dir.y] == GameEnums.PlayerType.None)
+        if (IsValid(px + dir.x, py + dir.y) && board[px + dir.x, py + dir.y] == PlayerType.None)
         {
             if (!isFakeCheck)
                 Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
             rightEmptyFirst = true;
             px += dir.x;
             py += dir.y;
-            while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.PlayerA))
+            while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == PlayerType.PlayerA))
             {
                 rightStoneCount++;
                 px += dir.x;
@@ -217,7 +218,7 @@ public class RuleCheckers
         else
         {
             rightEmptyFirst = false;
-            while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.PlayerA))
+            while (IsValid(px + dir.x, py + dir.y) && (board[px + dir.x, py + dir.y] == PlayerType.PlayerA))
             {
                 rightStoneCount++;
                 px += dir.x;
@@ -307,7 +308,7 @@ public class RuleCheckers
                 emptyCount++;
                 break;
             }
-            if (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.None)
+            if (board[px - dir.x, py - dir.y] == PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
@@ -322,7 +323,7 @@ public class RuleCheckers
                 searchEnd = true;
                 emptyCount++;
             }
-            else if (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.PlayerA)
+            else if (board[px - dir.x, py - dir.y] == PlayerType.PlayerA)
             {
                 leftStoneCount++;
                 lastPoint = new(px - dir.x, py - dir.y);
@@ -343,7 +344,7 @@ public class RuleCheckers
                 emptyCount++;
                 break;
             }
-            if (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.None)
+            if (board[px + dir.x, py + dir.y] == PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
@@ -351,7 +352,7 @@ public class RuleCheckers
                     break;
                 emptyCount++;
             }
-            else if (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.PlayerA)
+            else if (board[px + dir.x, py + dir.y] == PlayerType.PlayerA)
             {
                 rightStoneCount++;
                 lastPoint = new(px + dir.x, py + dir.y);
@@ -384,7 +385,7 @@ public class RuleCheckers
                 emptyCount++;
                 break;
             }
-            if (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.None)
+            if (board[px + dir.x, py + dir.y] == PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px + dir.x, py + dir.y));//*
@@ -400,7 +401,7 @@ public class RuleCheckers
                 emptyCount++;
 
             }
-            else if (board[px + dir.x, py + dir.y] == GameEnums.PlayerType.PlayerA)
+            else if (board[px + dir.x, py + dir.y] == PlayerType.PlayerA)
             {
                 rightStoneCount++;
                 lastPoint = new(px + dir.x, py + dir.y);
@@ -423,7 +424,7 @@ public class RuleCheckers
                 emptyCount++;
                 break;
             }
-            if (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.None)
+            if (board[px - dir.x, py - dir.y] == PlayerType.None)
             {
                 if (!isFakeCheck)
                     Opened2ndPlaces.Add(new(px - dir.x, py - dir.y));//*
@@ -431,7 +432,7 @@ public class RuleCheckers
                     break;
                 emptyCount++;
             }
-            else if (board[px - dir.x, py - dir.y] == GameEnums.PlayerType.PlayerA)
+            else if (board[px - dir.x, py - dir.y] == PlayerType.PlayerA)
             {
                 leftStoneCount++;
                 lastPoint = new(px - dir.x, py - dir.y);
@@ -478,7 +479,7 @@ public class RuleCheckers
     /// <summary> 위치 열림 확인 </summary>
     bool IsOpened(int x, int y, Vector2Int dir)
     {
-        return IsValid(x + dir.x, y + dir.y) && board[x + dir.x, y + dir.y] == GameEnums.PlayerType.None;
+        return IsValid(x + dir.x, y + dir.y) && board[x + dir.x, y + dir.y] == PlayerType.None;
     }
 
 }

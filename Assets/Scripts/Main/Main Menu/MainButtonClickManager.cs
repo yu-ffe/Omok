@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainButtonClickManager : Singleton<MainButtonClickManager>
+public class MainButtonClickManager : MonoSingleton<MainButtonClickManager>
 {
     public void OnClick_GameStartButton()
     {

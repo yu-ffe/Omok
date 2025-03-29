@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class ProfileManager : Singleton<ProfileManager>
+public class ProfileManager : MonoSingleton<ProfileManager>
 {
     [Header("프로필 필수 할당")]
     [SerializeField] TMP_Text coinText;

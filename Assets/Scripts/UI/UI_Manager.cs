@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UI_Manager : Singleton<UI_Manager>
+public class UI_Manager : MonoSingleton<UI_Manager>
 {
     [Serializable]
     public struct PanelData

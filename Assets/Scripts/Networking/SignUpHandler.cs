@@ -1,4 +1,5 @@
 using Commons.Models;
+using Commons.Models.Response;
 using Commons.Patterns;
 using Commons.Utils;
 using System;
@@ -10,7 +11,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine.UI;
 
-public class SignUpHandler : Singleton<SignUpHandler> {
+public class SignUpHandler : MonoSingleton<SignUpHandler> {
 
     public void AttemptSignUp(string email, string password, string passwordCheck, string nickname, int imgIndex, Action<bool, string> callback) {
 
@@ -28,15 +29,15 @@ public class SignUpHandler : Singleton<SignUpHandler> {
     // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator CheckAndSignUp(string email, string pwd, string nickname, int profile, Action<bool, string> callback) {
 
-        CheckResponse checkResponse = null;
+        ResponseStatus? checkResponse = null;
         yield return NetworkManager.CheckIdRequest(email,
             (response) => { checkResponse = response; });
         if (checkResponse is null) {
             callback(false, "서버와의 통신에 실패했습니다.");
             yield break;
         }
-        else if (!checkResponse.Success) {
-            callback(false, checkResponse.Message);
+        else if (!checkResponse.Value.Success) {
+            callback(false, checkResponse.Value.Message);
             yield break;
         }
 
@@ -46,8 +47,8 @@ public class SignUpHandler : Singleton<SignUpHandler> {
             callback(false, "서버와의 통신에 실패했습니다.");
             yield break;
         }
-        else if (!checkResponse.Success) {
-            callback(false, checkResponse.Message);
+        else if (!checkResponse.Value.Success) {
+            callback(false, checkResponse.Value.Message);
             yield break;
         }
 
@@ -58,7 +59,7 @@ public class SignUpHandler : Singleton<SignUpHandler> {
 
         PlayerManager.Instance.playerData.SetPrivateData(email, nickname, password, profile);
 
-        TokenResponse tokenResponse = null;
+        TokenResponse? tokenResponse = null;
         yield return NetworkManager.SignUpRequest((response) => {
             PlayerManager.Instance.playerData.ClearPrivateData();
             tokenResponse = response;

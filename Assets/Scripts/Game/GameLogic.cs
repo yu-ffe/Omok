@@ -1,4 +1,5 @@
 using Commons.Models;
+using Commons.Models.Enums;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,14 +20,14 @@ namespace Game {
         protected abstract void HandleNextTurn(GameLogic gameLogic);
 
         // 돌을 놓고 다음 상태로 이동하는 공통 처리 함수
-        protected void ProcessMove(GameLogic gameLogic, GameEnums.PlayerType playerType, int row, int col)
+        protected void ProcessMove(GameLogic gameLogic, PlayerType playerType, int row, int col)
         {
             // 돌을 정상적으로 놓았을 경우
             if (gameLogic.SetNewBoardValue(playerType, row, col))
             {
                 var gameResult = gameLogic.CheckGameResult(); // 게임 결과 확인
 
-                if (gameResult == GameEnums.GameResult.None)
+                if (gameResult == GameResult.None)
 
                 {
                     HandleNextTurn(gameLogic); // 게임이 계속 진행되면 다음 턴으로 전환
@@ -42,10 +43,10 @@ namespace Game {
 //직접 플레이하는 상태 (싱글 또는 멀티플레이)
     public class PlayerState : BasePlayerState
     {
-        public GameEnums.PlayerType _playerType; // 플레이어 타입 (A 또는 B)
+        public PlayerType _playerType; // 플레이어 타입 (A 또는 B)
         private bool _isFirstPlayer; // 첫 번째 플레이어 여부
 
-        public GameEnums.PlayerType CurrentPlayerType => _playerType;
+        public PlayerType CurrentPlayerType => _playerType;
 
         /* TODO: 멀티시 구현
     private MultiplayManager _multiplayManager; // 네트워크 멀티플레이어 관리
@@ -57,7 +58,7 @@ namespace Game {
         public PlayerState(bool isFirstPlayer)
         {
             _isFirstPlayer = isFirstPlayer;
-            _playerType = _isFirstPlayer ? GameEnums.PlayerType.PlayerA : GameEnums.PlayerType.PlayerB;
+            _playerType = _isFirstPlayer ? PlayerType.PlayerA : PlayerType.PlayerB;
 
             //TODO: 멀티시 구현
             //_isMultiplay = false;
@@ -84,12 +85,12 @@ namespace Game {
         public override void OnExit(GameLogic gameLogic)
         {
             GameManager.Instance.omokBoard.OnOnGridClickedDelegate = null;
-            if (GameEnums.PlayerType.PlayerB == gameLogic.GetCurrentPlayerType())
+            if (PlayerType.PlayerB == gameLogic.GetCurrentPlayerType())
             {
                 GameManager.Instance.omokBoard.ShowXMarker();
             }
 
-            if (GameEnums.PlayerType.PlayerA == gameLogic.GetCurrentPlayerType())
+            if (PlayerType.PlayerA == gameLogic.GetCurrentPlayerType())
             {
                 GameManager.Instance.omokBoard.RemoveXmarker();
             }
@@ -137,19 +138,19 @@ namespace Game {
             if(PlayerManager.Instance.playerData.grade > 9) // 18~10급
             {
                 aiTimeLevel = 2000;
-                GameManager.Instance.SetAILevel(GameEnums.AILevel.Easy);
+                GameManager.Instance.SetAILevel(AILevel.Easy);
             }
 
             else if (PlayerManager.Instance.playerData.grade > 5) // 9~6급
             {
                 aiTimeLevel = 3000;
-                GameManager.Instance.SetAILevel(GameEnums.AILevel.Middle);
+                GameManager.Instance.SetAILevel(AILevel.Middle);
             }
 
             else // 5~1급
             {
                 aiTimeLevel = 4000;
-                GameManager.Instance.SetAILevel(GameEnums.AILevel.Hard);
+                GameManager.Instance.SetAILevel(AILevel.Hard);
             }
 
             try {
@@ -162,7 +163,7 @@ namespace Game {
                 else {
                     Debug.Log($"{move.Item1},{move.Item2}");
                     Debug.Log("둘 수 있는 수가 없음");
-                    gameLogic.EndGame(GameEnums.GameResult.Draw); // 무승부 처리
+                    gameLogic.EndGame(GameResult.Draw); // 무승부 처리
 
                 }
             }catch (Exception e) {
@@ -178,7 +179,7 @@ namespace Game {
         public override void HandleMove(GameLogic gameLogic, int row, int col)
         {
             SoundManager.Instance.PlayPlacingSound(); // 착수 효과음
-            ProcessMove(gameLogic, GameEnums.PlayerType.PlayerB, row, col);
+            ProcessMove(gameLogic, PlayerType.PlayerB, row, col);
         }
 
         protected override void HandleNextTurn(GameLogic gameLogic)
@@ -224,10 +225,10 @@ public class MultiplayState : BasePlayerState
 
         public OmokBoard OmokBoard;
 
-        private GameEnums.PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
+        private PlayerType[,] _board; // 바둑판 데이터 (15x15 배열)
 
         //기보확인을 위한 리스트
-        public List<(GameEnums.PlayerType player, int x, int y)> moveList = new List<(GameEnums.PlayerType, int, int)>();
+        public List<(PlayerType player, int x, int y)> moveList = new List<(PlayerType, int, int)>();
 
         //상태 패턴을 활용한 플레이어 상태 관리
         public BasePlayerState firstPlayerState; // 첫 번째 플레이어 상태
@@ -240,7 +241,7 @@ public class MultiplayState : BasePlayerState
 
 
         //게임 로직 초기화 (싱글/멀티/AI 모드 설정)
-        public GameLogic(OmokBoard omokBoard, GameEnums.GameType gameType, 
+        public GameLogic(OmokBoard omokBoard, GameType gameType, 
                          string player1Nickname = "Player1", string player2Nickname = "Player2")
         {
             this.OmokBoard = omokBoard;
@@ -248,18 +249,18 @@ public class MultiplayState : BasePlayerState
             Player2Nickname = player2Nickname;
         
             // 바둑판 배열 초기화 (15x15 크기)
-            _board = new GameEnums.PlayerType[15, 15];
+            _board = new PlayerType[15, 15];
 
             switch (gameType)
             {
-                case GameEnums.GameType.SinglePlayer:
+                case GameType.SinglePlayer:
                 {
                     firstPlayerState = new PlayerState(true);
                     secondPlayerState = new AIState();
                     SetState(firstPlayerState, true);
                     break;
                 }
-                case GameEnums.GameType.DualPlayer:
+                case GameType.DualPlayer:
                 {
                     firstPlayerState = new PlayerState(true);
                     secondPlayerState = new PlayerState(false);
@@ -332,30 +333,30 @@ public class MultiplayState : BasePlayerState
             //TODO: 여기에 턴이 끝날 때 쓸 함수입력
         }
 
-        public GameEnums.PlayerType GetCurrentPlayerType()
+        public PlayerType GetCurrentPlayerType()
         {
             if (_currentPlayerState is PlayerState playerState)
             {
                 return playerState.CurrentPlayerType;
             }
             // AIState나 다른 상태인 경우 별도의 처리 필요하다면 여기서 처리
-            return GameEnums.PlayerType.None;
+            return PlayerType.None;
         }
 
         //보드가 비워져잇는지 체크하는 함수
         public bool IsCellEmpty(int row, int col)
         {
-            return _board[row, col] == GameEnums.PlayerType.None;
+            return _board[row, col] == PlayerType.None;
         }
 
         //보드에 새로운 값을 할당하는 함수
-        public bool SetNewBoardValue(GameEnums.PlayerType playerType, int row, int col)
+        public bool SetNewBoardValue(PlayerType playerType, int row, int col)
         {
             // 이미 돌이 있는 자리인지 확인
-            if (_board[row, col] != GameEnums.PlayerType.None) return false;
+            if (_board[row, col] != PlayerType.None) return false;
 
             // 플레이어 A가 놓는 경우
-            if (playerType == GameEnums.PlayerType.PlayerA)
+            if (playerType == PlayerType.PlayerA)
             {
                 _board[row, col] = playerType;
                 Debug.Log($"{GetCurrentPlayerType()}의 턴{row},{col}에 보드상에 흑돌{playerType} 기입");
@@ -368,7 +369,7 @@ public class MultiplayState : BasePlayerState
                 return true;
             }
             // 플레이어 B가 놓는 경우
-            else if (playerType == GameEnums.PlayerType.PlayerB)
+            else if (playerType == PlayerType.PlayerB)
             {
                 _board[row, col] = playerType;
 
@@ -386,32 +387,32 @@ public class MultiplayState : BasePlayerState
         }
 
         //게임 결과 확인 함수
-        public GameEnums.GameResult CheckGameResult()
+        public GameResult CheckGameResult()
         {
-            if (CheckGameWin(GameEnums.PlayerType.PlayerA))
+            if (CheckGameWin(PlayerType.PlayerA))
             {
-                Debug.Log($"{GameEnums.PlayerType.PlayerA} 승리");
+                Debug.Log($"{PlayerType.PlayerA} 승리");
 
-                return GameManager.Instance.CurrentGameType == GameEnums.GameType.DualPlayer
-                    ? GameEnums.GameResult.Player1Win
-                    : GameEnums.GameResult.Win;
+                return GameManager.Instance.CurrentGameType == GameType.DualPlayer
+                    ? GameResult.Player1Win
+                    : GameResult.Win;
             }
 
-            if (CheckGameWin(GameEnums.PlayerType.PlayerB))
+            if (CheckGameWin(PlayerType.PlayerB))
             {
-                Debug.Log($"{GameEnums.PlayerType.PlayerB} 승리");
+                Debug.Log($"{PlayerType.PlayerB} 승리");
 
-                return GameManager.Instance.CurrentGameType == GameEnums.GameType.DualPlayer
-                    ? GameEnums.GameResult.Player2Win
-                    : GameEnums.GameResult.Lose;
+                return GameManager.Instance.CurrentGameType == GameType.DualPlayer
+                    ? GameResult.Player2Win
+                    : GameResult.Lose;
             }
 
             // TODO: 무승부 처리 추가
-            return GameEnums.GameResult.None;
+            return GameResult.None;
         }
 
         //게임의 승패를 판단하는 함수
-        private bool CheckGameWin(GameEnums.PlayerType playerType)
+        private bool CheckGameWin(PlayerType playerType)
         {
             int[][] directions = new int[][]
             {
@@ -423,9 +424,9 @@ public class MultiplayState : BasePlayerState
             {
                 for (int c = 0; c < GameManager.Instance.omokBoard.gridSize; c++)
                 {
-                    GameEnums.PlayerType cell = _board[r, c];
+                    PlayerType cell = _board[r, c];
                     // 비어 있는 셀은 건너뜁니다.
-                    if (cell == GameEnums.PlayerType.None) continue;
+                    if (cell == PlayerType.None) continue;
 
                     // 4가지 방향에 대해 연속된 돌의 개수 평가
                     foreach (var dir in directions)
@@ -463,14 +464,14 @@ public class MultiplayState : BasePlayerState
 
 
         //현재 플레이어를 패배하게 하는 함수
-        public void HandleCurrentPlayerDefeat(GameEnums.PlayerType playerType)
+        public void HandleCurrentPlayerDefeat(PlayerType playerType)
         {
             // DualPlayer → 팝업으로 처리하고 Draw 결과만 넘김
-            if (GameManager.Instance.CurrentGameType == GameEnums.GameType.DualPlayer)
+            if (GameManager.Instance.CurrentGameType == GameType.DualPlayer)
             {
-                GameEnums.GameResult result = playerType == GameEnums.PlayerType.PlayerA
-                    ? GameEnums.GameResult.Player2Win
-                    : GameEnums.GameResult.Player1Win;
+                GameResult result = playerType == PlayerType.PlayerA
+                    ? GameResult.Player2Win
+                    : GameResult.Player1Win;
 
                 GameEndManager.Instance.ShowGameEndPanel("");
                 GameEndManager.Instance.PrepareGameEndInfo(result);
@@ -478,21 +479,21 @@ public class MultiplayState : BasePlayerState
             }
 
             // 나머지 모드는 실제 승패 처리
-            if (playerType == GameEnums.PlayerType.PlayerA)
+            if (playerType == PlayerType.PlayerA)
             {
                 Debug.Log($"{playerType} 패배 → EndGame(Lose)");
-                EndGame(GameEnums.GameResult.Lose);
+                EndGame(GameResult.Lose);
             }
             else
             {
                 Debug.Log($"{playerType} 패배 → EndGame(Win)");
-                EndGame(GameEnums.GameResult.Win);
+                EndGame(GameResult.Win);
             }
         }
 
 
         //게임 종료 시 호출
-        public void EndGame(GameEnums.GameResult gameResult)
+        public void EndGame(GameResult gameResult)
         {
             Debug.Log($"게임끝 게임결과 : {gameResult}");
             GameManager.Instance.timer.StopTimer();
@@ -517,7 +518,7 @@ public class MultiplayState : BasePlayerState
         }
 
         //현재 게임판 반환
-        public GameEnums.PlayerType[,] GetBoard()
+        public PlayerType[,] GetBoard()
         {
             return _board;
         }

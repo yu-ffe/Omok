@@ -1,5 +1,7 @@
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
+using Commons.Models.Response;
 using Commons.Patterns;
 using Newtonsoft.Json;
 using System;
@@ -10,7 +12,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkManager : Singleton<NetworkManager> {
+public class NetworkManager : MonoSingleton<NetworkManager> {
 
     private const int MaxRetryCount = 3; // 연결 실패시 최대 재시도 횟수
 
@@ -19,7 +21,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator SignUpRequest(Action<TokenResponse> callback) {
+    public static IEnumerator SignUpRequest(Action<TokenResponse?> callback) {
         string url = $"{Constants.ServerURL}/auth/signup";
         PlayerData playerData = PlayerManager.Instance.playerData;
 
@@ -40,7 +42,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private static IEnumerator CheckDuplicateRequest(string type, string value, Action<CheckResponse> callback) {
+    private static IEnumerator CheckDuplicateRequest(string type, string value, Action<ResponseStatus> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
         form.AddField("type", type); // 'nickname' or 'id' as type
@@ -49,11 +51,11 @@ public class NetworkManager : Singleton<NetworkManager> {
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
 
-            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
+            callback?.Invoke(JsonConvert.DeserializeObject<ResponseStatus>(request.downloadHandler.text));
         }
     }
 
-    public static IEnumerator CheckIdRequest(string email, Action<CheckResponse> callback) {
+    public static IEnumerator CheckIdRequest(string email, Action<ResponseStatus> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
         form.AddField("type", "email");
@@ -61,11 +63,11 @@ public class NetworkManager : Singleton<NetworkManager> {
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
-            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
+            callback?.Invoke(JsonConvert.DeserializeObject<ResponseStatus>(request.downloadHandler.text));
         }
     }
 
-    public static IEnumerator CheckNicknameRequest(string nickname, Action<CheckResponse> callback) {
+    public static IEnumerator CheckNicknameRequest(string nickname, Action<ResponseStatus> callback) {
         string url = $"{Constants.ServerURL}/auth/signup/check";
         WWWForm form = new WWWForm();
         form.AddField("type", "nickname");
@@ -73,7 +75,7 @@ public class NetworkManager : Singleton<NetworkManager> {
 
         using (UnityWebRequest request = UnityWebRequest.Post(url, form)) {
             yield return request.SendWebRequest();
-            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(request.downloadHandler.text));
+            callback?.Invoke(JsonConvert.DeserializeObject<ResponseStatus>(request.downloadHandler.text));
         }
     }
 
@@ -98,7 +100,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         }
     }
 
-    public static IEnumerator AutoSignInRequest(Action<TokenResponse> callback) {
+    public static IEnumerator AutoSignInRequest(Action<TokenResponse?> callback) {
         string url = $"{Constants.ServerURL}/auth/signin/autoSignIn";
         string refreshToken = TokenManager.Instance.GetRefreshToken();
         int retryCount = 0;
@@ -156,7 +158,7 @@ public class NetworkManager : Singleton<NetworkManager> {
     // ======================================================
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public static IEnumerator GetUserInfoRequest(Action<PlayerDataResponse> callback) {
+    public static IEnumerator GetUserInfoRequest(Action<PlayerDataResponse?> callback) {
         string url = $"{Constants.ServerURL}/user/info";
         string accessToken = TokenManager.Instance.GetAccessToken();
         int retryCount = 0;
@@ -189,7 +191,7 @@ public class NetworkManager : Singleton<NetworkManager> {
         callback?.Invoke(null);
     }
 
-    public static IEnumerator GetRankingRequest(Action<List<Ranking>> callback) {
+    public static IEnumerator GetRankingRequest(Action<List<PlayerRanking>> callback) {
         string url = $"{Constants.ServerURL}/user/ranking";
 
         int retryCount = 0;
@@ -209,7 +211,7 @@ public class NetworkManager : Singleton<NetworkManager> {
                     string jsonResponse = request.downloadHandler.text;
                     try {
                         // JSON 응답을 Ranking 배열로 파싱하고, 이를 List로 변환
-                        List<Ranking> rankings = JsonConvert.DeserializeObject<Ranking[]>(jsonResponse).ToList();
+                        List<PlayerRanking> rankings = JsonConvert.DeserializeObject<PlayerRanking[]>(jsonResponse).ToList();
                         callback?.Invoke(rankings); // 성공적으로 데이터를 받으면 callback 호출
                         yield break; // 성공하면 반복 종료
                     }
@@ -328,17 +330,17 @@ public class NetworkManager : Singleton<NetworkManager> {
 
 // 해당 코드는 임시로 동작시킴
 
-    public void GameEndSendForm(GameEnums.GameResult gameReult) {
+    public void GameEndSendForm(GameResult gameReult) {
         StartCoroutine(SendGameReqult(gameReult));
     }
 
-    public IEnumerator SendGameReqult(GameEnums.GameResult gameResult) {
-        yield return StartCoroutine(SendGameResult(gameResult == GameEnums.GameResult.Win));
+    public IEnumerator SendGameReqult(GameResult gameResult) {
+        yield return StartCoroutine(SendGameResult(gameResult == GameResult.Win));
         yield return StartCoroutine(PlayerManager.Instance.UpdateUserData());
     }
 
     ///////////////////////////////////////////////////// 아래는 코인 차감 로직
-    public IEnumerator GameStartRequest(Action<CheckResponse> callback) {
+    public IEnumerator GameStartRequest(Action<ResponseStatus> callback) {
         string url = $"{Constants.ServerURL}/game/start";
 
         string accessToken = TokenManager.Instance.GetAccessToken();
@@ -348,11 +350,11 @@ public class NetworkManager : Singleton<NetworkManager> {
             yield return request.SendWebRequest();
 
             string responseText = request.downloadHandler.text;
-            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(responseText));
+            callback?.Invoke(JsonConvert.DeserializeObject<ResponseStatus>(responseText));
         }
     }
     
-    public IEnumerator GamePurchaseRequest(int num, int price, Action<CheckResponse> callback) {
+    public IEnumerator GamePurchaseRequest(int num, int price, Action<ResponseStatus> callback) {
         string url = $"{Constants.ServerURL}/game/shop";
         
         string accessToken = TokenManager.Instance.GetAccessToken();
@@ -366,7 +368,7 @@ public class NetworkManager : Singleton<NetworkManager> {
             yield return request.SendWebRequest();
 
             string responseText = request.downloadHandler.text;
-            callback?.Invoke(JsonConvert.DeserializeObject<CheckResponse>(responseText));
+            callback?.Invoke(JsonConvert.DeserializeObject<ResponseStatus>(responseText));
         }
     }
 

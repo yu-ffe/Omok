@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
 using Game;
 using TMPro;
 using UnityEngine;
@@ -124,33 +125,33 @@ public class GamePanel : UI_Panel {
         txtNickNameLeft.text = PlayerManager.Instance.playerData.grade + "급\n" + PlayerManager.Instance.playerData.nickname;
 
 
-        if(GameManager.Instance.GetGameType() == GameEnums.GameType.SinglePlayer)
+        if(GameManager.Instance.GetGameType() == GameType.SinglePlayer)
         {
             imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
 
             switch (GameManager.Instance.GetAILevel()) // AI 난이도
             {
-                case GameEnums.AILevel.Easy:
+                case AILevel.Easy:
                     txtNickNameRight.text = "AI-Lv1";
                     break;
 
-                case GameEnums.AILevel.Middle:
+                case AILevel.Middle:
                     txtNickNameRight.text = "AI-Lv2";
                     break;
 
-                case GameEnums.AILevel.Hard:
+                case AILevel.Hard:
                     txtNickNameRight.text = "AI-Lv3";
                     break;
             }
         }
 
-        else if(GameManager.Instance.GetGameType() == GameEnums.GameType.MultiPlayer) // 멀티 시 상대 정보 불러오기
+        else if(GameManager.Instance.GetGameType() == GameType.MultiPlayer) // 멀티 시 상대 정보 불러오기
         {
             imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "멀티 상대";
         }
 
-        else if (GameManager.Instance.GetGameType() == GameEnums.GameType.Record) // 기보 시 저장된 상대 정보 불러오기
+        else if (GameManager.Instance.GetGameType() == GameType.Record) // 기보 시 저장된 상대 정보 불러오기
         {
             imgProfileRight.sprite = PlayerManager.Instance.GetProfileSprites(0);
             txtNickNameRight.text = "상대 플레이어";
@@ -184,10 +185,10 @@ public class GamePanel : UI_Panel {
         if (imgGameTurn != null && imgGameTurn.Length >= 2)
         {
             if (imgGameTurn[0] != null)
-                SetImageAlpha(imgGameTurn[0], currentPlayer == GameEnums.PlayerType.PlayerA ? 1f : 0.5f);
+                SetImageAlpha(imgGameTurn[0], currentPlayer == PlayerType.PlayerA ? 1f : 0.5f);
         
             if (imgGameTurn[1] != null)
-                SetImageAlpha(imgGameTurn[1], currentPlayer == GameEnums.PlayerType.PlayerB ? 1f : 0.3f);
+                SetImageAlpha(imgGameTurn[1], currentPlayer == PlayerType.PlayerB ? 1f : 0.3f);
         }
         else
         {

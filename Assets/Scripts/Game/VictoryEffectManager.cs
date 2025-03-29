@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-public class VictoryEffectManager : Singleton<VictoryEffectManager>
+public class VictoryEffectManager : MonoSingleton<VictoryEffectManager>
 {
     [Header("Victory Effect References")]
     //public GameObject overlayPanel;

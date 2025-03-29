@@ -270,10 +270,10 @@ public class ScrollViewSet : MonoBehaviour
         {
             // state.cell_Image.sprite = RankingManager.Instance.GetRanking(index).;
             state.cell_Image.sprite = null;
-            state.nameText.text = RankingManager.Instance.GetRanking(index).Nickname;
-            state.subText1.text = RankingManager.Instance.GetRanking(index).Grade + " 급";
-            state.subText2.text = RankingManager.Instance.GetRanking(index).WinCount+ " 승";
-            state.subText3.text = RankingManager.Instance.GetRanking(index).LoseCount+ " 패";
+            state.nameText.text = RankingManager.Instance.GetRanking(index).Value.Nickname;
+            state.subText1.text = RankingManager.Instance.GetRanking(index).Value.Grade + " 급";
+            state.subText2.text = RankingManager.Instance.GetRanking(index).Value.WinCount+ " 승";
+            state.subText3.text = RankingManager.Instance.GetRanking(index).Value.LoseCount+ " 패";
             state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
         }
 
@@ -298,10 +298,10 @@ public class ScrollViewSet : MonoBehaviour
     {
         case CellState.CellType.Ranking:
             // SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(index));
-            SafeSetText(state.nameText, RankingManager.Instance.GetRanking(index).Nickname);
-            SafeSetText(state.subText1, $"{RankingManager.Instance.GetRanking(index).Grade} 급");
-            SafeSetText(state.subText2, $"{RankingManager.Instance.GetRanking(index).WinCount} 승");
-            SafeSetText(state.subText3, $"{RankingManager.Instance.GetRanking(index).LoseCount} 패");
+            SafeSetText(state.nameText, RankingManager.Instance.GetRanking(index).Value.Nickname);
+            SafeSetText(state.subText1, $"{RankingManager.Instance.GetRanking(index).Value.Grade} 급");
+            SafeSetText(state.subText2, $"{RankingManager.Instance.GetRanking(index).Value.WinCount} 승");
+            SafeSetText(state.subText3, $"{RankingManager.Instance.GetRanking(index).Value.LoseCount} 패");
             SafeSetText(state.subText4, $"{RankingManager.Instance.GetWinRate(index):F2}%");
             break;
 

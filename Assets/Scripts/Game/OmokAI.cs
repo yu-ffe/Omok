@@ -1,5 +1,7 @@
 using Commons;
 using Commons.Models;
+using Commons.Models.Enums;
+using Commons.Thread;
 using Commons.Utils;
 using Game;
 using System.Collections;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 public class OmokAI{
     private const int BOARD_SIZE = 15;
-    private GameEnums.PlayerType[,] board;
+    private PlayerType[,] board;
     const int maxDepth = 4;
 
     // 이동 정렬을 위한 히스토리 테이블
@@ -33,7 +35,7 @@ public class OmokAI{
     private const int OPEN_THREE_SCORE = 50000;
     private readonly int[] weights = new int[] { 0, 1, 10, 100, 1000, 100000 };
 
-    public OmokAI(GameEnums.PlayerType[,] board) {
+    public OmokAI(PlayerType[,] board) {
         this.board = board;
         InitializeZobristTable();
     }
@@ -60,8 +62,8 @@ public class OmokAI{
         long hash = 0;
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                if (board[i, j] != GameEnums.PlayerType.None) {
-                    int pieceIndex = board[i, j] == GameEnums.PlayerType.PlayerA ? 1 : 2;
+                if (board[i, j] != PlayerType.None) {
+                    int pieceIndex = board[i, j] == PlayerType.PlayerA ? 1 : 2;
                     hash ^= zobristTable[i, j, pieceIndex];
                 }
             }
@@ -83,7 +85,7 @@ public class OmokAI{
 
 
     // 이기는 수인지 체크 - 훨씬 더 효율적인 구현
-    private bool IsWinningMove(int r, int c, GameEnums.PlayerType player) {
+    private bool IsWinningMove(int r, int c, PlayerType player) {
         board[r, c] = player;
         bool isWinning = false;
 
@@ -114,7 +116,7 @@ public class OmokAI{
             }
         }
 
-        board[r, c] = GameEnums.PlayerType.None;
+        board[r, c] = PlayerType.None;
         return isWinning;
     }
 
@@ -123,8 +125,8 @@ public class OmokAI{
         // 가로, 세로, 대각선 5목 체크 (효율성을 위해 통합됨)
         for (int r = 0; r < BOARD_SIZE; r++) {
             for (int c = 0; c < BOARD_SIZE; c++) {
-                GameEnums.PlayerType cell = board[r, c];
-                if (cell == GameEnums.PlayerType.None) continue;
+                PlayerType cell = board[r, c];
+                if (cell == PlayerType.None) continue;
 
                 foreach (var dir in directions) {
                     // 연속된 5개의 돌만 체크 (이미 체크된 돌은 건너뜀)
@@ -142,7 +144,7 @@ public class OmokAI{
                     }
 
                     if (count >= 5) {
-                        return cell == GameEnums.PlayerType.PlayerB ? WIN_SCORE : -WIN_SCORE;
+                        return cell == PlayerType.PlayerB ? WIN_SCORE : -WIN_SCORE;
                     }
                 }
             }
@@ -152,7 +154,7 @@ public class OmokAI{
     }
 
     // 열린 3인지 체크 (양쪽이 열려있는 3목)
-    private bool HasOpenThree(int r, int c, GameEnums.PlayerType player) {
+    private bool HasOpenThree(int r, int c, PlayerType player) {
         foreach (var dir in directions) {
             int count = 1; // 현재 돌 포함
             bool leftOpen = false;
@@ -168,7 +170,7 @@ public class OmokAI{
             }
 
             // 왼쪽 끝이 열려있는지 체크
-            if (IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None) {
+            if (IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None) {
                 leftOpen = true;
             }
 
@@ -182,7 +184,7 @@ public class OmokAI{
             }
 
             // 오른쪽 끝이 열려있는지 체크
-            if (IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None) {
+            if (IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None) {
                 rightOpen = true;
             }
 
@@ -209,8 +211,8 @@ public class OmokAI{
             for (int c = 0; c < BOARD_SIZE; c++) {
                 if (counted[r, c]) continue;
 
-                GameEnums.PlayerType cell = board[r, c];
-                if (cell == GameEnums.PlayerType.None) continue;
+                PlayerType cell = board[r, c];
+                if (cell == PlayerType.None) continue;
 
                 foreach (var dir in directions) {
                     // 이미 체크된 방향인지 확인
@@ -222,7 +224,7 @@ public class OmokAI{
 
                     // 왼쪽이 비어있는지 체크
                     if (IsValidPosition(r - dir[0], c - dir[1]) &&
-                        board[r - dir[0], c - dir[1]] == GameEnums.PlayerType.None) {
+                        board[r - dir[0], c - dir[1]] == PlayerType.None) {
                         leftOpen = true;
                     }
 
@@ -237,7 +239,7 @@ public class OmokAI{
                     }
 
                     // 오른쪽이 비어있는지 체크
-                    if (IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None) {
+                    if (IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None) {
                         rightOpen = true;
                     }
 
@@ -245,7 +247,7 @@ public class OmokAI{
                     int openFactor = (leftOpen ? 1 : 0) + (rightOpen ? 1 : 0);
                     int weightFactor = weights[count] * (1 + openFactor);
 
-                    if (cell == GameEnums.PlayerType.PlayerB) {
+                    if (cell == PlayerType.PlayerB) {
                         score += weightFactor;
                         if (count == 4) {
                             score += (openFactor > 0) ? FOUR_SCORE * openFactor : FOUR_SCORE / 10;
@@ -280,7 +282,7 @@ public class OmokAI{
 
                 int nx = x + dx;
                 int ny = y + dy;
-                if (IsValidPosition(nx, ny) && board[nx, ny] != GameEnums.PlayerType.None)
+                if (IsValidPosition(nx, ny) && board[nx, ny] != PlayerType.None)
                     return true;
             }
         }
@@ -288,10 +290,10 @@ public class OmokAI{
     }
 
 
-    private (int, int) CheckForWinningMove(GameEnums.PlayerType player) {
+    private (int, int) CheckForWinningMove(PlayerType player) {
         for (int r = 0; r < BOARD_SIZE; r++) {
             for (int c = 0; c < BOARD_SIZE; c++) {
-                if (board[r, c] != GameEnums.PlayerType.None) continue;
+                if (board[r, c] != PlayerType.None) continue;
                 if (!HasNeighbor(r, c)) continue; // 주변에 돌이 없으면 건너뛰기
 
                 if (IsWinningMove(r, c, player)) {
@@ -319,12 +321,12 @@ public class OmokAI{
         stopwatch.Start();
 
         // 즉시 승리 가능한 수를 먼저 확인
-        (int, int) winningMove = CheckForWinningMove(GameEnums.PlayerType.PlayerB);
+        (int, int) winningMove = CheckForWinningMove(PlayerType.PlayerB);
         if (winningMove.Item1 != -1)
             return winningMove;
 
         // 즉시 패배를 막는 수를 확인
-        (int, int) blockingMove = CheckForWinningMove(GameEnums.PlayerType.PlayerA);
+        (int, int) blockingMove = CheckForWinningMove(PlayerType.PlayerA);
         if (blockingMove.Item1 != -1)
             return blockingMove;
 
@@ -351,20 +353,20 @@ public class OmokAI{
                 Task.Run(() => {
                     var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
                     if (best.score != 0)
-                        UnityMainThreadDispatcher.Instance.Enqueue(() => {
+                        UnityMainThreadDispatcher.Enqueue(() => {
                             omokBoard.AIWhiteShowMarker(best.move); // 메인 스레드에서 AIWhiteShowMarker 호출
                         });
                     //Main Thread에서 호출, 처음 0만 제외
                 });
             }
-            board[move.Item1, move.Item2] = GameEnums.PlayerType.PlayerB;
+            board[move.Item1, move.Item2] = PlayerType.PlayerB;
             int score = AlphaBetaPruningWithTimeLimit(1, int.MinValue, int.MaxValue, false, stopwatch, timeLimit);
 
             // 지는 수가 아닌 것이 있는지 확인
             if (score > -WIN_SCORE)
                 allMovesLosing = false;
 
-            board[move.Item1, move.Item2] = GameEnums.PlayerType.None;
+            board[move.Item1, move.Item2] = PlayerType.None;
 
             // 히스토리 테이블 업데이트
             historyTable[move.Item1, move.Item2] += score > 0 ? score : 0;
@@ -400,7 +402,7 @@ public class OmokAI{
                     Task.Run(() => {
                         var best = bestMoves.OrderByDescending(item => item.score).FirstOrDefault();
                         if (best.score != 0)
-                            UnityMainThreadDispatcher.Instance.Enqueue(() => {
+                            UnityMainThreadDispatcher.Enqueue(() => {
                                 omokBoard.AIWhiteShowMarker(best.move); // 메인 스레드에서 AIWhiteShowMarker 호출
                             });
                         //Main Thread에서 호출, 처음 0만 제외
@@ -489,7 +491,7 @@ public class OmokAI{
             foreach (var move in validMoves) {
                 // 현재 상태 저장 (좌표, 기존 값)
                 var prevState = board[move.Item1, move.Item2];
-                board[move.Item1, move.Item2] = GameEnums.PlayerType.PlayerB;
+                board[move.Item1, move.Item2] = PlayerType.PlayerB;
                 int score = AlphaBetaPruningWithTimeLimit(depth + 1, alpha, beta, false, stopwatch, timeLimit);
 
                 board[move.Item1, move.Item2] = prevState;
@@ -517,7 +519,7 @@ public class OmokAI{
 
             foreach (var move in validMoves) {
                 var prevState = board[move.Item1, move.Item2];
-                board[move.Item1, move.Item2] = GameEnums.PlayerType.PlayerA;
+                board[move.Item1, move.Item2] = PlayerType.PlayerA;
                 int score = AlphaBetaPruningWithTimeLimit(depth + 1, alpha, beta, true, stopwatch, timeLimit);
 
                 board[move.Item1, move.Item2] = prevState;
@@ -562,15 +564,15 @@ public class OmokAI{
 
         for (int x = 0; x < BOARD_SIZE; x++) {
             for (int y = 0; y < BOARD_SIZE; y++) {
-                if (board[x, y] == GameEnums.PlayerType.None && HasNeighbor(x, y)) {
+                if (board[x, y] == PlayerType.None && HasNeighbor(x, y)) {
                     int score = historyTable[x, y];
 
                     // 간단한 휴리스틱으로 좋은 이동 먼저 평가
-                    GameEnums.PlayerType player = isMaximizing ? GameEnums.PlayerType.PlayerB : GameEnums.PlayerType.PlayerA;
+                    PlayerType player = isMaximizing ? PlayerType.PlayerB : PlayerType.PlayerA;
                     if (IsWinningMove(x, y, player)) {
                         score += 10000000; // 이기는 수에 가장 높은 우선순위
                     }
-                    else if (IsWinningMove(x, y, isMaximizing ? GameEnums.PlayerType.PlayerA : GameEnums.PlayerType.PlayerB)) {
+                    else if (IsWinningMove(x, y, isMaximizing ? PlayerType.PlayerA : PlayerType.PlayerB)) {
                         score += 5000000; // 방어 수에 다음 우선순위
                     }
                     else {
@@ -579,7 +581,7 @@ public class OmokAI{
                         if (HasOpenThree(x, y, player)) {
                             score += 1000000;
                         }
-                        board[x, y] = GameEnums.PlayerType.None;
+                        board[x, y] = PlayerType.None;
                     }
 
                     scoredMoves.Add((x, y, score));
@@ -607,7 +609,7 @@ public class OmokAI{
         int defensiveScore = 0;
 
         // 임시로 우리 돌 놓기
-        board[r, c] = GameEnums.PlayerType.PlayerB;
+        board[r, c] = PlayerType.PlayerB;
 
         // 방어 점수 계산 - 이 위치에 돌을 놓음으로써 상대의 공격을 얼마나 방해하는지 평가
 
@@ -637,7 +639,7 @@ public class OmokAI{
         defensiveScore += futureValue;
 
         // 원래 상태로 복구
-        board[r, c] = GameEnums.PlayerType.None;
+        board[r, c] = PlayerType.None;
 
         return defensiveScore;
     }
@@ -646,13 +648,13 @@ public class OmokAI{
     // 상대방의 열린 4와 열린 3을 막는 수의 개수 계산 함수 수정
     private int CountBlockedOpenFours(int r, int c) {
         int count = 0;
-        GameEnums.PlayerType opponent = GameEnums.PlayerType.PlayerA;
+        PlayerType opponent = PlayerType.PlayerA;
 
         // 원래 상태 저장
-        GameEnums.PlayerType original = board[r, c];
+        PlayerType original = board[r, c];
 
         // 이 위치에 돌이 없다고 가정
-        board[r, c] = GameEnums.PlayerType.None;
+        board[r, c] = PlayerType.None;
 
         // 방향별 체크
         foreach (var dir in directions) {
@@ -674,7 +676,7 @@ public class OmokAI{
                 nr += dir[0];
                 nc += dir[1];
             }
-            openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None;
+            openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None;
 
             // 역방향 확인
             nr = r - dir[0];
@@ -686,7 +688,7 @@ public class OmokAI{
                 nr -= dir[0];
                 nc -= dir[1];
             }
-            openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None;
+            openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None;
 
             // 디버그 로그 추가
             if (stoneCount >= 3) {
@@ -711,7 +713,7 @@ public class OmokAI{
             }
 
             // 상태 원복
-            board[r, c] = GameEnums.PlayerType.None;
+            board[r, c] = PlayerType.None;
         }
 
         // 원래 상태로 복구
@@ -723,13 +725,13 @@ public class OmokAI{
     // 상대방의 열린 3을 막는 수의 개수 계산 수정
     private int CountBlockedOpenThrees(int r, int c) {
         int count = 0;
-        GameEnums.PlayerType opponent = GameEnums.PlayerType.PlayerA;
+        PlayerType opponent = PlayerType.PlayerA;
 
         // 원래 상태 저장
-        GameEnums.PlayerType original = board[r, c];
+        PlayerType original = board[r, c];
 
         // 이 위치에 돌이 없다고 가정
-        board[r, c] = GameEnums.PlayerType.None;
+        board[r, c] = PlayerType.None;
 
         // 방향별 체크
         foreach (var dir in directions) {
@@ -751,7 +753,7 @@ public class OmokAI{
                 nr += dir[0];
                 nc += dir[1];
             }
-            openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None;
+            openEnd1 = IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None;
 
             // 역방향 확인
             nr = r - dir[0];
@@ -763,7 +765,7 @@ public class OmokAI{
                 nr -= dir[0];
                 nc -= dir[1];
             }
-            openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None;
+            openEnd2 = IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None;
 
             // 디버그 로그 추가
             if (stoneCount >= 2 && openEnd1 && openEnd2) {
@@ -783,7 +785,7 @@ public class OmokAI{
             }
 
             // 상태 원복
-            board[r, c] = GameEnums.PlayerType.None;
+            board[r, c] = PlayerType.None;
         }
 
         // 원래 상태로 복구
@@ -796,7 +798,7 @@ public class OmokAI{
     // 자신의 연결된 돌 수 계산
     private int CountOwnConnectedStones(int r, int c) {
         int maxCount = 0;
-        GameEnums.PlayerType player = GameEnums.PlayerType.PlayerB;
+        PlayerType player = PlayerType.PlayerB;
 
         foreach (var dir in directions) {
             int count = 1; // 현재 위치 포함
@@ -840,7 +842,7 @@ public class OmokAI{
     // 미래 가치 평가 (이 자리가 미래에 좋은 수를 만들 수 있는지)
     private int EvaluateFutureValue(int r, int c) {
         int score = 0;
-        GameEnums.PlayerType player = GameEnums.PlayerType.PlayerB;
+        PlayerType player = PlayerType.PlayerB;
 
         // 이 자리에 두었을 때 다음 수에서 어떤 효과가 있는지 평가
         foreach (var dir in directions) {
@@ -849,25 +851,25 @@ public class OmokAI{
                 int nr = r + dir[0] * dist;
                 int nc = c + dir[1] * dist;
 
-                if (IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None) {
+                if (IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None) {
                     // 이 위치에 돌을 놓아보고 효과 평가
                     board[nr, nc] = player;
                     if (HasOpenThree(nr, nc, player)) {
                         score += 50;
                     }
-                    board[nr, nc] = GameEnums.PlayerType.None;
+                    board[nr, nc] = PlayerType.None;
                 }
 
                 // 반대 방향도 체크
                 nr = r - dir[0] * dist;
                 nc = c - dir[1] * dist;
 
-                if (IsValidPosition(nr, nc) && board[nr, nc] == GameEnums.PlayerType.None) {
+                if (IsValidPosition(nr, nc) && board[nr, nc] == PlayerType.None) {
                     board[nr, nc] = player;
                     if (HasOpenThree(nr, nc, player)) {
                         score += 50;
                     }
-                    board[nr, nc] = GameEnums.PlayerType.None;
+                    board[nr, nc] = PlayerType.None;
                 }
             }
         }
