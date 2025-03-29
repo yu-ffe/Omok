@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroySelfAfterAnimation : MonoBehaviour
 {
-    public float delay = 1f;
+    public float delay = 20f;
 
     void OnEnable()
     {

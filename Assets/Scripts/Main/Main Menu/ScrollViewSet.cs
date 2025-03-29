@@ -145,7 +145,7 @@ public class ScrollViewSet : MonoBehaviour
             int col = (i + startRow * cellRowCount) % cellRowCount; // 열 계산
 
             float xPos = col * (cellWidth + spacing);   // 가로 위치
-            float yPos = -row * (cellHeight + spacing); // 세로 위치 (위 → 아래)
+            float yPos = -row * (cellHeight + spacing) -20f ; // 세로 위치 (위 → 아래) 첫번째 셀 생성 20아래로 위치
 
             RectTransform rect = pool[i].GetComponent<RectTransform>();
             rect.anchoredPosition = new Vector2(xPos, yPos);

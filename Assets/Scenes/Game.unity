@@ -1189,7 +1189,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.99215686, g: 0.9647059, b: 0.8901961, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3095,6 +3095,30 @@ PrefabInstance:
       propertyPath: effectImage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8812028991426825621, guid: d40480d967cbb214fba38605bf6e1c32, type: 3}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8812028991426825621, guid: 672889f76d17d0f47808a94b2eb2a1ff, type: 3}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8812028991426825621, guid: 209330c9a8136a548b4b5ef4d370d3b0, type: 3}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 8812028991426825621, guid: ffdafaf5f7201714cb282f12e637f0c2, type: 3}
+    - target: {fileID: 5864517611135799104, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
+      propertyPath: starPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 8812028991426825621, guid: 7759aafabaead764d889e7ccafb1b10d, type: 3}
     - target: {fileID: 7531427992182969998, guid: 3ce8680e7660b9d4aa65cd6796af88dc, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
