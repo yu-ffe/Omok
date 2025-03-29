@@ -8,7 +8,7 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
     //public GameObject overlayPanel;
     //public ParticleSystem fireworks;
     
-    public GameObject starPrefab; // Spark_Star 프리팹
+    public GameObject[] starPrefabs; // Spark_Star 프리팹
     public RectTransform canvasRect; // UI 기준 RectTransform
     public int burstCount = 12; // 몇 개 뿌릴지
     
@@ -22,16 +22,24 @@ public class VictoryEffectManager : Singleton<VictoryEffectManager>
     {
         for (int i = 0; i < burstCount; i++)
         {
-            GameObject star = Instantiate(starPrefab, canvasRect);
-            
+            // 랜덤으로 프리팹 선택
+            GameObject randomStarPrefab = starPrefabs[Random.Range(0, starPrefabs.Length)];
+
+            GameObject star = Instantiate(randomStarPrefab, canvasRect);
+
             // 랜덤 위치 (중앙 기준 약간 퍼지게)
-            Vector2 randPos = UnityEngine.Random.insideUnitCircle * 150f;
+            Vector2 randPos = Random.insideUnitCircle * 150f;
             star.GetComponent<RectTransform>().anchoredPosition = randPos;
 
-            // 랜덤 회전/스케일도 가능
-            float rot = UnityEngine.Random.Range(0f, 360f);
+            // 랜덤 회전
+            float rot = Random.Range(0f, 360f);
             star.transform.rotation = Quaternion.Euler(0, 0, rot);
+
+            // 선택적으로 랜덤 크기
+            float scale = Random.Range(0.8f, 1.2f);
+            star.transform.localScale = Vector3.one * scale;
         }
+
         SoundManager.Instance.PlayWinSound();
     }
     
