@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using Commons;
+using Commons.Converter;
 using Commons.Models;
 using Commons.Models.Enums;
 using Game;
@@ -114,7 +115,7 @@ public class GameEndManager : UI_Panel
         if (GameManager.Instance.CurrentGameType == GameType.DualPlayer)
         {
             Debug.LogWarning("듀얼 처리");
-            var winnerPlayer = Constants.GetWinnerPlayerFromGameResult(gameResult);
+            var winnerPlayer = GameResultConverter.ToPlayerType(gameResult);
 
             string winnerLabel = winnerPlayer switch
             {

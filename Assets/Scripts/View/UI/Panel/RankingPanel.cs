@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using KimHyeun;
 using UnityEngine;
-using WB;
 
-public class RankingPanel : WB.UI_Panel
+public class RankingPanel : UI_Panel
 {
     public ScrollViewSet scrollView;
 
 
     void Start()
     {
-        WB.UI_Manager.Instance.AddPanel(WB.UI_Manager.PanelType.Ranking, this);
+        UI_Manager.Instance.AddPanel(UI_Manager.PanelType.Ranking, this);
         gameObject.SetActive(false);
     }
 

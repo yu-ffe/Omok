@@ -24,7 +24,7 @@ public class MainButtonClickManager : MonoSingleton<MainButtonClickManager>
     {
         Debug.Log("랭킹 버튼 클릭");
 
-        WB.UI_Manager.Instance.Show(WB.UI_Manager.PanelType.Ranking);
+        UI_Manager.Instance.Show(UI_Manager.PanelType.Ranking);
         // 랭킹 팝업 출력
         // 랭킹 데이터 로드
     }
