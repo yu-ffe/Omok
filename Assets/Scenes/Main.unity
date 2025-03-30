@@ -693,7 +693,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4945936788415593668, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00008869171
+      value: 0.00004360063
       objectReference: {fileID: 0}
     - target: {fileID: 6004189244126744961, guid: 6954a2575544a2b44aa39466cccaf2dd, type: 3}
       propertyPath: m_AnchorMax.x
@@ -779,7 +779,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1611621341234998260, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00008869171
+      value: 0.00004360063
       objectReference: {fileID: 0}
     - target: {fileID: 3942201355783097064, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_Name
@@ -865,6 +865,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5984218311844914822, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
+      propertyPath: profileSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5984218311844914822, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
+      propertyPath: profileSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 7aa20ab9ca0005743ab1a6aba9d0786c, type: 3}
+    - target: {fileID: 5984218311844914822, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
+      propertyPath: profileSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 0dc1f78827db36e46866721a9201068b, type: 3}
+    - target: {fileID: 5984218311844914822, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
+      propertyPath: profileSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: f7c43e111f051f244ba06ecdc03bdac8, type: 3}
+    - target: {fileID: 5984218311844914822, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
+      propertyPath: profileSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9ba8231f789e09a48a714fa9afe41ad0, type: 3}
     - target: {fileID: 8365499750314379401, guid: aeee9a1d6234d7d43b6c1cb8c822f240, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1664,7 +1684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1324718273517624438, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00008869171
+      value: 0.00004360063
       objectReference: {fileID: 0}
     - target: {fileID: 2532756853213114307, guid: ebc4cbc1d2227e84880bb1a9abb3f314, type: 3}
       propertyPath: m_AnchorMax.x
