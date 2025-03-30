@@ -2,17 +2,18 @@ using Commons.Models;
 using Commons.Models.Response;
 using Commons.Patterns;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class PlayerManager : MonoSingleton<PlayerManager> {
 
-    [SerializeField] Sprite[] profileSprites;
+    [SerializeField] List<Sprite> profileSprites;
 
-    public void SetSprites(Sprite[] sprites)
-    {
-        profileSprites = sprites;
-    }
+    // public void SetSprites(Sprite[] sprites)
+    // {
+    //     profileSprites = sprites;
+    // }
 
     public Sprite GetProfileSprites(int index)
     {

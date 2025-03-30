@@ -9,6 +9,8 @@ public class RankingManager : UI_Panel
 {
     public static RankingManager Instance { get; private set; }
     
+    [SerializeField] public Sprite[] profileSprites;
+    
     [Header("랭킹 스크롤 뷰 필수 할당")]
     [SerializeField] ScrollViewSet scrollViewSet;
 
@@ -173,6 +175,9 @@ public class RankingManager : UI_Panel
     }
 
     public override  void OnDisable() {
+    }
+    public Sprite GetSprite(int index) {
+        return profileSprites[index];
     }
 }
 

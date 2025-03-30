@@ -264,33 +264,37 @@ public class ScrollViewSet : MonoBehaviour
   void CellInfoUpdate(GameObject cell, int index)
 {
     CellState state = cell.GetComponent<CellState>();
+    
+    //여기 로직 자체가 이상해서 전체 주석, state가 null인데 조건문이 어떻게 있지?
     if (state == null)
     {
-        if (state.cellType == CellState.CellType.Ranking)
-        {
+        // if (state.cellType == CellState.CellType.Ranking)
+        // {
             // state.cell_Image.sprite = RankingManager.Instance.GetRanking(index).;
-            state.cell_Image.sprite = null;
-            state.nameText.text = RankingManager.Instance.GetRanking(index).Value.Nickname;
-            state.subText1.text = RankingManager.Instance.GetRanking(index).Value.Grade + " 급";
-            state.subText2.text = RankingManager.Instance.GetRanking(index).Value.WinCount+ " 승";
-            state.subText3.text = RankingManager.Instance.GetRanking(index).Value.LoseCount+ " 패";
-            state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
-        }
-
-        else if (state.cellType == CellState.CellType.Record)
-        {
-            state.cell_Image.sprite = RecordManager.Instance.GetSprite(index);
-            state.nameText.text = RecordManager.Instance.GetRecordName(index);
-            state.subText1.text = RecordManager.Instance.GetName(index);
-            state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
-
-            state.buttonObj.AddComponent<Button>().onClick.AddListener(() =>
-            {
-                SoundManager.Instance.ButtonClickSound();//버튼 클릭음
-                RecordManager.Instance.RemoveRecord(index);
-            });                
-            cell.transform.GetChild(0).gameObject.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
-        }
+            
+            // state.cell_Image.sprite = PlayerManager.Instance.GetProfileSprites(RankingManager.Instance.GetRanking(index).Value.ProfileNum);
+            // state.nameText.text = RankingManager.Instance.GetRanking(index).Value.Nickname;
+            // state.subText1.text = RankingManager.Instance.GetRanking(index).Value.Grade + " 급";
+            // state.subText2.text = RankingManager.Instance.GetRanking(index).Value.WinCount+ " 승";
+            // state.subText3.text = RankingManager.Instance.GetRanking(index).Value.LoseCount+ " 패";
+            // state.subText4.text = RankingManager.Instance.GetWinRate(index).ToString("F2") + "%";
+            
+        // }
+        //
+        // else if (state.cellType == CellState.CellType.Record)
+        // {
+        //     state.cell_Image.sprite = RecordManager.Instance.GetSprite(index);
+        //     state.nameText.text = RecordManager.Instance.GetRecordName(index);
+        //     state.subText1.text = RecordManager.Instance.GetName(index);
+        //     state.subText2.text = RecordManager.Instance.GetDate(index).ToString();
+        //
+        //     state.buttonObj.AddComponent<Button>().onClick.AddListener(() =>
+        //     {
+        //         SoundManager.Instance.ButtonClickSound();//버튼 클릭음
+        //         RecordManager.Instance.RemoveRecord(index);
+        //     });                
+        //     cell.transform.GetChild(0).gameObject.AddComponent<Button>().onClick.AddListener(() => { RecordManager.Instance.RecordReplay(index); });
+        // }
         return;
     }
 
@@ -298,6 +302,8 @@ public class ScrollViewSet : MonoBehaviour
     {
         case CellState.CellType.Ranking:
             // SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(index));
+            
+            SafeSetImage(state.cell_Image, RankingManager.Instance.GetSprite(RankingManager.Instance.GetRanking(index).Value.ProfileNum));
             SafeSetText(state.nameText, RankingManager.Instance.GetRanking(index).Value.Nickname);
             SafeSetText(state.subText1, $"{RankingManager.Instance.GetRanking(index).Value.Grade} 급");
             SafeSetText(state.subText2, $"{RankingManager.Instance.GetRanking(index).Value.WinCount} 승");
