@@ -1377,6 +1377,8 @@ MonoBehaviour:
   recordButtonText: {fileID: 5360124737881031845}
   originPosition: {fileID: 0}
   showPosition: {fileID: 0}
+  gradeZeroText: {fileID: 995469553599840389}
+  resultTextRect: {fileID: 1632352660651325541}
 --- !u!1 &5193918497119194303
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,6 +27,9 @@ public class GameEndManager : UI_Panel
 
     [SerializeField] Transform originPosition;
     [SerializeField] Transform showPosition;
+    
+    [SerializeField] TMP_Text gradeZeroText;
+    [SerializeField] RectTransform resultTextRect;
 
     protected override void Awake()
     {
@@ -125,8 +128,19 @@ public class GameEndManager : UI_Panel
             };
 
             resultText.text = $"{winnerLabel}의 승리입니다!";
+            // ResultText 위치 조정 (듀얼 플레이일 때만 위로 200)
+            var anchored = resultTextRect.anchoredPosition;
+            anchored.y = 200f;
+            resultTextRect.anchoredPosition = anchored;
             gradeResultText.text = null;
 
+            // 점수 관련 UI 숨기기 
+            gradeResultText.gameObject.SetActive(false);
+            gradeMinText.gameObject.SetActive(false);
+            gradeMaxText.gameObject.SetActive(false);
+            gradeBar.gameObject.SetActive(false);
+            gradeZeroText.gameObject.SetActive(false); 
+            
             // 버튼 보이기/숨기기
             okButton.SetActive(true);
             restartButton.SetActive(true);
@@ -161,6 +175,13 @@ public class GameEndManager : UI_Panel
                  || GameManager.Instance.CurrentGameType == GameType.MultiPlayer)
         {
             Debug.LogWarning("일반 처리");
+            
+            // 점수 관련 UI 보이기 
+            gradeResultText.gameObject.SetActive(true);
+            gradeMinText.gameObject.SetActive(true);
+            gradeMaxText.gameObject.SetActive(true);
+            gradeBar.gameObject.SetActive(true);
+            
             // 싱글/멀티 플레이일 경우 기존 로직 실행
             GradeBarSetting();
             GradeCellReset();
