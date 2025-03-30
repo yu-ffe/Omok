@@ -20,6 +20,7 @@ public class Timer : MonoBehaviour
 
     public float CurrentTime { get; private set; } // 현재 진행 시간
     private bool _isPaused = true; // 일시정지 여부
+    private bool _isActive = false;
     private float radius = 100f;
     
     private bool isWarningPlaying = false;
@@ -37,7 +38,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if (_isPaused) return;
+        if (!_isActive || _isPaused) return;
 
         // 시간 흐름
         CurrentTime += Time.deltaTime;
@@ -56,7 +57,8 @@ public class Timer : MonoBehaviour
             CurrentTime = totalTime;
             _isPaused = true;
             UpdateUI();
-            // 🔕 사운드 반복 종료
+            
+            // 경고 사운드 반복 종료
             if (warningCoroutine != null)
             {
                 StopCoroutine(warningCoroutine);
@@ -64,9 +66,15 @@ public class Timer : MonoBehaviour
             }
             isWarningPlaying = false;
             
-            OnTimeout?.Invoke(); // 콜백 실행
             HideHandles(); // 핸들 숨김
-            GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(GameManager.Instance.gameLogic.GetCurrentPlayerType());
+            
+            // 중복 종료 방지: 게임이 아직 진행 중인 경우만 타임오버 처리
+            if (!GameManager.Instance.gameLogic.IsGameEnded)
+            {
+                OnTimeout?.Invoke();
+            }
+            
+            //GameManager.Instance.gameLogic.HandleCurrentPlayerDefeat(GameManager.Instance.gameLogic.GetCurrentPlayerType());
         }
         else
         {
@@ -76,11 +84,32 @@ public class Timer : MonoBehaviour
     
     private IEnumerator PlayWarningSoundLoop()
     {
-        while (CurrentTime < totalTime)
+        while (!_isPaused && _isActive && !GameManager.Instance.gameLogic.IsGameEnded)
         {
-            SoundManager.Instance.PlayTimerSound(); // ⏱️ 타이머 사운드
-            yield return new WaitForSeconds(1f); // ⏲️ 1초 간격 반복
+            SoundManager.Instance.PlayTimerSound();
+            Debug.Log(" 경고음 울림");
+            yield return new WaitForSeconds(1f);
         }
+    }
+    
+    private void CleanupAfterGameEnd()
+    {
+        GameManager.Instance.timer.StopTimer(); // StopTimer 내부에서 코루틴도 정리됨
+
+        GameManager.Instance.omokBoard.OnOnGridClickedDelegate = null;
+        GameManager.Instance.omokBoard.RemoveXmarker();
+    }
+    
+    private void StopWarningCoroutine()
+    {
+        if (warningCoroutine != null)
+        {
+            StopCoroutine(warningCoroutine);
+            warningCoroutine = null;
+        }
+        isWarningPlaying = false;
+        
+        SoundManager.Instance.StopTimerSound();
     }
 
     // ========== UI 갱신 ==========
@@ -109,6 +138,8 @@ public class Timer : MonoBehaviour
 
         CurrentTime = 0;
         _isPaused = false;
+        _isActive = true;
+        
         isWarningPlaying = false;
         if (warningCoroutine != null)
         {
@@ -126,7 +157,12 @@ public class Timer : MonoBehaviour
     public void StopTimer()
     {
         _isPaused = true;
+        _isActive = false; //타이머 완전 중단
+        
         CurrentTime = totalTime;
+        
+        StopWarningCoroutine(); // 사운드 중단 추가
+        
         UpdateUI();
         HideHandles();
     }
@@ -140,12 +176,16 @@ public class Timer : MonoBehaviour
 
         CurrentTime = 0;
         _isPaused = true;
+        _isActive = false; // 타이머 완전 중단
+        
         fillImage.fillAmount = 1;
         timeText.text = totalTime.ToString("F0");
         HideHandles();
         
         RectTransform trailCapImage = tailCapPivot.GetChild(0).GetComponent<RectTransform>();
         trailCapImage.anchoredPosition = new Vector2(0, radius);
+        
+        StopWarningCoroutine(); // 사운드 중단 추가
     }
 
     // ========== 핸들 표시/숨김 ==========

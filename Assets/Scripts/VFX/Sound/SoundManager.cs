@@ -110,7 +110,20 @@ public class SoundManager : MonoSingleton<SoundManager>
     // [상황별] Timer 효과음 호출 함수
     public void PlayTimerSound()
     {
-        PlaySFX(3);
+        var source = sfxSources[3];
+        if (source != null && !source.isPlaying)
+        {
+            source.Play();
+        }
+    }
+    
+    public void StopTimerSound()
+    {
+        var source = sfxSources[3];
+        if (source != null && source.isPlaying)
+        {
+            source.Stop();
+        }
     }
 
     public void ButtonClickSound()

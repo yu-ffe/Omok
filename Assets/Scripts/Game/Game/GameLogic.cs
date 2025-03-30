@@ -466,6 +466,8 @@ public class MultiplayState : BasePlayerState
         //현재 플레이어를 패배하게 하는 함수
         public void HandleCurrentPlayerDefeat(PlayerType playerType)
         {
+            if (_isGameEnded) return;
+            
             // DualPlayer → 팝업으로 처리하고 Draw 결과만 넘김
             if (GameManager.Instance.CurrentGameType == GameType.DualPlayer)
             {
@@ -490,13 +492,19 @@ public class MultiplayState : BasePlayerState
                 EndGame(GameResult.Win);
             }
         }
-
-
+        
+        private bool _isGameEnded = false;
+        public bool IsGameEnded => _isGameEnded;
+        
         //게임 종료 시 호출
         public void EndGame(GameResult gameResult)
         {
+            if (_isGameEnded) return;
+            _isGameEnded = true;
+            
             Debug.Log($"게임끝 게임결과 : {gameResult}");
-            GameManager.Instance.timer.StopTimer();
+            
+            CleanupAfterGameEnd(); // 종료 시 클린업 추가
 
             GameRecorder.GameResultSave(gameResult); // 결과 임시 저장
             NetworkManager.Instance.GameEndSendForm(gameResult);
@@ -515,6 +523,22 @@ public class MultiplayState : BasePlayerState
             //TODO: 이 부분 봇과의 대전도 서버로 전송?
             //TODO: UI활성화
             //GameManager.Instance.OpenGameOverPanel(); // UI 업데이트
+        }
+        
+        /// <summary>
+        /// 겡임 종료 시 상태 초기화
+        /// </summary>
+        private void CleanupAfterGameEnd()
+        {
+            GameManager.Instance.timer.StopTimer();
+
+            // 입력 이벤트 제거
+            GameManager.Instance.omokBoard.OnOnGridClickedDelegate = null;
+
+            // 마커 제거 등 추가 클린업
+            GameManager.Instance.omokBoard.RemoveXmarker();
+
+            // 필요한 경우 다른 핸들러, 콜백, Coroutine도 여기서 정리
         }
 
         //현재 게임판 반환
