@@ -1,5 +1,6 @@
 using Commons;
 using Commons.Models;
+using Commons.Models.Response;
 using Commons.Patterns;
 using Commons.Utils;
 using System;
@@ -7,7 +8,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 
-public class SignInHandler : Singleton<SignInHandler> {
+public class SignInHandler : MonoSingleton<SignInHandler> {
     private const string AutoLoginEnabled = "AutoLoginEnabledKey";
 
     public void AttemptSignIn(string email, string password, Action<bool, string> callback) {
@@ -25,7 +26,7 @@ public class SignInHandler : Singleton<SignInHandler> {
 
         PlayerManager.Instance.playerData.SetPrivateData(email, password);
 
-        TokenResponse tokenResponse = null;
+        TokenResponse? tokenResponse = null;
         yield return NetworkManager.SignInRequest(response => {
             tokenResponse = response;
             PlayerManager.Instance.playerData.ClearPrivateData();
@@ -35,7 +36,7 @@ public class SignInHandler : Singleton<SignInHandler> {
             yield break;
         }
         
-        TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+        TokenManager.Instance.UpdateTokens(tokenResponse.Value.RefreshToken, tokenResponse.Value.AccessToken);
 
         yield return LoadPlayerData(callback);
     }
@@ -55,7 +56,7 @@ public class SignInHandler : Singleton<SignInHandler> {
         }
         
         Debug.Log("[SignInHandler] AttemptAutoSignIn - TryAutoSignInRequest");
-        TokenResponse tokenResponse = null;
+        TokenResponse? tokenResponse = null;
         StartCoroutine(NetworkManager.AutoSignInRequest(response => {
             Debug.Log("[SignInHandler] AttemptAutoSignIn - TryAutoSignInRequest - Response");
             Debug.Log(response);
@@ -67,7 +68,7 @@ public class SignInHandler : Singleton<SignInHandler> {
                 Debug.Log("[SignInHandler] AttemptAutoSignIn - TokenResponse is null");
             }
             Debug.Log("[SignInHandler] AttemptAutoSignIn - UpdateTokens");
-            TokenManager.Instance.UpdateTokens(tokenResponse.RefreshToken, tokenResponse.AccessToken);
+            TokenManager.Instance.UpdateTokens(tokenResponse.Value.RefreshToken, tokenResponse.Value.AccessToken);
             callback(true, "자동 로그인 성공");
 
             Debug   .Log("[SignInHandler] AttemptAutoSignIn - LoadPlayerData");
@@ -76,14 +77,14 @@ public class SignInHandler : Singleton<SignInHandler> {
     }
 
     private static IEnumerator LoadPlayerData(Action<bool, string> callback) {
-        PlayerDataResponse playerInfoResponse = null;
+        PlayerDataResponse? playerInfoResponse = null;
         yield return NetworkManager.GetUserInfoRequest(response => { playerInfoResponse = response; });
         if (playerInfoResponse is null) {
             callback(false, "사용자 정보 요청 실패");
             yield break;
         }
 
-        PlayerManager.Instance.SetPlayerData(playerInfoResponse);
+        PlayerManager.Instance.SetPlayerData(playerInfoResponse.Value);
         callback(true, "로그인 성공");
     }
 

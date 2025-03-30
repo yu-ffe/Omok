@@ -12,7 +12,7 @@ using UnityEditor.PackageManager.Requests;
 /// <summary>
 /// 서버에서 프로필 이미지 URL 가져오기
 /// </summary>
-public class UserProfileManager : Singleton<UserProfileManager> {
+public class UserProfileManager : MonoSingleton<UserProfileManager> {
     public IEnumerator GetProfileImage(string userId, Action<Sprite> callback) {
         string url = $"{Constants.ServerURL}/uer/profile?userId={userId}";
         string accessToken = TokenManager.Instance.GetAccessToken();

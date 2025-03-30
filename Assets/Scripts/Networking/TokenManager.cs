@@ -7,7 +7,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class TokenManager : Singleton<TokenManager> {
+public class TokenManager : MonoSingleton<TokenManager> {
 
     private string _accessToken;
     private string _refreshToken;

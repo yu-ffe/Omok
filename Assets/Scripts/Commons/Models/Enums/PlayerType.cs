@@ -4,20 +4,19 @@
 
 namespace Commons.Models.Enums {
     /// <summary>
-    /// 게임에서 사용하는 플레이어 유형
+    /// 게임 플레이어 유형
     /// </summary>
     public enum PlayerType {
         // 플레이어가 존재하지 않는 상태
         None,
-        
+
         // 첫 번째 플레이어 (PlayerA)
         PlayerA,
-        
+
         // 두 번째 플레이어 (PlayerB)
         PlayerB,
-        
+
         // 특수한 역할을 가진 플레이어 (PlayerX)
         PlayerX
     }
-    
 }
