@@ -283,10 +283,10 @@ public class GameEndManager : UI_Panel
         switch (result)
         {
             case GameResult.Win:
-                resultText.text = $"승리!\n{winPoint}포인트 획득";
+                resultText.text = $"승리!\n + {winPoint}포인트";
                 break;
             case GameResult.Lose:
-                resultText.text = $"패배!\n{losePoint}포인트 손실";
+                resultText.text = $"패배!\n - {losePoint}포인트";
                 break;
             case GameResult.Draw:
                 resultText.text = "무승부!\n포인트 변동 없음";
