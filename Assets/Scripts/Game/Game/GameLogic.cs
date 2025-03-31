@@ -507,7 +507,7 @@ public class GameLogic : IDisposable
     {
         GameManager.Instance.timer.StopTimer();
         
-        await Task.Delay(5000);
+        await Task.Delay(1500);
         
         if (_isGameEnded) return;
         _isGameEnded = true;
