@@ -1146,6 +1146,14 @@ PrefabInstance:
       propertyPath: originPosition
       value: 
       objectReference: {fileID: 1038587064}
+    - target: {fileID: 2508057943259160698, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651168051441883034, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4118283272559124288, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1165,6 +1173,10 @@ PrefabInstance:
     - target: {fileID: 4787836240153357919, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
       propertyPath: m_Name
       value: EndGamePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7252375183626703902, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8236106594211955664, guid: 52f5319ad3088004e84a6d9dc4599839, type: 3}
       propertyPath: m_AnchorMax.y
