@@ -90,6 +90,7 @@ public class RecordManager : UI_Panel
     // 기보 제거 기능
     public void RemoveRecord(int index)
     {
+        SoundManager.Instance.ButtonClickSound();
         GameRecorder.DeleteGameRecord(index);
         GetRecordData(); // 리로드
     }
