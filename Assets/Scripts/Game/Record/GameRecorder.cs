@@ -96,7 +96,6 @@ public class GameRecorder
                 record.Moves = new List<PlayerMove>();
             }
 
-            Debug.Log("Moves count: " + record.Moves.Count);
             return record;
         }
 
