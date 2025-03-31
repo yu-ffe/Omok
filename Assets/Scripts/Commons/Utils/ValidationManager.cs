@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Commons.Utils {
     /// <summary>
@@ -40,14 +41,20 @@ namespace Commons.Utils {
         /// 만약 타입에 해당하는 검증기가 존재하지 않으면, "지원하지 않는 유효성 검사 타입입니다."라는 메시지가 반환됩니다.
         /// </remarks>
         public static bool Validate(string type, object input, Action<bool, string> callback) {
+            Debug.Log($"[ValidationManager] Validate - Type: {type}, Input: {input}");
             if (!validators.TryGetValue(type, out var validator)) {
                 callback(false, "지원하지 않는 유효성 검사 타입입니다.");
                 return false;
             }
 
-            bool isValid = validator.Validate(input, out string message);
-            callback(isValid, message);
-            return isValid;
+            if (!validator.Validate(input, out string message)) {
+                callback(false, message);
+                return false;
+            }
+
+            Debug.Log($"[ValidationManager] Validate - {message}");
+
+            return true;
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -64,9 +71,10 @@ namespace Commons.Utils {
         /// </remarks>
         public static bool ValidatePasswordMatch(string password, string confirmPassword, Action<bool, string> callback) {
             var passwordMatchValidator = new PasswordMatchValidator(confirmPassword);
-            bool isValid = passwordMatchValidator.Validate(password, out string message);
-            callback(isValid, message);
-            return isValid;
+            if (!passwordMatchValidator.Validate(password, out string message)){
+                callback(false, message);
+            }
+            return true;
         }
     }
 }

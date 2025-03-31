@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Commons.Utils {
     /// <summary>
@@ -63,11 +64,14 @@ namespace Commons.Utils {
         /// <param name="message">검증 결과 메시지</param>
         /// <returns>비밀번호가 유효한지 여부</returns>
         public bool Validate(object input, out string message) {
+            Debug.Log( $"[PasswordValidator] Validate - Input: {input}");
             if (input is string str && Regex.IsMatch(str, @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$")) {
                 message = "비밀번호가 유효합니다.";
+                Debug.Log( $"[PasswordValidator] Validate - Message: {message}");
                 return true;
             }
             else {
+                Debug.Log( $"[PasswordValidator] Validate - Message: 비밀번호는 최소 8자 이상, 숫자와 문자를 포함해야 합니다.");
                 message = "비밀번호는 최소 8자 이상, 숫자와 문자를 포함해야 합니다.";
                 return false;
             }
@@ -126,6 +130,7 @@ namespace Commons.Utils {
         public bool Validate(object input, out string message) {
             if (input is string str && Regex.IsMatch(str, @"^[A-Za-z0-9_.-]{3,20}$")) {
                 message = "닉네임이 유효합니다.";
+                Debug.Log( $"[NicknameValidator] Validate - Message: {message}");
                 return true;
             }
             else {

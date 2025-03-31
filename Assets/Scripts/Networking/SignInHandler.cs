@@ -12,7 +12,7 @@ public class SignInHandler : MonoSingleton<SignInHandler> {
     private const string AutoLoginEnabled = "AutoLoginEnabledKey";
 
     public void AttemptSignIn(string email, string password, Action<bool, string> callback) {
-
+        
         if (!ValidationManager.Validate("email", email, callback)) return;
         if (!ValidationManager.Validate("password", password, callback)) return;
 

@@ -252,10 +252,11 @@ public class LoginPanel : UI_Panel
         
         txtMessage.text = "로그인 중...";
 
+        Debug.Log("[LoginPanel] 로그인 시도: " + inputEmail.text.Trim());
         SignInHandler.Instance.AttemptSignIn(inputEmail.text.Trim(), inputPassword.text, (isSuccess, message) =>
         {
             txtMessage.text = message;
-
+            
             if (isSuccess)
             {
                 Debug.Log("[LoginPanel] 로그인 성공, 메인 화면으로 이동");
