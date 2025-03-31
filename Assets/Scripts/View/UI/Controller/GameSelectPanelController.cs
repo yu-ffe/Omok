@@ -58,7 +58,7 @@ public class GameSelectPanelController : UI_Panel {
         SoundManager.Instance.ButtonClickSound();//버튼 클릭음
 
         StartCoroutine(PlayerManager.Instance.UpdateUserData());
-        Hide();
+        // Hide();
         GameManager.Instance.SetGameType(GameType.DualPlayer);
         GameManager.Instance.ChangeToGameScene(GameType.DualPlayer);
 
