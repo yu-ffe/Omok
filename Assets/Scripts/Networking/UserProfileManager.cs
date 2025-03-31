@@ -6,8 +6,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-using UnityEditor.PackageManager.Requests;
-
 
 /// <summary>
 /// 서버에서 프로필 이미지 URL 가져오기
