@@ -507,7 +507,6 @@ public class GameLogic : IDisposable
     {
         GameManager.Instance.timer.StopTimer();
         
-        await Task.Delay(1500);
         
         if (_isGameEnded) return;
         _isGameEnded = true;
@@ -522,6 +521,8 @@ public class GameLogic : IDisposable
         SetState(null); // 상태 초기화
         firstPlayerState = null;
         secondPlayerState = null;
+        
+        await Task.Delay(1500);
 
         UI_Manager.Instance.Show(UI_Manager.PanelType.GameEnd);
         GameEndManager.Instance.Show();
