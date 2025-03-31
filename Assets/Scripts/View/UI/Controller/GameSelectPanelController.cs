@@ -17,7 +17,6 @@ public class GameSelectPanelController : UI_Panel {
         UI_Manager.Instance.AddPanel(UI_Manager.PanelType.GameSelect, this);
         btnSinglePlay.onClick.AddListener(StartSinglePlay);
         btnDualPlay.onClick.AddListener(StartDualPlay);
-        btnMultiPlay.onClick.AddListener(StartMultiPlay);
         btnCancel.onClick.AddListener(Hide);
         gameObject.SetActive(false);
     }
