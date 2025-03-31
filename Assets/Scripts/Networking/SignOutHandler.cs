@@ -18,6 +18,7 @@ public class SignOutHandler : MonoBehaviour {
                 TokenManager.Instance.ClearTokens();
                 UI_Manager.Instance.Hide(UI_Manager.PanelType.Main);
                 UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
+                UI_Manager.Instance.Show(UI_Manager.PanelType.Login);
             },
             cancelAction: () => UI_Manager.Instance.popup.Show("로그아웃을 취소하였습니다.", "확인")
         );
