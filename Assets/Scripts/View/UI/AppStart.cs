@@ -8,6 +8,11 @@ public class AppStart : MonoBehaviour {
 
     public GameObject canvas;
     
+    private void Awake()
+    {
+        Screen.SetResolution(560, 1000, false);
+    }
+    
     private void Start()
     {
         Initialize();

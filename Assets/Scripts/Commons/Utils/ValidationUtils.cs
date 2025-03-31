@@ -134,7 +134,7 @@ namespace Commons.Utils {
                 return true;
             }
             else {
-                message = "닉네임은 알파벳, 숫자, '_', '-', '.'만 포함할 수 있으며, 3자 이상 20자 이하이어야 합니다.";
+                message = "문자, 숫자, '_', '-', '.'포함 3자 이상 20자 이하이어야 합니다.";
                 return false;
             }
         }
