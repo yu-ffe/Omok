@@ -156,7 +156,7 @@ public class GameEndManager : UI_Panel
             okBtn.onClick.AddListener(() =>
             {
                 SoundManager.Instance.ButtonClickSound(); // 버튼 클릭 사운드
-                this.Hide();
+                // this.Hide();
                 GameManager.Instance.ChangeToMainScene();
             });
 
