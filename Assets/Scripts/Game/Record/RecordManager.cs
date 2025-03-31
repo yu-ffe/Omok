@@ -62,8 +62,7 @@ public class RecordManager : UI_Panel
 
         SortingAndSet(allRecords);
 
-
-
+        
 
         scrollViewSet.StageSelectPopSet(GetMaxCellNum());
     }
@@ -72,8 +71,6 @@ public class RecordManager : UI_Panel
     // 기보 플레이 호출 기능
     public void RecordReplay(int index)
     {
-        Debug.Log($"{index}인덱스 기보 재생(RecordManager)");
-
         // 특정 기보 불러오기 (예: 3번째 기보)
         RecordSaveManager.Instance.SetLoadRecord(LoadGameRecordFromUI(index));
 
@@ -93,9 +90,6 @@ public class RecordManager : UI_Panel
     // 기보 제거 기능
     public void RemoveRecord(int index)
     {
-        Debug.Log($"{index}인덱스 기보 제거(RecordManager)");
-
-
         GameRecorder.DeleteGameRecord(index);
         GetRecordData(); // 리로드
     }

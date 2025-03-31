@@ -18,7 +18,7 @@ public class ScrollViewSet : MonoBehaviour
 
     [SerializeField] ScrollRect scrollRect;
 
-    List<GameObject> pool = new List<GameObject>(); // 오브젝트 풀링 리스트
+    [SerializeField] List<GameObject> pool = new List<GameObject>(); // 오브젝트 풀링 리스트
 
     [Header("필수 입력")]
     float spacing;     // 셀 간의 간격
@@ -49,7 +49,15 @@ public class ScrollViewSet : MonoBehaviour
 
         totalCells = maxCellNum;
 
-      
+
+        for (int i = pool.Count - 1; i >= 0; i--) //
+        {
+            Destroy(pool[i]);
+        }
+
+        pool.Clear();
+
+
 
         if (totalCells > 0)
         {
