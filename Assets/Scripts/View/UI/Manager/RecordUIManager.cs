@@ -53,7 +53,7 @@ public class RecordUIManager : MonoBehaviour
         AddSafeButton(buttonObj_After, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, false); });
         AddSafeButton(buttonObj_Last, () => { RecordSaveManager.Instance.TurnGo(RecordSaveManager.Instance.GetAfterLocation, true); });
 
-        AddSafeButton(goMainObj, () => { GameManager.Instance.ChangeToMainScene(); });
+       // AddSafeButton(goMainObj, () => { GameManager.Instance.ChangeToMainScene(); });
         
      
     }
@@ -67,5 +67,11 @@ public class RecordUIManager : MonoBehaviour
 
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(action);
+    }
+
+
+    public void ChaneMainScene()
+    {
+        GameManager.Instance.ChangeToMainScene();
     }
 }
