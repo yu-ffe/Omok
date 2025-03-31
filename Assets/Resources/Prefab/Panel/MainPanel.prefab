@@ -2108,6 +2108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   txtCoin: {fileID: 9117538042859260121}
   grade_name: {fileID: 2758844447543819449}
+  image: {fileID: 8775422618642318734}
 --- !u!1 &7831334079410644073
 GameObject:
   m_ObjectHideFlags: 0
