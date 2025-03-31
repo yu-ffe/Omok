@@ -29,7 +29,6 @@ public class GameRecorder
 
         // 현재 저장된 기보 개수 확인
         int recordCount = PlayerPrefs.GetInt("RecordCount", 0);
-        Debug.LogWarning($"저장된 기보 수{recordCount}");
 
         // 10개가 넘으면 가장 오래된 기록 삭제
         if (recordCount >= MaxRecords)
@@ -41,7 +40,6 @@ public class GameRecorder
         // 새로운 기보를 저장할 인덱스
         int newIndex = recordCount;
         string recordKey = $"record_{newIndex}";
-        Debug.LogWarning($"저장되는 기보 키 인덱스{recordKey}");
 
         // PlayerMove로 변환하여 저장
         List<PlayerMove> moves = new List<PlayerMove>();
@@ -122,17 +120,31 @@ public class GameRecorder
     }
 
     // 기보 삭제
-    public static void DeleteGameRecord(int index)
+    public static void DeleteGameRecord(int uiIndex)
     {
         int recordCount = PlayerPrefs.GetInt("RecordCount", 0);
 
-        if (index < 0 || index >= recordCount) return;
+        if (recordCount == 0 || uiIndex < 0 || uiIndex >= recordCount) return;
 
-        string recordKey = $"record_{index}";
+        // 최신순 UI 인덱스를 실제 저장된 오래된 순서 인덱스로 변환
+        int actualIndex = recordCount - 1 - uiIndex;
+
+        string recordKey = $"record_{actualIndex}";
         PlayerPrefs.DeleteKey(recordKey);
 
+        // 저장된 개수 줄이기 (먼저 처리)
+        recordCount--;
+
+        if (recordCount == 0)
+        {
+            // 마지막 기보였으면 RecordCount를 0으로 설정하고 끝냄
+            PlayerPrefs.SetInt("RecordCount", 0);
+            PlayerPrefs.Save();
+            return;
+        }
+
         // 이후 기록들을 한 칸씩 앞으로 당김
-        for (int i = index + 1; i < recordCount; i++)
+        for (int i = actualIndex + 1; i < recordCount + 1; i++) // +1 해줘야 마지막 것도 삭제됨
         {
             string oldKey = $"record_{i}";
             string newKey = $"record_{i - 1}";
@@ -145,8 +157,8 @@ public class GameRecorder
             }
         }
 
-        // 저장된 개수 줄이기
-        PlayerPrefs.SetInt("RecordCount", recordCount - 1);
+        // 변경된 개수 저장
+        PlayerPrefs.SetInt("RecordCount", recordCount);
         PlayerPrefs.Save();
     }
 
