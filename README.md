@@ -1,2 +1,2 @@
-# Omok2
+# Omok
 omok project
